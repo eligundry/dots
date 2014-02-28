@@ -1,0 +1,29 @@
+servers = (
+  {
+    address = "irc.freenode.net";
+    chatnet = "Freenode";
+    port = "8001";
+    autoconnect = "yes";
+    use_ssl = "no";
+    ssl_verify = "no";
+  }
+);
+
+chatnets = ( "freenode", { type = "IRC"; }, Freenode = { type = "IRC"; } );
+
+channels = (
+  { name = "#html5"; chatnet = "freenode"; autojoin = "yes"; },
+  { name = "#django"; chatnet = "freenode"; autojoin = "yes"; },
+  { name = "#css"; chatnet = "freenode"; autojoin = "yes"; },
+  { name = "#jquery"; chatnet = "freenode"; autojoin = "yes"; },
+  { name = "#chromium"; chatnet = "freenode"; autojoin = "yes"; }
+);
+
+settings = {
+  core = {
+    real_name = "Eli Gundry";
+    nick = "eligundry";
+    user_name = "eli";
+  };
+  "fe-text" = { actlist_sort = "refnum"; };
+};

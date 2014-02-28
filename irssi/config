@@ -1,0 +1,24 @@
+servers = (
+  {
+    address = "irc.freenode.net";
+    chatnet = "Freenode";
+    port = "8001";
+    autoconnect = "yes";
+    use_ssl = "no";
+    ssl_verify = "no";
+  }
+);
+
+channels = (
+  { name = "#harp"; chatnet = "freenode"; autojoin = "yes"; }
+);
+
+settings = {
+  core = {
+    real_name = "Eli Gundry";
+    nick = "eligundry";
+    user_name = "eli";
+  };
+  "fe-text" = { actlist_sort = "refnum"; term_force_colors = "yes"; };
+};
+chatnets = { Freenode = { type = "IRC"; }; };

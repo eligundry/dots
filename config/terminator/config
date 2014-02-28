@@ -1,0 +1,32 @@
+[global_config]
+  enabled_plugins = ,
+  window_state = maximise
+  dbus = True
+[keybindings]
+[profiles]
+  [[default]]
+    scrollbar_position = hidden
+    palette = "#000000:#cc0000:#4e9a06:#c4a000:#3465a4:#75507b:#06989a:#d3d7cf:#555753:#ef2929:#8ae234:#fce94f:#729fcf:#ad7fa8:#34e2e2:#eeeeec"
+    login_shell = True
+    background_image = None
+    background_darkness = 0.81
+    scrollback_lines = 0
+    background_type = transparent
+    use_system_font = False
+    foreground_color = "#839496"
+    use_custom_command = True
+    show_titlebar = False
+    custom_command = tmux -2ul
+    font = PragmataPro 8
+    background_color = "#002b36"
+    cursor_blink = False
+[layouts]
+  [[default]]
+    [[[child1]]]
+      type = Terminal
+      parent = window0
+      profile = default
+    [[[window0]]]
+      type = Window
+      parent = ""
+[plugins]
