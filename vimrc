@@ -15,10 +15,10 @@ set nocompatible
 " => Vundle
 "===============================================================================
 
-set runtimepath+=~/.vim/bundle/vundle
+set runtimepath+=~/.vim/bundle/Vundle.vim
 call vundle#rc()
 
-Bundle 'gmarik/vundle'
+Bundle 'gmarik/Vundle.vim'
 Bundle 'gregsexton/MatchTag'
 Bundle 'vim-scripts/c.vim'
 Bundle 'sjl/clam.vim'

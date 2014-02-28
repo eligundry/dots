@@ -10,7 +10,7 @@
 files=(*)
 
 # Exclude files
-exclude=("README.markdown" "screenshots" "LICENSE" "oh-my-zsh" "ssh" "dots.sh" "config" "tmuxline.conf")
+exclude=("README.markdown" "LICENSE" "oh-my-zsh" "dots.sh" "config" "tmuxline.conf")
 
 # Colors
 B_RED='\033[1;31m'
@@ -53,7 +53,7 @@ custom_links()
 	mkdir "$OZPATH/plugins"
 
 	ln -vfs $ZPATH/eligundry.zsh-theme $OZPATH/eligundry.zsh-theme
-	ln -vfs $ZPATH/zsh-completions $OZPATH/zsh-completions
+	ln -vfs $ZPATH/plugins/zsh-completions $OZPATH/zsh-completions
 	ln -vfs $ZPATH/plugins/zsh-history-substring-search $OZPATH/plugins/zsh-history-substring-search
 	ln -vfs $ZPATH/plugins/zsh-syntax-highlighting $OZPATH/plugins/zsh-syntax-highlighting
 
@@ -131,6 +131,8 @@ update()
 	seperator $B_GREEN"Updating Git submodules…"
 	git submodule foreach git pull origin master
 	echo "Completed updating repository"
+	seperator $B_GREEN"Updating Vim modules…"
+	vim -c BundleInstall -c qall!
 }
 
 clean()
@@ -182,9 +184,9 @@ fi
 case "$1" in
 	'install' | '-i')
 		git_modules
-		update
 		install
 		install_oh_my_zsh
+		update
 		custom_links
 	;;
 	'relink' | '-r')
