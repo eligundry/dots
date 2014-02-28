@@ -49,6 +49,7 @@ Bundle 'tpope/vim-tbone'
 Bundle 'bronson/vim-visual-star-search'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'SirVer/ultisnips'
+Bundle 'jmcantrell/vim-virtualenv'
 
 "===============================================================================
 " => Config Loading

@@ -64,10 +64,9 @@ custom_links()
 
 	ln -vfsn "$CF_LOC/terminator" "$CF_DEST/terminator"
 
-	if [[ ! -e $HOME/.ssh/config ]]; then
-		seperator $B_GREEN"Copying SSH config file…"
-		cp ssh/config.example $HOME/.ssh/config
-	fi
+	seperator $B_GREEN"Linking Pianobar files…"
+
+	ln -vfsn "$CF_LOC/pianobar" "$CF_DEST/pianobar"
 }
 
 seperator()
@@ -158,6 +157,11 @@ clean()
 
 	rm -rf "$HOME/.config/terminator"
 	echo "Removed Terminator config!"
+
+	seperator $B_RED"Removing Pianobar config…"
+
+	rm -rf "$HOME/.config/pianobar"
+	echo "Removed Pianobar config!"
 }
 
 display_help()

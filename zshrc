@@ -23,7 +23,7 @@ plugins=(archlinux command-not-found compleat cp django gem git virtualenv pip r
 source $ZSH/oh-my-zsh.sh
 
 # Add zsh completions to fpath
-fpath=(~/.oh-my-zsh/custom/zsh-completions/src $fpath)
+fpath=(~/.oh-my-zsh/custom/plugins/zsh-completions/src $fpath)
 
 ################################################################################
 # => Custom Files

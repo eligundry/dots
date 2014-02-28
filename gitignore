@@ -19,7 +19,6 @@ TAGS
 *.class
 *.exe
 *.o
-*.pyc
 *.so
 *.lst
 *.swo
@@ -29,4 +28,4 @@ ehthumbs.db
 Thumbs.db
 Icon?
 vim/bundle/*
-!vim/bundle/vundle
+!vim/bundle/Vundle.vim
