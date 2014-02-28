@@ -1,0 +1,71 @@
+#===============================================================================
+# @name screenrc
+# @author Eli Gundry
+#===============================================================================
+
+#===============================================================================
+# => General Settings
+#===============================================================================
+
+# No visual bell
+vbell off
+
+# I don't want the startup message
+startup_message off
+
+# UTF-8 is awesome
+defutf8 on
+encoding utf-8
+
+# I do want screen to login
+login on
+
+# Let's get cryptic, nethack style messages
+nethack on
+
+# Make searches case insensitive
+ignorecase on
+
+# Set zsh as the default shell
+shell '/bin/zsh'
+
+# Log user connections
+deflog on
+logfile $HOME/.log/screen/serial.%n
+
+# Login in new window
+deflogin on
+
+# Enable non-blocking mode to better cope with flaky ssh connections.
+defnonblock 5
+
+# We need some scrollback
+defscrollback 5000
+
+# Clear screen after vim and stuff closes
+altscreen on
+
+#===============================================================================
+# => Pipes Screensaver
+#===============================================================================
+
+blankerprg "exec ~/.bin/pipes.sh -R -p 3 -r 4000"
+idle 300
+
+#===============================================================================
+# => Color Support
+#===============================================================================
+
+# I think it's beautiful that you're 256 colors, too
+attrcolor b ".I" # bold colors
+term "screen-256color"
+termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+defbce "on"
+
+#===============================================================================
+# => Statusline
+#===============================================================================
+
+hardstatus off
+hardstatus alwayslastline
+hardstatus string '%{= .w}[ %{= .g}%H%{= .w} ][%= %{= .w}%?%-Lw%?%{= .W}%n*%f %t%?%?%{= .w}%?%+Lw%?%?%= ][ %{r}%l%{w} ]%{w}[%{r} %m/%d/%y %C %A %{w}]%{w}'

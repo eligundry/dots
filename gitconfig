@@ -1,0 +1,77 @@
+[alias]
+	co = checkout
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	ll = log --pretty=format:'%C(red)%h%Cred%d %Creset%s %Cgreen(%cr) %C(bold blue)<%cn>%Creset' --decorate --numstat --date=relative
+	rev = review
+	subup = "submodule foreach git pull origin master"
+	up = pull
+
+[apply]
+	ignorewhitespace = change
+	whitespace = warn
+
+[color]
+	branch = auto
+	diff = auto
+	interactive = auto
+	pager = true
+	status = auto
+
+[color "branch"]
+	remote = yellow reverse
+	local = yellow
+	remote = green
+
+[color "diff"]
+	meta = yellow bold
+	frag = magenta bold
+	old = red bold
+	new = green bold
+
+[color "status"]
+	added = green
+	changed = yellow
+	removed = red
+	untracked = cyan
+
+[core]
+	attributesFile = ~/.gitattributes
+	autocrlf = input
+	editor = vim
+	excludesfile = ~/.gitignore
+	fileMode = false
+	symlinks = true
+
+[credential]
+	helper = cache
+
+[diff]
+	tool = vimdiff
+
+[fetch]
+	recurseSubmodules = true
+
+[format]
+	pretty = %Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset
+
+[help]
+	autocorrect = 1
+	format = man
+
+[log]
+	abbrevCommit = true
+	date = relative
+	graph = true
+
+[merge]
+	tool = vimdiff
+
+[push]
+	default = matching
+
+[user]
+	name = "Eli Gundry"
+	email = "eligundry@gmail.com"
+
+[github]
+	user = "eligundry"
