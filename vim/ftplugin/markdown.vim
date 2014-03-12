@@ -9,3 +9,4 @@
 "===============================================================================
 
 autocmd BufNew,BufEnter setlocal spell
+setlocal omnifunc=htmlcomplete#CompleteTags

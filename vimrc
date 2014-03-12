@@ -47,9 +47,10 @@ Bundle 'tpope/vim-markdown'
 Bundle 'tristen/vim-sparkup'
 Bundle 'tpope/vim-tbone'
 Bundle 'bronson/vim-visual-star-search'
-Bundle 'Valloric/YouCompleteMe'
-Bundle 'SirVer/ultisnips'
 Bundle 'jmcantrell/vim-virtualenv'
+Bundle 'Shougo/neocomplete.vim'
+Bundle 'Shougo/neosnippet.vim'
+Bundle 'Shougo/neosnippet-snippets'
 
 "===============================================================================
 " => Config Loading
