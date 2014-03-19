@@ -27,6 +27,24 @@ function ssh_connection() {
 	fi
 }
 
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+ZSH_THEME_VIRTUAL_ENV_PROMPT_PREFIX=' %{$fg_bold[yellow]%}['
+ZSH_THEME_VIRTUAL_ENV_PROMPT_SUFFIX=']%{$reset_color%} '
+
+function virtualenv_prompt_info() {
+	if [ -n "$VIRTUAL_ENV" ]; then
+		if [ -f "$VIRTUAL_ENV/__name__" ]; then
+			local name=`cat $VIRTUAL_ENV/__name__`
+		elif [ `basename $VIRTUAL_ENV` = "__" ]; then
+			local name=$(basename $(dirname $VIRTUAL_ENV))
+		else
+			local name=$(basename $VIRTUAL_ENV)
+		fi
+		echo "$ZSH_THEME_VIRTUAL_ENV_PROMPT_PREFIX$name$ZSH_THEME_VIRTUAL_ENV_PROMPT_SUFFIX"
+	fi
+}
+
 ZSH_THEME_GIT_PROMPT_PREFIX=' [git:'
 ZSH_THEME_GIT_PROMPT_SUFFIX=''
 ZSH_THEME_GIT_PROMPT_SHA_BEFORE=':'
@@ -35,4 +53,4 @@ ZSH_THEME_GIT_PROMPT_SHA_AFTER='] '
 PROMPT="
 ${before_dir}${current_dir}${git_info}
 ${prompt_icon} "
-RPROMPT="${current_time}$(ssh_connection)${rvm_ruby}"
+RPROMPT="${current_time}$(virtualenv_prompt_info)$(ssh_connection)${rvm_ruby}"
