@@ -51,6 +51,7 @@ Bundle 'jmcantrell/vim-virtualenv'
 Bundle 'Shougo/neocomplete.vim'
 Bundle 'Shougo/neosnippet.vim'
 Bundle 'Shougo/neosnippet-snippets'
+Bundle 'evanmiller/nginx-vim-syntax'
 
 "===============================================================================
 " => Config Loading
