@@ -53,6 +53,7 @@ Bundle 'Shougo/neosnippet.vim'
 Bundle 'Shougo/neosnippet-snippets'
 Bundle 'evanmiller/nginx-vim-syntax'
 Bundle 'mustache/vim-mustache-handlebars'
+Bundle 'mklabs/vim-backbone'
 
 "===============================================================================
 " => Config Loading
