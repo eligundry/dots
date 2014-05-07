@@ -26,6 +26,14 @@ source $ZSH/oh-my-zsh.sh
 fpath=(~/.oh-my-zsh/custom/plugins/zsh-completions/src $fpath)
 
 ################################################################################
+# => Tmuxifier
+################################################################################
+
+export PATH="$HOME/.bin/tmuxifier/bin:$PATH"
+export TMUXIFIER_LAYOUT_PATH="$HOME/.tmuxifier"
+eval "$(tmuxifier init -)"
+
+################################################################################
 # => Custom Files
 ################################################################################
 

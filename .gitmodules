@@ -13,3 +13,9 @@
 [submodule "dir_colors"]
 	path = dir_colors
 	url = https://github.com/seebi/dircolors-solarized.git
+[submodule "tmuxifier"]
+	path = tmuxifier
+	url = https://github.com/jimeh/tmuxifier.git
+[submodule "bin/tmuxifier"]
+	path = bin/tmuxifier
+	url = https://github.com/jimeh/tmuxifier.git
