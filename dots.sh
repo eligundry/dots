@@ -10,7 +10,7 @@
 files=(*)
 
 # Exclude files
-exclude=("README.markdown" "LICENSE" "oh-my-zsh" "dots.sh" "config" "tmuxline.conf")
+exclude=("README.markdown" "LICENSE" "oh-my-zsh" "dots.sh" "config" "tmuxline.conf" "tmux-sessions")
 
 # Colors
 B_RED='\033[1;31m'

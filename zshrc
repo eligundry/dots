@@ -30,7 +30,7 @@ fpath=(~/.oh-my-zsh/custom/plugins/zsh-completions/src $fpath)
 ################################################################################
 
 export PATH="$HOME/.bin/tmuxifier/bin:$PATH"
-export TMUXIFIER_LAYOUT_PATH="$HOME/.tmuxifier"
+export TMUXIFIER_LAYOUT_PATH="$HOME/dots/tmux-sessions"
 eval "$(tmuxifier init -)"
 
 ################################################################################
