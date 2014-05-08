@@ -44,16 +44,16 @@ Bundle 'airblade/vim-gitgutter'
 Bundle 'digitaltoad/vim-jade'
 Bundle 'groenewege/vim-less'
 Bundle 'tpope/vim-markdown'
-Bundle 'tristen/vim-sparkup'
 Bundle 'tpope/vim-tbone'
 Bundle 'bronson/vim-visual-star-search'
 Bundle 'jmcantrell/vim-virtualenv'
 Bundle 'Shougo/neocomplete.vim'
 Bundle 'Shougo/neosnippet.vim'
 Bundle 'Shougo/neosnippet-snippets'
+Bundle 'Shougo/context_filetype.vim'
 Bundle 'evanmiller/nginx-vim-syntax'
 Bundle 'mustache/vim-mustache-handlebars'
-Bundle 'mklabs/vim-backbone'
+Bundle 'mattn/emmet-vim'
 
 "===============================================================================
 " => Config Loading
