@@ -12,6 +12,10 @@ files=(*)
 # Exclude files
 exclude=("README.markdown" "LICENSE" "oh-my-zsh" "dots.sh" "config" "tmuxline.conf" "tmux-sessions")
 
+if [ `uname` == "Darwin" ]; then
+	exclude+=("Xresources" "xinitrc" "Xdefaults")
+fi
+
 # Colors
 B_RED='\033[1;31m'
 B_GREEN='\033[1;32m'
@@ -49,6 +53,8 @@ custom_links()
 
 	ZPATH="$PWD/oh-my-zsh/custom"
 	OZPATH="$HOME/.oh-my-zsh/custom"
+	CF_LOC="$PWD/config"
+	CF_DEST="$HOME/.config"
 
 	mkdir "$OZPATH/plugins"
 
@@ -57,15 +63,12 @@ custom_links()
 	ln -vfs $ZPATH/plugins/zsh-history-substring-search $OZPATH/plugins/zsh-history-substring-search
 	ln -vfs $ZPATH/plugins/zsh-syntax-highlighting $OZPATH/plugins/zsh-syntax-highlighting
 
-	seperator $B_GREEN"Linking Terminator files…"
-
-	CF_LOC="$PWD/config"
-	CF_DEST="$HOME/.config"
-
-	ln -vfsn "$CF_LOC/terminator" "$CF_DEST/terminator"
+	if [ `uname` != "Darwin" ]; then
+		seperator $B_GREEN"Linking Terminator files…"
+		ln -vfsn "$CF_LOC/terminator" "$CF_DEST/terminator"
+	fi
 
 	seperator $B_GREEN"Linking Pianobar files…"
-
 	ln -vfsn "$CF_LOC/pianobar" "$CF_DEST/pianobar"
 }
 
@@ -153,10 +156,12 @@ clean()
 	rm -rf "$HOME/.oh-my-zsh"
 	echo "Uninstalled Oh-My-ZSH!"
 
-	seperator $B_RED"Removing Terminator config…"
+	if [ `uname` != "Darwin" ]; then
+		seperator $B_RED"Removing Terminator config…"
 
-	rm -rf "$HOME/.config/terminator"
-	echo "Removed Terminator config!"
+		rm -rf "$HOME/.config/terminator"
+		echo "Removed Terminator config!"
+	fi
 
 	seperator $B_RED"Removing Pianobar config…"
 

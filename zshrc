@@ -18,7 +18,14 @@ ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="eligundry"
 DISABLE_AUTO_UPDATE="true"
 
-plugins=(archlinux command-not-found compleat cp django gem git virtualenv pip rvm svn vi-mode zsh-syntax-highlighting zsh-history-substring-search)
+plugins=()
+
+if [[ `uname` == "Linux" ]]; then
+	plugins+=(archlinux command-not-found)
+elif [[ `uname` == "Darwin" ]]; then
+	plugins+=(brew osx xcode)
+fi
+plugins+=(git git-extras history-substring-search pip rvm svn virtualenv zsh_reload zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
