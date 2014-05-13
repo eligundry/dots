@@ -7,21 +7,21 @@
 
 local before_dir='╭─'
 local prompt_icon="╰⤭"
-local current_dir='%{$fg_bold[blue]%}[%~]%{$reset_color%}'
-local git_info='%{$fg_bold[green]%}%{$(git_prompt_info)%}%{$(git_prompt_short_sha)%}%{$reset_color%}'
-local current_time='%{$fg_bold[grey]%}[%T]%{$reset_color%}'
+local current_dir='%{$FX[bold]%}%{$FG[004]%}[%~]%{$reset_color%}'
+local git_info='%{$FX[bold]%}%{$FG[002]%}%{$(git_prompt_info)%}%{$(git_prompt_short_sha)%}%{$reset_color%}'
+local current_time='%{$FX[bold]%}%{$FG[006]%}[%T]%{$reset_color%}'
 
 if which rvm-prompt &> /dev/null; then
-  rvm_ruby=' %{$fg_bold[red]%}[$(rvm-prompt i v g)]%{$reset_color%}'
+  rvm_ruby=' %{$FX[bold]%}%{$FG[001]%}[$(rvm-prompt i v g)]%{$reset_color%}'
 else
   if which rbenv &> /dev/null; then
-    rvm_ruby=' %{$fg_bold[red]%}[$(rbenv version | sed -e "s/ (set.*$//")]%{$reset_color%}'
+    rvm_ruby=' %{$FX[bold]%}%{$FG[001]%}[$(rbenv version | sed -e "s/ (set.*$//")]%{$reset_color%}'
   fi
 fi
 
 function ssh_connection() {
 	if [[ -n $SSH_CONNECTION ]]; then
-		echo ' %{$fg_bold[blue]%}[ssh]%{$reset_color%}'
+		echo ' %{$FX[bold]%}%{$FG[002]%}[ssh]%{$reset_color%}'
 		before_dir=''
 		prompt_icon='>'
 	fi
@@ -29,7 +29,7 @@ function ssh_connection() {
 
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 
-ZSH_THEME_VIRTUAL_ENV_PROMPT_PREFIX=' %{$fg_bold[yellow]%}['
+ZSH_THEME_VIRTUAL_ENV_PROMPT_PREFIX=' %{$FX[bold]%}%{$FG[003]%}['
 ZSH_THEME_VIRTUAL_ENV_PROMPT_SUFFIX=']%{$reset_color%} '
 
 function virtualenv_prompt_info() {
