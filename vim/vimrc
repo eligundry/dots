@@ -54,6 +54,8 @@ Bundle 'Shougo/context_filetype.vim'
 Bundle 'evanmiller/nginx-vim-syntax'
 Bundle 'mustache/vim-mustache-handlebars'
 Bundle 'mattn/emmet-vim'
+Bundle 'jelera/vim-javascript-syntax'
+Bundle 'othree/javascript-libraries-syntax.vim'
 
 "===============================================================================
 " => Config Loading
