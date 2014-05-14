@@ -1,0 +1,20 @@
+style "darkblack"
+{
+	bg[NORMAL] = "#222222"
+	bg[ACTIVE] = "#606060"
+	bg[PRELIGHT] = "#808080"
+	fg[NORMAL] = "#ccc"
+	fg[ACTIVE] = "#222222"
+	fg[PRELIGHT] = "#222222"
+}
+
+widget "whiskermenu-window*" style "darkblack"
+
+style "darktree"
+{
+	base[NORMAL] = "#222222"
+	base[ACTIVE] = "#606060"
+	text[NORMAL] = "#ccc"
+	text[ACTIVE] = "#fff"
+}
+widget "whiskermenu-window*TreeView*" style "darktree"

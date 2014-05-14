@@ -9,11 +9,14 @@
 # Get files
 files=(*)
 
+# Determine platform
+platform=`uname`
+
 # Exclude files
 exclude=("README.markdown" "LICENSE" "oh-my-zsh" "dots.sh" "config" "tmuxline.conf" "tmux-sessions")
 
-if [ `uname` == "Darwin" ]; then
-	exclude+=("Xresources" "xinitrc" "Xdefaults")
+if [[ $platform == "Darwin" ]]; then
+	exclude+=("gtkrc-2.0" "Xresources" "xinitrc" "Xdefaults")
 fi
 
 # Colors
@@ -63,13 +66,18 @@ custom_links()
 	ln -vfs $ZPATH/plugins/zsh-history-substring-search $OZPATH/plugins/zsh-history-substring-search
 	ln -vfs $ZPATH/plugins/zsh-syntax-highlighting $OZPATH/plugins/zsh-syntax-highlighting
 
-	if [ `uname` != "Darwin" ]; then
-		seperator $B_GREEN"Linking Terminator files…"
-		ln -vfsn "$CF_LOC/terminator" "$CF_DEST/terminator"
-	fi
-
 	seperator $B_GREEN"Linking Pianobar files…"
 	ln -vfsn "$CF_LOC/pianobar" "$CF_DEST/pianobar"
+
+	if [[ $platform == "Linux" ]]; then
+		linux_custom_links
+	fi
+}
+
+linux_custom_links()
+{
+	seperator $B_GREEN"Linking Terminator files…"
+	ln -vfsn "$CF_LOC/terminator" "$CF_DEST/terminator"
 }
 
 seperator()
@@ -156,17 +164,21 @@ clean()
 	rm -rf "$HOME/.oh-my-zsh"
 	echo "Uninstalled Oh-My-ZSH!"
 
-	if [ `uname` != "Darwin" ]; then
-		seperator $B_RED"Removing Terminator config…"
-
-		rm -rf "$HOME/.config/terminator"
-		echo "Removed Terminator config!"
-	fi
-
 	seperator $B_RED"Removing Pianobar config…"
 
 	rm -rf "$HOME/.config/pianobar"
 	echo "Removed Pianobar config!"
+
+	if [[ $platform == 'Linux' ]]; then
+		linux_custom_clean
+	fi
+}
+
+linux_custom_clean()
+{
+	seperator $B_RED"Removing Terminator config…"
+	rm -rf "$HOME/.config/terminator"
+	echo "Removed Terminator config!"
 }
 
 display_help()
