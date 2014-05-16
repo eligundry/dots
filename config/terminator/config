@@ -6,13 +6,12 @@
 [profiles]
   [[default]]
     scrollbar_position = hidden
-    palette = "#000000:#cd0000:#00cd00:#cdcd00:#1e90ff:#cd00cd:#00cdcd:#e5e5e5:#4c4c4c:#ff0000:#00ff00:#ffff00:#4682b4:#ff00ff:#00ffff:#ffffff"
+    use_system_font = False
     login_shell = True
-    background_image = None
     background_darkness = 0.95
     scrollback_lines = 0
     background_type = transparent
-    use_system_font = False
+    background_image = None
     foreground_color = "#839496"
     use_custom_command = True
     icon_bell = False
