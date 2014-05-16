@@ -1,3 +1,5 @@
 vim/bundle/*
 !vim/bundle/Vundle.vim
 config/pianobar/passwords.yml
+virtualenvs/*
+!virtualenvs/.gitkeep
