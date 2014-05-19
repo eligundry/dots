@@ -78,6 +78,9 @@ linux_custom_links()
 {
 	seperator $B_GREEN"Linking Terminator files…"
 	ln -vfsn "$CF_LOC/terminator" "$CF_DEST/terminator"
+
+	seperator $B_GREEN"Linking Systemd files…"
+	ln -vfsn "$CF_LOC/systemd" "$CF_DEST/systemd"
 }
 
 seperator()
@@ -160,14 +163,10 @@ clean()
 	done
 
 	seperator $B_RED"Uninstalling Oh-My-ZSH…"
-
-	rm -rf "$HOME/.oh-my-zsh"
-	echo "Uninstalled Oh-My-ZSH!"
+	rm -rfv "$HOME/.oh-my-zsh"
 
 	seperator $B_RED"Removing Pianobar config…"
-
-	rm -rf "$HOME/.config/pianobar"
-	echo "Removed Pianobar config!"
+	rm -rfv "$HOME/.config/pianobar"
 
 	if [[ $platform == 'Linux' ]]; then
 		linux_custom_clean
@@ -177,8 +176,10 @@ clean()
 linux_custom_clean()
 {
 	seperator $B_RED"Removing Terminator config…"
-	rm -rf "$HOME/.config/terminator"
-	echo "Removed Terminator config!"
+	rm -rfv "$HOME/.config/terminator"
+
+	seperator $B_RED"Removing Systemd config…"
+	rm -rf "$HOME/.config/systemd"
 }
 
 display_help()

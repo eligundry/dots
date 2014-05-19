@@ -25,7 +25,7 @@ if [[ `uname` == "Linux" ]]; then
 elif [[ `uname` == "Darwin" ]]; then
 	plugins+=(brew osx xcode)
 fi
-plugins+=(git git-extras history-substring-search pip rvm svn virtualenv zsh_reload zsh-syntax-highlighting)
+plugins+=(git git-extras history-substring-search pip rvm svn vagrant virtualenv zsh_reload zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 

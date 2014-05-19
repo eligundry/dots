@@ -13,3 +13,6 @@ function! ClamSettings()
 endfunction
 
 autocmd VimEnter * if exists("loaded_clam") | call ClamSettings() | endif
+
+" Setup colors for manpage
+autocmd BufEnter man\ * setlocal filetype=man
