@@ -56,6 +56,7 @@ Bundle 'mustache/vim-mustache-handlebars'
 Bundle 'mattn/emmet-vim'
 Bundle 'jelera/vim-javascript-syntax'
 Bundle 'othree/javascript-libraries-syntax.vim'
+Bundle 'markcornick/vim-vagrant'
 
 "===============================================================================
 " => Config Loading
