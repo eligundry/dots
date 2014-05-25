@@ -1,0 +1,7 @@
+[Unit]
+Description=Redshift
+After=display-manager.service
+
+[Service]
+ExecStart=@bindir@/redshift -l `$HOME/.bin/latlong.sh`
+Restart=always

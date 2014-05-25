@@ -27,7 +27,7 @@ nethack on
 ignorecase on
 
 # Set zsh as the default shell
-shell '/bin/zsh'
+shell '/usr/bin/zsh'
 
 # Log user connections
 deflog on

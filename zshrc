@@ -25,7 +25,7 @@ if [[ `uname` == "Linux" ]]; then
 elif [[ `uname` == "Darwin" ]]; then
 	plugins+=(brew osx xcode)
 fi
-plugins+=(git git-extras history-substring-search pip rvm svn vagrant virtualenv zsh_reload zsh-syntax-highlighting)
+plugins+=(git git-extras iwhois history-substring-search pip rvm svn vagrant virtualenv zsh_reload zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -33,10 +33,20 @@ source $ZSH/oh-my-zsh.sh
 fpath=(~/.oh-my-zsh/custom/plugins/zsh-completions/src $fpath)
 
 ################################################################################
+# => pathadd
+################################################################################
+
+pathadd() {
+	if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+		PATH="${PATH:+"$PATH:"}$1"
+	fi
+}
+
+################################################################################
 # => Tmuxifier
 ################################################################################
 
-export PATH="$HOME/.bin/tmuxifier/bin:$PATH"
+pathadd "$HOME/.bin/tmuxifier/bin"
 export TMUXIFIER_LAYOUT_PATH="$HOME/dots/tmux-sessions"
 eval "$(tmuxifier init -)"
 

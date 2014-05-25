@@ -57,6 +57,7 @@ Bundle 'mattn/emmet-vim'
 Bundle 'jelera/vim-javascript-syntax'
 Bundle 'othree/javascript-libraries-syntax.vim'
 Bundle 'markcornick/vim-vagrant'
+Bundle 'Matt-Stevens/vim-systemd-syntax'
 
 "===============================================================================
 " => Config Loading
