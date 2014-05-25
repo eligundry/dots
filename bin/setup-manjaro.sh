@@ -17,11 +17,11 @@ yaourt -S vim tmux zsh terminator synapse clementine transmission-gtk \
 	python2-virtualenv python-virtualenv pianobar git subversion openssh mosh \
 	gnome-disk-utility python-pip python2-pip ipython ipython2 vagrant slim \
 	slim-themes xfce4-dockbarx-plugin ruby nvidiabl nodejs php weechat \
-	numix-manjaro-themes redshift whois
+	numix-manjaro-themes whois
 
 yaourt -Sa $nc google-chrome dropbox spotify ttf-ms-fonts \
 	otf-powerline-symbols-git intel-xdk popcorntime-bin htop-solarized-vi \
-	google-talkplugin php-composer blueman-bzr jsawk
+	google-talkplugin php-composer blueman-bzr jsawk xflux
 
 yaourt -Sa ttf-google-fonts-git gvim-python
 
