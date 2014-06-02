@@ -21,7 +21,7 @@ let g:NERDTreeShowLineNumbers = 0
 let g:NERDTreeWinSize = 22
 
 function! NERDTreeSettings()
-	nnoremap <silent> <Leader>nt :GundoHide<CR>:NERDTreeToggle<CR>
+	nnoremap <silent> <Leader>nt :UndotreeHide<CR>:NERDTreeToggle<CR>
 	autocmd FileType nerdtree setlocal colorcolumn=""
 endfunction
 

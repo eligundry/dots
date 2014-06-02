@@ -16,7 +16,7 @@ platform=`uname`
 exclude=("README.markdown" "LICENSE" "oh-my-zsh" "dots.sh" "config" "tmuxline.conf" "tmux-sessions")
 
 if [[ $platform == "Darwin" ]]; then
-	exclude+=("gtkrc-2.0" "Xresources" "xinitrc" "Xdefaults")
+	exclude+=("gtkrc-2.0" "xinitrc")
 fi
 
 # Colors
@@ -58,8 +58,6 @@ custom_links()
 	OZPATH="$HOME/.oh-my-zsh/custom"
 	CF_LOC="$PWD/config"
 	CF_DEST="$HOME/.config"
-
-	mkdir "$OZPATH/plugins"
 
 	ln -vfs $ZPATH/eligundry.zsh-theme $OZPATH/eligundry.zsh-theme
 	ln -vfs $ZPATH/plugins/zsh-completions $OZPATH/zsh-completions
@@ -179,7 +177,7 @@ linux_custom_clean()
 	rm -rfv "$HOME/.config/terminator"
 
 	seperator $B_RED"Removing Systemd config…"
-	rm -rf "$HOME/.config/systemd"
+	rm -rfv "$HOME/.config/systemd"
 }
 
 display_help()

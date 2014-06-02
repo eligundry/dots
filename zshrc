@@ -21,16 +21,17 @@ DISABLE_AUTO_UPDATE="true"
 plugins=()
 
 if [[ `uname` == "Linux" ]]; then
-	plugins+=(archlinux command-not-found)
+	plugins+=(archlinux command-not-found systemd)
 elif [[ `uname` == "Darwin" ]]; then
 	plugins+=(brew osx xcode)
 fi
-plugins+=(git git-extras iwhois history-substring-search pip rvm svn vagrant virtualenv zsh_reload zsh-syntax-highlighting)
-
-source $ZSH/oh-my-zsh.sh
+plugins+=(git git-extras colored-man colorize iwhois history-substring-search \
+	pip rvm svn-fast-info vagrant virtualenv zsh_reload zsh-syntax-highlighting)
 
 # Add zsh completions to fpath
 fpath=(~/.oh-my-zsh/custom/plugins/zsh-completions/src $fpath)
+
+source $ZSH/oh-my-zsh.sh
 
 ################################################################################
 # => pathadd
