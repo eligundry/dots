@@ -12,4 +12,26 @@ if [[ $json != "" ]]; then
 	long=$(echo "$json" | jsawk 'return this.longitude')
 fi
 
-echo $lat:$long
+
+xf()
+{
+	xflux -l $lat -g $long
+}
+
+rs()
+{
+	redshift -l $lat:$long
+}
+
+if [[ -z $# ]]; then
+	echo -l $lat -g $long
+fi
+
+case "$1" in
+	'xflux')
+		xf
+	;;
+	'redshift')
+		rs
+	;;
+esac

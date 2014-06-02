@@ -1,10 +1,12 @@
 [Unit]
 Description=f.lux for X
-Requires=xorg.target
+After=wm.target
 
 [Service]
 Type=forking
-ExecStart=/usr/bin/xflux -z 44240
+ExecStart=/usr/bin/xflux `%h/.bin/latlong.sh`
+Restart=always
+RestartSec=10
 
 [Install]
-WantedBy=xorg.target
+WantedBy=wm.target
