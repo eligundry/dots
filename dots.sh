@@ -13,7 +13,7 @@ files=(*)
 platform=`uname`
 
 # Exclude files
-exclude=("README.markdown" "LICENSE" "oh-my-zsh" "dots.sh" "config" "tmuxline.conf" "tmux-sessions")
+exclude=("README.markdown" "LICENSE" "oh-my-zsh" "dots.sh" "config" "tmuxline.conf" "tmux-sessions" "local")
 
 if [[ $platform == "Darwin" ]]; then
 	exclude+=("gtkrc-2.0" "xinitrc")
@@ -79,6 +79,9 @@ linux_custom_links()
 
 	seperator $B_GREEN"Linking Systemd files…"
 	ln -vfsn "$CF_LOC/systemd" "$CF_DEST/systemd"
+
+	seperator $B_GREEN"Linking desktop files…"
+	ln -vfsn "$PWD/local/share/applications/intel-xdk.desktop" "$HOME/.local/share/applications/intel-xdk.desktop"
 }
 
 seperator()
@@ -178,6 +181,9 @@ linux_custom_clean()
 
 	seperator $B_RED"Removing Systemd config…"
 	rm -rfv "$HOME/.config/systemd"
+
+	seperator $B_RED"Removing desktop config…"
+	rm -rfv "$HOME/.local/share/applications/intel-xdk.desktop"
 }
 
 display_help()

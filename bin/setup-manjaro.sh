@@ -13,7 +13,7 @@ yaourt -Syua $nc
 yaourt -Syua $nc
 
 # Install my favorite applications
-yaourt -S vim tmux zsh terminator synapse clementine transmission-gtk \
+yaourt -S gvim-python3 tmux zsh terminator synapse clementine transmission-gtk \
 	gnome-disk-utility pianobar git subversion openssh mosh numix-manjaro-themes \
 	python-virtualenv python-pip ipython python-pygments vagrant slim \
     slim-themes virtualbox xfce4-dockbarx-plugin ruby nvidiabl nodejs php \
@@ -23,7 +23,7 @@ yaourt -Sa $nc google-chrome dropbox spotify ttf-ms-fonts caffeine-bzr \
 	otf-powerline-symbols-git intel-xdk popcorntime-bin htop-solarized-vi \
 	google-talkplugin php-composer blueman-bzr jsawk-git xflux unnethack
 
-yaourt -Sa ttf-google-fonts-git gvim-python
+yaourt -Sa ttf-google-fonts-git
 
 # Setup Slim
 sudo systemctl enable slim.service -f
