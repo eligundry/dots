@@ -74,14 +74,11 @@ custom_links()
 
 linux_custom_links()
 {
-	seperator $B_GREEN"Linking Terminator files…"
+	seperator $B_GREEN"Linking custom Linux files…"
 	ln -vfsn "$CF_LOC/terminator" "$CF_DEST/terminator"
-
-	seperator $B_GREEN"Linking Systemd files…"
 	ln -vfsn "$CF_LOC/systemd" "$CF_DEST/systemd"
-
-	seperator $B_GREEN"Linking desktop files…"
 	ln -vfsn "$PWD/local/share/applications/intel-xdk.desktop" "$HOME/.local/share/applications/intel-xdk.desktop"
+	ln -vfsn "$PWD/config/autostart/f.lux.desktop" "$HOME/.config/autostart/f.lux.desktop"
 }
 
 seperator()
@@ -142,11 +139,14 @@ update()
 {
 	seperator $B_GREEN"Updating dots repository…"
 	git pull
+
 	seperator $B_GREEN"Updating Git submodules…"
 	git submodule foreach git pull origin master
-	echo "Completed updating repository"
-	seperator $B_GREEN"Updating Vim modules…"
-	vim -c BundleInstall -c qall!
+	echo "Completed updating repository!"
+
+	seperator $B_GREEN"Updating Vim bundles…"
+	vim -c BundleClean -c q -c BundleInstall -c q -c BundleUpdate -c qall!
+	echo "Completed updating Vim bundles!"
 }
 
 clean()
@@ -178,12 +178,9 @@ linux_custom_clean()
 {
 	seperator $B_RED"Removing Terminator config…"
 	rm -rfv "$HOME/.config/terminator"
-
-	seperator $B_RED"Removing Systemd config…"
 	rm -rfv "$HOME/.config/systemd"
-
-	seperator $B_RED"Removing desktop config…"
 	rm -rfv "$HOME/.local/share/applications/intel-xdk.desktop"
+	rm -rfv "$HOME/.config/autostart/f.lux.desktop"
 }
 
 display_help()

@@ -2,37 +2,71 @@
 # FILE        : eligundry.zsh-theme
 # DESCRIPTION : oh-my-zsh theme file
 # AUTHOR      : Eli Gundry (eligundry@gmail.com)
-# VERSION     : 1.0.0
+# VERSION     : 2.0.0
 # ------------------------------------------------------------------------------
 
-local before_dir='╭─'
-local prompt_icon="╰⤭"
-local current_dir='%{$FX[bold]%}%{$FG[004]%}[%~]%{$reset_color%}'
-local git_info='%{$FX[bold]%}%{$FG[002]%}%{$(git_prompt_info)%}%{$(git_prompt_short_sha)%}%{$reset_color%}'
-local current_time='%{$FX[bold]%}%{$FG[004]%}[%T]%{$reset_color%}'
+# Constants
+ZSH_THEME_GIT_PROMPT_PREFIX=" %{$FX[bold]%}%{$FG[002]%}[:"
+ZSH_THEME_GIT_PROMPT_SUFFIX=""
+ZSH_THEME_GIT_PROMPT_SHA_BEFORE=":"
+ZSH_THEME_GIT_PROMPT_SHA_AFTER="]%{$reset_color%}"
 
-if which rvm-prompt &> /dev/null; then
-  rvm_ruby=' %{$FX[bold]%}%{$FG[001]%}[$(rvm-prompt i v g)]%{$reset_color%}'
-else
-  if which rbenv &> /dev/null; then
-    rvm_ruby=' %{$FX[bold]%}%{$FG[001]%}[$(rbenv version | sed -e "s/ (set.*$//")]%{$reset_color%}'
-  fi
-fi
+ZSH_THEME_RVM_PROMPT_PREFIX=" %{$FX[bold]%}%{$FG[001]%}["
+ZSH_THEME_RVM_PROMPT_SUFFIX="]%{$reset_color%} "
 
-function ssh_connection() {
+ZSH_THEME_VIRTUAL_ENV_PROMPT_PREFIX=" %{$FX[bold]%}%{$FG[003]%}["
+ZSH_THEME_VIRTUAL_ENV_PROMPT_SUFFIX="]%{$reset_color%} "
+
+function prompt_dir() {
+	local before_dir='╭─'
+	local current_dir="%{$FX[bold]%}%{$FG[004]%}[%~]%{$reset_color%}"
+
+	echo -n "${before_dir}${current_dir}"
+}
+
+function prompt_git() {
+	local git_info="%{$(git_prompt_info)%}%{$(git_prompt_short_sha)%}"
+
+	echo -n "${git_info}"
+}
+
+function prompt_icon() {
+	local icon="\n╰"
+
+	if [[ $RETVAL -ne 0 ]]; then
+		icon+="%{$FX[bold]%}%{$FG[001]%}⤭%{$reset_color%}"
+	elif [[ $UID -eq 0 ]]; then
+		icon+="%{$FX[bold]%}%{$FG[003]%}⤭%{$reset_color%}"
+	elif [[ $(jobs -l | wc -l) -gt 0 ]]; then
+		icon+="%{$FX[bold]%}%{$FG[006]%}⤭%{$reset_color%}"
+	else
+		icon+="%{$FX[bold]%}%{$FG[002]%}⤭%{$reset_color%}"
+	fi
+
+	echo -n "$icon"
+}
+
+function rprompt_time()
+{
+	local current_time="%{$FX[bold]%}%{$FG[004]%}[%T]%{$reset_color%} "
+
+	echo -n "$current_time"
+}
+
+function rprompt_rvm()
+{
+	echo -n "$(ruby_prompt_info)"
+}
+
+function rprompt_ssh() {
 	if [[ -n $SSH_CONNECTION ]]; then
-		echo ' %{$FX[bold]%}%{$FG[002]%}[ssh]%{$reset_color%}'
-		before_dir=''
-		prompt_icon='>'
+		echo " %{$FX[bold]%}%{$FG[002]%}[ssh]%{$reset_color%}"
 	fi
 }
 
-export VIRTUAL_ENV_DISABLE_PROMPT=1
+function rprompt_virtualenv() {
+	local name
 
-ZSH_THEME_VIRTUAL_ENV_PROMPT_PREFIX=' %{$FX[bold]%}%{$FG[003]%}['
-ZSH_THEME_VIRTUAL_ENV_PROMPT_SUFFIX=']%{$reset_color%} '
-
-function virtualenv_prompt_info() {
 	if [ -n "$VIRTUAL_ENV" ]; then
 		if [ -f "$VIRTUAL_ENV/__name__" ]; then
 			local name=`cat $VIRTUAL_ENV/__name__`
@@ -41,16 +75,27 @@ function virtualenv_prompt_info() {
 		else
 			local name=$(basename $VIRTUAL_ENV)
 		fi
-		echo "$ZSH_THEME_VIRTUAL_ENV_PROMPT_PREFIX$name$ZSH_THEME_VIRTUAL_ENV_PROMPT_SUFFIX"
+
+		echo -n "$ZSH_THEME_VIRTUAL_ENV_PROMPT_PREFIX$name$ZSH_THEME_VIRTUAL_ENV_PROMPT_SUFFIX"
 	fi
 }
 
-ZSH_THEME_GIT_PROMPT_PREFIX=' [:'
-ZSH_THEME_GIT_PROMPT_SUFFIX=''
-ZSH_THEME_GIT_PROMPT_SHA_BEFORE=':'
-ZSH_THEME_GIT_PROMPT_SHA_AFTER='] '
+build_prompt()
+{
+	RETVAL=$?
+	prompt_dir
+	prompt_git
+	prompt_icon
+}
 
-PROMPT="
-${before_dir}${current_dir}${git_info}
-${prompt_icon} "
-RPROMPT="${current_time}$(virtualenv_prompt_info)$(ssh_connection)${rvm_ruby}"
+build_rprompt()
+{
+	rprompt_time
+	rprompt_rvm
+	rprompt_ssh
+	rprompt_virtualenv
+}
+
+PROMPT='
+$(build_prompt) '
+RPROMPT='$(build_rprompt)'

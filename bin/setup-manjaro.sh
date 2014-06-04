@@ -21,7 +21,8 @@ yaourt -S gvim-python3 tmux zsh terminator synapse clementine transmission-gtk \
 
 yaourt -Sa $nc google-chrome dropbox spotify ttf-ms-fonts caffeine-bzr \
 	otf-powerline-symbols-git intel-xdk popcorntime-bin htop-solarized-vi \
-	google-talkplugin php-composer blueman-bzr jsawk-git xflux unnethack
+	google-talkplugin php-composer blueman-bzr jsawk-git xflux unnethack \
+	fontmatrix
 
 yaourt -Sa ttf-google-fonts-git
 
@@ -40,3 +41,6 @@ cd ~
 git clone https://github.com/eligundry/dots
 cd dots
 ./dots.sh -i
+
+# Install RVM with Ruby
+curl -sSL https://get.rvm.io | bash -s stable --ruby

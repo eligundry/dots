@@ -16,7 +16,7 @@ set nocompatible
 "===============================================================================
 
 set runtimepath+=~/.vim/bundle/Vundle.vim
-call vundle#rc()
+call vundle#begin()
 
 Bundle 'gmarik/Vundle.vim'
 Bundle 'gregsexton/MatchTag'
@@ -58,6 +58,8 @@ Bundle 'othree/javascript-libraries-syntax.vim'
 Bundle 'markcornick/vim-vagrant'
 Bundle 'Matt-Stevens/vim-systemd-syntax'
 Bundle 'mbbill/undotree'
+
+call vundle#end()
 
 "===============================================================================
 " => Config Loading
