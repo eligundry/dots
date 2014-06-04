@@ -4,3 +4,4 @@ config/pianobar/passwords.yml
 virtualenvs/*
 !virtualenvs/.gitkeep
 weechat/logs
+weechat/weechat.log
