@@ -17,7 +17,7 @@ yaourt -S gvim-python3 tmux zsh terminator synapse clementine transmission-gtk \
 	gnome-disk-utility pianobar git subversion openssh mosh numix-manjaro-themes \
 	python-virtualenv python-pip ipython python-pygments vagrant slim \
     slim-themes virtualbox xfce4-dockbarx-plugin ruby nvidiabl nodejs php \
-    weechat whois ttf-symbola
+    weechat whois ttf-symbola multitail
 
 yaourt -Sa $nc google-chrome dropbox spotify ttf-ms-fonts caffeine-bzr \
 	otf-powerline-symbols-git intel-xdk popcorntime-bin htop-solarized-vi \

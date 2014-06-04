@@ -3,3 +3,4 @@ vim/bundle/*
 config/pianobar/passwords.yml
 virtualenvs/*
 !virtualenvs/.gitkeep
+weechat/logs
