@@ -9,7 +9,7 @@ local before_dir='╭─'
 local prompt_icon="╰⤭"
 local current_dir='%{$FX[bold]%}%{$FG[004]%}[%~]%{$reset_color%}'
 local git_info='%{$FX[bold]%}%{$FG[002]%}%{$(git_prompt_info)%}%{$(git_prompt_short_sha)%}%{$reset_color%}'
-local current_time='%{$FX[bold]%}%{$FG[004]%}[%T]%{$reset_color%}'
+local current_time='%{$FX[bold]%}%{$FG[004]%}[%{$(emoji-clock)%} %T]%{$reset_color%}'
 
 if which rvm-prompt &> /dev/null; then
   rvm_ruby=' %{$FX[bold]%}%{$FG[001]%}[$(rvm-prompt i v g)]%{$reset_color%}'

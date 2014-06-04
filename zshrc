@@ -25,8 +25,9 @@ if [[ `uname` == "Linux" ]]; then
 elif [[ `uname` == "Darwin" ]]; then
 	plugins+=(brew osx xcode)
 fi
-plugins+=(git git-extras colored-man colorize iwhois history-substring-search \
-	pip rvm svn-fast-info vagrant virtualenv zsh_reload zsh-syntax-highlighting)
+plugins+=(git git-extras colored-man colorize emoji-clock iwhois \
+	history-substring-search pip rvm svn-fast-info vagrant virtualenv \
+	zsh_reload zsh-syntax-highlighting)
 
 # Add zsh completions to fpath
 fpath=(~/.oh-my-zsh/custom/plugins/zsh-completions/src $fpath)
