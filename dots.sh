@@ -77,8 +77,8 @@ linux_custom_links()
 	seperator $B_GREEN"Linking custom Linux files…"
 	ln -vfsn "$CF_LOC/terminator" "$CF_DEST/terminator"
 	ln -vfsn "$CF_LOC/systemd" "$CF_DEST/systemd"
+	ln -vfs "$CF_LOC/redshift.conf" "$CF_DEST/redshift.conf"
 	ln -vfsn "$PWD/local/share/applications/intel-xdk.desktop" "$HOME/.local/share/applications/intel-xdk.desktop"
-	ln -vfsn "$PWD/config/autostart/f.lux.desktop" "$HOME/.config/autostart/f.lux.desktop"
 }
 
 seperator()
@@ -179,8 +179,8 @@ linux_custom_clean()
 	seperator $B_RED"Removing Terminator config…"
 	rm -rfv "$HOME/.config/terminator"
 	rm -rfv "$HOME/.config/systemd"
+	rm -rfv "$HOME/.config/redshift.conf"
 	rm -rfv "$HOME/.local/share/applications/intel-xdk.desktop"
-	rm -rfv "$HOME/.config/autostart/f.lux.desktop"
 }
 
 display_help()
@@ -207,9 +207,9 @@ fi
 case "$1" in
 	'install' | '-i')
 		git_modules
+		update
 		install
 		install_oh_my_zsh
-		update
 		custom_links
 	;;
 	'relink' | '-r')

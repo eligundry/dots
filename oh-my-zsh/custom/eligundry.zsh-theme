@@ -48,7 +48,7 @@ function prompt_icon() {
 
 function rprompt_time()
 {
-	local current_time="%{$FX[bold]%}%{$FG[004]%}[%T]%{$reset_color%} "
+	local current_time=" %{$FX[bold]%}%{$FG[004]%}[%T]%{$reset_color%}"
 
 	echo -n "$current_time"
 }
@@ -90,10 +90,10 @@ build_prompt()
 
 build_rprompt()
 {
-	rprompt_time
 	rprompt_rvm
 	rprompt_ssh
 	rprompt_virtualenv
+	rprompt_time
 }
 
 PROMPT='

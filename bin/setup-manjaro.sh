@@ -17,20 +17,16 @@ yaourt -S gvim-python3 tmux zsh terminator synapse clementine transmission-gtk \
 	gnome-disk-utility pianobar git subversion openssh mosh numix-manjaro-themes \
 	python-virtualenv python-pip ipython python-pygments vagrant slim \
     slim-themes virtualbox xfce4-dockbarx-plugin ruby nvidiabl nodejs php \
-    weechat whois ttf-symbola multitail
+    weechat whois ttf-symbola multitail redshift
 
 yaourt -Sa $nc google-chrome dropbox spotify ttf-ms-fonts caffeine-bzr \
 	otf-powerline-symbols-git intel-xdk popcorntime-bin htop-solarized-vi \
-	google-talkplugin php-composer blueman-bzr jsawk-git xflux unnethack \
-	fontmatrix
+	google-talkplugin php-composer blueman-bzr unnethack fontmatrix
 
 yaourt -Sa ttf-google-fonts-git
 
 # Setup Slim
 sudo systemctl enable slim.service -f
-
-# Link js for jsawk
-sudo ln -s /usr/bin/js17 /usr/bin/js
 
 # Setup directories
 rm -rf $HOME/Manjaro
@@ -44,3 +40,7 @@ cd dots
 
 # Install RVM with Ruby
 curl -sSL https://get.rvm.io | bash -s stable --ruby
+
+# Setup redshift with systemd
+sudo systemctl enable /usr/lib/systemd/user/redshift.service
+sudo systemctl start redshift.service

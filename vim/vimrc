@@ -58,6 +58,7 @@ Bundle 'othree/javascript-libraries-syntax.vim'
 Bundle 'markcornick/vim-vagrant'
 Bundle 'Matt-Stevens/vim-systemd-syntax'
 Bundle 'mbbill/undotree'
+Bundle 'MarioRicalde/stab.vim'
 
 call vundle#end()
 
