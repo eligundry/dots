@@ -22,6 +22,19 @@ pathadd "$HOME/.rvm/bin"
 export rvmsudo_secure_path=1
 
 ################################################################################
+# => Default Variables
+################################################################################
+
+export BROWSER=google-chrome-stable
+export DOTS=$HOME/dots
+export EDITOR=vim
+export INPUTRC=$HOME/.inputrc
+export LANG=en_US.UTF-8
+export MANPAGER=less
+export PAGER=less
+export VISUAL=vim
+
+################################################################################
 # => Oh-My-ZSH
 ################################################################################
 
@@ -41,7 +54,7 @@ plugins+=(git git-extras colored-man colorize iwhois history-substring-search \
 	pip rvm svn-fast-info vagrant virtualenv zsh_reload zsh-syntax-highlighting)
 
 # Add zsh completions to fpath
-fpath=(~/.oh-my-zsh/custom/plugins/zsh-completions/src $fpath)
+fpath=($ZSH/custom/plugins/zsh-completions/src $fpath)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -50,7 +63,7 @@ source $ZSH/oh-my-zsh.sh
 ################################################################################
 
 pathadd "$HOME/.bin/tmuxifier/bin"
-export TMUXIFIER_LAYOUT_PATH="$HOME/dots/tmux-sessions"
+export TMUXIFIER_LAYOUT_PATH="$DOTS/tmux-sessions"
 eval "$(tmuxifier init -)"
 
 

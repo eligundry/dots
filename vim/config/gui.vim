@@ -33,7 +33,7 @@ set sidescrolloff=5 " When scrolling horizontally, pad cursor 5 lines
 
 " List characters
 set nolist
-set listchars=tab:▸∙,eol:␤,trail:∘,nbsp:ᢸ
+set listchars=tab:▸∙,eol:␤,trail:∘
 
 " Timeout settings
 set timeout

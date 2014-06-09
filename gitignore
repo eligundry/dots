@@ -27,5 +27,3 @@ TAGS
 ehthumbs.db
 Thumbs.db
 Icon?
-vim/bundle/*
-!vim/bundle/Vundle.vim

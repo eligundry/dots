@@ -1,13 +1,14 @@
+alias c='clear'
 alias cp='cp -v'
+alias ip='curl ifconfig.me/ip'
+alias mkdir='mkdir -pv'
 alias mv='mv -v'
 alias rm='rm -v'
 alias s='sudo'
-alias svn_remove='find . -name .svn -print0 | xargs -0 rm -rf'
+alias sctl='systemctl'
 alias so='source'
+alias svn_remove='find . -name .svn -print0 | xargs -0 rm -rf'
 alias v='vim'
-alias zreload='source ~/.zshrc'
-alias c='clear &&'
-alias windows='cd /mnt/Windows8/Users/Eli/'
 
 # ls shortcuts
 alias la='ls -A'
@@ -15,6 +16,7 @@ alias ll='ls -l'
 alias lla='ls -lA'
 alias lr='ls -R'
 alias lar='ls -Ar'
+alias l.='ls -d .*'
 
 # Directory traversal
 alias -g ...='../..'

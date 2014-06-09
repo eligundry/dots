@@ -31,19 +31,22 @@ function prompt_git() {
 }
 
 function prompt_icon() {
-	local icon="\n╰"
+	local before_icon="\n╰"
+	local icon="%{$FX[bold]%}%{$FG[002]%}⤭%{$reset_color%}"
 
 	if [[ $RETVAL -ne 0 ]]; then
-		icon+="%{$FX[bold]%}%{$FG[001]%}⤭%{$reset_color%}"
-	elif [[ $UID -eq 0 ]]; then
-		icon+="%{$FX[bold]%}%{$FG[003]%}⤭%{$reset_color%}"
-	elif [[ $(jobs -l | wc -l) -gt 0 ]]; then
-		icon+="%{$FX[bold]%}%{$FG[006]%}⤭%{$reset_color%}"
-	else
-		icon+="%{$FX[bold]%}%{$FG[002]%}⤭%{$reset_color%}"
+		icon="%{$FX[bold]%}%{$FG[001]%}⤭%{$reset_color%}"
 	fi
 
-	echo -n "$icon"
+	if [[ $UID -eq 0 ]]; then
+		icon="%{$FX[bold]%}%{$FG[003]%}⤭%{$reset_color%}"
+	fi
+
+	if [[ $(jobs -l | wc -l) -gt 0 ]]; then
+		icon="%{$FX[bold]%}%{$FG[006]%}⤭%{$reset_color%}"
+	fi
+
+	echo -n "$before_icon$icon"
 }
 
 function rprompt_time()
@@ -60,7 +63,7 @@ function rprompt_rvm()
 
 function rprompt_ssh() {
 	if [[ -n $SSH_CONNECTION ]]; then
-		echo " %{$FX[bold]%}%{$FG[002]%}[ssh]%{$reset_color%}"
+		echo -n " %{$FX[bold]%}%{$FG[002]%}[ssh]%{$reset_color%}"
 	fi
 }
 

@@ -76,6 +76,7 @@ linux_custom_links()
 {
 	seperator $B_GREEN"Linking custom Linux files…"
 	ln -vfsn "$CF_LOC/terminator" "$CF_DEST/terminator"
+	ln -vfsn "$CF_LOC/roxterm.sourceforge.net" "$CF_DEST/roxterm.sourceforge.net"
 	ln -vfsn "$CF_LOC/systemd" "$CF_DEST/systemd"
 	ln -vfs "$CF_LOC/redshift.conf" "$CF_DEST/redshift.conf"
 	ln -vfsn "$PWD/local/share/applications/intel-xdk.desktop" "$HOME/.local/share/applications/intel-xdk.desktop"
@@ -178,6 +179,7 @@ linux_custom_clean()
 {
 	seperator $B_RED"Removing Terminator config…"
 	rm -rfv "$HOME/.config/terminator"
+	rm -rfv "$HOME/.config/roxterm.sourceforge.net"
 	rm -rfv "$HOME/.config/systemd"
 	rm -rfv "$HOME/.config/redshift.conf"
 	rm -rfv "$HOME/.local/share/applications/intel-xdk.desktop"
@@ -200,7 +202,7 @@ display_help()
 
 # Run the script
 
-if [[ -z $# ]]; then
+if [[ "$#" -eq 0 ]]; then
 	display_help
 fi
 
