@@ -17,7 +17,7 @@
     icon_bell = False
     show_titlebar = False
     custom_command = tmux -2ul
-    font = PragmataPro 8
+    font = Inconsolata 10
     background_color = "#002b36"
     cursor_blink = False
 [layouts]
