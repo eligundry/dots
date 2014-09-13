@@ -25,9 +25,9 @@ yaourt -S gvim-python3 tmux zsh terminator synapse clementine transmission-gtk \
 	slim slim-themes virtualbox xfce4-dockbarx-plugin ruby nodejs php weechat \
 	whois ttf-symbola multitail redshift googlecl archey3 evince
 
-yaourt -Sa $nc google-chrome dropbox spotify ttf-ms-fonts rarcrack zeal-git \
+yaourt -Sa $nc google-chrome dropbox spotify ttf-ms-fonts rarcrack php-composer \
 	otf-powerline-symbols-git popcorntime-bin htop-solarized-vi unnethack \
-	google-talkplugin php-composer blueman-bluez5-git
+	google-talkplugin blueman-bluez5-git
 
 yaourt -Sa ttf-google-fonts-git
 
