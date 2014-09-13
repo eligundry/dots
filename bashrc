@@ -45,7 +45,6 @@ alias so='source'
 alias v='vim'
 alias g='git'
 alias breload='source ~/.bashrc'
-alias django='python manage.py'
 alias tmux='tmux -2ul'
 
 # ls shortcuts
