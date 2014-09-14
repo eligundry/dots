@@ -15,51 +15,55 @@ set nocompatible
 " => Vundle
 "===============================================================================
 
-set runtimepath+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+" set runtimepath+=~/.vim/bundle/Vundle.vim
+" call vundle#begin()
 
-Bundle 'gmarik/Vundle.vim'
-Bundle 'gregsexton/MatchTag'
-Bundle 'vim-scripts/c.vim'
-Bundle 'sjl/clam.vim'
-Bundle 'Raimondi/delimitMate'
-Bundle 'tpope/vim-fugitive'
-Bundle 'othree/html5.vim'
-Bundle 'nono/jquery.vim'
-Bundle 'vim-scripts/matchit.zip'
-Bundle 'scrooloose/nerdtree'
-Bundle 'kien/rainbow_parentheses.vim'
-Bundle 'tpope/vim-repeat'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'tpope/vim-surround'
-Bundle 'scrooloose/syntastic'
-Bundle 'tomtom/tcomment_vim'
-Bundle 'edkolev/tmuxline.vim'
-Bundle 'bling/vim-airline'
-Bundle 'hail2u/vim-css3-syntax'
-Bundle 'tpope/vim-eunuch'
-Bundle 'airblade/vim-gitgutter'
-Bundle 'digitaltoad/vim-jade'
-Bundle 'groenewege/vim-less'
-Bundle 'tpope/vim-markdown'
-Bundle 'tpope/vim-tbone'
-Bundle 'bronson/vim-visual-star-search'
-Bundle 'jmcantrell/vim-virtualenv'
-Bundle 'Shougo/neocomplete.vim'
-Bundle 'Shougo/neosnippet.vim'
-Bundle 'Shougo/neosnippet-snippets'
-Bundle 'Shougo/context_filetype.vim'
-Bundle 'evanmiller/nginx-vim-syntax'
-Bundle 'mustache/vim-mustache-handlebars'
-Bundle 'mattn/emmet-vim'
-Bundle 'jelera/vim-javascript-syntax'
-Bundle 'othree/javascript-libraries-syntax.vim'
-Bundle 'markcornick/vim-vagrant'
-Bundle 'Matt-Stevens/vim-systemd-syntax'
-Bundle 'mbbill/undotree'
-Bundle 'MarioRicalde/stab.vim'
+" Bundle 'gmarik/Vundle.vim'
+" Bundle 'gregsexton/MatchTag'
+" Bundle 'vim-scripts/c.vim'
+" Bundle 'sjl/clam.vim'
+" Bundle 'Raimondi/delimitMate'
+" Bundle 'tpope/vim-fugitive'
+" Bundle 'othree/html5.vim'
+" Bundle 'nono/jquery.vim'
+" Bundle 'vim-scripts/matchit.zip'
+" Bundle 'scrooloose/nerdtree'
+" Bundle 'kien/rainbow_parentheses.vim'
+" Bundle 'tpope/vim-repeat'
+" Bundle 'altercation/vim-colors-solarized'
+" Bundle 'tpope/vim-surround'
+" Bundle 'scrooloose/syntastic'
+" Bundle 'tomtom/tcomment_vim'
+" Bundle 'edkolev/tmuxline.vim'
+" Bundle 'bling/vim-airline'
+" Bundle 'hail2u/vim-css3-syntax'
+" Bundle 'tpope/vim-eunuch'
+" Bundle 'airblade/vim-gitgutter'
+" Bundle 'digitaltoad/vim-jade'
+" Bundle 'groenewege/vim-less'
+" Bundle 'tpope/vim-markdown'
+" Bundle 'tpope/vim-tbone'
+" Bundle 'bronson/vim-visual-star-search'
+" Bundle 'jmcantrell/vim-virtualenv'
+" Bundle 'Shougo/neocomplete.vim'
+" Bundle 'Shougo/neosnippet.vim'
+" Bundle 'Shougo/neosnippet-snippets'
+" Bundle 'Shougo/context_filetype.vim'
+" Bundle 'evanmiller/nginx-vim-syntax'
+" Bundle 'mustache/vim-mustache-handlebars'
+" Bundle 'mattn/emmet-vim'
+" Bundle 'jelera/vim-javascript-syntax'
+" Bundle 'othree/javascript-libraries-syntax.vim'
+" Bundle 'markcornick/vim-vagrant'
+" Bundle 'Matt-Stevens/vim-systemd-syntax'
+" Bundle 'mbbill/undotree'
+" Bundle 'MarioRicalde/stab.vim'
 
-call vundle#end()
+" call vundle#end()
+
+"===============================================================================
+" => Plug
+"===============================================================================
 
 "===============================================================================
 " => Config Loading
