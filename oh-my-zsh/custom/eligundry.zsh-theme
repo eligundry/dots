@@ -17,6 +17,11 @@ ZSH_THEME_RVM_PROMPT_SUFFIX="]%{$reset_color%} "
 ZSH_THEME_VIRTUAL_ENV_PROMPT_PREFIX=" %{$FX[bold]%}%{$FG[003]%}["
 ZSH_THEME_VIRTUAL_ENV_PROMPT_SUFFIX="]%{$reset_color%} "
 
+ZSH_THEME_SVN_PROMPT_PREFIX=" %{$FX[bold]%}%{$FG[003]%}[svn:"
+ZSH_THEME_SVN_PROMPT_SUFFIX="]%{$reset_color%} "
+ZSH_THEME_SVN_PROMPT_CLEAN=''
+ZSH_THEME_SVN_PROMPT_ADDITIONS="*:"
+
 function prompt_dir() {
 	local before_dir='╭─'
 	local current_dir="%{$FX[bold]%}%{$FG[004]%}[%~]%{$reset_color%}"
@@ -28,6 +33,12 @@ function prompt_git() {
 	local git_info="%{$(git_prompt_info)%}%{$(git_prompt_short_sha)%}"
 
 	echo -n "${git_info}"
+}
+
+function prompt_svn() {
+	local svn_info="%{$(svn_prompt_info)%}"
+
+	echo -n "${svn_info}"
 }
 
 function prompt_icon() {
@@ -88,6 +99,7 @@ build_prompt()
 	RETVAL=$?
 	prompt_dir
 	prompt_git
+	prompt_svn
 	prompt_icon
 }
 

@@ -5,38 +5,37 @@ nc='--noconfirm'
 # Disable MDM cause it sucks
 sudo systemctl disable mdm.service
 sudo systemctl stop mdm.service
-sudo rm /etc/systemd/system/display-manager.service
+sudo rm -v /etc/systemd/system/display-manager.service
 
 yaourt -Syy
 
 # Remove crappy apps I never use and their dependencies
-yaourt -R libreoffice libreoffice-still-en-US hexchat thunderbird xnoise xfburn \
+yaourt -R libreoffice nano hexchat thunderbird xnoise xfburn vi \
 	mdm mdm-themes blueman bluez xfce4-notes-plugin catfish raktpdf
 yaourt -Qdt
 
-# Update the system (twice for system updates)
+# Update the system
 yaourt -Syua
-yaourt -Syua $nc
 
 # Install my favorite applications
 yaourt -S gvim-python3 tmux zsh terminator synapse clementine transmission-gtk \
 	gnome-disk-utility pianobar git subversion openssh mosh numix-manjaro-themes \
-	python-virtualenv python-pip ipython python-pygments vagrant \
-	slim slim-themes virtualbox xfce4-dockbarx-plugin ruby nodejs php weechat \
-	whois ttf-symbola multitail redshift googlecl archey3 evince
+	python-virtualenv python-pip python-pygments vagrant evince archey3 \
+	slim virtualbox xfce4-dockbarx-plugin ruby nodejs go php weechat redshift \
+	whois ttf-symbola multitail googlecl seahorse
 
 yaourt -Sa $nc google-chrome dropbox spotify ttf-ms-fonts rarcrack php-composer \
 	otf-powerline-symbols-git popcorntime-bin htop-solarized-vi unnethack \
 	google-talkplugin blueman-bluez5-git
 
-yaourt -Sa ttf-google-fonts-git
+yaourt -Sa ttf-google-fonts-git zeal-git
 
 # Setup Slim
 sudo systemctl enable slim.service -f
 
 # Setup directories
-rm -rf $HOME/Manjaro
-mkdir $HOME/Code
+rm -rfv $HOME/Manjaro
+mkdir -v $HOME/Code
 
 # Clone and install dots
 cd ~
@@ -45,13 +44,14 @@ cd dots
 ./dots.sh -i
 
 # Setup redshift with systemd
+rm -rfv $HOME/.config/systemd
 systemctl --user enable redshift.service
 systemctl --user start redshift.service
 
 # Update icon cache
 sudo gtk-update-icon-cache /usr/share/icons/Faenza-Green
 
-# Setup xfce as I like it
+# Setup Xfce as I like it
 xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-filesystem -s "false"
 xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-home -s "false"
 xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-removable -s "false"
