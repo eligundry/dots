@@ -26,7 +26,7 @@ yaourt -S gvim-python3 tmux zsh terminator synapse clementine transmission-gtk \
 
 yaourt -Sa $nc google-chrome dropbox spotify ttf-ms-fonts rarcrack php-composer \
 	otf-powerline-symbols-git popcorntime-bin htop-solarized-vi unnethack \
-	google-talkplugin blueman-bluez5-git
+	google-talkplugin blueman-bluez5-git gogui
 
 yaourt -Sa ttf-google-fonts-git zeal-git
 

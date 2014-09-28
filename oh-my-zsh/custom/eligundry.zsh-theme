@@ -20,7 +20,7 @@ ZSH_THEME_VIRTUAL_ENV_PROMPT_SUFFIX="]%{$reset_color%} "
 ZSH_THEME_SVN_PROMPT_PREFIX=" %{$FX[bold]%}%{$FG[003]%}[svn:"
 ZSH_THEME_SVN_PROMPT_SUFFIX="]%{$reset_color%} "
 ZSH_THEME_SVN_PROMPT_CLEAN=''
-ZSH_THEME_SVN_PROMPT_ADDITIONS="*:"
+ZSH_THEME_SVN_PROMPT_ADDITIONS="*"
 
 function prompt_dir() {
 	local before_dir='╭─'

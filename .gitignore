@@ -5,3 +5,4 @@ virtualenvs/*
 !virtualenvs/.gitkeep
 weechat/logs
 weechat/weechat.log
+weechat/weechat_fifo_*

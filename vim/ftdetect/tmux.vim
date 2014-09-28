@@ -4,4 +4,4 @@
 " Description: Detect Tmux config files
 "===============================================================================
 
-autocmd BufRead,BufNewFile tmux.conf,tmuxline.conf setfiletype tmux
+autocmd BufRead,BufNewFile .tmux.conf,tmux.conf,tmuxline.conf setfiletype tmux

@@ -54,6 +54,7 @@ Bundle 'mattn/emmet-vim', { 'name': 'emmet' }
 Bundle 'Matt-Stevens/vim-systemd-syntax', { 'name': 'systemd' }
 Bundle 'mbbill/undotree'
 Bundle 'MarioRicalde/stab.vim', { 'name': 'stab' }
+Plugin 'nsf/gocode', {'rtp': 'vim/'}
 
 call vundle#end()
 

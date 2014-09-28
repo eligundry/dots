@@ -50,7 +50,7 @@ elif [[ `uname` == "Darwin" ]]; then
 	plugins+=(brew osx xcode)
 fi
 
-plugins+=(git git-extras colored-man colorize iwhois history-substring-search \
+plugins+=(git git-extras colored-man colorize iwhois history-substring-search go \
 	pip rvm svn-fast-info vagrant virtualenv zsh_reload zsh-syntax-highlighting)
 
 # Add zsh completions to fpath
@@ -66,6 +66,12 @@ pathadd "$HOME/.bin/tmuxifier/bin"
 export TMUXIFIER_LAYOUT_PATH="$DOTS/tmux-sessions"
 eval "$(tmuxifier init -)"
 
+################################################################################
+# => GoPath
+################################################################################
+
+export GOPATH="$HOME/.golang"
+pathadd "$GOPATH/bin"
 
 ################################################################################
 # => Virtualenv
