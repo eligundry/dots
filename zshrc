@@ -33,6 +33,7 @@ export LANG=en_US.UTF-8
 export MANPAGER=less
 export PAGER=less
 export VISUAL=vim
+export ECLIPSE_HOME=/usr/share/eclipse
 
 ################################################################################
 # => Oh-My-ZSH
@@ -50,7 +51,7 @@ elif [[ `uname` == "Darwin" ]]; then
 	plugins+=(brew osx xcode)
 fi
 
-plugins+=(git git-extras colored-man colorize iwhois history-substring-search go \
+plugins+=(git git-extras colorize iwhois history-substring-search go \
 	pip rvm svn-fast-info vagrant virtualenv zsh_reload zsh-syntax-highlighting)
 
 # Add zsh completions to fpath
