@@ -12,55 +12,50 @@
 set nocompatible
 
 "===============================================================================
-" => Vundle
-"===============================================================================
-
-set runtimepath+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-Bundle 'gmarik/Vundle.vim'
-Bundle 'gregsexton/MatchTag'
-Bundle 'vim-scripts/c.vim'
-Bundle 'sjl/clam.vim', { 'name': 'clam' }
-Bundle 'Raimondi/delimitMate'
-Bundle 'tpope/vim-fugitive', { 'name': 'fugitive' }
-Bundle 'othree/html5.vim', { 'name': 'html5' }
-Bundle 'nono/jquery.vim', { 'name': 'jquery' }
-Bundle 'vim-scripts/matchit.zip', { 'name': 'matchit' }
-Bundle 'scrooloose/nerdtree'
-Bundle 'kien/rainbow_parentheses.vim', { 'name': 'rainbow_parentheses' }
-Bundle 'tpope/vim-repeat', { 'name': 'repeat' }
-Bundle 'altercation/vim-colors-solarized', { 'name': 'solarized' }
-Bundle 'tpope/vim-surround', { 'name': 'surround' }
-Bundle 'scrooloose/syntastic'
-Bundle 'tomtom/tcomment_vim', { 'name': 'tcomment' }
-Bundle 'edkolev/tmuxline.vim', { 'name': 'tmuxline' }
-Bundle 'bling/vim-airline', { 'name': 'airline' }
-Bundle 'hail2u/vim-css3-syntax', { 'name': 'css3-syntax' }
-Bundle 'tpope/vim-eunuch', { 'name': 'eunuch' }
-Bundle 'airblade/vim-gitgutter', { 'name': 'gitgutter' }
-Bundle 'digitaltoad/vim-jade', { 'name': 'jade' }
-Bundle 'groenewege/vim-less', { 'name': 'less' }
-Bundle 'tpope/vim-markdown', { 'name': 'markdown' }
-Bundle 'tpope/vim-tbone', { 'name': 'tbone' }
-Bundle 'bronson/vim-visual-star-search'
-Bundle 'jmcantrell/vim-virtualenv', { 'name': 'virtualenv' }
-Bundle 'Shougo/neocomplete.vim', { 'name': 'neocomplete' }
-Bundle 'Shougo/neosnippet.vim', { 'name': 'neosnippet' }
-Bundle 'Shougo/neosnippet-snippets'
-Bundle 'Shougo/context_filetype.vim'
-Bundle 'evanmiller/nginx-vim-syntax', { 'name': 'nginx' }
-Bundle 'mattn/emmet-vim', { 'name': 'emmet' }
-Bundle 'Matt-Stevens/vim-systemd-syntax', { 'name': 'systemd' }
-Bundle 'mbbill/undotree'
-Bundle 'MarioRicalde/stab.vim', { 'name': 'stab' }
-Plugin 'nsf/gocode', {'rtp': 'vim/'}
-
-call vundle#end()
-
-"===============================================================================
 " => Plug
 "===============================================================================
+
+call plug#begin('~/.vim/plugged')
+
+Plug 'gregsexton/MatchTag'
+Plug 'vim-scripts/c.vim', { 'for': ['c', 'cpp'] }
+Plug 'sjl/clam.vim'
+Plug 'Raimondi/delimitMate'
+Plug 'tpope/vim-fugitive'
+Plug 'othree/html5.vim', { 'for': ['html', 'xml'] }
+Plug 'nono/jquery.vim', { 'for': 'javascript' }
+Plug 'vim-scripts/matchit.zip'
+Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
+Plug 'kien/rainbow_parentheses.vim'
+Plug 'tpope/vim-repeat'
+Plug 'altercation/vim-colors-solarized'
+Plug 'tpope/vim-surround'
+Plug 'scrooloose/syntastic'
+Plug 'tomtom/tcomment_vim'
+Plug 'edkolev/tmuxline.vim'
+Plug 'bling/vim-airline'
+Plug 'hail2u/vim-css3-syntax', { 'for': ['less', 'css'] }
+Plug 'tpope/vim-eunuch'
+Plug 'airblade/vim-gitgutter'
+Plug 'digitaltoad/vim-jade', { 'for': 'jade' }
+Plug 'groenewege/vim-less', { 'for': 'less' }
+Plug 'tpope/vim-markdown', { 'for': ['markdown', 'text'] }
+Plug 'tpope/vim-tbone'
+Plug 'bronson/vim-visual-star-search'
+Plug 'jmcantrell/vim-virtualenv'
+Plug 'Shougo/neocomplete.vim'
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
+Plug 'Shougo/context_filetype.vim'
+Plug 'evanmiller/nginx-vim-syntax', { 'for': 'nginx' }
+Plug 'mattn/emmet-vim', { 'for': ['html', 'xml'] }
+Plug 'Matt-Stevens/vim-systemd-syntax'
+Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
+Plug 'MarioRicalde/stab.vim'
+Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss' }
+Plug 'nsf/gocode', { 'rtp': 'vim/', 'on': 'go'}
+
+call plug#end()
 
 "===============================================================================
 " => Config Loading
