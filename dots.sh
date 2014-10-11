@@ -54,10 +54,10 @@ custom_links()
 {
 	seperator $B_GREEN"Linking custom Oh-My-ZSH files…"
 
-	ZPATH="$PWD/oh-my-zsh/custom"
-	OZPATH="$HOME/.oh-my-zsh/custom"
-	CF_LOC="$PWD/config"
-	CF_DEST="$HOME/.config"
+	local ZPATH="$PWD/oh-my-zsh/custom"
+	local OZPATH="$HOME/.oh-my-zsh/custom"
+	local CF_LOC="$PWD/config"
+	local CF_DEST="$HOME/.config"
 
 	ln -vfs $ZPATH/eligundry.zsh-theme $OZPATH/eligundry.zsh-theme
 	ln -vfs $ZPATH/plugins/zsh-completions $OZPATH/zsh-completions
@@ -144,9 +144,9 @@ update()
 	echo "Completed updating repository!"
 
 	seperator $B_GREEN"Updating Vim bundles…"
-	vim -c BundleClean -c qall!
-	vim -c BundleInstall -c qall!
-	vim -c BundleUpdate -c qall!
+	vim -c PlugClean -c qall!
+	vim -c PlugInstall -c qall!
+	vim -c PlugUpdate -c qall!
 	echo "Completed updating Vim bundles!"
 }
 
@@ -154,7 +154,7 @@ clean()
 {
 	seperator $B_RED"Uninstalling dots…"
 
-	home_files=($HOME/.*)
+	local home_files=($HOME/.*)
 
 	for f in "${home_files[@]}"
 	do

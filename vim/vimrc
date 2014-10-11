@@ -49,11 +49,12 @@ Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/context_filetype.vim'
 Plug 'evanmiller/nginx-vim-syntax', { 'for': 'nginx' }
 Plug 'mattn/emmet-vim', { 'for': ['html', 'xml'] }
-Plug 'Matt-Stevens/vim-systemd-syntax'
+Plug 'Matt-Stevens/vim-systemd-syntax', { 'for': 'systemd' }
 Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
 Plug 'MarioRicalde/stab.vim'
 Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss' }
-Plug 'nsf/gocode', { 'rtp': 'vim/', 'on': 'go'}
+Plug 'nsf/gocode', { 'rtp': 'vim/', 'for': 'go'}
+Plug 'rking/ag.vim'
 
 call plug#end()
 

@@ -10,6 +10,3 @@
 [submodule "bin/tmuxifier"]
 	path = bin/tmuxifier
 	url = https://github.com/jimeh/tmuxifier.git
-[submodule "bin/vim-plug"]
-	path = bin/vim-plug
-	url = https://github.com/junegunn/vim-plug.git

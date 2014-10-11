@@ -1,6 +1,7 @@
 "===============================================================================
-" File: python.vim
+" File: ag.vim
 " Author: Eli Gundry <eligundry@gmail.com>
-" Description: Vim settings for Python
+" Description: Settings for ack
 "===============================================================================
 
+let g:agformat="%f:%l:%m"

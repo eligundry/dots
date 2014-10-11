@@ -39,6 +39,9 @@ nnoremap - <C-x>
 noremap H ^
 noremap L $
 
+" Show em the 'D
+nnoremap D d$
+
 " Toggle search highlighting
 nnoremap <Leader><Leader> :nohlsearch<CR>
 
@@ -119,6 +122,8 @@ nnoremap <Leader>to :tabonly<CR>
 " Sane movement
 noremap <silent> j gj
 noremap <silent> k gk
+noremap <silent> gj j
+noremap <silent> gk k
 
 " Bubble lines of text with optional repeat count
 nnoremap <silent> <S-j> @='ddp'<CR>

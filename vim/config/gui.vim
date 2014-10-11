@@ -28,8 +28,16 @@ endif
 
 set t_Co=256 " 256 color support in terminal
 set background=dark " I like a dark background
-set scrolloff=5 " When vertically scrolling, pad cursor 5 lines
-set sidescrolloff=5 " When scrolling horizontally, pad cursor 5 lines
+
+" When vertically scrolling, pad cursor 5 lines
+if !&scrolloff
+	set scrolloff=5
+endif
+
+" When scrolling horizontally, pad cursor 5 lines
+if !&sidescrolloff
+	set sidescrolloff=5
+endif
 
 " List characters
 set nolist

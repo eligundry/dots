@@ -10,8 +10,8 @@ sudo rm -v /etc/systemd/system/display-manager.service
 yaourt -Syy
 
 # Remove crappy apps I never use and their dependencies
-yaourt -R libreoffice nano hexchat thunderbird xnoise xfburn vi \
-	mdm mdm-themes blueman bluez xfce4-notes-plugin catfish raktpdf
+yaourt -R libreoffice nano hexchat thunderbird xnoise vi mdm mdm-themes raktpdf \
+	blueman bluez xfce4-notes-plugin catfish
 yaourt -Qdt
 
 # Update the system
@@ -20,9 +20,10 @@ yaourt -Syua
 # Install my favorite applications
 yaourt -S gvim-python3 tmux zsh terminator synapse clementine transmission-gtk \
 	gnome-disk-utility pianobar git subversion openssh mosh numix-manjaro-themes \
-	python-virtualenv python-pip python-pygments vagrant evince archey3 ack \
+	python-virtualenv python-pip python-pygments vagrant evince archey3 whois \
 	slim virtualbox xfce4-dockbarx-plugin ruby nodejs go php weechat redshift \
-	whois ttf-symbola multitail googlecl seahorse mercurial
+	ttf-symbola multitail googlecl seahorse mercurial the_silver_searcher p7zip \
+	handbrake
 
 yaourt -Sa $nc google-chrome dropbox spotify ttf-ms-fonts rarcrack php-composer \
 	otf-powerline-symbols-git popcorntime-bin htop-solarized-vi unnethack slurm \
