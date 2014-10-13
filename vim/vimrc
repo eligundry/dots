@@ -17,44 +17,45 @@ set nocompatible
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'gregsexton/MatchTag'
-Plug 'vim-scripts/c.vim', { 'for': ['c', 'cpp'] }
-Plug 'sjl/clam.vim'
-Plug 'Raimondi/delimitMate'
-Plug 'tpope/vim-fugitive'
-Plug 'othree/html5.vim', { 'for': ['html', 'xml'] }
-Plug 'nono/jquery.vim', { 'for': 'javascript' }
-Plug 'vim-scripts/matchit.zip'
-Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
-Plug 'kien/rainbow_parentheses.vim'
-Plug 'tpope/vim-repeat'
-Plug 'altercation/vim-colors-solarized'
-Plug 'tpope/vim-surround'
-Plug 'scrooloose/syntastic'
-Plug 'tomtom/tcomment_vim'
-Plug 'edkolev/tmuxline.vim'
-Plug 'bling/vim-airline'
-Plug 'hail2u/vim-css3-syntax', { 'for': ['less', 'css'] }
-Plug 'tpope/vim-eunuch'
-Plug 'airblade/vim-gitgutter'
-Plug 'digitaltoad/vim-jade', { 'for': 'jade' }
-Plug 'groenewege/vim-less', { 'for': 'less' }
-Plug 'tpope/vim-markdown', { 'for': ['markdown', 'text'] }
-Plug 'tpope/vim-tbone'
-Plug 'bronson/vim-visual-star-search'
-Plug 'jmcantrell/vim-virtualenv'
-Plug 'Shougo/neocomplete.vim'
-Plug 'Shougo/neosnippet.vim'
-Plug 'Shougo/neosnippet-snippets'
-Plug 'Shougo/context_filetype.vim'
-Plug 'evanmiller/nginx-vim-syntax', { 'for': 'nginx' }
-Plug 'mattn/emmet-vim', { 'for': ['html', 'xml'] }
-Plug 'Matt-Stevens/vim-systemd-syntax', { 'for': 'systemd' }
-Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
 Plug 'MarioRicalde/stab.vim'
+Plug 'Matt-Stevens/vim-systemd-syntax', { 'for': 'systemd' }
+Plug 'Raimondi/delimitMate'
+Plug 'Shougo/context_filetype.vim'
+Plug 'Shougo/neocomplete.vim'
+Plug 'Shougo/neosnippet-snippets'
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+Plug 'airblade/vim-gitgutter'
+Plug 'altercation/vim-colors-solarized'
+Plug 'bling/vim-airline'
+Plug 'bronson/vim-visual-star-search'
 Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss' }
+Plug 'digitaltoad/vim-jade', { 'for': 'jade' }
+Plug 'edkolev/tmuxline.vim'
+Plug 'evanmiller/nginx-vim-syntax', { 'for': 'nginx' }
+Plug 'gregsexton/MatchTag'
+Plug 'groenewege/vim-less', { 'for': 'less' }
+Plug 'hail2u/vim-css3-syntax', { 'for': ['less', 'css'] }
+Plug 'jmcantrell/vim-virtualenv'
+Plug 'kien/rainbow_parentheses.vim'
+Plug 'mattn/emmet-vim', { 'for': ['html', 'xml'] }
+Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
+Plug 'nono/jquery.vim', { 'for': 'javascript' }
 Plug 'nsf/gocode', { 'rtp': 'vim/', 'for': 'go'}
+Plug 'othree/html5.vim', { 'for': ['html', 'xml'] }
 Plug 'rking/ag.vim'
+Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
+Plug 'scrooloose/syntastic'
+Plug 'sjl/clam.vim'
+Plug 'tomtom/tcomment_vim'
+Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-markdown', { 'for': ['markdown', 'text'] }
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-tbone'
+Plug 'vim-scripts/c.vim', { 'for': ['c', 'cpp'] }
+Plug 'vim-scripts/matchit.zip'
 
 call plug#end()
 
