@@ -207,10 +207,10 @@ fi
 case "$1" in
 	'install' | '-i')
 		git_modules
-		update
 		install
-		install_oh_my_zsh
 		custom_links
+		install_oh_my_zsh
+		update
 	;;
 	'relink' | '-r')
 		install

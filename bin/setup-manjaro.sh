@@ -16,6 +16,7 @@ yaourt -Qdt
 
 # Update the system
 yaourt -Syua
+yaourt -Syua
 
 # Install my favorite applications
 yaourt -S gvim-python3 tmux zsh terminator synapse clementine transmission-gtk \
@@ -23,11 +24,11 @@ yaourt -S gvim-python3 tmux zsh terminator synapse clementine transmission-gtk \
 	python-virtualenv python-pip python-pygments vagrant evince archey3 whois \
 	slim virtualbox xfce4-dockbarx-plugin ruby nodejs go php weechat redshift \
 	ttf-symbola multitail googlecl seahorse mercurial the_silver_searcher p7zip \
-	handbrake
+	handbrake php-composer ctags
 
-yaourt -Sa $nc google-chrome dropbox spotify ttf-ms-fonts rarcrack php-composer \
+yaourt -Sa $nc google-chrome dropbox spotify ttf-ms-fonts rarcrack gogui eclim \
 	otf-powerline-symbols-git popcorntime-bin htop-solarized-vi unnethack slurm \
-	google-talkplugin blueman-bluez5-git gogui eclim
+	google-talkplugin xfce-slimlock gotags
 
 yaourt -Sa ttf-google-fonts-git zeal-git
 

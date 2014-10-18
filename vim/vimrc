@@ -15,6 +15,8 @@ set nocompatible
 " => Plug
 "===============================================================================
 
+let g:plug_timeout = 15
+
 call plug#begin('~/.vim/plugged')
 
 Plug 'MarioRicalde/stab.vim'
@@ -38,8 +40,10 @@ Plug 'groenewege/vim-less', { 'for': 'less' }
 Plug 'hail2u/vim-css3-syntax', { 'for': ['less', 'css'] }
 Plug 'jmcantrell/vim-virtualenv'
 Plug 'kien/rainbow_parentheses.vim'
+Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim', { 'for': ['html', 'xml'] }
 Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
+Plug 'mhinz/vim-startify'
 Plug 'nono/jquery.vim', { 'for': 'javascript' }
 Plug 'nsf/gocode', { 'rtp': 'vim/', 'for': 'go'}
 Plug 'othree/html5.vim', { 'for': ['html', 'xml'] }

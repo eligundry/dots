@@ -52,3 +52,6 @@ autocmd FileChangedRO * nnoremap <buffer> <Leader>s :SudoWrite<CR>
 
 " Resize splits as vim is resized
 autocmd! VimResized * exe "normal! \<C-w>="
+
+" Source vim files on save
+autocmd! BufWritePost *vimrc source %
