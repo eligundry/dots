@@ -1,7 +1,7 @@
 "===============================================================================
-" File: virtualenv.vim
+" File: polygot.vim
 " Author: Eli Gundry <eligundry@gmail.com>
-" Description: Settings for virtualenv
+" Description: Settings for polygot
 "===============================================================================
 
-let g:virtualenv_directory = '$HOME/.virtualenvs'
+let g:cpp_class_scope_highlight = 1

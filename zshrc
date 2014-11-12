@@ -51,8 +51,9 @@ elif [[ `uname` == "Darwin" ]]; then
 	plugins+=(brew osx xcode)
 fi
 
-plugins+=(git git-extras colorize iwhois history-substring-search go \
-	pip rvm svn-fast-info vagrant virtualenv zsh_reload zsh-syntax-highlighting)
+plugins+=(cp git git-extras colorize colored-man iwhois history-substring-search \
+	go pip python rvm svn-fast-info symfony2 vagrant virtualenv zsh_reload \
+	zsh-syntax-highlighting)
 
 # Add zsh completions to fpath
 fpath=($ZSH/custom/plugins/zsh-completions/src $fpath)
@@ -78,6 +79,7 @@ pathadd "$GOPATH/bin"
 # => Virtualenv
 ################################################################################
 
+export VENV_PATH="$HOME/.virtualenvs"
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 ################################################################################

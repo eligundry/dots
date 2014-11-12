@@ -6,3 +6,9 @@ virtualenvs/*
 weechat/logs
 weechat/weechat.log
 weechat/weechat_fifo_*
+mutt/tmp/*
+!mutt/tmp/.gitkeep
+mutt/cache/bodies/*
+!mutt/cache/bodies/.gitkeep
+mutt/cache/headers/*
+!mutt/cache/headers/.gitkeep

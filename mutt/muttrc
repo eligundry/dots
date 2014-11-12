@@ -1,0 +1,6 @@
+set folder = ~/.mail
+set alias_file = ~/.mutt/alias
+set header_cache = ~/.mutt/cache/headers
+set message_cachedir = ~/.mutt/cache/bodies
+set tmpdir = ~/.mutt/tmp
+set signature ~/.mutt/sig

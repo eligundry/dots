@@ -25,6 +25,7 @@ But, in order to enjoy them to their full potential, checkout these programs.
 
 ```shell
 $ cd ~
-$ git clone https://github.com/eligundry/dots.git && cd dots
+$ git clone https://github.com/eligundry/dots.git
+$ cd dots
 $ ./dots.sh install
 ```

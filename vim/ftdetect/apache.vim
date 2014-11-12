@@ -4,4 +4,4 @@
 " Description: Detect Apache config files
 "===============================================================================
 
-autocmd BufRead,BufNewFile /etc/apache2/sites-*/* setfiletype apache
+autocmd BufRead,BufNewFile /etc/apache2/* setfiletype apache

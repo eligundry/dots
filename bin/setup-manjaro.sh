@@ -24,7 +24,7 @@ yaourt -S gvim-python3 tmux zsh terminator synapse clementine transmission-gtk \
 	python-virtualenv python-pip python-pygments vagrant evince archey3 whois \
 	slim virtualbox xfce4-dockbarx-plugin ruby nodejs go php weechat redshift \
 	ttf-symbola multitail googlecl seahorse mercurial the_silver_searcher p7zip \
-	handbrake php-composer ctags
+	handbrake php-composer ctags mono
 
 yaourt -Sa $nc google-chrome dropbox spotify ttf-ms-fonts rarcrack gogui eclim \
 	otf-powerline-symbols-git popcorntime-bin htop-solarized-vi unnethack slurm \
@@ -34,6 +34,24 @@ yaourt -Sa ttf-google-fonts-git zeal-git
 
 # Setup Slim
 sudo systemctl enable slim.service -f
+
+# Setup directories
+rm -rfv $HOME/Manjaro
+mkdir -v $HOME/Code $HOME/.golang
+
+# Clone and install dots
+cd ~
+git clone https://github.com/eligundry/dots
+cd dots
+./dots.sh -i
+
+# Setup redshift with systemd
+rm -rfv $HOME/.config/systemd
+systemctl --user enable redshift.service
+systemctl --user start redshift.service
+
+# Update icon cache
+sudo gtk-update-icon-cache /usr/share/icons/Faenza-Green
 
 # Setup Xfce as I like it
 xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-filesystem -s "false"
@@ -60,24 +78,6 @@ xfconf-query -c xfwm4 -p /general/workspace_names -t string -t string -t string 
 xfconf-query -c xfwm4 -p /general/wrap_windows -s "false"
 xfconf-query -c xsettings -p /Gtk/FontName -s "Roboto 8"
 xfconf-query -c xsettings -p /Net/ThemeName -s "Numix-Manjaro"
-
-# Setup directories
-rm -rfv $HOME/Manjaro
-mkdir -v $HOME/Code
-
-# Clone and install dots
-cd ~
-git clone https://github.com/eligundry/dots
-cd dots
-./dots.sh -i
-
-# Setup redshift with systemd
-rm -rfv $HOME/.config/systemd
-systemctl --user enable redshift.service
-systemctl --user start redshift.service
-
-# Update icon cache
-sudo gtk-update-icon-cache /usr/share/icons/Faenza-Green
 
 # Install RVM with Ruby
 source $HOME/.profile
