@@ -1,5 +1,5 @@
 [general]
-ui = TTY.TTYUI
+ui = ttyui
 accounts = eligundry
 pythonfile = ~/.mutt/offlineimap.py
 fsync = False

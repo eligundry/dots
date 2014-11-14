@@ -1,6 +1,46 @@
+# Paths
 set folder = ~/.mail
 set alias_file = ~/.mutt/alias
 set header_cache = ~/.mutt/cache/headers
 set message_cachedir = ~/.mutt/cache/bodies
 set tmpdir = ~/.mutt/tmp
-set signature ~/.mutt/sig
+set signature = ~/.mutt/sig
+
+source ~/.mutt/colors/mutt-colors-solarized-dark-256.muttrc
+
+# Me!
+set realname = "Eli Gundry"
+set from = "eligundry@gmail.com"
+
+# Basic
+set wait_key = no
+set mbox_type = Maildir
+set timeout = 3
+set mail_check = 0
+unset move
+set delete
+unset confirmappend
+set quit
+unset mark_old
+set pipe_decode
+set thorough_search
+
+# Sidebar
+set sidebar_delim = '  │'
+set sidebar_visible = yes
+set sidebar_width = 24
+set status_chars = " *%A"
+set status_format = "───[ Folder: %f  ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed  )?───"
+
+# Header
+ignore *
+unignore from: to: cc: date: subject:
+unhdr_order *
+hdr_order to: cc: date: subject:
+
+# Account
+set spoolfile = "+eligundry-gmail.com"
+mailboxes +eligundry-gmail.com/INBOX \
+	      +eligundry-gmail.com/archive\
+		  +eligundry-gmail.com/drafts\
+		  +eligundry-gmail.com/sent \
