@@ -65,6 +65,7 @@ source $ZSH/oh-my-zsh.sh
 ################################################################################
 
 pathadd "$HOME/.bin/tmuxifier/bin"
+unset GREP_OPTIONS
 export TMUXIFIER_LAYOUT_PATH="$DOTS/tmux-sessions"
 eval "$(tmuxifier init -)"
 

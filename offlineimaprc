@@ -4,6 +4,14 @@ accounts = eligundry
 pythonfile = ~/.mutt/offlineimap.py
 fsync = False
 
+[mbnames]
+enabled = yes
+filename = ~/.mail/mailboxes
+header = "mailboxes "
+peritem = "+%(accountname)s/%(foldername)s"
+sep = " "
+footer = "\n"
+
 [Account eligundry]
 localrepository = eligundry-local
 remoterepository = eligundry-remote

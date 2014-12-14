@@ -36,7 +36,6 @@ Plug 'kien/ctrlp.vim'
 Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim', { 'for': ['html', 'xml'] }
 Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
-Plug 'nono/jquery.vim', { 'for': 'javascript' }
 Plug 'nsf/gocode', { 'rtp': 'vim/', 'for': 'go'}
 Plug 'rking/ag.vim'
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
@@ -54,6 +53,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-tbone'
 Plug 'vim-scripts/matchit.zip'
+Plug 'vim-scripts/renamer.vim'
 
 call plug#end()
 

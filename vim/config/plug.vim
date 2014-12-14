@@ -1,8 +1,7 @@
 "===============================================================================
-" File: apache.vim
+" File: plug.vim
 " Author: Eli Gundry <eligundry@gmail.com>
-" Description: Detect Apache config files
+" Description: Vim settings for plug
 "===============================================================================
 
-autocmd BufRead,BufNewFile /etc/apache2/* setfiletype apache
-autocmd BufRead,BufNewFile /etc/httpd/* setfiletype apache
+autocmd FileType vim-plug :vertical resize 40
