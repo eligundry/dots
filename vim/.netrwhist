@@ -1,4 +1,7 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =2
+let g:netrw_dirhist_cnt =5
 let g:netrw_dirhist_1='/home/eligundry/.virtualenvs/mm-server/lib/python2.7'
 let g:netrw_dirhist_2='/home/eligundry/.offlineimap'
+let g:netrw_dirhist_3='/home/eligundry/.virtualenvs'
+let g:netrw_dirhist_4='/home/eligundry/dots/tmux-sessions'
+let g:netrw_dirhist_5='/home/eligundry/.vim'

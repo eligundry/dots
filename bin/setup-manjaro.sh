@@ -10,8 +10,8 @@ sudo rm -v /etc/systemd/system/display-manager.service
 yaourt -Syy
 
 # Remove crappy apps I never use and their dependencies
-yaourt -R libreoffice nano hexchat thunderbird xnoise vi mdm mdm-themes raktpdf \
-	blueman bluez xfce4-notes-plugin catfish
+yaourt -R libreoffice-still nano hexchat thunderbird vi qpdfview catfish \
+	xfce4-notes-plugin
 yaourt -Qdt
 
 # Update the system
@@ -26,12 +26,14 @@ yaourt -S gvim-python3 tmux zsh terminator synapse clementine transmission-gtk \
 	ttf-symbola multitail googlecl seahorse mercurial the_silver_searcher p7zip \
 	handbrake php-composer ctags mono sqliteman qtscrobbler rbutil
 
-yaourt -Sa $nc google-chrome dropbox spotify ttf-ms-fonts rarcrack gogui eclim \
+yaourt -Sa $nc google-chrome dropbox spotify ttf-ms-fonts rarcrack eclim \
 	otf-powerline-symbols-git popcorntime-bin htop-solarized-vi unnethack slurm \
-	google-talkplugin xfce-slimlock gotags todotxt 2048.c skype4pidgin-svn wp-cli \
-	eclipse-android
+	xfce-slimlock gotags-git todotxt 2048.c skype4pidgin-svn eclipse-android
 
 yaourt -Sa ttf-google-fonts-git zeal-git
+
+# Update icon cache
+sudo gtk-update-icon-cache /usr/share/icons/Menda-Circle
 
 # Setup Slim
 sudo systemctl enable slim.service -f
@@ -50,9 +52,6 @@ cd dots
 rm -rfv $HOME/.config/systemd
 systemctl --user enable redshift.service
 systemctl --user start redshift.service
-
-# Update icon cache
-sudo gtk-update-icon-cache /usr/share/icons/Faenza-Green
 
 # Setup Xfce as I like it
 xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-filesystem -s "false"

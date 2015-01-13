@@ -19,6 +19,6 @@ endif
 if has("wildignore")
 	" set wildignore+=.git,.svn,.hg " Version control files
 	" set wildignore+=*.jpg,*.jpeg,*.png,*.psd,*.ai,*.bmp,*.gif " Images
-	" set wildignore+=*.o,*.obj,*.bak,*.exe " Compiled files
+	set wildignore+=*.o,*.obj,*.bak,*.exe
 	set wildignore+=*.pyc
 endif
