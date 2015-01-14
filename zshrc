@@ -52,7 +52,7 @@ elif [[ `uname` == "Darwin" ]]; then
 fi
 
 plugins+=(cp git git-extras colorize colored-man iwhois history-substring-search \
-	django go pip python rvm svn-fast-info symfony2 vagrant virtualenv zsh_reload \
+	go pip python rvm svn-fast-info symfony2 vagrant virtualenv zsh_reload \
 	zsh-syntax-highlighting)
 
 # Add zsh completions to fpath
