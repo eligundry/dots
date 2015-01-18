@@ -208,8 +208,8 @@ case "$1" in
 	'install' | '-i')
 		git_modules
 		install
-		custom_links
 		install_oh_my_zsh
+		custom_links
 		update
 	;;
 	'relink' | '-r')

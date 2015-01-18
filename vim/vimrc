@@ -54,6 +54,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-tbone'
 Plug 'vim-scripts/matchit.zip'
 Plug 'vim-scripts/renamer.vim'
+Plug 'lepture/vim-jinja'
 
 call plug#end()
 
