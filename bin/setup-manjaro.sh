@@ -34,19 +34,19 @@ install_binary_packages()
 		slim virtualbox xfce4-dockbarx-plugin ruby nodejs go php weechat redshift \
 		ttf-symbola multitail googlecl seahorse mercurial the_silver_searcher p7zip \
 		handbrake php-composer ctags mono sqliteman qtscrobbler xclip memcached \
-		python2-pygmentize unetbootin
+		python2-pygments unetbootin geoclue2 dropbox2
 }
 
 install_aur_no_confirm()
 {
-	yaourt -Sa $nc google-chrome dropbox spotify ttf-ms-fonts rarcrack eclim \
+	yaourt -Sa $nc google-chrome spotify ttf-ms-fonts rarcrack eclim eclipse-android \
 		otf-powerline-symbols-git popcorntime-bin htop-solarized-vi unnethack slurm \
-		xfce-slimlock gotags-git todotxt 2048.c skype4pidgin-svn eclipse-android
+		xfce-slimlock gotags-git todotxt 2048.c skype4pidgin-svn zeal-git
 }
 
 install_aur_confirm()
 {
-	yaourt -Sa ttf-google-fonts-git zeal-git
+	yaourt -Sa ttf-google-fonts-git
 }
 
 tweak_manjaro()
@@ -66,6 +66,10 @@ tweak_manjaro()
 	git clone https://github.com/eligundry/dots
 	cd dots
 	./dots.sh -i
+
+	# Enable geoclue for redshift
+	sudo systemctl enable geoclue.service
+	sudo systemctl start geoclue.service
 
 	# Setup redshift with systemd
 	rm -rfv $HOME/.config/systemd
