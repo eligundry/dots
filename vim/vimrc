@@ -31,10 +31,12 @@ Plug 'bronson/vim-visual-star-search'
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 Plug 'edkolev/tmuxline.vim'
 Plug 'gregsexton/MatchTag'
+Plug 'jmcantrell/vim-virtualenv'
 Plug 'junegunn/vim-easy-align'
 Plug 'kien/ctrlp.vim'
+Plug 'lepture/vim-jinja'
 Plug 'majutsushi/tagbar'
-Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'css', 'less'] }
+Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'css', 'less', 'jinja'] }
 Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
 Plug 'nsf/gocode', { 'rtp': 'vim/', 'for': 'go'}
 Plug 'rking/ag.vim'
@@ -54,7 +56,6 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-tbone'
 Plug 'vim-scripts/matchit.zip'
 Plug 'vim-scripts/renamer.vim'
-Plug 'lepture/vim-jinja'
 
 call plug#end()
 

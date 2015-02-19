@@ -17,9 +17,11 @@ pathadd() {
 # => RVM
 ################################################################################
 
-pathadd "$HOME/.rvm/bin"
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
-export rvmsudo_secure_path=1
+if [[ -n $SSH_CONNECTION ]]; then
+	pathadd "$HOME/.rvm/bin"
+	[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
+	export rvmsudo_secure_path=1
+fi
 
 ################################################################################
 # => Default Variables
@@ -64,17 +66,21 @@ source $ZSH/oh-my-zsh.sh
 # => Tmuxifier
 ################################################################################
 
-pathadd "$HOME/.bin/tmuxifier/bin"
-unset GREP_OPTIONS
-export TMUXIFIER_LAYOUT_PATH="$DOTS/tmux-sessions"
-eval "$(tmuxifier init -)"
+if [[ -z $SSH_CONNECTION ]]; then
+	pathadd "$HOME/.bin/tmuxifier/bin"
+	unset GREP_OPTIONS
+	export TMUXIFIER_LAYOUT_PATH="$DOTS/tmux-sessions"
+	eval "$(tmuxifier init -)"
+fi
 
 ################################################################################
 # => GoPath
 ################################################################################
 
-export GOPATH="$HOME/.golang"
-pathadd "$GOPATH/bin"
+if [[ -z $SSH_CONNECTION ]]; then
+	export GOPATH="$HOME/.golang"
+	pathadd "$GOPATH/bin"
+fi
 
 ################################################################################
 # => Virtualenv

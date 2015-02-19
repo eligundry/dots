@@ -24,7 +24,7 @@ yaourt -S gvim-python3 tmux zsh terminator synapse clementine transmission-gtk \
 	python-virtualenv python-pip python-pygments vagrant evince archey3 whois \
 	slim virtualbox xfce4-dockbarx-plugin ruby nodejs go php weechat redshift \
 	ttf-symbola multitail googlecl seahorse mercurial the_silver_searcher p7zip \
-	handbrake php-composer ctags mono sqliteman qtscrobbler rbutil
+	handbrake php-composer ctags mono sqliteman qtscrobbler xclip memcached
 
 yaourt -Sa $nc google-chrome dropbox spotify ttf-ms-fonts rarcrack eclim \
 	otf-powerline-symbols-git popcorntime-bin htop-solarized-vi unnethack slurm \

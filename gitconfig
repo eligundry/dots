@@ -3,19 +3,16 @@
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	ll = log --pretty=format:'%C(red)%h%Cred%d %Creset%s %Cgreen(%cr) %C(bold blue)<%cn>%Creset' --decorate --numstat --date=relative
 	rev = review
+	branch-recent = for-each-ref --sort=-committerdate refs/heads/
 	subup = "submodule foreach git pull origin master"
 	up = pull
 
 [apply]
 	ignorewhitespace = change
-	whitespace = warn
+	whitespace = fix
 
 [color]
-	branch = auto
-	diff = auto
-	interactive = auto
-	pager = true
-	status = auto
+	ui = auto
 
 [color "branch"]
 	remote = yellow reverse
@@ -46,6 +43,7 @@
 	helper = cache
 
 [diff]
+	renames = copies
 	tool = vimdiff
 
 [fetch]

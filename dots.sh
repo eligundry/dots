@@ -189,12 +189,12 @@ display_help()
 	echo ""
 	echo "Usage: ./dots.sh [command]"
 	echo ""
-	echo "install | -i:   Gets Git modules and links dotfiles"
-	echo "relink  | -r:   Relink files"
-	echo "update  | -u:   Update repo and submodules"
-	echo "omz     | -o:   Install Oh-My-ZSH from GitHub"
-	echo "clean   | -c:   Remove all installed files"
-	echo "help    | -h:   Display this help message"
+	echo "[--]install | -i:   Gets Git modules and links dotfiles"
+	echo "[--]relink  | -r:   Relink files"
+	echo "[--]update  | -u:   Update repo and submodules"
+	echo "[--]omz     | -o:   Install Oh-My-ZSH from GitHub"
+	echo "[--]clean   | -c:   Remove all installed files"
+	echo "[--]help    | -h:   Display this help message"
 	exit
 }
 
@@ -205,27 +205,26 @@ if [[ "$#" -eq 0 ]]; then
 fi
 
 case "$1" in
-	'install' | '-i')
+	'install' | '-i' | '--install')
 		git_modules
 		install
 		install_oh_my_zsh
 		custom_links
-		update
 	;;
-	'relink' | '-r')
+	'relink' | '-r' | '--relink')
 		install
 		custom_links
 	;;
-	'help' | '-h')
+	'help' | '-h' | '--help')
 		display_help
 	;;
-	'update' | '-u')
+	'update' | '-u' | '--update')
 		update
 	;;
-	'omz' | '-o')
+	'omz' | '-o' | '--omz')
 		install_oh_my_zsh
 	;;
-	'clean' | '-c')
+	'clean' | '-c' | '--clean')
 		clean
 	;;
 esac

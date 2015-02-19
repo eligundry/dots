@@ -15,6 +15,9 @@ let g:airline#extensions#csv#enabled = 1
 " Version Contols Stuff
 let g:airline#extensions#hunks#enabled = 1
 
+" Virtualenv
+let g:airline#extensions#virtualenv#enabled = 1
+
 " Fancy Tabline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ''

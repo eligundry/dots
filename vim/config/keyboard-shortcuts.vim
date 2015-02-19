@@ -123,6 +123,9 @@ nnoremap <Leader>tt :tabnew<CR>
 nnoremap <Leader>tc :tabclose<CR>
 nnoremap <Leader>to :tabonly<CR>
 
+" Reload all files open
+nnoremap <Leader>rr :bufdo e!<CR>:tabdo e!<CR>
+
 " Sane movement
 noremap <silent> j gj
 noremap <silent> k gk
