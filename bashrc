@@ -54,6 +54,11 @@ alias lla='ls -lA'
 alias lr='ls -R'
 alias lar='ls -Ar'
 
+# Dir Traversal
+alias ...='../..'
+alias ....='../../..'
+alias .....='../../../..'
+
 ################################################################################
 # => LESS Colors for Man
 # http://linuxtidbits.wordpress.com/2009/03/23/less-colors-for-man-pages/
