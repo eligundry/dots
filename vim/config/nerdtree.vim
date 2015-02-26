@@ -11,6 +11,7 @@ let g:NERDChristmasTree = 1
 let g:NERDTreeCasadeOpenSingleChildDir = 1
 let g:NERDTreeChDirMode = 1
 let g:NERDTreeDirArrows = 0
+let g:NERDTreeDirArrows = 0
 let g:NERDTreeHijackNetrw = 1
 let g:NERDTreeIgnore = ['\.swp$', '\~$', '\.pyc', '__pycache__']
 let g:NERDTreeMinimalUI = 1

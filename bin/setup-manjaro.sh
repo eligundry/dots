@@ -5,8 +5,7 @@ nc='--noconfirm'
 disable_mdm()
 {
 	# Disable MDM cause it sucks
-	sudo systemctl disable mdm.service
-	sudo systemctl stop mdm.service
+	sudo systemctl disable lightdm.service lightdm-plymouth.service
 	sudo rm -v /etc/systemd/system/display-manager.service
 }
 
@@ -14,16 +13,17 @@ remove_default_packages()
 {
 	# Remove crappy apps I never use and their dependencies
 	yaourt -R libreoffice-still nano hexchat thunderbird vi qpdfview catfish \
-		xfce4-notes-plugin
+		xfce4-notes-plugin guayadeque mousepad lightdm light-locker \
+		lightdm-gtk-greeter-settings lightdm-gtk3-greeter
 	yaourt -Qdt
 }
 
 update_system()
 {
 	# Update the system twice to handle manjaro system upgrades
-	yaourt -Syy
-	yaourt -Syua
-	yaourt -Syua
+	sudo pacman -Syy
+	sudo pacman -Syu
+	sudo pacman -Syu
 }
 
 install_binary_packages()
@@ -34,7 +34,7 @@ install_binary_packages()
 		slim virtualbox xfce4-dockbarx-plugin ruby nodejs go php weechat redshift \
 		ttf-symbola multitail googlecl seahorse mercurial the_silver_searcher p7zip \
 		handbrake php-composer ctags mono sqliteman qtscrobbler xclip memcached \
-		python2-pygments unetbootin geoclue2 dropbox2
+		python2-pygments unetbootin geoclue2 dropbox2 postgresql
 }
 
 install_aur_no_confirm()
