@@ -37,3 +37,16 @@ let g:airline_right_alt_sep = ''
 let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = ''
+
+" Windows Section
+if has("win32") || has("win64")
+	let g:airline_powerline_fonts = 0
+	let g:airline#extensions#tabline#left_sep = '>'
+	let g:airline#extensions#tabline#left_alt_sep = '>'
+	let g:airline#extensions#tabline#right_sep = '<'
+	let g:airline#extensions#tabline#right_alt_sep = '<'
+	let g:airline#extensions#tabline#left_sep = '>'
+	let g:airline#extensions#tabline#left_alt_sep = '>'
+	let g:airline#extensions#tabline#right_sep = '<'
+	let g:airline#extensions#tabline#right_alt_sep = '<'
+endif

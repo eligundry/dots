@@ -55,7 +55,7 @@ tweak_manjaro()
 	sudo gtk-update-icon-cache /usr/share/icons/Menda-Circle
 
 	# Setup Slim
-	sudo systemctl enable slim.service -f
+	sudo systemctl enable slim.service slim-plymouth.service -f
 
 	# Setup directories
 	rm -rfv $HOME/Manjaro
@@ -81,12 +81,13 @@ tweak_manjaro()
 	xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-home -s "false"
 	xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-removable -s "false"
 	xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-trash -s "false"
-	xfconf-query -c xfce4-keyboard-shortcuts -p -n "/xfwm4/custom/<Control><Shift><Alt>Left" -s "move_window_left_key"
-	xfconf-query -c xfce4-keyboard-shortcuts -p -n "/xfwm4/custom/<Control><Shift><Alt>Right" -s "move_window_right_key"
+	xfconf-query -c xfce4-keyboard-shortcuts -n "/xfwm4/custom/<Control><Shift><Alt>Left" -s "move_window_left_key"
+	xfconf-query -c xfce4-keyboard-shortcuts -n "/xfwm4/custom/<Control><Shift><Alt>Right" -s "move_window_right_key"
 	xfconf-query -c xfce4-notifyd -p /theme "Numix-Manjaro"
 	xfconf-query -c xfwm4 -p /general/cycle_draw_frame -s "false"
 	xfconf-query -c xfwm4 -p /general/cycle_hidden -s "true"
 	xfconf-query -c xfwm4 -p /general/cycle_workspaces -s "true"
+	xfconf-query -c xfwm4 -p /general/mousewheel_rollup -s false
 	xfconf-query -c xfwm4 -p /general/scroll_workspaces -s "false"
 	xfconf-query -c xfwm4 -p /general/show_dock_shadow -s "true"
 	xfconf-query -c xfwm4 -p /general/show_frame_shadow -s "true"

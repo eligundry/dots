@@ -16,6 +16,6 @@ let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_quiet_messages = {'level': 'warnings'}
 let g:syntastic_mode_map = { 'mode': 'active',
-						   \ 'active_filetypes': ['html', 'xml', 'c', 'cpp', 'php', 'css', 'javascript', 'ruby', 'eruby'],
-						   \ 'passive_filetypes': [] }
+						   \ 'active_filetypes': ['html', 'xml', 'c', 'cpp', 'php', 'css', 'ruby', 'eruby', 'python'],
+						   \ 'passive_filetypes': ['javascript'] }
 
