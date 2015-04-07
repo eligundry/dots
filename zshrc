@@ -48,7 +48,14 @@ DISABLE_AUTO_UPDATE="true"
 plugins=()
 
 if [[ `uname` == "Linux" ]]; then
-	plugins+=(archlinux systemd)
+	plugins+=(systemd)
+
+	if [[ `uname -r | sed -n "/MANJARO\|ARCH/p" | wc -l` == 1 ]]; then
+		plugins+=(archlinux)
+	elif [[ `uname -v | sed -n "/Ubuntu/p" | wc -l` == 1 ]]; then
+		plugins+=(debian)
+	fi
+
 elif [[ `uname` == "Darwin" ]]; then
 	plugins+=(brew osx xcode)
 fi
