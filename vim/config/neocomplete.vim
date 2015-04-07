@@ -5,7 +5,9 @@
 "===============================================================================
 
 let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
+
+" If you set this, <.> breaks
+let g:neocomplete#enable_smart_case = 0
 
 if !exists('g:neocomplete#sources#omni#input_patterns')
 	let g:neocomplete#sources#omni#input_patterns = {}
