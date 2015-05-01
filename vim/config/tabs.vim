@@ -15,5 +15,5 @@ set copyindent
 
 " Does a certain amount of guessing with indentation
 if has("smartindent")
-	set smartindent
+	set nosmartindent
 endif

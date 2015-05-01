@@ -29,6 +29,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'bling/vim-airline'
 Plug 'bronson/vim-visual-star-search'
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+Plug 'editorconfig/editorconfig-vim'
 Plug 'edkolev/tmuxline.vim'
 Plug 'gregsexton/MatchTag'
 Plug 'jmcantrell/vim-virtualenv'
@@ -36,7 +37,8 @@ Plug 'junegunn/vim-easy-align'
 Plug 'kien/ctrlp.vim'
 Plug 'lepture/vim-jinja'
 Plug 'majutsushi/tagbar'
-Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'css', 'less', 'jinja', 'html.twig'] }
+Plug 'marijnh/tern_for_vim', { 'for': 'javascript', 'do': 'npm install' }
+Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'css', 'less', 'jinja', 'html.twig', 'html.handlebars'] }
 Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
 Plug 'nsf/gocode', { 'rtp': 'vim/', 'for': 'go'}
 Plug 'rking/ag.vim'

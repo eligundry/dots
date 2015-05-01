@@ -10,3 +10,6 @@
 [submodule "bin/tmuxifier"]
 	path = bin/tmuxifier
 	url = https://github.com/jimeh/tmuxifier.git
+[submodule "bin/oh-my-zsh-keybase"]
+	path = bin/oh-my-zsh-keybase
+	url = https://github.com/rbirnie/oh-my-zsh-keybase

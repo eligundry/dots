@@ -60,9 +60,9 @@ elif [[ `uname` == "Darwin" ]]; then
 	plugins+=(brew osx xcode)
 fi
 
-plugins+=(cp git git-extras colorize colored-man composer django iwhois \
+plugins+=(cp git git-extras github colorize colored-man composer django iwhois \
 	go history-substring-search pip python rvm svn-fast-info symfony2 vagrant \
-	virtualenv zsh_reload zsh-syntax-highlighting)
+	virtualenv keybase zsh_reload zsh-syntax-highlighting)
 
 # Add zsh completions to fpath
 fpath=($ZSH/custom/plugins/zsh-completions/src $fpath)

@@ -63,6 +63,7 @@ custom_links()
 	ln -vfs $ZPATH/plugins/zsh-completions $OZPATH/zsh-completions
 	ln -vfs $ZPATH/plugins/zsh-history-substring-search $OZPATH/plugins/zsh-history-substring-search
 	ln -vfs $ZPATH/plugins/zsh-syntax-highlighting $OZPATH/plugins/zsh-syntax-highlighting
+	ln -vfs $ZPATH/plugins/keybase $OZPATH/plugins/keybase
 
 	seperator $B_GREEN"Linking Pianobar files…"
 	ln -vfsn "$CF_LOC/pianobar" "$CF_DEST/pianobar"

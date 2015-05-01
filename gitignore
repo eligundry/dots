@@ -23,7 +23,9 @@ TAGS
 *.lst
 *.swo
 *.pyc
+*.sql
 .DS_Store*
 ehthumbs.db
 Thumbs.db
 Icon?
+.tern-project

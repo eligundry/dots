@@ -34,7 +34,7 @@ install_binary_packages()
 		slim virtualbox xfce4-dockbarx-plugin ruby nodejs go php weechat redshift \
 		ttf-symbola multitail googlecl seahorse mercurial the_silver_searcher p7zip \
 		handbrake php-composer ctags mono sqliteman qtscrobbler xclip memcached \
-		python2-pygments unetbootin geoclue2 dropbox2 postgresql
+		python2-pygments unetbootin geoclue2 dropbox3 postgresql
 }
 
 install_aur_no_confirm()

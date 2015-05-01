@@ -58,6 +58,9 @@ nnoremap <Leader>ve :call ToggleVirtualEdit()<CR>
 " Toggle mouse modes
 nnoremap <Leader>mm :call ToggleMouse()<CR>
 
+" Toggle arrow keys
+nnoremap <Leader>aw :call ToggleArrowKeys()<CR>
+
 " Toggle list chars
 nnoremap <Leader>ll :setlocal list!<CR>
 
