@@ -19,21 +19,11 @@ nnoremap <silent> <C-l> :wincmd l<CR>
 nnoremap <Leader>rr :wincmd r<CR>
 
 " Window Resizing
-nnoremap <silent> <Up> :resize +5<CR>
-nnoremap <silent> <Down> :resize -5<CR>
-nnoremap <silent> <Left> :vertical resize -5<CR>
-nnoremap <silent> <Right> :vertical resize +5<CR>
 nnoremap <silent> <C-Up> :resize +1<CR>
 nnoremap <silent> <C-Down> :resize -1<CR>
 nnoremap <silent> <C-Left> :vertical resize -1<CR>
 nnoremap <silent> <C-Right> :vertical resize +1<CR>
 nnoremap <Leader>ee :wincmd =<CR>
-
-" Disable arrow keys in insert mode
-inoremap <Left> <Nop>
-inoremap <Right> <Nop>
-inoremap <Up> <Nop>
-inoremap <Down> <Nop>
 
 " Alternate increment mappings for screen
 nnoremap + <C-a>
@@ -59,7 +49,7 @@ nnoremap <Leader>ve :call ToggleVirtualEdit()<CR>
 nnoremap <Leader>mm :call ToggleMouse()<CR>
 
 " Toggle arrow keys
-nnoremap <Leader>aw :call ToggleArrowKeys()<CR>
+nnoremap <Leader>ak :call ToggleArrowKeys()<CR>
 
 " Toggle list chars
 nnoremap <Leader>ll :setlocal list!<CR>

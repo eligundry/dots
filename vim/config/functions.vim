@@ -34,8 +34,8 @@ function! ToggleMouse()
 endfunction
 
 " Toggle arrow keys for weaklings trying to use my vim
-let g:ArrowKeysEnabled = 0
-function! ToggleArrowKeys()
+let g:ArrowKeysEnabled = 1
+function! ToggleArrowKeys(silent)
 	let g:ArrowKeysEnabled = !g:ArrowKeysEnabled
 
 	if g:ArrowKeysEnabled == 1
@@ -43,11 +43,14 @@ function! ToggleArrowKeys()
 		nnoremap <silent> <Down> j
 		nnoremap <silent> <Left> h
 		nnoremap <silent> <Right> l
-		inoremap <Left> <Nop>
-		inoremap <Right> <Nop>
-		inoremap <Up> <Nop>
-		inoremap <Down> <Nop>
-		echo "Arrow Keys enabled"
+		inoremap <Left> <Left>
+		inoremap <Right> <Right>
+		inoremap <Up> <Up>
+		inoremap <Down> <Down>
+
+		if a:silent == 0
+			echo "Arrow Keys enabled"
+		endif
 	else
 		nnoremap <silent> <Up> :resize +5<cr>
 		nnoremap <silent> <Down> :resize -5<cr>
@@ -57,9 +60,14 @@ function! ToggleArrowKeys()
 		inoremap <Right> <Nop>
 		inoremap <Up> <Nop>
 		inoremap <Down> <Nop>
-		echo "Arrow Keys disabled"
+
+		if a:silent == 0
+			echo "Arrow Keys disabled"
+		endif
 	endif
 endfunction
+
+call ToggleArrowKeys(1)
 
 " Return to current line when reopening file
 augroup line_return
