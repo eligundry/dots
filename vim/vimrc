@@ -19,6 +19,7 @@ let g:plug_timeout = 5
 
 call plug#begin('~/.vim/plugged')
 
+Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'Raimondi/delimitMate'
 Plug 'Shougo/neocomplete.vim'
 Plug 'Shougo/neosnippet-snippets'
@@ -35,7 +36,6 @@ Plug 'gregsexton/MatchTag'
 Plug 'jmcantrell/vim-virtualenv'
 Plug 'junegunn/vim-easy-align'
 Plug 'kien/ctrlp.vim'
-Plug 'lepture/vim-jinja'
 Plug 'majutsushi/tagbar'
 Plug 'marijnh/tern_for_vim', { 'for': 'javascript', 'do': 'npm install' }
 Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'css', 'less', 'jinja', 'html.twig', 'html.handlebars'] }
