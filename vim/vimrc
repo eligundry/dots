@@ -42,6 +42,7 @@ Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'c
 Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
 Plug 'nsf/gocode', { 'rtp': 'vim/', 'for': 'go'}
 Plug 'rking/ag.vim'
+Plug 'saltstack/salt-vim'
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
 Plug 'scrooloose/syntastic'
 Plug 'sheerun/vim-polyglot'
@@ -57,6 +58,8 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-tbone'
 Plug 'vim-scripts/matchit.zip'
+Plug 'xolox/vim-easytags'
+Plug 'xolox/vim-misc'
 
 call plug#end()
 

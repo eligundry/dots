@@ -1,8 +1,8 @@
 "===============================================================================
-" File: polygot.vim
+" File: easy-tags.vim
 " Author: Eli Gundry <eligundry@gmail.com>
-" Description: Settings for polygot
+" Description: Vim settings for easytags
 "===============================================================================
 
-let g:cpp_class_scope_highlight = 1
-let g:vim_json_syntax_conceal = 0
+let g:easytags_async = 1
+let g:easytags_dynamic_files = 1

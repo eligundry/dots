@@ -62,9 +62,6 @@ let g:tagbar_type_markdown = {
 	\ ]
 \ }
 
-
-
-
 function! TagBarSettings()
 	nnoremap <silent> <Leader>tb :TagbarToggle<CR>
 endfunction
