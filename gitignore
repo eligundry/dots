@@ -29,4 +29,4 @@ ehthumbs.db
 Thumbs.db
 Icon?
 .tern-project
-syncd.conf
+*syncd.*
