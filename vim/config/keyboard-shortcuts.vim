@@ -96,9 +96,6 @@ nnoremap # #zz
 nnoremap g* g*zz
 nnoremap g# g#zz
 
-" Select all text in current buffer
-nnoremap <Leader>a ggVG
-
 " Faster command mode access
 nnoremap <Space> :
 nnoremap ; :!
@@ -112,6 +109,7 @@ nnoremap <Leader>ww :write<CR>
 nnoremap <Leader>wq :wq!<CR>
 nnoremap <Leader>wa :wall<CR>
 nnoremap <Leader>qa :qall<CR>
+nnoremap <Leader>qq :quit<CR>
 nnoremap <Leader>tt :tabnew<CR>
 nnoremap <Leader>tc :tabclose<CR>
 nnoremap <Leader>to :tabonly<CR>
@@ -128,8 +126,8 @@ noremap <silent> gk k
 " Bubble lines of text with optional repeat count
 nnoremap <silent> <S-j> @='ddp'<CR>
 vnoremap <silent> <S-j> @='xp`[V`]'<CR>
-vnoremap <silent> <S-k> @='xkP`[V`]'<CR>
 nnoremap <silent> <S-k> @='ddkP'<CR>
+vnoremap <silent> <S-k> @='xkP`[V`]'<CR>
 
 " Shift blocks visually
 vnoremap < <gv
