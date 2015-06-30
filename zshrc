@@ -36,6 +36,7 @@ export MANPAGER=less
 export PAGER=less
 export VISUAL=vim
 export ECLIPSE_HOME=/usr/share/eclipse
+export TESSDATA_PREFIX=/usr/local/tesseract
 
 ################################################################################
 # => Oh-My-ZSH

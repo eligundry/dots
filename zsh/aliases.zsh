@@ -9,6 +9,7 @@ alias sctl='systemctl'
 alias so='source'
 alias svn_remove='find . -name .svn -print0 | xargs -0 rm -rf'
 alias v='vim'
+alias git_clean='find . -name "*.orig" -delete'
 
 # ls shortcuts
 alias la='ls -A'
