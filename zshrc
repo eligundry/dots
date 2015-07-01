@@ -53,7 +53,7 @@ if [[ `uname` == "Linux" ]]; then
 
 	if [[ `uname -r | sed -n "/MANJARO\|ARCH/p" | wc -l` == 1 ]]; then
 		plugins+=(archlinux)
-	elif [[ `uname -v | sed -n "/Ubuntu/p" | wc -l` == 1 ]]; then
+	elif [[ `uname -v | sed -n "/Ubuntu\|Debian/p" | wc -l` == 1 ]]; then
 		plugins+=(debian)
 	fi
 
@@ -102,12 +102,6 @@ export VIRTUAL_ENV_DISABLE_PROMPT=1
 ################################################################################
 
 pathadd "$HOME/.local_bin/google-cloud-sdk/bin"
-
-################################################################################
-# => syncd
-################################################################################
-
-pathadd "$HOME/.bin/syncd"
 
 ################################################################################
 # => Custom Files

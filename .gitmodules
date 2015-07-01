@@ -13,6 +13,3 @@
 [submodule "bin/oh-my-zsh-keybase"]
 	path = bin/oh-my-zsh-keybase
 	url = https://github.com/rbirnie/oh-my-zsh-keybase
-[submodule "bin/syncd"]
-	path = bin/syncd
-	url = https://github.com/drunomics/syncd.git
