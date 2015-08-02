@@ -1,5 +1,5 @@
 [global_config]
-  enabled_plugins = CustomCommandsMenu, TerminalShot
+  enabled_plugins = TerminalShot,
   window_state = maximise
   dbus = True
 [keybindings]

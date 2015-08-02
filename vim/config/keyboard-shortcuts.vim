@@ -25,16 +25,13 @@ nnoremap <silent> <C-Left> :vertical resize -1<CR>
 nnoremap <silent> <C-Right> :vertical resize +1<CR>
 nnoremap <Leader>ee :wincmd =<CR>
 
-" Alternate increment mappings for screen
+" Alternate increment mappings for screen and tmux
 nnoremap + <C-a>
 nnoremap - <C-x>
 
 " Easier line jumping
 noremap H ^
 noremap L $
-
-" Show em the 'D
-nnoremap D d$
 
 " Toggle search highlighting
 nnoremap <Leader><Leader> :nohlsearch<CR>
@@ -63,6 +60,9 @@ nnoremap <Leader>pt :set paste!<CR>:set paste?<CR>
 
 " Yank should work just like every other Vim verb
 noremap Y y$
+
+" D yanks to end of line like every other Vim verb
+nnoremap D d$
 
 " Undo/redo now make sense
 nnoremap U :redo<CR>
