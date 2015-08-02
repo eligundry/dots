@@ -70,6 +70,9 @@ nnoremap U :redo<CR>
 " Don't unindent with hash symbol
 inoremap # #
 
+" Yank lines to xclip in visual
+vnoremap <Leader>Y :w !xclip<CR>
+
 " Vimrc quick edit
 nnoremap <Leader>tv :tabnew $MYVIMRC<CR>
 nnoremap <Leader>ev :edit $MYVIMRC<CR>

@@ -68,7 +68,6 @@ if v:version >= 730
 	set norelativenumber
 endif
 
-" I like my number line to be super fat
 if has("linebreak")
-	set numberwidth=5
+	set numberwidth=2
 endif

@@ -1,0 +1,1 @@
+<html><body>You are being <a href="https://raw.githubusercontent.com/choffee/terminator-plugins/master/searchplugin.py">redirected</a>.</body></html>
