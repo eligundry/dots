@@ -38,6 +38,9 @@ export VISUAL=vim
 export ECLIPSE_HOME=/usr/share/eclipse
 export TESSDATA_PREFIX=/usr/local/tesseract
 
+# Turn off flow control
+stty -ixon
+
 ################################################################################
 # => Oh-My-ZSH
 ################################################################################
@@ -61,7 +64,7 @@ elif [[ `uname` == "Darwin" ]]; then
 	plugins+=(brew osx xcode)
 fi
 
-plugins+=(cp git git-extras github colorize colored-man composer django fabric \
+plugins+=(cp git git-extras github colorize composer django fabric \
 	go history-substring-search pip python rvm svn-fast-info symfony2 vagrant \
 	virtualenv keybase zsh_reload zsh-syntax-highlighting)
 
@@ -96,6 +99,14 @@ fi
 
 export VENV_PATH="$HOME/.virtualenvs"
 export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+################################################################################
+# => Linuxbrew
+################################################################################
+
+export PATH="$HOME/.linuxbrew/bin:$PATH"
+export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
+export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
 
 ################################################################################
 # => Google Cloud SDK
