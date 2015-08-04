@@ -1,5 +1,5 @@
 [global_config]
-  enabled_plugins = TerminalShot,
+  enabled_plugins = SearchPlugin, TerminalShot
   window_state = maximise
   dbus = True
 [keybindings]
