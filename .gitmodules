@@ -13,3 +13,6 @@
 [submodule "bin/oh-my-zsh-keybase"]
 	path = bin/oh-my-zsh-keybase
 	url = https://github.com/rbirnie/oh-my-zsh-keybase
+[submodule "bin/tmux-logging"]
+	path = bin/tmux-logging
+	url = https://github.com/tmux-plugins/tmux-logging
