@@ -67,6 +67,7 @@ function! ToggleArrowKeys(silent)
 	endif
 endfunction
 
+" Disable the arrow keys by default
 call ToggleArrowKeys(1)
 
 " Return to current line when reopening file

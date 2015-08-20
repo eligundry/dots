@@ -1,4 +1,5 @@
 {
-    "IMAGE_ON_TERM": false,
-    "THEME": "solarized"
+    "IMAGE_ON_TERM": false, 
+    "THEME": "solarized", 
+    "IMAGE_RESIZE_TO_FIT": false
 }

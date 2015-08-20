@@ -1,7 +1,7 @@
 "===============================================================================
-" File: ag.vim
+" File: riv.vim
 " Author: Eli Gundry <eligundry@gmail.com>
-" Description: Settings for ack
+" Description: Settings for riv plugin
 "===============================================================================
 
-let g:agformat = "%f:%l:%m"
+let g:riv_python_rst_hl = 1
