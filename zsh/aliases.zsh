@@ -26,3 +26,6 @@ alias l.='ls -d .*'
 alias -g ...='../..'
 alias -g ....='../../..'
 alias -g .....='../../../..'
+
+# Enable gulp autocomplete
+eval "$(gulp --completion=zsh)"

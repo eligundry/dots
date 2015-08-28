@@ -42,6 +42,16 @@ export TESSDATA_PREFIX=/usr/local/tesseract
 stty -ixon
 
 ################################################################################
+# => /sbin Debian bullshit
+#
+# Debian likes to "hide" "privileged" programs outside of the path, thus you
+# can't tab complete simple commands like ifconfig. Fuck that noise, we are
+# consenting adults and don't need that bullshit.
+################################################################################
+
+pathadd "/sbin"
+
+################################################################################
 # => Oh-My-ZSH
 ################################################################################
 
