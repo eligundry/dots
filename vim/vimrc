@@ -29,7 +29,6 @@ else
 endif
 
 Plug 'Raimondi/delimitMate'
-Plug 'Rykka/riv.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'altercation/vim-colors-solarized'
 Plug 'bling/vim-airline'
@@ -38,15 +37,14 @@ Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 Plug 'editorconfig/editorconfig-vim'
 Plug 'edkolev/tmuxline.vim'
 Plug 'gregsexton/MatchTag'
-Plug 'jmcantrell/vim-virtualenv'
 Plug 'junegunn/vim-easy-align'
 Plug 'kien/ctrlp.vim'
 Plug 'majutsushi/tagbar'
-" Plug 'marijnh/tern_for_vim', { 'for': 'javascript', 'do': 'npm install' }
 Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'css', 'less', 'jinja', 'html.twig', 'html.handlebars'] }
+Plug 'mattn/gist-vim'
+Plug 'mattn/webapi-vim'
 Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
 Plug 'nsf/gocode', { 'rtp': 'vim/', 'for': 'go'}
-Plug 'rking/ag.vim'
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
 Plug 'scrooloose/syntastic'
 Plug 'sjl/clam.vim'
@@ -60,6 +58,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-tbone'
 Plug 'vim-scripts/matchit.zip'
+Plug 'wincent/ferret'
 Plug 'xolox/vim-easytags'
 Plug 'xolox/vim-misc'
 

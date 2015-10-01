@@ -5,8 +5,8 @@
 "===============================================================================
 
 if has("spell")
-	setlocal spell
-	setlocal spelllang=en_us
+	set spell
+	set spelllang=en_us
 endif
 
 if has("rightleft")
