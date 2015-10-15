@@ -24,9 +24,11 @@ TAGS
 *.swo
 *.pyc
 *.sql
+*.hist
 .DS_Store*
 ehthumbs.db
 Thumbs.db
 Icon?
 .tern-project
 *syncd.*
+*.hist
