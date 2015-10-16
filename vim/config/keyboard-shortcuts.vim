@@ -70,6 +70,9 @@ nnoremap U :redo<CR>
 " Don't unindent with hash symbol
 inoremap # #
 
+" Disable Ex mode because it is garbage
+nnoremap Q <Nop>
+
 " Yank lines to xclip in visual
 vnoremap <Leader>Y :w !xclip<CR>
 
