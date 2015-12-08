@@ -12,6 +12,7 @@
     scrollback_lines = 0
     background_type = transparent
     background_image = None
+    cursor_color = "#d3d0c8"
     foreground_color = "#839496"
     use_custom_command = True
     icon_bell = False

@@ -7,5 +7,5 @@
 " Name: Solarized
 " Author: Ethan Schoonover
 " URL: https://github.com/altercation/vim-colors-solarized
-colorscheme solarized
+" colorscheme solarized
 set background=dark

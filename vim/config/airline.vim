@@ -50,3 +50,8 @@ if has("win32") || has("win64")
 	let g:airline#extensions#tabline#right_sep = '<'
 	let g:airline#extensions#tabline#right_alt_sep = '<'
 endif
+
+" Fix Symbol issue in GUI
+if has('gui')
+	let g:airline_symbols.space = "\u3000"
+endif

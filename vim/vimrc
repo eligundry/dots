@@ -29,11 +29,14 @@ else
 endif
 
 Plug 'Raimondi/delimitMate'
+Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
 Plug 'airblade/vim-gitgutter'
 Plug 'altercation/vim-colors-solarized'
 Plug 'bling/vim-airline'
 Plug 'bronson/vim-visual-star-search'
+Plug 'chriskempson/base16-vim'
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+Plug 'davidoc/taskpaper.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'edkolev/tmuxline.vim'
 Plug 'gregsexton/MatchTag'
@@ -45,10 +48,12 @@ Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
 Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
 Plug 'nsf/gocode', { 'rtp': 'vim/', 'for': 'go'}
+Plug 'saltstack/salt-vim'
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
 Plug 'scrooloose/syntastic'
+Plug 'sheerun/vim-polyglot'
 Plug 'sjl/clam.vim'
-Plug 'terryma/vim-multiple-cursors'
+Plug 'skwp/vim-html-escape'
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-afterimage'
 Plug 'tpope/vim-dispatch'
@@ -62,11 +67,9 @@ Plug 'wincent/ferret'
 Plug 'xolox/vim-easytags'
 Plug 'xolox/vim-misc'
 
-" Override polyglot highlighting
-Plug 'sheerun/vim-polyglot'
-Plug 'elzr/vim-json'
+" Take these out of order so we can override polyglot
 Plug 'Glench/Vim-Jinja2-Syntax'
-Plug 'saltstack/salt-vim'
+Plug 'elzr/vim-json'
 
 call plug#end()
 
