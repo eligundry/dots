@@ -23,5 +23,6 @@ if has("wildignore")
 	set wildignore+=*.o,*.obj,*.bak,*.exe
 	set wildignore+=*.mp4,*.ogg,*.m4v,*.ogv,*.mp3 " Mulitmedia files
 	set wildignore+=*.pyc,*.pyo " Python bullshit
+	set wildignore+=.DS_Store " OSX bullshit
 	set wildignore+=*.hist
 endif

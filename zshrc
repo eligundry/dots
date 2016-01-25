@@ -71,12 +71,16 @@ if [[ `uname` == "Linux" ]]; then
 	fi
 
 elif [[ `uname` == "Darwin" ]]; then
-	plugins+=(brew osx xcode)
+	plugins+=(brew brew-cask osx xcode)
 fi
 
 plugins+=(cp git git-extras github colorize composer django fabric \
 	go history-substring-search pip python rvm svn-fast-info symfony2 vagrant \
-	virtualenv keybase zsh_reload zsh-syntax-highlighting)
+	virtualenv keybase zsh_reload)
+
+if [[ `uname` == "Linux" ]]; then
+	plugins+=(zsh-syntax-highlighting)
+fi
 
 # Add zsh completions to fpath
 fpath=($ZSH/custom/plugins/zsh-completions/src $fpath)
@@ -114,9 +118,11 @@ export VIRTUAL_ENV_DISABLE_PROMPT=1
 # => Linuxbrew
 ################################################################################
 
-export PATH="$HOME/.linuxbrew/bin:$PATH"
-export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
-export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
+if [[ `uname` == "Linux" ]]; then
+	export PATH="$HOME/.linuxbrew/bin:$PATH"
+	export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
+	export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
+fi
 
 ################################################################################
 # => Google Cloud SDK
@@ -144,3 +150,14 @@ export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
 for config_file ($HOME/.zsh/*.zsh); do
   source $config_file
 done
+
+################################################################################
+# => ZSH Syntax Highlighting for OSX
+# OS X is weird with this plugin and it won't work in the oh my zsh plugins
+# array, so we source it from the brew install location.
+################################################################################
+
+if [[ `uname` == "Darwin" ]]; then
+	source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+

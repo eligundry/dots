@@ -1,6 +1,9 @@
 # Run python files with python
 alias -s py=python
 
+# Run php files with php
+alias -s php=php
+
 # Run media files in vlc
 alias -s alac=vlc
 alias -s avi=vlc
@@ -18,7 +21,6 @@ alias -s js=vim
 alias -s markdown=vim
 alias -s md=vim
 alias -s mkd=vim
-alias -s php=vim
 alias -s rst=vim
 alias -s txt=vim
 alias -s vim=vim

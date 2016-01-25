@@ -71,3 +71,6 @@ endif
 if has("linebreak")
 	set numberwidth=2
 endif
+
+" Make all comments italic
+highlight Comment cterm=italic

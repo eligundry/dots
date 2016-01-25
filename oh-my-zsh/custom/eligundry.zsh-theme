@@ -43,18 +43,24 @@ function prompt_svn() {
 
 function prompt_icon() {
 	local before_icon="\n╰"
-	local icon="%{$FX[bold]%}%{$FG[002]%}⤭%{$reset_color%}"
+	local icon_symbol="⤭"
+
+	# if [[ `uname` == "Darwin" ]]; then
+	# 	icon_symbol="$"
+	# fi
+
+	local icon="%{$FX[bold]%}%{$FG[002]%}%{$icon_symbol%}%{$reset_color%}"
 
 	if [[ $RETVAL -ne 0 ]]; then
-		icon="%{$FX[bold]%}%{$FG[001]%}⤭%{$reset_color%}"
+		icon="%{$FX[bold]%}%{$FG[001]%}%{$icon_symbol%}%{$reset_color%}"
 	fi
 
 	if [[ $UID -eq 0 ]]; then
-		icon="%{$FX[bold]%}%{$FG[003]%}⤭%{$reset_color%}"
+		icon="%{$FX[bold]%}%{$FG[003]%}%{$icon_symbol%}%{$reset_color%}"
 	fi
 
 	if [[ $(jobs -l | wc -l) -gt 0 ]]; then
-		icon="%{$FX[bold]%}%{$FG[006]%}⤭%{$reset_color%}"
+		icon="%{$FX[bold]%}%{$FG[006]%}%{$icon_symbol%}%{$reset_color%}"
 	fi
 
 	echo -n "$before_icon$icon"
