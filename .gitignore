@@ -6,3 +6,5 @@ config/pianobar/passwords.yml
 weechat/logs
 weechat/weechat.log
 weechat/weechat_fifo_*
+config/nvim/plugged/*
+!config/nvim/plugged/.gitkeep

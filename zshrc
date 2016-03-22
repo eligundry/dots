@@ -52,6 +52,13 @@ stty -ixon
 pathadd "/sbin"
 
 ################################################################################
+# => Fix ctrl-h
+################################################################################
+
+infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti
+tic $TERM.ti
+
+################################################################################
 # => Oh-My-ZSH
 ################################################################################
 
@@ -161,3 +168,9 @@ if [[ `uname` == "Darwin" ]]; then
 	source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
+
+# The next line updates PATH for the Google Cloud SDK.
+source '/Users/eligundry/.local_bin/google-cloud-sdk/path.zsh.inc'
+
+# The next line enables shell command completion for gcloud.
+source '/Users/eligundry/.local_bin/google-cloud-sdk/completion.zsh.inc'

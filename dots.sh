@@ -65,9 +65,7 @@ custom_links()
 	ln -vfs $ZPATH/plugins/zsh-history-substring-search $OZPATH/plugins/zsh-history-substring-search
 	ln -vfs $ZPATH/plugins/zsh-syntax-highlighting $OZPATH/plugins/zsh-syntax-highlighting
 	ln -vfs $ZPATH/plugins/keybase $OZPATH/plugins/keybase
-
-	seperator $B_GREEN"Linking Pianobar files…"
-	ln -vfsn "$CF_LOC/pianobar" "$CF_DEST/pianobar"
+	ln -vfsn "$CF_LOC/nvim" "$CF_DEST/nvim"
 
 	if [[ $platform == "Linux" ]]; then
 		linux_custom_links
@@ -171,6 +169,7 @@ clean()
 
 	seperator $B_RED"Removing Pianobar config…"
 	rm -rfv "$HOME/.config/pianobar"
+	rm -rfv "$CF_LOC/nvim" "$CF_DEST/nvim"
 
 	if [[ $platform == 'Linux' ]]; then
 		linux_custom_clean

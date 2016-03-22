@@ -20,3 +20,5 @@ let g:syntastic_mode_map = { 'mode': 'active',
 						   \ 'active_filetypes': ['html', 'xml', 'c', 'cpp', 'php', 'css', 'ruby', 'eruby', 'python', 'javascript'],
 						   \ 'passive_filetypes': ['less'] }
 let g:syntastic_javascript_checkers = ['eslint']
+" let g:syntastic_python_checkers = ['flake8']
+" let g:syntastic_python_flake8_args = '--ignore="E265,E501,E302,E261,E701,E241,E126,E127,E128,W801"'

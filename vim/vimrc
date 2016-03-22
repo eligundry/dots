@@ -22,6 +22,7 @@ call plug#begin('~/.vim/plugged')
 if has('neovim')
 	Plug 'Shougo/deoplete.nvim'
 else
+	Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 	Plug 'Shougo/neocomplete.vim'
 	Plug 'Shougo/neosnippet-snippets'
 	Plug 'Shougo/neosnippet.vim'
@@ -32,10 +33,8 @@ Plug 'Raimondi/delimitMate'
 Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
 Plug 'airblade/vim-gitgutter'
 Plug 'altercation/vim-colors-solarized'
-Plug 'bling/vim-airline'
 Plug 'bronson/vim-visual-star-search'
 Plug 'chriskempson/base16-vim'
-Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 Plug 'davidoc/taskpaper.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'edkolev/tmuxline.vim'
@@ -62,6 +61,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-tbone'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-scripts/matchit.zip'
 Plug 'wincent/ferret'
 Plug 'xolox/vim-easytags'
@@ -70,6 +71,7 @@ Plug 'xolox/vim-misc'
 " Take these out of order so we can override polyglot
 Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'elzr/vim-json'
+Plug 'IN3D/vim-raml', { 'for': ['raml'] }
 
 call plug#end()
 

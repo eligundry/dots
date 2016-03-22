@@ -19,10 +19,10 @@ fi
 
 # ls shortcuts
 alias la='ls -A'
-alias ll='ls -l'
-alias lla='ls -lA'
+alias ll='ls -lh'
+alias lla='ls -lAh'
 alias lr='ls -R'
-alias lar='ls -Ar'
+alias lar='ls -Arh'
 alias l.='ls -d .*'
 
 # Directory traversal
