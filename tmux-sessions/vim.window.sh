@@ -1,3 +1,3 @@
-new_window "vim"
-run_cmd "vim"
+new_window "nvim"
+run_cmd "nvim"
 select_pane 0

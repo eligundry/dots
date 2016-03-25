@@ -489,8 +489,6 @@ call togglebg#map("<Leader>bg")
 
 let g:airline_theme = 'powerlineish'
 let g:airline_powerline_fonts = 1
-let g:airline#extensions#syntastic#enabled = 1
-let g:airline#extensions#eclim#enabled = 1
 
 " CSV Stuff
 let g:airline#extensions#csv#enabled = 1
@@ -606,6 +604,12 @@ autocmd VimEnter * if exists(":UndotreeShow") | call UndotreeSettings() | endif
 let g:deoplete#enable_at_startup = 1
 
 "===============================================================================
+" => Vim Plug
+"===============================================================================
+
+autocmd FileType vim-plug :vertical resize 40
+
+"===============================================================================
 " => CtrlP
 "===============================================================================
 
@@ -653,3 +657,14 @@ function! TCommentSettings()
 endfunction
 
 autocmd VimEnter * if exists(":TComment") | call TCommentSettings() | endif
+
+"===============================================================================
+" => TBone
+"===============================================================================
+
+function! TboneSettings()
+	vnoremap <Leader>y :Tyank<CR>
+	nnoremap <Leader>p :Tput<CR>
+endfunction
+
+autocmd VimEnter * if exists(":Tmux") | call TboneSettings() | endif
