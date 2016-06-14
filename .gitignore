@@ -8,3 +8,5 @@ weechat/weechat.log
 weechat/weechat_fifo_*
 config/nvim/plugged/*
 !config/nvim/plugged/.gitkeep
+config/nvim/.netrwhist
+config/nvim/autoload/plug.vim.old

@@ -6,6 +6,7 @@ let g:plug_timeout = 5
 
 call plug#begin('~/.config/nvim/plugged')
 
+Plug 'IN3D/vim-raml'
 Plug 'Raimondi/delimitMate'
 Plug 'Shougo/deoplete.nvim'
 Plug 'Shougo/neosnippet'
@@ -68,7 +69,7 @@ set noexpandtab " Tabs are '\t', not four spaces
 set smarttab " Make expandtab more tolerable
 set shiftround " Round indents to multiples of shiftwidth
 set copyindent
-set smartindent
+set nosmartindent " Disabling this because it messes up pasting with indents
 
 " NeoVim History
 set history=700

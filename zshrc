@@ -4,13 +4,17 @@
 ################################################################################
 
 ################################################################################
-# => pathadd
+# => Custom Functions
 ################################################################################
 
 pathadd() {
 	if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
 		PATH="${PATH:+"$PATH:"}$1"
 	fi
+}
+
+command_exists() {
+	type "$1" &> /dev/null ;
 }
 
 ################################################################################
@@ -29,14 +33,20 @@ fi
 
 export BROWSER=google-chrome-stable
 export DOTS=$HOME/dots
-export EDITOR=vim
 export INPUTRC=$HOME/.inputrc
 export LANG=en_US.UTF-8
 export MANPAGER=less
 export PAGER=less
-export VISUAL=vim
 export ECLIPSE_HOME=/usr/share/eclipse
 export TESSDATA_PREFIX=/usr/local/tesseract
+
+if command_exists nvim; then
+	export EDITOR=nvim
+	export VISUAL=nvim
+else
+	export EDITOR=vim
+	export VISUAL=vim
+fi
 
 # Turn off flow control
 stty -ixon
@@ -50,13 +60,6 @@ stty -ixon
 ################################################################################
 
 pathadd "/sbin"
-
-################################################################################
-# => Fix ctrl-h
-################################################################################
-
-infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti
-tic $TERM.ti
 
 ################################################################################
 # => Oh-My-ZSH

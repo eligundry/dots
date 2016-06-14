@@ -12,6 +12,12 @@ alias v='nvim || vim'
 alias git_clean='find . -name "*.orig" -delete'
 alias pip_upgrade_all='pip freeze --local | grep -v "^\-e" | cut -d = -f 1  | xargs -n1 pip install -U'
 
+if command_exists nvim; then
+	alias v='nvim'
+else
+	alias v='vim'
+fi
+
 # Debian's zsh plugin sets ag, which is silver searcher
 if [[ `uname` != "Darwin" ]]; then
 	unalias ag
