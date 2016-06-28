@@ -37,6 +37,11 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'zchee/deoplete-jedi'
 
+" polyglot overriding
+Plug 'Glench/Vim-Jinja2-Syntax'
+Plug 'elzr/vim-json'
+Plug 'saltstack/salt-vim'
+
 call plug#end()
 
 "===============================================================================
@@ -172,6 +177,9 @@ set mouse=
 
 " Hide mouse when typing
 set mousehide
+
+" Always spellcheck cause typos are dumb
+setglobal spell
 
 "===============================================================================
 " => # Look & Feel
@@ -669,3 +677,9 @@ function! TboneSettings()
 endfunction
 
 autocmd VimEnter * if exists(":Tmux") | call TboneSettings() | endif
+
+"===============================================================================
+" => vim-json
+"===============================================================================
+
+let g:vim_json_syntax_conceal = 0
