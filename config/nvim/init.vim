@@ -15,6 +15,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] 
 Plug 'airblade/vim-gitgutter'
 Plug 'altercation/vim-colors-solarized'
 Plug 'bronson/vim-visual-star-search'
+Plug 'chriskempson/base16-vim'
 Plug 'davidhalter/jedi', { 'for': 'python' }
 Plug 'editorconfig/editorconfig-vim'
 Plug 'edkolev/tmuxline.vim'
@@ -180,6 +181,14 @@ set mousehide
 
 " Always spellcheck cause typos are dumb
 setglobal spell
+
+"===============================================================================
+" => # Word Wrap
+"===============================================================================
+
+set nowrap " I like scrolling off the screen
+set textwidth=80 " Standard width for terminals
+set formatoptions=oqn1 " Check out 'fo-table' to see what this does.
 
 "===============================================================================
 " => # Look & Feel

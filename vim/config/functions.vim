@@ -79,7 +79,7 @@ augroup line_return
 augroup END
 
 " Remove trailing whitespace when saving files
-autocmd BufWritePre * :%s/\s\+$//e
+autocmd BufWritePre * :%s/\s\+$//g
 
 " Exit paste mode upon leaving insert
 autocmd InsertLeave * set nopaste paste?
