@@ -135,12 +135,6 @@ if [[ `uname` == "Linux" ]]; then
 fi
 
 ################################################################################
-# => Google Cloud SDK
-################################################################################
-
-pathadd "$HOME/.local_bin/google-cloud-sdk/bin"
-
-################################################################################
 # => LESS Colors for Man
 # http://linuxtidbits.wordpress.com/2009/03/23/less-colors-for-man-pages/
 ################################################################################
@@ -170,10 +164,3 @@ done
 if [[ `uname` == "Darwin" ]]; then
 	source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
-
-
-# The next line updates PATH for the Google Cloud SDK.
-source '/Users/eligundry/.local_bin/google-cloud-sdk/path.zsh.inc'
-
-# The next line enables shell command completion for gcloud.
-source '/Users/eligundry/.local_bin/google-cloud-sdk/completion.zsh.inc'
