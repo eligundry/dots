@@ -125,16 +125,6 @@ export VENV_PATH="$HOME/.virtualenvs"
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 ################################################################################
-# => Linuxbrew
-################################################################################
-
-if [[ `uname` == "Linux" ]]; then
-	export PATH="$HOME/.linuxbrew/bin:$PATH"
-	export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
-	export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
-fi
-
-################################################################################
 # => LESS Colors for Man
 # http://linuxtidbits.wordpress.com/2009/03/23/less-colors-for-man-pages/
 ################################################################################

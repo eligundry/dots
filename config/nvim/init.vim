@@ -1,4 +1,14 @@
 "===============================================================================
+" => # Deoplete Setup
+"
+" This is needed do deoplete can compile
+"===============================================================================
+
+function! DoRemote(arg)
+	UpdateRemotePlugins
+endfunction
+
+"===============================================================================
 " => # Plug
 "===============================================================================
 
@@ -8,7 +18,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 Plug 'IN3D/vim-raml'
 Plug 'Raimondi/delimitMate'
-Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
@@ -36,7 +46,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-tbone'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'zchee/deoplete-jedi'
+Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 
 " polyglot overriding
 Plug 'Glench/Vim-Jinja2-Syntax'
@@ -620,6 +630,16 @@ autocmd VimEnter * if exists(":UndotreeShow") | call UndotreeSettings() | endif
 "===============================================================================
 
 let g:deoplete#enable_at_startup = 1
+
+"===============================================================================
+" => Deoplete-Jedi
+"===============================================================================
+
+let deoplete#sources#jedi#show_docstring = 1
+
+if has('unix')
+	let g:python_host_prog = system('which python')
+endif
 
 "===============================================================================
 " => Vim Plug
