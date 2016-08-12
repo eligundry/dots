@@ -1,4 +1,14 @@
---regex-make=/^\s*([^#][^:]*):/\1/t,target/
+--recurse=yes
+--exclude=.git
+--exclude=node_modules
+--exclude=.vagrant
+--exclude=.env*
+
+# Python Stuff
+# http://tartley.com/?p=1277
+--python-kinds=-iv
+--exclude=build
+--exclude=dist
 
 --langdef=markdown
 --langmap=markdown:.mkd
@@ -10,13 +20,3 @@
 --regex-markdown=/^####[ \t]+(.*)/\1/k,Heading_L4/
 --regex-markdown=/^#####[ \t]+(.*)/\1/k,Heading_L5/
 --regex-markdown=/^######[ \t]+(.*)/\1/k,Heading_L6/
-
---langdef=css
---langmap=css:.css
---langmap=css:+.scss
---langmap=css:+.sass
---langmap=css:+.styl
---langmap=css:+.less
---regex-css=/^[ \t]*(([A-Za-z0-9_-]+[ \t\n,]+)+)\{/\1/t,tag,tags/
---regex-css=/^[ \t]*#([A-Za-z0-9_-]+)/#\1/i,id,ids/
---regex-css=/^[ \t]*\.([A-Za-z0-9_-]+)/.\1/c,class,classes/

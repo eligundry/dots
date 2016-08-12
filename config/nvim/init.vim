@@ -30,6 +30,7 @@ Plug 'davidhalter/jedi', { 'for': 'python' }
 Plug 'editorconfig/editorconfig-vim'
 Plug 'edkolev/tmuxline.vim'
 Plug 'kien/ctrlp.vim'
+Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'css', 'less', 'jinja', 'html.twig', 'html.handlebars', 'html.mustache'] }
 Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
@@ -651,6 +652,7 @@ autocmd FileType vim-plug :vertical resize 40
 " => CtrlP
 "===============================================================================
 
+nnoremap <C-.> :CtrlPTag<CR>
 let g:ctrlp_max_files = 0
 let g:ctrlp_max_depth = 10
 let g:ctrlp_custom_ignore = {
@@ -682,6 +684,16 @@ function! FugitiveSettings()
 endfunction
 
 autocmd VimEnter * if exists("g:loaded_fugitive") | call FugitiveSettings() | endif
+
+"===============================================================================
+" => TagBar
+"===============================================================================
+
+function! TagBarSettings()
+	nnoremap <silent> <Leader>tb :Tagbar<CR>
+endfunction
+
+autocmd VimEnter * if exists(":TagBar") | call TagBarSettings() | endif
 
 "===============================================================================
 " => TComment

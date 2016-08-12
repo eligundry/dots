@@ -5,5 +5,5 @@
 " Plugin URL: https://github.com/chriskempson/base16-vim
 "===============================================================================
 
-colorscheme base16-default
-let g:base16colorspace=256
+" colorscheme base16-default
+" let g:base16colorspace=256

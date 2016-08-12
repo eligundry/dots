@@ -144,10 +144,12 @@ update()
 	echo "Completed updating repository!"
 
 	seperator $B_GREEN"Updating Vim bundles…"
-	vim -c PlugClean -c qall!
-	vim -c PlugInstall -c qall!
-	vim -c PlugUpdate -c qall!
+	vim -c PlugClean -c PlugInstall -c PlugeUpdate -c qall!
 	echo "Completed updating Vim bundles!"
+
+	seperator $B_GREEN"Updating NeoVim bundles…"
+	nvim -c PlugClean -c PlugInstall -c PlugeUpdate -c qall!
+	echo "Completed updating NeoVim bundles!"
 }
 
 clean()
