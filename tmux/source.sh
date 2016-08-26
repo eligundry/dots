@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 source_files () {
 	tmux_home=~/.tmux
 	platform=`uname`

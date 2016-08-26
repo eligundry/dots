@@ -3,6 +3,7 @@
   enabled_plugins = SearchPlugin, TerminalShot
   window_state = maximise
 [keybindings]
+  paste = <Primary>v
 [layouts]
   [[default]]
     [[[child1]]]

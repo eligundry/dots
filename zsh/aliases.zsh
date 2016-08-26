@@ -18,9 +18,9 @@ else
 fi
 
 # Debian's zsh plugin sets ag, which is silver searcher
-if [[ `uname` != "Darwin" ]]; then
-	unalias ag
-fi
+# if [[ `uname` != "Darwin" ]]; then
+# 	unalias ag
+# fi
 
 # ls shortcuts
 alias la='ls -A'
