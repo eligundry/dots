@@ -8,5 +8,4 @@
 " => Omnifunctions
 "===============================================================================
 
-setlocal syntax=jquery
 setlocal omnifunc=javascriptcomplete#CompleteJS
