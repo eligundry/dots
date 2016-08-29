@@ -26,4 +26,3 @@ alias -s txt=vim
 alias -s vim=vim
 alias -s xml=vim
 alias -s yml=vim
-alias -s zsh=vim

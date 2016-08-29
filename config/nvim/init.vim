@@ -29,6 +29,7 @@ Plug 'chriskempson/base16-vim'
 Plug 'davidhalter/jedi', { 'for': 'python' }
 Plug 'editorconfig/editorconfig-vim'
 Plug 'edkolev/tmuxline.vim'
+Plug 'flazz/vim-colorschemes'
 Plug 'kien/ctrlp.vim'
 Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'css', 'less', 'jinja', 'html.twig', 'html.handlebars', 'html.mustache'] }
@@ -276,7 +277,7 @@ highlight Comment cterm=italic
 "===============================================================================
 " => # Custom Functions
 "===============================================================================
-"
+
 " Toggle relative line numbering
 function! ToggleRelativeNumber()
 	if &relativenumber
@@ -436,8 +437,16 @@ inoremap # #
 " Disable Ex mode because it is garbage
 nnoremap Q <Nop>
 
-" Yank lines to xclip in visual
-vnoremap <Leader>Y :w !xclip<CR>
+" Yank lines to system clipboard in visual
+if has("unix")
+	let s:uname = system('uname -s')
+
+	if s:uname =~ 'Darwin'
+		vnoremap <Leader>Y :w !pbcopy<CR><CR>
+	else
+		vnoremap <Leader>Y :w !xclip<CR><CR>
+	endif
+endif
 
 " Vimrc quick edit
 nnoremap <Leader>tv :tabnew $MYVIMRC<CR>
@@ -506,20 +515,30 @@ vnoremap > >gv
 " => # Solarized
 "===============================================================================
 
-let g:solarized_bold = 1
-let g:solarized_italic = 1
-let g:solarized_menu = 0
-let g:solarized_termcolors = 256
-let g:solarized_termtrans = 1
-let g:solarized_visibility = "low"
-colorscheme solarized
-call togglebg#map("<Leader>bg")
+" let g:solarized_bold = 1
+" let g:solarized_italic = 1
+" let g:solarized_menu = 0
+" let g:solarized_termcolors = 256
+" let g:solarized_termtrans = 1
+" let g:solarized_visibility = "low"
+" call togglebg#map("<Leader>bg")
+" colorscheme solarized
+
+"===============================================================================
+" => # Base16
+"===============================================================================
+
+if filereadable(expand("~/.vimrc_background"))
+	let base16colorspace=256
+	source ~/.vimrc_background
+endif
+
+colorscheme base16-default-dark
 
 "===============================================================================
 " => # Airline
 "===============================================================================
 
-let g:airline_theme = 'powerlineish'
 let g:airline_powerline_fonts = 1
 
 " CSV Stuff
@@ -622,7 +641,7 @@ function! NeomakeSettings()
 	autocmd! BufReadPost,BufWritePost * Neomake
 
 	" Auto open the warning/error list when finished
-	autocmd User NeomakeCountsChanged :lopen
+	autocmd User NeomakeCountsChanged :lopen | wincmd w
 
 	" Disable inherited syntastic
 	let g:syntastic_mode_map = {
@@ -745,7 +764,7 @@ function! TagBarSettings()
 	nnoremap <silent> <Leader>tb :Tagbar<CR>
 endfunction
 
-autocmd VimEnter * if exists(":TagBar") | call TagBarSettings() | endif
+autocmd VimEnter * if exists(":Tagbar") | call TagBarSettings() | endif
 
 "===============================================================================
 " => TComment
@@ -755,7 +774,7 @@ let g:tcommentBlankLines = 1
 
 function! TCommentSettings()
 	nnoremap <Leader>cc :TComment<CR>
-	vnoremap <Leader>cb :TCommentBlock<CR>
+	vnoremap <Leader>cc :TCommentBlock<CR>
 endfunction
 
 autocmd VimEnter * if exists(":TComment") | call TCommentSettings() | endif
@@ -776,3 +795,19 @@ autocmd VimEnter * if exists(":Tmux") | call TboneSettings() | endif
 "===============================================================================
 
 let g:vim_json_syntax_conceal = 0
+
+"===============================================================================
+" => The Silver Searcher
+"===============================================================================
+
+if executable('ag')
+	" Use ag over grep
+	set grepprg=ag\ --vimgrep\ $*
+	set grepformat=%f:%l:%c:%m
+
+	" Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+	" let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+	" ag is fast enough that CtrlP doesn't need to cache
+	" let g:ctrlp_use_caching = 0
+endif
