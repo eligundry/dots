@@ -29,14 +29,18 @@ Plug 'chriskempson/base16-vim'
 Plug 'davidhalter/jedi', { 'for': 'python' }
 Plug 'editorconfig/editorconfig-vim'
 Plug 'edkolev/tmuxline.vim'
+Plug 'flazz/vim-colorschemes'
 Plug 'kien/ctrlp.vim'
 Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'css', 'less', 'jinja', 'html.twig', 'html.handlebars', 'html.mustache'] }
 Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
+Plug 'neomake/neomake'
+Plug 'plasticboy/vim-markdown', { 'for': ['markdown'] }
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
 Plug 'scrooloose/syntastic'
 Plug 'sheerun/vim-polyglot'
 Plug 'sjl/clam.vim'
+Plug 'ternjs/tern_for_vim', { 'do': 'npm install', 'for': ['javascript'] }
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-afterimage'
 Plug 'tpope/vim-dispatch'
@@ -190,9 +194,6 @@ set mouse=
 " Hide mouse when typing
 set mousehide
 
-" Always spellcheck cause typos are dumb
-setglobal spell
-
 "===============================================================================
 " => # Word Wrap
 "===============================================================================
@@ -276,7 +277,7 @@ highlight Comment cterm=italic
 "===============================================================================
 " => # Custom Functions
 "===============================================================================
-"
+
 " Toggle relative line numbering
 function! ToggleRelativeNumber()
 	if &relativenumber
@@ -363,6 +364,9 @@ autocmd FileChangedRO * nnoremap <buffer> <Leader>s :SudoWrite<CR>
 " Resize splits as vim is resized
 autocmd! VimResized * exe "normal! \<C-w>="
 
+" Always spellcheck cause typos are dumb
+autocmd BufEnter * set spell
+
 "===============================================================================
 " => # Keyboard Shortcuts
 "===============================================================================
@@ -433,8 +437,16 @@ inoremap # #
 " Disable Ex mode because it is garbage
 nnoremap Q <Nop>
 
-" Yank lines to xclip in visual
-vnoremap <Leader>Y :w !xclip<CR>
+" Yank lines to system clipboard in visual
+if has("unix")
+	let s:uname = system('uname -s')
+
+	if s:uname =~ 'Darwin'
+		vnoremap <Leader>Y :w !pbcopy<CR><CR>
+	else
+		vnoremap <Leader>Y :w !xclip<CR><CR>
+	endif
+endif
 
 " Vimrc quick edit
 nnoremap <Leader>tv :tabnew $MYVIMRC<CR>
@@ -503,20 +515,30 @@ vnoremap > >gv
 " => # Solarized
 "===============================================================================
 
-let g:solarized_bold = 1
-let g:solarized_italic = 1
-let g:solarized_menu = 0
-let g:solarized_termcolors = 256
-let g:solarized_termtrans = 1
-let g:solarized_visibility = "low"
-colorscheme solarized
-call togglebg#map("<Leader>bg")
+" let g:solarized_bold = 1
+" let g:solarized_italic = 1
+" let g:solarized_menu = 0
+" let g:solarized_termcolors = 256
+" let g:solarized_termtrans = 1
+" let g:solarized_visibility = "low"
+" call togglebg#map("<Leader>bg")
+" colorscheme solarized
+
+"===============================================================================
+" => # Base16
+"===============================================================================
+
+if filereadable(expand("~/.vimrc_background"))
+	let base16colorspace=256
+	source ~/.vimrc_background
+endif
+
+colorscheme base16-default-dark
 
 "===============================================================================
 " => # Airline
 "===============================================================================
 
-let g:airline_theme = 'powerlineish'
 let g:airline_powerline_fonts = 1
 
 " CSV Stuff
@@ -567,6 +589,20 @@ if has('gui')
 endif
 
 "===============================================================================
+" => # Clam
+"===============================================================================
+
+function! ClamSettings()
+	nnoremap ! :Clam<Space>
+	vnoremap ! :ClamVisual<Space>
+endfunction
+
+autocmd VimEnter * if exists("loaded_clam") | call ClamSettings() | endif
+
+" Setup colors for manpages
+autocmd BufEnter man\ * setlocal filetype=man
+
+"===============================================================================
 " => Tmuxline
 "===============================================================================
 
@@ -590,6 +626,31 @@ let g:syntastic_mode_map = { 'mode': 'active',
 						   \ 'active_filetypes': ['html', 'xml', 'c', 'cpp', 'php', 'css', 'ruby', 'eruby', 'python', 'javascript'],
 						   \ 'passive_filetypes': ['less'] }
 let g:syntastic_javascript_checkers = ['eslint']
+
+"===============================================================================
+" => Neomake
+"===============================================================================
+
+let g:neomake_serialize = 1
+let g:neomake_serialize_abort_on_error = 1
+let g:neomake_open_list = 2
+
+" https://robots.thoughtbot.com/my-life-with-neovim
+function! NeomakeSettings()
+	" Run NeoMake on read and write operations
+	autocmd! BufReadPost,BufWritePost * Neomake
+
+	" Auto open the warning/error list when finished
+	autocmd User NeomakeCountsChanged :lopen | wincmd w
+
+	" Disable inherited syntastic
+	let g:syntastic_mode_map = {
+	\ "mode": "passive",
+	\ "active_filetypes": [],
+	\ "passive_filetypes": [] }
+endfunction
+
+autocmd VimEnter * if exists(":Neomake") | call NeomakeSettings() | endif
 
 "===============================================================================
 " => NERDTree
@@ -625,6 +686,16 @@ function! UndotreeSettings()
 endfunction
 
 autocmd VimEnter * if exists(":UndotreeShow") | call UndotreeSettings() | endif
+
+"===============================================================================
+" => Tern
+"===============================================================================
+
+if exists('g:plugs["tern_for_vim"]')
+	let g:tern_show_argument_hints = 'on_hold'
+	let g:tern_show_signature_in_pum = 1
+	autocmd FileType javascript setlocal omnifunc=tern#Complete
+endif
 
 "===============================================================================
 " => Deoplete
@@ -693,7 +764,7 @@ function! TagBarSettings()
 	nnoremap <silent> <Leader>tb :Tagbar<CR>
 endfunction
 
-autocmd VimEnter * if exists(":TagBar") | call TagBarSettings() | endif
+autocmd VimEnter * if exists(":Tagbar") | call TagBarSettings() | endif
 
 "===============================================================================
 " => TComment
@@ -703,7 +774,7 @@ let g:tcommentBlankLines = 1
 
 function! TCommentSettings()
 	nnoremap <Leader>cc :TComment<CR>
-	vnoremap <Leader>cb :TCommentBlock<CR>
+	vnoremap <Leader>cc :TCommentBlock<CR>
 endfunction
 
 autocmd VimEnter * if exists(":TComment") | call TCommentSettings() | endif
@@ -724,3 +795,13 @@ autocmd VimEnter * if exists(":Tmux") | call TboneSettings() | endif
 "===============================================================================
 
 let g:vim_json_syntax_conceal = 0
+
+"===============================================================================
+" => The Silver Searcher
+"===============================================================================
+
+" Use ag over grep
+if executable('ag')
+	set grepprg=ag\ --vimgrep\ $*
+	set grepformat=%f:%l:%c:%m
+endif
