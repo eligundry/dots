@@ -641,7 +641,7 @@ function! NeomakeSettings()
 	autocmd! BufReadPost,BufWritePost * Neomake
 
 	" Auto open the warning/error list when finished
-	autocmd User NeomakeCountsChanged :lopen | wincmd w
+	autocmd User NeomakeCountsChanged :lopen | wincmd k
 
 	" Disable inherited syntastic
 	let g:syntastic_mode_map = {
