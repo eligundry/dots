@@ -14,7 +14,8 @@ platform=`uname`
 
 # Exclude files
 exclude=("README.markdown" "LICENSE" "oh-my-zsh" "dots.sh" "config"
-		 "tmuxline.conf" "tmux-sessions" "local" "bashrc" "bash_profile")
+		 "tmuxline.conf" "tmux-sessions" "local" "bashrc" "bash_profile",
+		 "iterm2_profiles.json")
 
 if [[ $platform == "Darwin" ]]; then
 	exclude+=("gtkrc-2.0" "xinitrc")

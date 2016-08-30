@@ -128,7 +128,7 @@ endif
 set t_ts=k
 set t_fs=\
 set title
-set titlestring=%t%(\ %M%)%(\ (%{expand(\"%:~:.:h\")})%)%(\ %a%)
+set titlestring="%t%(\ %M%)%(\ (%{expand(\"%:~:.:h\")})%)%(\ %a%)"
 
 " Fancy (quick) search highlighting
 if has("extra_search")
@@ -531,9 +531,9 @@ vnoremap > >gv
 if filereadable(expand("~/.vimrc_background"))
 	let base16colorspace=256
 	source ~/.vimrc_background
+else
+	colorscheme base16-default-dark
 endif
-
-colorscheme base16-default-dark
 
 "===============================================================================
 " => # Airline
@@ -640,7 +640,7 @@ function! NeomakeSettings()
 	" Run NeoMake on read and write operations
 	autocmd! BufReadPost,BufWritePost * Neomake
 
-	" Auto open the warning/error list when finished
+	" Auto open the warning/error list when finished, but don't focus on it
 	autocmd User NeomakeCountsChanged :lopen | wincmd k
 
 	" Disable inherited syntastic
@@ -723,7 +723,6 @@ autocmd FileType vim-plug :vertical resize 40
 " => CtrlP
 "===============================================================================
 
-nnoremap <C-.> :CtrlPTag<CR>
 let g:ctrlp_max_files = 0
 let g:ctrlp_max_depth = 10
 let g:ctrlp_custom_ignore = {
