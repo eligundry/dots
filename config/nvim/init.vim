@@ -533,6 +533,12 @@ else
 	colorscheme base16-default-dark
 endif
 
+" On Linux terminals with transparent backgrounds, Base16 is overriding the
+" background color making the Vim background solid. This will get around that.
+if system('uname -s') =~ 'Linux'
+	hi Normal ctermbg=None
+endif
+
 "===============================================================================
 " => # Airline
 "===============================================================================
