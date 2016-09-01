@@ -30,7 +30,7 @@ Plug 'davidhalter/jedi', { 'for': 'python' }
 Plug 'editorconfig/editorconfig-vim'
 Plug 'edkolev/tmuxline.vim'
 Plug 'flazz/vim-colorschemes'
-Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'css', 'less', 'jinja', 'html.twig', 'html.handlebars', 'html.mustache'] }
 Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
@@ -128,7 +128,7 @@ endif
 set t_ts=k
 set t_fs=\
 set title
-set titlestring=%t%(\ %M%)%(\ (%{expand(\"%:~:.:h\")})%)%(\ %a%)
+set titlestring="%t%(\ %M%)%(\ (%{expand(\"%:~:.:h\")})%)%(\ %a%)"
 
 " Fancy (quick) search highlighting
 if has("extra_search")
@@ -265,7 +265,7 @@ set t_vb=
 " Use hybrid lines by setting both
 set number
 set relativenumber
-set norelativenumber
+" set norelativenumber
 
 if has("linebreak")
 	set numberwidth=2
@@ -420,7 +420,7 @@ inoremap <silent> jj <Esc>
 inoremap <silent> JJ <Esc>
 
 " Paste toggle for the win
-nnoremap <Leader>pt :set paste!<CR>:set paste?<CR>
+nnoremap <Leader>pt :set paste! paste?<CR>
 
 " Yank should work just like every other Vim verb
 noremap Y y$
@@ -439,9 +439,7 @@ nnoremap Q <Nop>
 
 " Yank lines to system clipboard in visual
 if has("unix")
-	let s:uname = system('uname -s')
-
-	if s:uname =~ 'Darwin'
+	if system('uname -s') =~ 'Darwin'
 		vnoremap <Leader>Y :w !pbcopy<CR><CR>
 	else
 		vnoremap <Leader>Y :w !xclip<CR><CR>
@@ -531,9 +529,9 @@ vnoremap > >gv
 if filereadable(expand("~/.vimrc_background"))
 	let base16colorspace=256
 	source ~/.vimrc_background
+else
+	colorscheme base16-default-dark
 endif
-
-" colorscheme base16-default-dark
 
 "===============================================================================
 " => # Airline
@@ -638,10 +636,10 @@ let g:neomake_open_list = 2
 " https://robots.thoughtbot.com/my-life-with-neovim
 function! NeomakeSettings()
 	" Run NeoMake on read and write operations
-	autocmd! BufReadPost,BufWritePost * Neomake
+	autocmd BufReadPost,BufWritePost * Neomake
 
-	" Auto open the warning/error list when finished
-	autocmd User NeomakeCountsChanged :lopen | wincmd w
+	" Auto open the warning/error list when finished, but don't focus on it
+	autocmd User NeomakeCountsChanged :lopen | wincmd k
 
 	" Disable inherited syntastic
 	let g:syntastic_mode_map = {
@@ -723,13 +721,18 @@ autocmd FileType vim-plug :vertical resize 40
 " => CtrlP
 "===============================================================================
 
-nnoremap <C-.> :CtrlPTag<CR>
 let g:ctrlp_max_files = 0
 let g:ctrlp_max_depth = 10
 let g:ctrlp_custom_ignore = {
 	\ 'dir': '\v[\/](node_modules|vendor)|\.(git|hg|svn|env|vagrant)$',
 	\ 'file': '\v\.(exe|so|dll|pyo|pyc)$'
 \ }
+
+function! CtrlPSettings()
+	nnoremap <leader>ct :CtrlPTag<CR>
+endfunction
+
+autocmd VimEnter * if exists(':CtrlP') | call CtrlPSettings() | endif
 
 "===============================================================================
 " => delimitMate
