@@ -1,7 +1,6 @@
 URxvt*termName: screen-256color
 URxvt*geometry: 240x84
 URxvt*loginShell: true
-URxvt*scrollColor: #777777
 URxvt*scrollstyle: plain
 URxvt*scrollTtyKeypress: true
 URxvt*scrollTtyOutput: false
@@ -18,10 +17,6 @@ URxvt*urgentOnBell: false
 URxvt*visualBell: true
 URxvt*mapAlert: true
 URxvt*mouseWheelScrollPage: false
-URxvt*background: Black
-URxvt*foreground: White
-URxvt*colorUL: yellow
-URxvt*underlineColor: yellow
 URxvt*font: xft:PragmataPro:-*-*-*-14-*-*-*-*-*-utf8,xft:terminus:pixelsize:12
 URxvt*boldFont: xft:PragmataPro:bold:-*-*-*-14-*-*-*-*-*-iso8859-15,xft:terminus:bold:pixelsize:12
 URxvt*italicFont: xft:PragmataPro:italic:autohint=true:pixelsize=12

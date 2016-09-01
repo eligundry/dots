@@ -16,7 +16,7 @@
 [plugins]
 [profiles]
   [[default]]
-    background_color = "#002b36"
+    background_color = "#2d2d2d"
     background_darkness = 0.95
     background_image = None
     background_type = transparent
@@ -24,9 +24,10 @@
     cursor_color = "#d3d0c8"
     custom_command = tmux -2ul
     font = PragmataPro 9
-    foreground_color = "#839496"
+    foreground_color = "#d3d0c8"
     icon_bell = False
     login_shell = True
+    palette = "#2d2d2d:#f2777a:#99cc99:#ffcc66:#6699cc:#cc99cc:#66cccc:#d3d0c8:#747369:#f2777a:#99cc99:#ffcc66:#6699cc:#cc99cc:#66cccc:#f2f0ec"
     scrollback_lines = 0
     scrollbar_position = hidden
     show_titlebar = False
