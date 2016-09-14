@@ -5,11 +5,11 @@
 "===============================================================================
 
 "===============================================================================
-" => Spelling
+" => Omnifunc
 "===============================================================================
 
-autocmd BufNew,BufEnter setlocal spell
-setlocal omnifunc=htmlcomplete#CompleteTags
+" Disabling this as it makes inline code completion impossible
+" setlocal omnifunc=htmlcomplete#CompleteTags
 
 "===============================================================================
 " => Fenced Code Blocks
