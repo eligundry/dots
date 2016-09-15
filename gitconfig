@@ -35,7 +35,7 @@
 [core]
 	attributesFile = ~/.gitattributes
 	autocrlf = input
-	editor = vim
+	editor = nvim
 	eol = lf
 	excludesfile = ~/.gitignore
 	fileMode = false
@@ -69,6 +69,12 @@
 
 [merge]
 	tool = vimdiff
+
+[mergetool]
+	prompt = true
+
+[mergetool "vimdiff"]
+	cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 
 [push]
 	default = matching
