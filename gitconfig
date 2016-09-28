@@ -32,6 +32,9 @@
 	removed = red
 	untracked = cyan
 
+[commit]
+	gpgsign = true
+
 [core]
 	attributesFile = ~/.gitattributes
 	autocrlf = input
