@@ -711,17 +711,27 @@ if exists('g:plugs["tern_for_vim"]')
 endif
 
 "===============================================================================
-" => Neocomplete
-"===============================================================================
-
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
-
-"===============================================================================
-" => Deoplete
-"===============================================================================
+" => Neocomplete, Deoplete, & Neosnippet
+" These are shared because they share the same API.
+""===============================================================================
 
 let g:deoplete#enable_at_startup = 1
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 0
+
+
+if !exists('g:neocomplete#sources#omni#input_patterns')
+	let g:neocomplete#sources#omni#input_patterns = {}
+endif
+
+let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+let g:neocomplete#sources#omni#input_patterns.java = '\k\.\k*'
+
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+xmap <C-k> <Plug>(neosnippet_expand_target)
 
 "===============================================================================
 " => Deoplete-Jedi
@@ -837,8 +847,8 @@ endif
 
 let g:rainbow_active = 1
 let g:rainbow_conf = {
-\	'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
-\	'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
+\	'guifgs': ['blue', 'yellow', 'green', 'cyan', 'red'],
+\	'ctermfgs': ['blue', 'yellow', 'green', 'cyan', 'red'],
 \	'operators': '_,_',
 \	'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
 \	'separately': {
