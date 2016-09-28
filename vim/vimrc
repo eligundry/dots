@@ -756,9 +756,13 @@ autocmd FileType vim-plug :vertical resize 40
 let g:ctrlp_max_files = 0
 let g:ctrlp_max_depth = 10
 let g:ctrlp_custom_ignore = {
-	\ 'dir': '\v[\/](node_modules|vendor)|\.(git|hg|svn|env|vagrant)$',
-	\ 'file': '\v\.(exe|so|dll|pyo|pyc)$'
+\	'dir': '\v[\/](node_modules|vendor)|\.(git|hg|svn|env|vagrant)$',
+\	'file': '\v\.(exe|so|dll|pyo|pyc)$'
 \ }
+
+if executable('ag')
+	let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+endif
 
 function! CtrlPSettings()
 	nnoremap <leader>ct :CtrlPTag<CR>
@@ -847,23 +851,33 @@ endif
 
 let g:rainbow_active = 1
 let g:rainbow_conf = {
-\	'guifgs': ['blue', 'yellow', 'green', 'cyan', 'red'],
-\	'ctermfgs': ['blue', 'yellow', 'green', 'cyan', 'red'],
+\	'guifgs': ['blue', 'yellow', 'red', 'cyan', 'magenta'],
+\	'ctermfgs': ['blue', 'yellow', 'red', 'cyan', 'magenta'],
 \	'operators': '_,_',
-\	'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+\	'parentheses': [
+\		'start=/(/ end=/)/ fold',
+\		'start=/\[/ end=/\]/ fold',
+\		'start=/{/ end=/}/ fold'
+\	],
 \	'separately': {
 \		'*': {},
 \		'tex': {
 \			'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
 \		},
-\		'lisp': {
-\			'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
-\		},
 \		'vim': {
-\			'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
+\			'parentheses': [
+\				'start=/(/ end=/)/',
+\				'start=/\[/ end=/\]/',
+\				'start=/{/ end=/}/ fold',
+\				'start=/(/ end=/)/ containedin=vimFuncBody',
+\				'start=/\[/ end=/\]/ containedin=vimFuncBody',
+\				'start=/{/ end=/}/ fold containedin=vimFuncBody'
+\			],
 \		},
 \		'html': {
-\			'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
+\			'parentheses': [
+\				'start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'
+\			],
 \		},
 \		'css': 0,
 \   }
