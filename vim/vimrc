@@ -739,9 +739,9 @@ xmap <C-k> <Plug>(neosnippet_expand_target)
 
 let deoplete#sources#jedi#show_docstring = 1
 
-if has('unix')
-	let g:python_host_prog = system('which python')
-endif
+" if has('unix')
+" 	let g:python_host_prog = system('which python')
+" endif
 
 "===============================================================================
 " => Vim Plug
