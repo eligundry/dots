@@ -25,6 +25,7 @@ TAGS
 *.pyc
 *.sql
 *.hist
+*.orig
 .DS_Store*
 ehthumbs.db
 Thumbs.db
