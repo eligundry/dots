@@ -1,0 +1,29 @@
+{
+	"link": {
+		"bash_profile": "~/.bash_profile",
+		"bashrc": "~/.bashrc",
+		"ctags": "~/.ctags",
+		"eslintrc": "~/.eslintrc",
+		"gitattributes": "~/.gitattributes",
+		"gitconfig": "~/.gitconfig",
+		"gitexcludes": "~/.gitexcludes",
+		"gitignore": "~/.gitignore",
+		"idavimrc": "~/.ideavimrc",
+		"inputrc": "~/.inputrc",
+		"nethackrc": "~/.nethackrc",
+		"profile": "~/.profile",
+		"psqlrc": "~/.psqlrc",
+		"tmux.conf": "~/.tmux.conf",
+		"wgetrc": "~/.wgetrc",
+		"zshrc": "~/.zshrc"
+	},
+	"linux": {
+		"links": {
+			"gtkrc-2.0": "~/.gtkrc-2.0",
+			"Xdefaults": "~/.Xdefaults",
+			"xinitrc": "~/.xinitrc",
+			"Xresources": "~/.Xresources",
+			"xsessionrc": "~/.xsessionrc"
+		}
+	}
+}
