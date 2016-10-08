@@ -1,29 +1,54 @@
 {
+	"directories": [
+		"~/.config",
+		"~/.virtualenvs"
+	],
 	"link": {
 		"bash_profile": "~/.bash_profile",
 		"bashrc": "~/.bashrc",
 		"ctags": "~/.ctags",
 		"eslintrc": "~/.eslintrc",
+		"bin": "~/.bin",
+		"config/nvim": "~/.config/nvim",
+		"config/pianobar": "~/.config/pianobar",
+		"ctags": "~/.ctags",
+		"dir_colors": "~/.dir_colors",
+		"eslintrc": "~/.eslintrc",
+		"git_template": "~/.git_template",
 		"gitattributes": "~/.gitattributes",
 		"gitconfig": "~/.gitconfig",
 		"gitexcludes": "~/.gitexcludes",
 		"gitignore": "~/.gitignore",
-		"idavimrc": "~/.ideavimrc",
+		"ideavimrc": "~/.ideavimrc",
 		"inputrc": "~/.inputrc",
-		"nethackrc": "~/.nethackrc",
 		"profile": "~/.profile",
 		"psqlrc": "~/.psqlrc",
 		"tmux.conf": "~/.tmux.conf",
 		"wgetrc": "~/.wgetrc",
+		"zsh": "~/.zsh",
 		"zshrc": "~/.zshrc"
 	},
-	"linux": {
-		"links": {
-			"gtkrc-2.0": "~/.gtkrc-2.0",
-			"Xdefaults": "~/.Xdefaults",
-			"xinitrc": "~/.xinitrc",
-			"Xresources": "~/.Xresources",
-			"xsessionrc": "~/.xsessionrc"
+	"git_repos": {
+		"https://github.com/robbyrussell/oh-my-zsh.git": "~/.oh-my-zsh"
+	},
+	"commands": [],
+	"system": {
+		"Darwin": {
+			"link": {
+				"iterm2_profiles.json": "~/.iterm2_profiles.json"
+			}
+		},
+		"Linux": {
+			"link": {
+				"config/terminator": "~/.config/terminator",
+				"config/redshift.conf": "~/.config/redshift.conf",
+				"gtkrc-2.0": "~/.gtkrc-2.0",
+				"nethackrc": "~/.nethackrc",
+				"Xdefaults": "~/.Xdefaults",
+				"xinitrc": "~/.xinitrc",
+				"Xresources": "~/.Xresources",
+				"xsessionrc": "~/.xsessionrc"
+			}
 		}
 	}
 }

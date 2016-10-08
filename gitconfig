@@ -33,7 +33,7 @@
 	untracked = cyan
 
 [commit]
-	# gpgsign = true
+	gpgsign = true
 
 [core]
 	attributesFile = ~/.gitattributes
