@@ -1,6 +1,7 @@
 {
 	"directories": [
-		"~/.config"
+		"~/.config",
+		"~/.virtualenvs"
 	],
 	"link": {
 		"bash_profile": "~/.bash_profile",
@@ -25,6 +26,7 @@
 		"psqlrc": "~/.psqlrc",
 		"tmux.conf": "~/.tmux.conf",
 		"vim": "~/.vim",
+		"config/nvim/init.vim": "~/.vim/vimrc",
 		"wgetrc": "~/.wgetrc",
 		"zsh": "~/.zsh",
 		"zshrc": "~/.zshrc"
@@ -32,6 +34,8 @@
 	"git_repos": {
 		"https://github.com/robbyrussell/oh-my-zsh.git": "~/.oh-my-zsh"
 	},
+	"commands": [
+	],
 	"system": {
 		"Darwin": {
 			"link": {
