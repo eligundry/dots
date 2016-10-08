@@ -1,0 +1,54 @@
+{
+	"directories": [
+		"~/.config"
+	],
+	"link": {
+		"bash_profile": "~/.bash_profile",
+		"bashrc": "~/.bash_profile",
+		"bin": "~/.bin",
+		"config/nvim": "~/.config/nvim",
+		"config/pianobar": "~/.config/pianobar",
+		"ctags": "~/.ctags",
+		"dir_colors": "~/.dir_colors",
+		"eslintrc": "~/.eslintrc",
+		"git_template": "~/.git_template",
+		"gitattributes": "~/.gitattributes",
+		"gitconfig": "~/.gitconfig",
+		"gitexcludes": "~/.gitexcludes",
+		"gitignore": "~/.gitignore",
+		"ideavimrc": "~/.ideavimrc",
+		"inputrc": "~/.inputrc",
+		"oh-my-zsh/custom/eligundry.zsh-theme": "~/.oh-my-zsh/custom/eligundry.zsh-theme",
+		"oh-my-zsh/custom/plugins/zsh-completions": "~/.oh-my-zsh/custom/plugins/zsh-completions",
+		"oh-my-zsh/custom/plugins/zsh-syntax-highlighting": "~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting",
+		"profile": "~/.profile",
+		"psqlrc": "~/.psqlrc",
+		"tmux.conf": "~/.tmux.conf",
+		"vim": "~/.vim",
+		"wgetrc": "~/.wgetrc",
+		"zsh": "~/.zsh",
+		"zshrc": "~/.zshrc"
+	},
+	"git_repos": {
+		"https://github.com/robbyrussell/oh-my-zsh.git": "~/.oh-my-zsh"
+	},
+	"system": {
+		"Darwin": {
+			"link": {
+				"iterm2_profiles.json": "~/.iterm2_profiles.json"
+			}
+		},
+		"Linux": {
+			"link": {
+				"config/terminator": "~/.config/terminator",
+				"config/redshift.conf": "~/.config/redshift.conf",
+				"gtkrc-2.0": "~/.gtkrc-2.0",
+				"nethackrc": "~/.nethackrc",
+				"Xdefaults": "~/.Xdefaults",
+				"xinitrc": "~/.xinitrc",
+				"Xresources": "~/.Xresources",
+				"xsessionrc": "~/.xsessionrc"
+			}
+		}
+	}
+}
