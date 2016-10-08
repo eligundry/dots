@@ -19,3 +19,6 @@
 [submodule "bin/pipes"]
 	path = bin/pipes
 	url = https://github.com/pipeseroni/pipes.sh.git
+[submodule "bin/dotty"]
+	path = bin/dotty
+	url = https://github.com/vibhavp/dotty.git
