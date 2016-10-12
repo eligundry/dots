@@ -3,9 +3,28 @@
 		"~/.config",
 		"~/.virtualenvs"
 	],
+	"git_repos": {
+		"https://github.com/robbyrussell/oh-my-zsh.git": "~/.oh-my-zsh"
+	},
+	"apt": [
+		"tmux",
+		"vim-nox",
+		"zsh"
+	],
+	"brew": [
+		"macvim",
+		"tmux",
+		"zsh"
+	],
+	"commands": [
+		"virtualenv -p `which python2` ~/.virtualenvs/neovim2 && source ~/.virtualenvs/neovim2/bin/activate && pip install jedi neovim flake8 && deactivate",
+		"virtualenv -p `which python3` ~/.virtualenvs/neovim3 && source ~/.virtualenvs/neovim3/bin/activate && pip install jedi neovim flake8 && deactivate"
+	],
 	"link": {
 		"bash_profile": "~/.bash_profile",
-		"bashrc": "~/.bash_profile",
+		"bashrc": "~/.bashrc",
+		"ctags": "~/.ctags",
+		"eslintrc": "~/.eslintrc",
 		"bin": "~/.bin",
 		"config/nvim": "~/.config/nvim",
 		"config/pianobar": "~/.config/pianobar",
@@ -19,28 +38,23 @@
 		"gitignore": "~/.gitignore",
 		"ideavimrc": "~/.ideavimrc",
 		"inputrc": "~/.inputrc",
-		"oh-my-zsh/custom/eligundry.zsh-theme": "~/.oh-my-zsh/custom/eligundry.zsh-theme",
-		"oh-my-zsh/custom/plugins/zsh-completions": "~/.oh-my-zsh/custom/plugins/zsh-completions",
-		"oh-my-zsh/custom/plugins/zsh-syntax-highlighting": "~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting",
+		"oh-my-zsh": "~/.oh-my-zsh/custom",
 		"profile": "~/.profile",
 		"psqlrc": "~/.psqlrc",
 		"tmux.conf": "~/.tmux.conf",
-		"vim": "~/.vim",
-		"config/nvim/init.vim": "~/.vim/vimrc",
 		"wgetrc": "~/.wgetrc",
 		"zsh": "~/.zsh",
 		"zshrc": "~/.zshrc"
 	},
-	"git_repos": {
-		"https://github.com/robbyrussell/oh-my-zsh.git": "~/.oh-my-zsh"
-	},
-	"commands": [
-	],
 	"system": {
 		"Darwin": {
 			"link": {
 				"iterm2_profiles.json": "~/.iterm2_profiles.json"
-			}
+			},
+			"commands": [
+				"brew tap universal-ctags/universal-ctags",
+				"brew install --HEAD universal-ctags"
+			]
 		},
 		"Linux": {
 			"link": {
