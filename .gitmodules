@@ -21,4 +21,4 @@
 	url = https://github.com/pipeseroni/pipes.sh.git
 [submodule "bin/dotty"]
 	path = bin/dotty
-	url = git@github.com:eligundry/dotty.git
+	url = https://github.com/eligundry/dotty.git
