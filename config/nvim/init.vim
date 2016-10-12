@@ -161,7 +161,7 @@ if has("wildignore")
 	set wildignore+=*.psd,*.ai " Images
 	set wildignore+=*.o,*.obj,*.bak,*.exe
 	set wildignore+=*.mp4,*.ogg,*.m4v,*.ogv,*.mp3 " Mulitmedia files
-	set wildignore+=*.pyc,*.pyo " Python bullshit
+	set wildignore+=*.pyc,*.pyo,*.egg-info " Python bullshit
 	set wildignore+=.DS_Store " OSX bullshit
 	set wildignore+=*.hist
 endif
@@ -661,6 +661,7 @@ let g:syntastic_javascript_checkers = ['eslint']
 let g:neomake_serialize = 1
 let g:neomake_serialize_abort_on_error = 1
 let g:neomake_open_list = 2
+" let g:neomake_python_enabled_makers = ['flake8']
 
 " https://robots.thoughtbot.com/my-life-with-neovim
 function! NeomakeSettings()
@@ -689,7 +690,7 @@ let g:NERDTreeChDirMode = 1
 let g:NERDTreeDirArrows = 0
 let g:NERDTreeDirArrows = 0
 let g:NERDTreeHijackNetrw = 1
-let g:NERDTreeIgnore = ['\.swp$', '\~$', '\.pyc', '__pycache__', '.DS_Store']
+let g:NERDTreeIgnore = ['\.swp$', '\~$', '\.pyc', '__pycache__', '.DS_Store', '\.egg-info']
 let g:NERDTreeMinimalUI = 1
 let g:NERDTreeShowBookmarks = 1
 let g:NERDTreeShowFiles = 1
@@ -752,8 +753,8 @@ xmap <C-k> <Plug>(neosnippet_expand_target)
 "===============================================================================
 
 let deoplete#sources#jedi#show_docstring = 1
-let g:python_host_prog = '~/.virtualenvs/neovim2/bin/python'
-let g:python3_host_prog = '~/.virtualenvs/neovim3/bin/python'
+let g:python_host_prog = expand('~/.virtualenvs/neovim2/bin/python')
+let g:python3_host_prog = expand('~/.virtualenvs/neovim3/bin/python')
 
 "===============================================================================
 " => Vim Plug

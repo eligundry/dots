@@ -66,7 +66,7 @@ pathadd "/sbin"
 ################################################################################
 
 ZSH=$HOME/.oh-my-zsh
-ZSH_THEME="eligundry"
+ZSH_THEME="mitsuhiko"
 DISABLE_AUTO_UPDATE="true"
 
 plugins=()
