@@ -752,8 +752,8 @@ xmap <C-k> <Plug>(neosnippet_expand_target)
 "===============================================================================
 
 let deoplete#sources#jedi#show_docstring = 1
-let g:python_host_prog = '~/.virtualenvs/neovim2/bin/python'
-let g:python3_host_prog = '~/.virtualenvs/neovim3/bin/python'
+let g:python_host_prog = expand('~/.virtualenvs/neovim2/bin/python')
+let g:python3_host_prog = expand('~/.virtualenvs/neovim3/bin/python')
 
 "===============================================================================
 " => Vim Plug
