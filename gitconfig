@@ -85,6 +85,7 @@
 [user]
 	name = "Eli Gundry"
 	email = "eligundry@gmail.com"
+	signingkey = "B05C707D991F1E5FFCCFFDC26BA2E3B5B281BE37"
 
 [github]
 	user = "eligundry"

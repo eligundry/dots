@@ -29,6 +29,7 @@ MITSUHIKO_ITERM_SSH_PROFILE='FancySSH'
 # This is the basic prompt that is always printed.  It will be
 # enclosed to make it newline.
 _MITSUHIKO_PROMPT='%{$fg[magenta]%}%n%{$reset_color%} at %{$fg[yellow]%}%m%{$reset_color%} in %{$fg[green]%}%~%{$reset_color%}%'
+_MITSUHIKO_TIME='around %{$fg[cyan]%}$(emoji-clock) %T%{$reset_color%}'
 
 # On iTerm we switch terminals for SSH if we have it.  This switches to
 # the SSH profile and back when ssh is run from the terminal.
@@ -43,7 +44,7 @@ fi
 # This is the base prompt that is rendered sync.  It should be
 # fast to render as a result.  The extra whitespace before the
 # newline is necessary to avoid some rendering bugs.
-PROMPT=$'\n'$_MITSUHIKO_PROMPT$' \n$ '
+PROMPT=$'\n'$_MITSUHIKO_PROMPT$_MITSUHIKO_TIME$' \n$ '
 RPROMPT=''
 
 # The pid of the async prompt process and the communication file
@@ -71,6 +72,7 @@ function _mitsuhiko_precmd() {
     if [[ x$_mitsuhiko_rv != x0 ]]; then
       echo -n " exited %{$fg[red]%}$_mitsuhiko_rv%{$reset_color%}" >> $_MITSUHIKO_ASYNC_PROMPT_FN
     fi
+    echo -n $' '$_MITSUHIKO_TIME >> $_MITSUHIKO_ASYNC_PROMPT_FN
     echo -n $'\n$ ' >> $_MITSUHIKO_ASYNC_PROMPT_FN
 
     # signal parent
