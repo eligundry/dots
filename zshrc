@@ -118,11 +118,15 @@ if [[ -z $SSH_CONNECTION ]]; then
 fi
 
 ################################################################################
-# => Virtualenv
+# => Pyenv
 ################################################################################
 
-export VENV_PATH="$HOME/.virtualenvs"
-export VIRTUAL_ENV_DISABLE_PROMPT=1
+export PYENVPATH="$HOME/.pyenv/bin"
+export PYENV_BIN="$HOME/.pyenv_bin"
+pathadd $PYENVPATH
+pathadd $PYENV_BIN
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 
 ################################################################################
 # => LESS Colors for Man

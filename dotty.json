@@ -1,7 +1,6 @@
 {
 	"directories": [
-		"~/.config",
-		"~/.virtualenvs"
+		"~/.config"
 	],
 	"git_repos": {
 		"https://github.com/robbyrussell/oh-my-zsh.git": "~/.oh-my-zsh"
@@ -17,8 +16,12 @@
 		"zsh"
 	],
 	"commands": [
-		"virtualenv -p `which python2` ~/.virtualenvs/neovim2 && source ~/.virtualenvs/neovim2/bin/activate && pip install jedi neovim flake8 && deactivate",
-		"virtualenv -p `which python3` ~/.virtualenvs/neovim3 && source ~/.virtualenvs/neovim3/bin/activate && pip install jedi neovim flake8 && deactivate"
+		"curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash",
+		"pyenv install 2.7.11",
+		"pyenv install 3.5.2",
+		"pyenv virtualenv 2.7.11 neovim2 && pyenv virtualenv 3.5.2 neovim3",
+		"pyenv activate neovim2 && pip install neovim jedi pylint flake8 && pyenv deactivate",
+		"pyenv activate neovim3 && pip install neovim jedi pylint flake8 && pyenv deactivate"
 	],
 	"link": {
 		"bash_profile": "~/.bash_profile",

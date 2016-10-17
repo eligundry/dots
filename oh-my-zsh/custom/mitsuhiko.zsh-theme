@@ -11,15 +11,8 @@ ZSH_THEME_GIT_PROMPT_CLEAN=""
 ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[green]?%G%}"
 ZSH_THEME_GIT_PROMPT_CHANGED="%{$fg[cyan]%}%{+%G%}"
 
-ZSH_THEME_HG_PROMPT_PREFIX=" on %{$fg[blue]%}hg%{$reset_color%}:"
-ZSH_THEME_HG_PROMPT_SUFFIX="%{$reset_color%}"
-ZSH_THEME_HG_PROMPT_DIRTY="%{$fg[green]%}+"
-
 ZSH_THEME_VIRTUALENV_PREFIX=" workon %{$fg[red]%}"
 ZSH_THEME_VIRTUALENV_SUFFIX="%{$reset_color%}"
-
-ZSH_THEME_MULTIRUST_PREFIX=" rust %{$fg[magenta]%}"
-ZSH_THEME_MULTIRUST_SUFFIX="%{$reset_color%}"
 
 # If iTerm is detected these themes are used for regular windows
 # and ssh respectively
@@ -66,8 +59,7 @@ function _mitsuhiko_precmd() {
     # Run the git var update here instead of in the parent
     precmd_update_git_vars
 
-    #
-    echo -n $'\n'$_MITSUHIKO_PROMPT$' '$(git_super_status)$(hg_prompt_info)$(virtualenv_prompt_info)$(multirust_prompt_info) > $_MITSUHIKO_ASYNC_PROMPT_FN
+    echo -n $'\n'$_MITSUHIKO_PROMPT$' '$(git_super_status)$(virtualenv_prompt_info) > $_MITSUHIKO_ASYNC_PROMPT_FN
     if [[ x$_mitsuhiko_rv != x0 ]]; then
       echo -n " exited %{$fg[red]%}$_mitsuhiko_rv%{$reset_color%}" >> $_MITSUHIKO_ASYNC_PROMPT_FN
     fi
