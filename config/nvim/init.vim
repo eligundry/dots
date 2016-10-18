@@ -353,9 +353,9 @@ call ToggleArrowKeys(1)
 " Return to current line when reopening file
 augroup line_return
 	autocmd BufReadPost *
-		\ if line("'\"") > 0 && line("'\"") <= line("$") |
-		\     execute 'normal! g`"zvzz' |
-		\ endif
+		\if line("'\"") > 0 && line("'\"") <= line("$") |
+		\	execute 'normal! g`"zvzz' |
+		\endif
 augroup END
 
 " Remove trailing whitespace when saving files
@@ -649,9 +649,10 @@ let g:syntastic_enable_signs = 1
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_quiet_messages = {'level': 'warnings'}
-let g:syntastic_mode_map = { 'mode': 'active',
-						   \ 'active_filetypes': ['html', 'xml', 'c', 'cpp', 'php', 'css', 'ruby', 'eruby', 'python', 'javascript'],
-						   \ 'passive_filetypes': ['less'] }
+let g:syntastic_mode_map = {
+	\ 'mode': 'active',
+	\ 'active_filetypes': ['html', 'xml', 'c', 'cpp', 'php', 'css', 'ruby', 'eruby', 'python', 'javascript'],
+	\ 'passive_filetypes': ['less'] }
 let g:syntastic_javascript_checkers = ['eslint']
 
 "===============================================================================
@@ -753,8 +754,8 @@ xmap <C-k> <Plug>(neosnippet_expand_target)
 "===============================================================================
 
 let deoplete#sources#jedi#show_docstring = 1
-let g:python_host_prog = expand('~/.virtualenvs/neovim2/bin/python')
-let g:python3_host_prog = expand('~/.virtualenvs/neovim3/bin/python')
+let g:python_host_prog = expand('~/.pyenv/versions/neovim2/bin/python')
+let g:python3_host_prog = expand('~/.pyenv/versions/neovim3/bin/python')
 
 "===============================================================================
 " => Vim Plug
@@ -893,5 +894,5 @@ let g:rainbow_conf = {
 \			],
 \		},
 \		'css': 0,
-\   }
+\	}
 \}

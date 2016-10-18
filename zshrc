@@ -145,6 +145,15 @@ BASE16_SHELL=$HOME/.bin/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
 ################################################################################
+# => Pyenv
+################################################################################
+
+pathadd "$HOME/.pyenv/bin"
+export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
+################################################################################
 # => Custom Files
 ################################################################################
 
