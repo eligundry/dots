@@ -22,7 +22,7 @@ MITSUHIKO_ITERM_SSH_PROFILE='FancySSH'
 # This is the basic prompt that is always printed.  It will be
 # enclosed to make it newline.
 _MITSUHIKO_PROMPT='%{$fg[magenta]%}%n%{$reset_color%} at %{$fg[yellow]%}%m%{$reset_color%} in %{$fg[green]%}%~%{$reset_color%}%'
-_MITSUHIKO_TIME='around %{$fg[cyan]%}$(emoji-clock) %T%{$reset_color%}'
+_MITSUHIKO_TIME='around %{$fg[cyan]%}$(emoji-clock)  %T%{$reset_color%}'
 
 # On iTerm we switch terminals for SSH if we have it.  This switches to
 # the SSH profile and back when ssh is run from the terminal.

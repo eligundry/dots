@@ -38,6 +38,7 @@ Plug 'davidhalter/jedi', { 'for': 'python' }
 Plug 'editorconfig/editorconfig-vim'
 Plug 'edkolev/tmuxline.vim'
 Plug 'flazz/vim-colorschemes'
+Plug 'klen/python-mode'
 Plug 'luochen1990/rainbow'
 Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'css', 'less', 'jinja', 'html.twig', 'html.handlebars', 'html.mustache'] }
@@ -45,6 +46,7 @@ Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
 Plug 'plasticboy/vim-markdown', { 'for': ['markdown'] }
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
 Plug 'scrooloose/syntastic'
+" Plug 'shawncplus/phpcomplete.vim', { 'for': ['php'] }
 Plug 'sheerun/vim-polyglot'
 Plug 'sjl/clam.vim'
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install', 'for': ['javascript'] }
@@ -756,6 +758,14 @@ xmap <C-k> <Plug>(neosnippet_expand_target)
 let deoplete#sources#jedi#show_docstring = 1
 let g:python_host_prog = expand('~/.pyenv/versions/neovim2/bin/python')
 let g:python3_host_prog = expand('~/.pyenv/versions/neovim3/bin/python')
+
+"===============================================================================
+" => Python Mode
+"===============================================================================
+
+let g:pymode_virtualenv = 1
+let g:pymode_breakpoint = 1
+let g:pymode_breakpoint_bind = '<leader>b'
 
 "===============================================================================
 " => Vim Plug
