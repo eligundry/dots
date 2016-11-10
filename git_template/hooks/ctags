@@ -2,5 +2,12 @@
 mkdir .git/tags_lock 2>/dev/null || exit 0
 trap "rmdir .git/tags_lock; rm .git/tags.$$" EXIT
 
-ctags --tag-relative -R -f .git/tags.$$ --languages=-javascript,-css,-markdown
+ctags --tag-relative=yes \
+      --recurse=yes \
+      -f .git/tags.$$ \
+      --languages=-javascript,-css,-markdown,-json \
+      --fields=+laimS \
+      --exclude=vendor \
+      --exclude=node_modules \
+      --exclude=.env
 mv .git/tags.$$ .git/tags

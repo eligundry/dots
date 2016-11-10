@@ -33,3 +33,4 @@ Icon?
 .tern-project
 *syncd.*
 *.hist
+.ropeproject
