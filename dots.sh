@@ -61,12 +61,8 @@ custom_links()
 	local CF_LOC="$PWD/config"
 	local CF_DEST="$HOME/.config"
 
-	ln -vfs $ZPATH/eligundry.zsh-theme $OZPATH/eligundry.zsh-theme
-	ln -vfs $ZPATH/mitsuhiko.zsh-theme $OZPATH/mitsuhiko.zsh-theme
-	ln -vfs $ZPATH/plugins/zsh-completions $OZPATH/zsh-completions
-	ln -vfs $ZPATH/plugins/zsh-history-substring-search $OZPATH/plugins/zsh-history-substring-search
-	ln -vfs $ZPATH/plugins/zsh-syntax-highlighting $OZPATH/plugins/zsh-syntax-highlighting
-	ln -vfs $ZPATH/plugins/keybase $OZPATH/plugins/keybase
+	rm -rfv $OZPATH
+	ln -vfs $ZPATH $OZPATH
 	ln -vfsn "$CF_LOC/nvim" "$CF_DEST/nvim"
 
 	if [[ $platform == "Linux" ]]; then
