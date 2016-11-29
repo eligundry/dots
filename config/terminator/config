@@ -1,5 +1,4 @@
 [global_config]
-  dbus = True
   enabled_plugins = SearchPlugin, TerminalShot
   window_state = maximise
 [keybindings]
@@ -23,7 +22,7 @@
     cursor_blink = False
     cursor_color = "#d3d0c8"
     custom_command = tmux -2ul
-    font = PragmataPro 9
+    font = Inconsolata 10
     foreground_color = "#d3d0c8"
     icon_bell = False
     login_shell = True
