@@ -8,6 +8,15 @@
 " => Omnifunc
 "===============================================================================
 
+set expandtab
+set shiftwidth=2
+set tabstop=2
+set softtabstop=2
+
+"===============================================================================
+" => Omnifunc
+"===============================================================================
+
 " Disabling this as it makes inline code completion impossible
 " setlocal omnifunc=htmlcomplete#CompleteTags
 
