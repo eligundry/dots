@@ -13,8 +13,13 @@ endfunction
 "===============================================================================
 
 let g:plug_timeout = 5
+let g:plug_path = '~/.vim/plugged'
 
-call plug#begin('~/.config/nvim/plugged')
+if has('nvim')
+	let g:plug_path = '~/.config/nvim/plugged'
+endif
+
+call plug#begin(g:plug_path)
 
 if has('nvim')
 	Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
@@ -38,15 +43,17 @@ Plug 'davidhalter/jedi', { 'for': 'python' }
 Plug 'editorconfig/editorconfig-vim'
 Plug 'edkolev/tmuxline.vim'
 Plug 'flazz/vim-colorschemes'
-Plug 'klen/python-mode'
+Plug 'heavenshell/vim-pydocstring', { 'for': 'python' }
+Plug 'klen/python-mode', { 'for': 'python' }
 Plug 'luochen1990/rainbow'
 Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'css', 'less', 'jinja', 'html.twig', 'html.handlebars', 'html.mustache'] }
+Plug 'mattn/gist-vim'
+Plug 'mattn/webapi-vim'
 Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
 Plug 'plasticboy/vim-markdown', { 'for': ['markdown'] }
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
 Plug 'scrooloose/syntastic'
-" Plug 'shawncplus/phpcomplete.vim', { 'for': ['php'] }
 Plug 'sheerun/vim-polyglot'
 Plug 'sjl/clam.vim'
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install', 'for': ['javascript'] }
@@ -64,6 +71,7 @@ Plug 'vim-airline/vim-airline-themes'
 " polyglot overriding
 Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'elzr/vim-json'
+Plug 'groenewege/vim-less'
 Plug 'saltstack/salt-vim'
 
 call plug#end()
@@ -163,7 +171,7 @@ if has("wildignore")
 	set wildignore+=*.psd,*.ai " Images
 	set wildignore+=*.o,*.obj,*.bak,*.exe
 	set wildignore+=*.mp4,*.ogg,*.m4v,*.ogv,*.mp3 " Mulitmedia files
-	set wildignore+=*.pyc,*.pyo,*.egg-info " Python bullshit
+	set wildignore+=*.pyc,*.pyo,*.egg-info,.ropeproject,.tox " Python bullshit
 	set wildignore+=.DS_Store " OSX bullshit
 	set wildignore+=*.hist
 endif
@@ -520,6 +528,9 @@ vnoremap > >gv
 " Open tag in new tab
 nnoremap <silent><Leader><C-]> <C-w><C-]><C-w>T
 
+" Open tag is vertical split
+nnoremap <A-]> :vsplit<CR>:exec("tag ".expand("<cword>"))<CR>
+
 "===============================================================================
 " => # Solarized
 "===============================================================================
@@ -693,7 +704,7 @@ let g:NERDTreeChDirMode = 1
 let g:NERDTreeDirArrows = 0
 let g:NERDTreeDirArrows = 0
 let g:NERDTreeHijackNetrw = 1
-let g:NERDTreeIgnore = ['\.swp$', '\~$', '\.pyc', '__pycache__', '.DS_Store', '\.egg-info']
+let g:NERDTreeIgnore = ['\.swp$', '\~$', '\.pyc', '__pycache__', '.DS_Store', '\.egg-info', '.ropeproject', '.tox', '.cache', 'htmlcov']
 let g:NERDTreeMinimalUI = 1
 let g:NERDTreeShowBookmarks = 1
 let g:NERDTreeShowFiles = 1
@@ -766,6 +777,14 @@ let g:python3_host_prog = expand('~/.pyenv/versions/neovim3/bin/python')
 let g:pymode_virtualenv = 1
 let g:pymode_breakpoint = 1
 let g:pymode_breakpoint_bind = '<leader>b'
+" This here be the worst setting ever with neocomplete
+let g:pymode_rope_complete_on_dot = 0
+
+"===============================================================================
+" => vim-pydocstring
+"===============================================================================
+
+nnoremap <silent> <C-_> <Plug>(pydocstring)
 
 "===============================================================================
 " => Vim Plug
@@ -900,7 +919,7 @@ let g:rainbow_conf = {
 \		},
 \		'html': {
 \			'parentheses': [
-\				'start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'
+\				'start=/\v\<((|html|title|body|h1|h2|h3|h4|h5|h6|p|br|hr|acronym|abbr|address|b|bdi|bdo|big|blockquote|center|cite|code|del|dfn|em|font|i|ins|kbd|mark|meter|pre|progress|q|rp|rt|ruby|s|samp|small|strike|strong|sub|sup|time|tt|u|var|wbr|form|input|textarea|button|select|optgroup|option|label|fieldset|legend|datalist|keygen|output|frame|frameset|noframes|iframe|img|map|area|canvas|figcaption|figure|audio|source|track|video|a|link|nav|ul|ol|li|dir|dl|dt|dd|menu|menuitem|table|caption|th|tr|td|thead|tbody|tfoot|col|colgroup|style|div|span|header|footer|main|section|article|aside|details|dialog|summary|head|meta|base|basefont|script|noscript|applet|embed|object|param)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'
 \			],
 \		},
 \		'css': 0,
