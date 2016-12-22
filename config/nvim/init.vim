@@ -753,6 +753,10 @@ if !exists('g:neocomplete#sources#omni#input_patterns')
 	let g:neocomplete#sources#omni#input_patterns = {}
 endif
 
+if !exists('g:neocomplete#force_omni_input_patterns.python')
+	let g:neocomplete#force_omni_input_patterns = {}
+endif
+
 let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
 let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
@@ -761,6 +765,15 @@ let g:neocomplete#sources#omni#input_patterns.java = '\k\.\k*'
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
 xmap <C-k> <Plug>(neosnippet_expand_target)
+
+"===============================================================================
+" => Jedi
+"===============================================================================
+
+let g:jedi#completions_enabled = 0
+let g:jedi#auto_vim_configuration = 0
+let g:jedi#smart_auto_mappings = 0
+let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
 
 "===============================================================================
 " => Deoplete-Jedi
@@ -776,11 +789,19 @@ let g:python3_host_prog = expand('~/.pyenv/versions/neovim3/bin/python')
 
 let g:pymode_virtualenv = 1
 let g:pymode_breakpoint = 1
-let g:pymode_breakpoint_bind = '<leader>b'
+let g:pymode_breakpoint_bind = '<leader>bp'
+" I'm using neomake because it's async
+let g:pymode_lint = 0
+" Not the biggest fan of rope, because it seems like other plugins do it's job,
+" but leaving it enabled because it allows for pretty highlighting.
+let g:pymode_rope = 1
 " This here be the worst setting ever with neocomplete
 let g:pymode_rope_complete_on_dot = 0
-" Disable this checking because it's interfering with neomake
-let g:pymode_lint = 0
+" Love the new highlighting
+let g:pymode_syntax = 1
+let g:pymode_syntax_all = 1
+" It can highlight code blocks but it's slow. Okay, I'll take that hit.
+let g:pymode_syntax_slow_sync = 1
 
 "===============================================================================
 " => vim-pydocstring
