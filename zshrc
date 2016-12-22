@@ -84,9 +84,9 @@ elif [[ `uname` == "Darwin" ]]; then
 	plugins+=(brew brew-cask osx xcode)
 fi
 
-plugins+=(cp git git-extras github git-prompt colorize composer django \
-	emoji-clock fabric go history-substring-search pip python rvm \
-	svn-fast-info symfony2 vagrant virtualenv keybase zsh_reload)
+plugins+=(cp docker docker-compose git git-extras github git-prompt colorize \
+	composer django emoji-clock fabric go history-substring-search pip python \
+	rvm svn-fast-info symfony2 vagrant virtualenv keybase zsh_reload)
 
 if [[ `uname` == "Linux" ]]; then
 	plugins+=(zsh-syntax-highlighting)
