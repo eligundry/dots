@@ -779,6 +779,8 @@ let g:pymode_breakpoint = 1
 let g:pymode_breakpoint_bind = '<leader>b'
 " This here be the worst setting ever with neocomplete
 let g:pymode_rope_complete_on_dot = 0
+" Disable this checking because it's interfering with neomake
+let g:pymode_lint = 0
 
 "===============================================================================
 " => vim-pydocstring
