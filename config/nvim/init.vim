@@ -42,6 +42,7 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'davidhalter/jedi', { 'for': 'python' }
 Plug 'editorconfig/editorconfig-vim'
 Plug 'edkolev/tmuxline.vim'
+Plug 'ekalinin/Dockerfile.vim'
 Plug 'flazz/vim-colorschemes'
 Plug 'heavenshell/vim-pydocstring', { 'for': 'python' }
 Plug 'klen/python-mode', { 'for': 'python' }
