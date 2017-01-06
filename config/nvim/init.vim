@@ -42,6 +42,7 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'davidhalter/jedi', { 'for': 'python' }
 Plug 'editorconfig/editorconfig-vim'
 Plug 'edkolev/tmuxline.vim'
+Plug 'ekalinin/Dockerfile.vim'
 Plug 'flazz/vim-colorschemes'
 Plug 'heavenshell/vim-pydocstring', { 'for': 'python' }
 Plug 'klen/python-mode', { 'for': 'python' }
@@ -751,7 +752,9 @@ endif
 let g:deoplete#enable_at_startup = 1
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 0
-
+" This will allow neosnippet to load snippets automatically from plugins.
+" Why this isn't a default, I'll never know.
+let g:neosnippet#enable_snipmate_compatibility = 1
 
 if !exists('g:neocomplete#sources#omni#input_patterns')
   let g:neocomplete#sources#omni#input_patterns = {}
