@@ -87,14 +87,15 @@ fi
 
 plugins+=(cp docker docker-compose git git-extras github git-prompt colorize \
 	composer django emoji-clock fabric go history-substring-search pip python \
-	rvm svn-fast-info symfony2 vagrant virtualenv keybase zsh_reload)
+	rvm svn-fast-info symfony2 vagrant virtualenv keybase zsh_reload \
+	zsh-completions)
 
 if [[ `uname` == "Linux" ]]; then
 	plugins+=(zsh-syntax-highlighting)
 fi
 
 # Add zsh completions to fpath
-fpath=($ZSH/custom/plugins/zsh-completions/src $fpath)
+fpath=($HOME/.zsh/completions $fpath)
 
 source $ZSH/oh-my-zsh.sh
 

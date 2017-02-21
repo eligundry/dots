@@ -1,1 +1,1 @@
-autocmd BufRead,BufNewFile *.judo setfiletype json
+autocmd BufRead,BufNewFile *.{judo,cyclops} setfiletype json

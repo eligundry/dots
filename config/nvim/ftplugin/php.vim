@@ -4,5 +4,6 @@
 " Description: PHP specific vim settings
 "===============================================================================
 
-setlocal omnifunc=phpcomplete#CompletePHP
+" setlocal omnifunc=phpcomplete#CompletePHP
+setlocal omnifunc=phpcomplete_extended#CompletePHP
 setlocal textwidth=85
