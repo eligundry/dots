@@ -25,6 +25,7 @@ if has('nvim')
 	Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
 	Plug 'neomake/neomake'
 	Plug 'zchee/deoplete-jedi', { 'for': 'python' }
+	Plug 'Shougo/denite.nvim'
 else
 	Plug 'Shougo/neocomplete.vim'
 endif
@@ -33,6 +34,7 @@ Plug 'IN3D/vim-raml'
 Plug 'Raimondi/delimitMate'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
 Plug 'airblade/vim-gitgutter'
 Plug 'altercation/vim-colors-solarized'
@@ -40,6 +42,7 @@ Plug 'bronson/vim-visual-star-search'
 Plug 'chriskempson/base16-vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'davidhalter/jedi', { 'for': 'python' }
+Plug 'davidoc/taskpaper.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'edkolev/tmuxline.vim'
 Plug 'ekalinin/Dockerfile.vim'
@@ -47,6 +50,7 @@ Plug 'flazz/vim-colorschemes'
 Plug 'heavenshell/vim-pydocstring', { 'for': 'python' }
 Plug 'klen/python-mode', { 'for': 'python' }
 Plug 'luochen1990/rainbow'
+Plug 'm2mdas/phpcomplete-extended', { 'for': ['php'] }
 Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'css', 'less', 'jinja', 'html.twig', 'html.handlebars', 'html.mustache'] }
 Plug 'mattn/gist-vim'
@@ -825,7 +829,7 @@ autocmd FileType vim-plug :vertical resize 40
 let g:ctrlp_max_files = 0
 let g:ctrlp_max_depth = 10
 let g:ctrlp_custom_ignore = {
-\	'dir': '\v[\/](node_modules|vendor)|\.(git|hg|svn|env|vagrant)$',
+\	'dir': '\v[\/](.git|.hg|.svn|.env|.vagrant|node_modules|vendor)$',
 \	'file': '\v\.(exe|so|dll|pyo|pyc)$'
 \ }
 

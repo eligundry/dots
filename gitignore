@@ -32,3 +32,4 @@
 *syncd.*
 *.hist
 **/.ropeproject
+**/.phpcomplete_extended
