@@ -17,10 +17,8 @@ else
 	alias v='vim'
 fi
 
-# Debian's zsh plugin sets ag, which is silver searcher
-# if [[ `uname` != "Darwin" ]]; then
-# 	unalias ag
-# fi
+# The apt zsh plugin sets this and it conflicts with the silver searcher
+unalias ag
 
 # ls shortcuts
 alias la='ls -A'

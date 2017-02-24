@@ -637,14 +637,18 @@ autocmd BufEnter man\ * setlocal filetype=man
 " => Change Tmux cursor
 "===============================================================================
 
-if empty($TMUX)
+if has('nvim')
+  let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+else
+  if empty($TMUX)
     let &t_SI = "\<Esc>]50;CursorShape=1\x7"
     let &t_EI = "\<Esc>]50;CursorShape=0\x7"
     let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-else
+  else
     let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
     let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
     let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
+  endif
 endif
 
 "===============================================================================
@@ -833,12 +837,11 @@ let g:ctrlp_custom_ignore = {
 \   'file': '\v\.(exe|so|dll|pyo|pyc)$'
 \ }
 
-if executable('ag')
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-endif
-
 function! CtrlPSettings()
     nnoremap <leader>ct :CtrlPTag<CR>
+    if executable('ag')
+        let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+    endif
 endfunction
 
 autocmd VimEnter * if exists(':CtrlP') | call CtrlPSettings() | endif
