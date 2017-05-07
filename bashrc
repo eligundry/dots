@@ -73,7 +73,7 @@ export LESS_TERMCAP_ue=$'\E[0m'           # end underline
 export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
 
 # The next line updates PATH for the Google Cloud SDK.
-source '/home/eligundry/google-cloud-sdk/path.bash.inc'
+# source '/home/eligundry/google-cloud-sdk/path.bash.inc'
 
 # The next line enables bash completion for gcloud.
-source '/home/eligundry/google-cloud-sdk/completion.bash.inc'
+# source '/home/eligundry/google-cloud-sdk/completion.bash.inc'
