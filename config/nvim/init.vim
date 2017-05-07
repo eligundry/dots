@@ -5,7 +5,7 @@
 "===============================================================================
 
 function! DoRemote(arg)
-  UpdateRemotePlugins
+    UpdateRemotePlugins
 endfunction
 
 "===============================================================================
@@ -16,7 +16,7 @@ let g:plug_timeout = 5
 let g:plug_path = '~/.vim/plugged'
 
 if has('nvim')
-  let g:plug_path = '~/.config/nvim/plugged'
+    let g:plug_path = '~/.config/nvim/plugged'
 endif
 
 call plug#begin(g:plug_path)
@@ -95,11 +95,11 @@ set fileformats=unix,dos,mac
 
 " I love UTF-8
 if has("multi_byte")
-  scriptencoding utf-8
-  let &termencoding = &encoding
-  setglobal encoding=utf-8
-  setglobal fileencoding=utf-8
-  setglobal nobomb
+    scriptencoding utf-8
+    let &termencoding = &encoding
+    setglobal encoding=utf-8
+    setglobal fileencoding=utf-8
+    setglobal nobomb
 endif
 
 " Indenting
@@ -131,14 +131,14 @@ set directory=~/.neovim/swap
 " see all of your edits in diff style so you can revert back to certain
 " parts in time.
 if has("persistent_undo")
-  set undofile
-  set undolevels=3000
-  set undodir=~/.neovim/undo
+    set undofile
+    set undolevels=3000
+    set undodir=~/.neovim/undo
 else
-  " If persistent undo isn't available, let's enable backups.
-  set backup
-  set writebackup
-  set swapfile
+    " If persistent undo isn't available, let's enable backups.
+    set backup
+    set writebackup
+    set swapfile
 endif
 
 "===============================================================================
@@ -153,8 +153,8 @@ set titlestring="%t%(\ %M%)%(\ (%{expand(\"%:~:.:h\")})%)%(\ %a%)"
 
 " Fancy (quick) search highlighting
 if has("extra_search")
-  set hlsearch
-  set incsearch
+    set hlsearch
+    set incsearch
 endif
 
 set ignorecase infercase " When I search, I don't need to capitalize...
@@ -171,14 +171,14 @@ set wildignorecase
 " showing these files and will break Fugitive. Uncomment these if you want to
 " make Vim's autocomplete more relevant.
 if has("wildignore")
-  " set wildignore+=.git,.svn,.hg " Version control files
-  " set wildignore+=*.jpg,*.jpeg,*.png,*.psd,*.ai,*.bmp,*.gif " Images
-  set wildignore+=*.psd,*.ai " Images
-  set wildignore+=*.o,*.obj,*.bak,*.exe
-  set wildignore+=*.mp4,*.ogg,*.m4v,*.ogv,*.mp3 " Mulitmedia files
-  set wildignore+=*.pyc,*.pyo,*.egg-info,.ropeproject,.tox " Python bullshit
-  set wildignore+=.DS_Store " OSX bullshit
-  set wildignore+=*.hist
+    " set wildignore+=.git,.svn,.hg " Version control files
+    " set wildignore+=*.jpg,*.jpeg,*.png,*.psd,*.ai,*.bmp,*.gif " Images
+    set wildignore+=*.psd,*.ai " Images
+    set wildignore+=*.o,*.obj,*.bak,*.exe
+    set wildignore+=*.mp4,*.ogg,*.m4v,*.ogv,*.mp3 " Mulitmedia files
+    set wildignore+=*.pyc,*.pyo,*.egg-info,.ropeproject,.tox " Python bullshit
+    set wildignore+=.DS_Store " OSX bullshit
+    set wildignore+=*.hist
 endif
 
 " Stay in the same column when jumping around
@@ -195,18 +195,18 @@ set modelines=0
 set nojoinspaces
 
 if has("folding")
-  set nofoldenable " I hate folds...
-  set foldmethod=manual " ...but if there are folds, let me control them
+    set nofoldenable " I hate folds...
+    set foldmethod=manual " ...but if there are folds, let me control them
 endif
 
 " I don't need Vim telling me where I can't go!
 if has("virtualedit")
-  set virtualedit=all
+    set virtualedit=all
 endif
 
 " Change current directory to whatever file I'm editing
 if exists("+autochdir")
-  set autochdir
+    set autochdir
 endif
 
 " Disable mouse is all modes in terminal Vim
@@ -228,25 +228,25 @@ set formatoptions=oqn1 " Check out 'fo-table' to see what this does.
 "===============================================================================
 
 if has("cmdline_info")
-  set ruler
-  set showcmd
-  set cmdheight=2
-  set laststatus=2
-  set noshowmode " Powerline shows mode now
+    set ruler
+    set showcmd
+    set cmdheight=2
+    set laststatus=2
+    set noshowmode " Powerline shows mode now
 endif
 
 " Remove cursorline and colorcolumn when buffer loses focus
 " Put it back in when it gains focus
 if has("syntax") && v:version >= 703
-  set cursorline colorcolumn=+1
-  autocmd WinLeave * set nocursorline colorcolumn=""
-  autocmd WinEnter,BufEnter,BufNewFile * set cursorline colorcolumn=+1
+    set cursorline colorcolumn=+1
+    autocmd WinLeave * set nocursorline colorcolumn=""
+    autocmd WinEnter,BufEnter,BufNewFile * set cursorline colorcolumn=+1
 endif
 
 " Completely hide concealed text (i.e. snippets)
 if has('conceal')
-  set conceallevel=2
-  set concealcursor=i
+    set conceallevel=2
+    set concealcursor=i
 endif
 
 set t_Co=256 " 256 color support in terminal
@@ -254,12 +254,12 @@ set background=dark " I like a dark background
 
 " When vertically scrolling, pad cursor 5 lines
 if !&scrolloff
-  set scrolloff=5
+    set scrolloff=5
 endif
 
 " When scrolling horizontally, pad cursor 5 lines
 if !&sidescrolloff
-  set sidescrolloff=5
+    set sidescrolloff=5
 endif
 
 " List characters
@@ -273,8 +273,8 @@ set timeoutlen=3000
 
 " Split Handling
 if has("windows") && has("vertsplit")
-  set splitbelow
-  set splitright
+    set splitbelow
+    set splitright
 endif
 
 " NO FREAKING BELLS
@@ -289,7 +289,7 @@ set relativenumber
 " set norelativenumber
 
 if has("linebreak")
-  set numberwidth=2
+    set numberwidth=2
 endif
 
 " Make all comments italic
@@ -301,65 +301,65 @@ highlight Comment cterm=italic
 
 " Toggle relative line numbering
 function! ToggleRelativeNumber()
-  if &relativenumber
-    set number
-  elseif !&number
-    set relativenumber
-  else
-    set nonumber norelativenumber
-  endif
+    if &relativenumber
+        set number
+    elseif !&number
+        set relativenumber
+    else
+        set nonumber norelativenumber
+    endif
 endfunction
 
 " Toggle virtualedit settings
 function! ToggleVirtualEdit()
-  if &virtualedit == "all"
-    set virtualedit=onemore
-  else
-    set virtualedit=all
-  endif
+    if &virtualedit == "all"
+        set virtualedit=onemore
+    else
+        set virtualedit=all
+    endif
 endfunction
 
 " Toggle mouse modes
 function! ToggleMouse()
-  if &mouse == "a"
-    set mouse=
-  else
-    set mouse=a
-  endif
+    if &mouse == "a"
+        set mouse=
+    else
+        set mouse=a
+    endif
 endfunction
 
 " Toggle arrow keys for weaklings trying to use my vim
 let g:ArrowKeysEnabled = 1
 function! ToggleArrowKeys(silent)
-  let g:ArrowKeysEnabled = !g:ArrowKeysEnabled
+    let g:ArrowKeysEnabled = !g:ArrowKeysEnabled
 
-  if g:ArrowKeysEnabled == 1
-    nnoremap <silent> <Up> k
-    nnoremap <silent> <Down> j
-    nnoremap <silent> <Left> h
-    nnoremap <silent> <Right> l
-    inoremap <Left> <Left>
-    inoremap <Right> <Right>
-    inoremap <Up> <Up>
-    inoremap <Down> <Down>
+    if g:ArrowKeysEnabled == 1
+        nnoremap <silent> <Up> k
+        nnoremap <silent> <Down> j
+        nnoremap <silent> <Left> h
+        nnoremap <silent> <Right> l
+        inoremap <Left> <Left>
+        inoremap <Right> <Right>
+        inoremap <Up> <Up>
+        inoremap <Down> <Down>
 
-    if a:silent == 0
-      echo "Arrow Keys enabled"
+        if a:silent == 0
+            echo "Arrow Keys enabled"
+        endif
+    else
+        nnoremap <silent> <Up> :resize +5<cr>
+        nnoremap <silent> <Down> :resize -5<cr>
+        nnoremap <silent> <Left> :vertical resize -5<cr>
+        nnoremap <silent> <Right> :vertical resize +5<cr>
+        inoremap <Left> <Nop>
+        inoremap <Right> <Nop>
+        inoremap <Up> <Nop>
+        inoremap <Down> <Nop>
+
+        if a:silent == 0
+            echo "Arrow Keys disabled"
+        endif
     endif
-  else
-    nnoremap <silent> <Up> :resize +5<cr>
-    nnoremap <silent> <Down> :resize -5<cr>
-    nnoremap <silent> <Left> :vertical resize -5<cr>
-    nnoremap <silent> <Right> :vertical resize +5<cr>
-    inoremap <Left> <Nop>
-    inoremap <Right> <Nop>
-    inoremap <Up> <Nop>
-    inoremap <Down> <Nop>
-
-    if a:silent == 0
-      echo "Arrow Keys disabled"
-    endif
-  endif
 endfunction
 
 " Disable the arrow keys by default
@@ -367,10 +367,10 @@ call ToggleArrowKeys(1)
 
 " Return to current line when reopening file
 augroup line_return
-  autocmd BufReadPost *
-    \if line("'\"") > 0 && line("'\"") <= line("$") |
-    \ execute 'normal! g`"zvzz' |
-    \endif
+    autocmd BufReadPost *
+        \if line("'\"") > 0 && line("'\"") <= line("$") |
+        \   execute 'normal! g`"zvzz' |
+        \endif
 augroup END
 
 " Remove trailing whitespace when saving files
@@ -460,11 +460,11 @@ nnoremap Q <Nop>
 
 " Yank lines to system clipboard in visual
 if has("unix")
-  if system('uname -s') =~ 'Darwin'
-    vnoremap <Leader>Y :w !pbcopy<CR><CR>
-  else
-    vnoremap <Leader>Y :w !xclip -i<CR><CR>
-  endif
+    if system('uname -s') =~ 'Darwin'
+        vnoremap <Leader>Y :w !pbcopy<CR><CR>
+    else
+        vnoremap <Leader>Y :w !xclip -i<CR><CR>
+    endif
 endif
 
 " Vimrc quick edit
@@ -554,16 +554,16 @@ nnoremap <A-]> :vsplit<CR>:exec("tag ".expand("<cword>"))<CR>
 "===============================================================================
 
 if filereadable(expand("~/.vimrc_background"))
-  let base16colorspace=256
-  source ~/.vimrc_background
+    let base16colorspace=256
+    source ~/.vimrc_background
 else
-  colorscheme base16-default-dark
+    colorscheme base16-default-dark
 endif
 
 " On Linux terminals with transparent backgrounds, Base16 is overriding the
 " background color making the Vim background solid. This will get around that.
 if system('uname -s') =~ 'Linux'
-  hi Normal ctermbg=None
+    hi Normal ctermbg=None
 endif
 
 "===============================================================================
@@ -590,7 +590,7 @@ let g:airline#extensions#tabline#right_alt_sep = ''
 
 " Fancy Powerline symbols
 if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
+    let g:airline_symbols = {}
 endif
 
 let g:airline_left_sep = ''
@@ -603,20 +603,20 @@ let g:airline_symbols.linenr = ''
 
 " Windows Section
 if has("win32") || has("win64")
-  let g:airline_powerline_fonts = 0
-  let g:airline#extensions#tabline#left_sep = '>'
-  let g:airline#extensions#tabline#left_alt_sep = '>'
-  let g:airline#extensions#tabline#right_sep = '<'
-  let g:airline#extensions#tabline#right_alt_sep = '<'
-  let g:airline#extensions#tabline#left_sep = '>'
-  let g:airline#extensions#tabline#left_alt_sep = '>'
-  let g:airline#extensions#tabline#right_sep = '<'
-  let g:airline#extensions#tabline#right_alt_sep = '<'
+    let g:airline_powerline_fonts = 0
+    let g:airline#extensions#tabline#left_sep = '>'
+    let g:airline#extensions#tabline#left_alt_sep = '>'
+    let g:airline#extensions#tabline#right_sep = '<'
+    let g:airline#extensions#tabline#right_alt_sep = '<'
+    let g:airline#extensions#tabline#left_sep = '>'
+    let g:airline#extensions#tabline#left_alt_sep = '>'
+    let g:airline#extensions#tabline#right_sep = '<'
+    let g:airline#extensions#tabline#right_alt_sep = '<'
 endif
 
 " Fix Symbol issue in GUI
 if has('gui')
-  let g:airline_symbols.space = "\u3000"
+    let g:airline_symbols.space = "\u3000"
 endif
 
 "===============================================================================
@@ -624,8 +624,8 @@ endif
 "===============================================================================
 
 function! ClamSettings()
-  nnoremap ! :Clam<Space>
-  vnoremap ! :ClamVisual<Space>
+    nnoremap ! :Clam<Space>
+    vnoremap ! :ClamVisual<Space>
 endfunction
 
 autocmd VimEnter * if exists("loaded_clam") | call ClamSettings() | endif
@@ -672,9 +672,9 @@ let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_quiet_messages = {'level': 'warnings'}
 let g:syntastic_mode_map = {
-  \ 'mode': 'active',
-  \ 'active_filetypes': ['html', 'xml', 'c', 'cpp', 'php', 'css', 'ruby', 'eruby', 'python', 'javascript'],
-  \ 'passive_filetypes': ['less'] }
+    \ 'mode': 'active',
+    \ 'active_filetypes': ['html', 'xml', 'c', 'cpp', 'php', 'css', 'ruby', 'eruby', 'python', 'javascript'],
+    \ 'passive_filetypes': ['less'] }
 let g:syntastic_javascript_checkers = ['eslint']
 
 "===============================================================================
@@ -688,17 +688,17 @@ let g:neomake_open_list = 2
 
 " https://robots.thoughtbot.com/my-life-with-neovim
 function! NeomakeSettings()
-  " Run NeoMake on read and write operations
-  autocmd BufReadPost,BufWritePost * Neomake
+    " Run NeoMake on read and write operations
+    autocmd BufReadPost,BufWritePost * Neomake
 
-  " Auto open the warning/error list when finished, but don't focus on it
-  autocmd User NeomakeCountsChanged :lopen | wincmd k
+    " Auto open the warning/error list when finished, but don't focus on it
+    autocmd User NeomakeCountsChanged :lopen | wincmd k
 
-  " Disable inherited syntastic
-  let g:syntastic_mode_map = {
-  \ "mode": "passive",
-  \ "active_filetypes": [],
-  \ "passive_filetypes": [] }
+    " Disable inherited syntastic
+    let g:syntastic_mode_map = {
+    \ "mode": "passive",
+    \ "active_filetypes": [],
+    \ "passive_filetypes": [] }
 endfunction
 
 autocmd VimEnter * if exists(":Neomake") | call NeomakeSettings() | endif
@@ -722,8 +722,8 @@ let g:NERDTreeShowLineNumbers = 0
 let g:NERDTreeWinSize = 22
 
 function! NERDTreeSettings()
-  nnoremap <silent> <Leader>nt :UndotreeHide<CR>:NERDTreeToggle<CR>
-  autocmd FileType nerdtree setlocal colorcolumn=""
+    nnoremap <silent> <Leader>nt :UndotreeHide<CR>:NERDTreeToggle<CR>
+    autocmd FileType nerdtree setlocal colorcolumn=""
 endfunction
 
 autocmd VimEnter * if exists(":NERDTree") | call NERDTreeSettings() | endif
@@ -733,7 +733,7 @@ autocmd VimEnter * if exists(":NERDTree") | call NERDTreeSettings() | endif
 "===============================================================================
 
 function! UndotreeSettings()
-  nnoremap <silent> <Leader>ut :NERDTreeClose<CR>:UndotreeShow<CR>:UndotreeFocus<CR>
+    nnoremap <silent> <Leader>ut :NERDTreeClose<CR>:UndotreeShow<CR>:UndotreeFocus<CR>
 endfunction
 
 autocmd VimEnter * if exists(":UndotreeShow") | call UndotreeSettings() | endif
@@ -743,9 +743,9 @@ autocmd VimEnter * if exists(":UndotreeShow") | call UndotreeSettings() | endif
 "===============================================================================
 
 if exists('g:plugs["tern_for_vim"]')
-  let g:tern_show_argument_hints = 'on_hold'
-  let g:tern_show_signature_in_pum = 1
-  autocmd FileType javascript setlocal omnifunc=tern#Complete
+    let g:tern_show_argument_hints = 'on_hold'
+    let g:tern_show_signature_in_pum = 1
+    autocmd FileType javascript setlocal omnifunc=tern#Complete
 endif
 
 "===============================================================================
@@ -761,11 +761,11 @@ let g:neocomplete#enable_smart_case = 0
 let g:neosnippet#enable_snipmate_compatibility = 1
 
 if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
+    let g:neocomplete#sources#omni#input_patterns = {}
 endif
 
 if !exists('g:neocomplete#force_omni_input_patterns.python')
-  let g:neocomplete#force_omni_input_patterns = {}
+    let g:neocomplete#force_omni_input_patterns = {}
 endif
 
 let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
@@ -837,12 +837,11 @@ let g:ctrlp_custom_ignore = {
 \   'file': '\v\.(exe|so|dll|pyo|pyc)$'
 \ }
 
-if executable('ag')
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-endif
-
 function! CtrlPSettings()
-  nnoremap <leader>ct :CtrlPTag<CR>
+    nnoremap <leader>ct :CtrlPTag<CR>
+    if executable('ag')
+        let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+    endif
 endfunction
 
 autocmd VimEnter * if exists(':CtrlP') | call CtrlPSettings() | endif
@@ -862,12 +861,12 @@ autocmd FileType vim,html,xml,xhtml let b:delimitMate_matchpairs = "(:),[:],{:},
 "===============================================================================
 
 function! FugitiveSettings()
-  nnoremap <silent> <Leader>gs :Gstatus<CR>
-  nnoremap <silent> <Leader>gb :Gblame<CR>
-  nnoremap <silent> <Leader>gd :Gdiff<CR>
-  nnoremap <silent> <Leader>gp :Git push<CR>
-  nnoremap <silent> <Leader>gl :Glog<CR>
-  autocmd FileType gitcommit nnoremap <buffer> <Leader>s :wq<CR>
+    nnoremap <silent> <Leader>gs :Gstatus<CR>
+    nnoremap <silent> <Leader>gb :Gblame<CR>
+    nnoremap <silent> <Leader>gd :Gdiff<CR>
+    nnoremap <silent> <Leader>gp :Git push<CR>
+    nnoremap <silent> <Leader>gl :Glog<CR>
+    autocmd FileType gitcommit nnoremap <buffer> <Leader>s :wq<CR>
 endfunction
 
 autocmd VimEnter * if exists("g:loaded_fugitive") | call FugitiveSettings() | endif
@@ -877,7 +876,7 @@ autocmd VimEnter * if exists("g:loaded_fugitive") | call FugitiveSettings() | en
 "===============================================================================
 
 function! TagBarSettings()
-  nnoremap <silent> <Leader>tb :Tagbar<CR>
+    nnoremap <silent> <Leader>tb :Tagbar<CR>
 endfunction
 
 autocmd VimEnter * if exists(":Tagbar") | call TagBarSettings() | endif
@@ -889,8 +888,8 @@ autocmd VimEnter * if exists(":Tagbar") | call TagBarSettings() | endif
 let g:tcommentBlankLines = 1
 
 function! TCommentSettings()
-  nnoremap <Leader>cc :TComment<CR>
-  vnoremap <Leader>cc :TCommentBlock<CR>
+    nnoremap <Leader>cc :TComment<CR>
+    vnoremap <Leader>cc :TCommentBlock<CR>
 endfunction
 
 autocmd VimEnter * if exists(":TComment") | call TCommentSettings() | endif
@@ -900,8 +899,8 @@ autocmd VimEnter * if exists(":TComment") | call TCommentSettings() | endif
 "===============================================================================
 
 function! TboneSettings()
-  vnoremap <Leader>y :Tyank<CR>
-  nnoremap <Leader>p :Tput<CR>
+    vnoremap <Leader>y :Tyank<CR>
+    nnoremap <Leader>p :Tput<CR>
 endfunction
 
 autocmd VimEnter * if exists(":Tmux") | call TboneSettings() | endif
@@ -918,9 +917,15 @@ let g:vim_json_syntax_conceal = 0
 
 " Use ag over grep
 if executable('ag')
-  set grepprg=ag\ --vimgrep\ $*
-  set grepformat=%f:%l:%c:%m
+    set grepprg=ag\ --vimgrep\ $*
+    set grepformat=%f:%l:%c:%m
 endif
+
+"===============================================================================
+" => PHP Autocomplete Extended
+"===============================================================================
+
+let g:phpcomplete_index_composer_command = 'composer'
 
 "===============================================================================
 " => Rainbow Parentheses
@@ -928,34 +933,34 @@ endif
 
 let g:rainbow_active = 1
 let g:rainbow_conf = {
-\ 'guifgs': ['blue', 'yellow', 'red', 'cyan', 'magenta'],
-\ 'ctermfgs': ['blue', 'yellow', 'red', 'cyan', 'magenta'],
-\ 'operators': '_,_',
-\ 'parentheses': [
-\   'start=/(/ end=/)/ fold',
-\   'start=/\[/ end=/\]/ fold',
-\   'start=/{/ end=/}/ fold'
-\ ],
-\ 'separately': {
-\   '*': {},
-\   'tex': {
-\     'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
-\   },
-\   'vim': {
-\     'parentheses': [
-\       'start=/(/ end=/)/',
-\       'start=/\[/ end=/\]/',
-\       'start=/{/ end=/}/ fold',
-\       'start=/(/ end=/)/ containedin=vimFuncBody',
-\       'start=/\[/ end=/\]/ containedin=vimFuncBody',
-\       'start=/{/ end=/}/ fold containedin=vimFuncBody'
-\     ],
-\   },
-\   'html': {
-\     'parentheses': [
-\       'start=/\v\<((|html|title|body|h1|h2|h3|h4|h5|h6|p|br|hr|acronym|abbr|address|b|bdi|bdo|big|blockquote|center|cite|code|del|dfn|em|font|i|ins|kbd|mark|meter|pre|progress|q|rp|rt|ruby|s|samp|small|strike|strong|sub|sup|time|tt|u|var|wbr|form|input|textarea|button|select|optgroup|option|label|fieldset|legend|datalist|keygen|output|frame|frameset|noframes|iframe|img|map|area|canvas|figcaption|figure|audio|source|track|video|a|link|nav|ul|ol|li|dir|dl|dt|dd|menu|menuitem|table|caption|th|tr|td|thead|tbody|tfoot|col|colgroup|style|div|span|header|footer|main|section|article|aside|details|dialog|summary|head|meta|base|basefont|script|noscript|applet|embed|object|param)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'
-\     ],
-\   },
-\   'css': 0,
-\ }
+\   'guifgs': ['blue', 'yellow', 'red', 'cyan', 'magenta'],
+\   'ctermfgs': ['blue', 'yellow', 'red', 'cyan', 'magenta'],
+\   'operators': '_,_',
+\   'parentheses': [
+\       'start=/(/ end=/)/ fold',
+\       'start=/\[/ end=/\]/ fold',
+\       'start=/{/ end=/}/ fold'
+\   ],
+\   'separately': {
+\       '*': {},
+\       'tex': {
+\           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
+\       },
+\       'vim': {
+\           'parentheses': [
+\               'start=/(/ end=/)/',
+\               'start=/\[/ end=/\]/',
+\               'start=/{/ end=/}/ fold',
+\               'start=/(/ end=/)/ containedin=vimFuncBody',
+\               'start=/\[/ end=/\]/ containedin=vimFuncBody',
+\               'start=/{/ end=/}/ fold containedin=vimFuncBody'
+\           ],
+\       },
+\       'html': {
+\           'parentheses': [
+\               'start=/\v\<((|html|title|body|h1|h2|h3|h4|h5|h6|p|br|hr|acronym|abbr|address|b|bdi|bdo|big|blockquote|center|cite|code|del|dfn|em|font|i|ins|kbd|mark|meter|pre|progress|q|rp|rt|ruby|s|samp|small|strike|strong|sub|sup|time|tt|u|var|wbr|form|input|textarea|button|select|optgroup|option|label|fieldset|legend|datalist|keygen|output|frame|frameset|noframes|iframe|img|map|area|canvas|figcaption|figure|audio|source|track|video|a|link|nav|ul|ol|li|dir|dl|dt|dd|menu|menuitem|table|caption|th|tr|td|thead|tbody|tfoot|col|colgroup|style|div|span|header|footer|main|section|article|aside|details|dialog|summary|head|meta|base|basefont|script|noscript|applet|embed|object|param)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'
+\           ],
+\       },
+\       'css': 0,
+\   }
 \}
