@@ -1,0 +1,147 @@
+################################################################################
+# @name: .commonprofile
+# @author: Eli Gundry
+# => A shared settings file for all my shells
+################################################################################
+
+################################################################################
+# => Custom Functions
+################################################################################
+
+pathadd() {
+	if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+		PATH="${PATH:+"$PATH:"}$1"
+	fi
+}
+
+command_exists() {
+	type "$1" &> /dev/null ;
+}
+
+################################################################################
+# => RVM
+################################################################################
+
+if [[ -n $SSH_CONNECTION ]]; then
+	pathadd "$HOME/.rvm/bin"
+	[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
+	export rvmsudo_secure_path=1
+fi
+
+################################################################################
+# => Pyenv
+################################################################################
+
+pathadd "$HOME/.pyenv/bin"
+export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
+################################################################################
+# => NVM
+################################################################################
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+
+################################################################################
+# => Tmuxifier
+################################################################################
+
+if [[ -z $SSH_CONNECTION ]]; then
+	pathadd "$HOME/.bin/tmuxifier/bin"
+	unset GREP_OPTIONS
+	export TMUXIFIER_LAYOUT_PATH="$DOTS/tmux-sessions"
+	eval "$(tmuxifier init -)"
+fi
+
+################################################################################
+# => Default Variables
+################################################################################
+
+export BROWSER=google-chrome-stable
+export DOTS=$HOME/dots
+export INPUTRC=$HOME/.inputrc
+export LANG=en_US.UTF-8
+export MANPAGER=less
+export PAGER=less
+export ECLIPSE_HOME=/usr/share/eclipse
+export TESSDATA_PREFIX=/usr/local/tesseract
+
+if command_exists nvim; then
+	export EDITOR=nvim
+	export VISUAL=nvim
+else
+	export EDITOR=vim
+	export VISUAL=vim
+fi
+
+# Turn off flow control
+stty -ixon
+
+################################################################################
+# => LESS Colors for Man
+# http://linuxtidbits.wordpress.com/2009/03/23/less-colors-for-man-pages/
+################################################################################
+
+export LESS_TERMCAP_mb=$'\E[01;31m'       # begin blinking
+export LESS_TERMCAP_md=$'\E[01;38;5;74m'  # begin bold
+export LESS_TERMCAP_me=$'\E[0m'           # end mode
+export LESS_TERMCAP_se=$'\E[0m'           # end standout-mode
+export LESS_TERMCAP_so=$'\E[38;5;246m'    # begin standout-mode - info box
+export LESS_TERMCAP_ue=$'\E[0m'           # end underline
+export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
+
+################################################################################
+# => Base16 Colorschemes
+################################################################################
+
+BASE16_SHELL=$HOME/.bin/base16-shell/
+[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+
+################################################################################
+# => /sbin Debian bullshit
+#
+# Debian likes to "hide" "privileged" programs outside of the path, thus you
+# can't tab complete simple commands like ifconfig. Fuck that noise, we are
+# consenting adults and don't need that bullshit.
+################################################################################
+
+pathadd "/sbin"
+pathadd "/usr/sbin"
+
+################################################################################
+# => Shared Aliases
+################################################################################
+
+if command_exists nvim; then
+	alias v='nvim'
+else
+	alias v='vim'
+fi
+
+alias c='clear'
+alias cp='cp -v'
+alias ip='curl ifconfig.me/ip'
+alias mkdir='mkdir -pv'
+alias mv='mv -v'
+alias rm='rm -v'
+alias s='sudo'
+alias s!='sudo !!'
+alias sctl='systemctl'
+alias so='source'
+alias svn_remove='find . -name .svn -print0 | xargs -0 rm -rf'
+alias git_clean='find . -name "*.orig" -delete'
+alias pip_upgrade_all='pip freeze --local | grep -v "^\-e" | cut -d = -f 1  | xargs -n1 pip install -U'
+
+# The apt zsh plugin sets this and it conflicts with the silver searcher
+unalias ag
+
+# ls shortcuts
+alias la='ls -A'
+alias ll='ls -lh'
+alias lla='ls -lAh'
+alias lr='ls -R'
+alias lar='ls -Arh'
+alias l.='ls -d .*'
