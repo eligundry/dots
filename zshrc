@@ -20,6 +20,7 @@ zplug "lib/completion", from:oh-my-zsh
 zplug "lib/directories", from:oh-my-zsh
 zplug "lib/history", from:oh-my-zsh
 zplug "lib/nvm", from:oh-my-zsh
+zplug "lib/termsupport", from:oh-my-zsh
 zplug "lib/theme-and-appearance", from:oh-my-zsh
 zplug "plugins/archlinux", from:oh-my-zsh, if:"[[ `lsb_release -si | sed -n '/MANJARO\|ARCH/p' | wc -l` == 1 ]]"
 zplug "plugins/brew", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
