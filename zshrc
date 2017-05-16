@@ -10,58 +10,47 @@
 source $HOME/.commonprofile
 
 ################################################################################
-# => Oh-My-ZSH
+# => ZPlug
 ################################################################################
 
-ZSH=$HOME/.oh-my-zsh
-ZSH_THEME="mitsuhiko"
-DISABLE_AUTO_UPDATE="true"
+export ZPLUG_HOME=$HOME/.bin/zplug
+source $ZPLUG_HOME/init.zsh
 
-plugins=()
+zplug "lib/completion", from:oh-my-zsh
+zplug "lib/directories", from:oh-my-zsh
+zplug "lib/history", from:oh-my-zsh
+zplug "lib/nvm", from:oh-my-zsh
+zplug "lib/theme-and-appearance", from:oh-my-zsh
+zplug "plugins/archlinux", from:oh-my-zsh, if:"[[ `lsb_release -si | sed -n '/MANJARO\|ARCH/p' | wc -l` == 1 ]]"
+zplug "plugins/brew", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
+zplug "plugins/brew-cask", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
+zplug "plugins/colorize", from:oh-my-zsh
+zplug "plugins/composer", from:oh-my-zsh, if:"command_exists 'composer'"
+zplug "plugins/debian", from:oh-my-zsh, if:"[[ `lsb_release -si | sed -n '/Ubuntu\|Debian/p' | wc -l` == 1 ]]"
+zplug "plugins/docker", from:oh-my-zsh, if:"command_exists 'docker'"
+zplug "plugins/docker-compose", from:oh-my-zsh, if:"command_exists 'docker-compose'"
+zplug "plugins/emoji-clock", from:oh-my-zsh
+zplug "plugins/git", from:oh-my-zsh
+zplug "plugins/git-prompt", from:oh-my-zsh
+zplug "plugins/osx", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
+zplug "plugins/pip", from:oh-my-zsh
+zplug "plugins/python", from:oh-my-zsh
+zplug "plugins/rvm", from:oh-my-zsh, if:"command_exists 'rvm'"
+zplug "plugins/svn-fast-info", from:oh-my-zsh
+zplug "plugins/vagrant", from:oh-my-zsh
+zplug "plugins/virtualenv", from:oh-my-zsh
+zplug "plugins/xcode", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
+zplug "plugins/zsh_reload", from:oh-my-zsh
+zplug "zsh-users/zsh-history-substring-search"
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "~/.zsh", use:"*.zsh", from:local
+zplug "~/.zsh/themes", use:"mitsuhiko.zsh-theme", from:local, as:theme
 
-if [[ `uname` == "Linux" ]]; then
-	plugins+=(systemd)
-
-	if [[ `uname -r | sed -n "/MANJARO\|ARCH/p" | wc -l` == 1 ]]; then
-		plugins+=(archlinux)
-	elif [[ `uname -v | sed -n "/Ubuntu\|Debian/p" | wc -l` == 1 ]]; then
-		plugins+=(debian)
-	fi
-
-elif [[ `uname` == "Darwin" ]]; then
-	plugins+=(brew brew-cask osx xcode)
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
 fi
 
-plugins+=(cp docker docker-compose git git-extras github git-prompt colorize \
-	composer django emoji-clock fabric go history-substring-search pip python \
-	rvm svn-fast-info symfony2 vagrant virtualenv keybase zsh_reload \
-	zsh-completions)
-
-if [[ `uname` == "Linux" ]]; then
-	plugins+=(zsh-syntax-highlighting)
-fi
-
-# Add zsh completions to fpath
-fpath=($HOME/.zsh/completions $fpath)
-
-source $ZSH/oh-my-zsh.sh
-
-
-
-################################################################################
-# => Custom Files
-################################################################################
-
-for config_file ($HOME/.zsh/*.zsh); do
-  source $config_file
-done
-
-################################################################################
-# => ZSH Syntax Highlighting for OSX
-# OS X is weird with this plugin and it won't work in the oh my zsh plugins
-# array, so we source it from the brew install location.
-################################################################################
-
-if [[ `uname` == "Darwin" ]]; then
-	source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fi
+zplug load --verbose

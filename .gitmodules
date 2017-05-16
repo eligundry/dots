@@ -22,3 +22,6 @@
 [submodule "oh-my-zsh/custom/plugins/oh-my-zsh-keybase"]
 	path = oh-my-zsh/custom/plugins/oh-my-zsh-keybase
 	url = https://github.com/rbirnie/oh-my-zsh-keybase.git
+[submodule "bin/zplug"]
+	path = bin/zplug
+	url = https://github.com/zplug/zplug.git
