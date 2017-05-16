@@ -43,18 +43,17 @@ zplug "plugins/virtualenv", from:oh-my-zsh
 zplug "plugins/xcode", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 zplug "plugins/zsh_reload", from:oh-my-zsh
 zplug "pyinvoke/invoke", use:"completion/zsh", if:"command_exists 'python'"
-zplug "underself/fabric-completion", use:"fabric-completion.bash", if:"command_exists 'python'"
 zplug "zsh-users/zsh-history-substring-search"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "~/.zsh", use:"*.zsh", from:local
 zplug "~/.zsh/themes", use:"mitsuhiko.zsh-theme", from:local, as:theme
 
-if ! zplug check --verbose; then
-# if ! zplug check; then
+# if ! zplug check --verbose; then
+if ! zplug check; then
     printf "Install? [y/N]: "
     if read -q; then
         echo; zplug install
     fi
 fi
 
-zplug load --verbose
+zplug load # --verbose
