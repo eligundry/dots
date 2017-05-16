@@ -46,11 +46,12 @@ zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "~/.zsh", use:"*.zsh", from:local
 zplug "~/.zsh/themes", use:"mitsuhiko.zsh-theme", from:local, as:theme
 
-if ! zplug check --verbose; then
+# if ! zplug check --verbose; then
+if ! zplug check; then
     printf "Install? [y/N]: "
     if read -q; then
         echo; zplug install
     fi
 fi
 
-zplug load --verbose
+zplug load # --verbose
