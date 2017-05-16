@@ -1,9 +1,3 @@
-[submodule "oh-my-zsh/custom/plugins/zsh-syntax-highlighting"]
-	path = oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
-[submodule "oh-my-zsh/custom/plugins/zsh-completions"]
-	path = oh-my-zsh/custom/plugins/zsh-completions
-	url = https://github.com/zsh-users/zsh-completions.git
 [submodule "dir_colors"]
 	path = dir_colors
 	url = https://github.com/seebi/dircolors-solarized.git
@@ -19,9 +13,6 @@
 [submodule "bin/dotty"]
 	path = bin/dotty
 	url = https://github.com/eligundry/dotty.git
-[submodule "oh-my-zsh/custom/plugins/oh-my-zsh-keybase"]
-	path = oh-my-zsh/custom/plugins/oh-my-zsh-keybase
-	url = https://github.com/rbirnie/oh-my-zsh-keybase.git
 [submodule "bin/zplug"]
 	path = bin/zplug
 	url = https://github.com/zplug/zplug.git
