@@ -3,7 +3,6 @@
 		"~/.config"
 	],
 	"git_repos": {
-		"https://github.com/robbyrussell/oh-my-zsh.git": "~/.oh-my-zsh",
 		"https://github.com/yyuu/pyenv.git": "~/.pyenv",
 		"https://github.com/concordusapps/pyenv-implict.git": "~/.pyenv/plugins/pyenv-implict",
 		"https://github.com/yyuu/pyenv-virtualenv.git": "~/.pyenv/plugins/pyenv-virtualenv"
@@ -17,13 +16,6 @@
 		"macvim",
 		"tmux",
 		"zsh"
-	],
-	"commands": [
-		"pyenv install 2.7.11",
-		"pyenv install 3.5.2",
-		"pyenv virtualenv 2.7.11 neovim2 && pyenv virtualenv 3.5.2 neovim3",
-		"pyenv activate neovim2 && pip install neovim jedi pylint flake8 && pyenv deactivate",
-		"pyenv activate neovim3 && pip install neovim jedi pylint flake8 && pyenv deactivate"
 	],
 	"link": {
 		"bash_profile": "~/.bash_profile",
@@ -43,7 +35,6 @@
 		"gitignore": "~/.gitignore",
 		"ideavimrc": "~/.ideavimrc",
 		"inputrc": "~/.inputrc",
-		"oh-my-zsh": "~/.oh-my-zsh/custom",
 		"profile": "~/.profile",
 		"psqlrc": "~/.psqlrc",
 		"tmux.conf": "~/.tmux.conf",

@@ -28,13 +28,6 @@ RESET='\033[0m'
 
 # Helper Methods
 
-git_modules()
-{
-    seperator $B_GREEN"Setting up Git submodules…"
-    git submodule init
-    git submodule update
-}
-
 link_file()
 {
     # Check if file is in the exclude array
@@ -143,6 +136,17 @@ linux_custom_clean()
     rm -rfv "$HOME/.config/redshift.conf"
 }
 
+git_repos()
+{
+    seperator $B_GREEN"Cloning git repos…"
+    mkdir -v $HOME/.lib
+    git clone https://github.com/jimeh/tmuxifier.git $HOME/.lib/tmuxifier
+    git clone https://github.com/chriskempson/base16-shell.git $HOME/.lib/base16-shell
+    git clone https://github.com/pipeseroni/pipes.sh.git $HOME/.lib/pipes
+    git clone https://github.com/eligundry/dotty.git $HOME/.lib/dotty
+    git clone https://github.com/zplug/zplug.git $HOME/.lib/zplug
+}
+
 display_help()
 {
     echo "dots installer"
@@ -168,6 +172,7 @@ case "$1" in
         git_modules
         install
         custom_links
+        git_repos
     ;;
     'relink' | '-r' | '--relink')
         install

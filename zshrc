@@ -13,7 +13,7 @@ source $HOME/.commonprofile
 # => ZPlug
 ################################################################################
 
-export ZPLUG_HOME=$HOME/.bin/zplug
+export ZPLUG_HOME=$HOME/.lib/zplug
 source $ZPLUG_HOME/init.zsh
 
 zplug "lib/completion", from:oh-my-zsh
