@@ -13,12 +13,12 @@ files=(*)
 platform=`uname`
 
 # Exclude files
-exclude=("README.markdown" "LICENSE" "oh-my-zsh" "dots.sh" "config"
-		 "tmuxline.conf" "tmux-sessions" "local" "bashrc" "bash_profile",
-		 "iterm2_profiles.json")
+exclude=("README.markdown" "LICENSE" "dots.sh" "config" "tmuxline.conf"
+         "tmux-sessions" "local" "bashrc" "bash_profile",
+         "iterm2_profiles.json")
 
 if [[ $platform == "Darwin" ]]; then
-	exclude+=("gtkrc-2.0" "xinitrc")
+    exclude+=("gtkrc-2.0" "xinitrc")
 fi
 
 # Colors
@@ -28,204 +28,163 @@ RESET='\033[0m'
 
 # Helper Methods
 
-git_modules()
-{
-	seperator $B_GREEN"Setting up Git submodules…"
-	git submodule init
-	git submodule update
-}
-
 link_file()
 {
-	# Check if file is in the exclude array
-	for e in "${exclude[@]}"
-	do
-		if [ "$1" = "$e" ]; then
-			return
-		fi
-	done
+    # Check if file is in the exclude array
+    for e in "${exclude[@]}"
+    do
+        if [ "$1" = "$e" ]; then
+            return
+        fi
+    done
 
-	if [[ ! -d "$1" ]]; then
-		ln -vfs "$PWD/$1" "$HOME/.$1"
-	else
-		ln -vfsn "$PWD/$1" "$HOME/.$1"
-	fi
+    if [[ ! -d "$1" ]]; then
+        ln -vfs "$PWD/$1" "$HOME/.$1"
+    else
+        ln -vfsn "$PWD/$1" "$HOME/.$1"
+    fi
 }
 
 custom_links()
 {
-	seperator $B_GREEN"Linking custom Oh-My-ZSH files…"
+    seperator $B_GREEN"Linking custom files…"
 
-	local ZPATH="$PWD/oh-my-zsh/custom"
-	local OZPATH="$HOME/.oh-my-zsh/custom"
-	local CF_LOC="$PWD/config"
-	local CF_DEST="$HOME/.config"
+    local CF_LOC="$PWD/config"
+    local CF_DEST="$HOME/.config"
 
-	rm -rfv $OZPATH
-	ln -vfs $ZPATH $OZPATH
-	ln -vfsn "$CF_LOC/nvim" "$CF_DEST/nvim"
+    ln -vfsn "$CF_LOC/nvim" "$CF_DEST/nvim"
 
-	if [[ $platform == "Linux" ]]; then
-		linux_custom_links
-	fi
+    if [[ $platform == "Linux" ]]; then
+        linux_custom_links
+    fi
 }
 
 linux_custom_links()
 {
-	seperator $B_GREEN"Linking custom Linux files…"
-	ln -vfsn "$CF_LOC/terminator" "$CF_DEST/terminator"
-	ln -vfsn "$CF_LOC/systemd" "$CF_DEST/systemd"
-	ln -vfs "$CF_LOC/redshift.conf" "$CF_DEST/redshift.conf"
+    seperator $B_GREEN"Linking custom Linux files…"
+    ln -vfsn "$CF_LOC/terminator" "$CF_DEST/terminator"
+    ln -vfsn "$CF_LOC/systemd" "$CF_DEST/systemd"
+    ln -vfs "$CF_LOC/redshift.conf" "$CF_DEST/redshift.conf"
 }
 
 seperator()
 {
-	echo ""
-	echo "================================================================================"
-	echo -e "$1$RESET"
-	echo "================================================================================"
-	echo ""
+    echo ""
+    echo "================================================================================"
+    echo -e "$1$RESET"
+    echo "================================================================================"
+    echo ""
 }
 
 # Sets up dot files in home directory
 install()
 {
-	seperator $B_GREEN"Linking dotfiles…"
+    seperator $B_GREEN"Linking dotfiles…"
 
-	for file in "${files[@]}"
-	do
-		link_file $file
-	done
-}
-
-# Install oh-my-zsh from GitHub
-install_oh_my_zsh()
-{
-	seperator $B_GREEN"Install Oh-My-ZSH? [yn]"
-	read yn
-
-	case $yn in
-		[yY] | [yY][Ee][sS])
-			seperator $B_RED"Deleting $HOME/.oh-my-zsh"
-			rm -rf "$HOME/.oh-my-zsh"
-			seperator $B_GREEN"Installing Oh-My-ZSH…"
-			git clone "https://github.com/robbyrussell/oh-my-zsh.git" "$HOME/.oh-my-zsh"
-		;;
-		[nN] | [nN][oO])
-			echo "Skipping Oh-My-ZSH"
-	esac
-
-	if [ "$SHELL" = "/bin/zsh" -o "$SHELL" = "/usr/bin/zsh" ]; then
-		seperator $B_GREEN"Using ZSH. Good for you!"
-	else
-		seperator $B_RED"Switch to ZSH? [yn]"
-		read switch_to_zsh
-
-		case $switch_to_zsh in
-			[yY] | [yY][Ee][sS])
-				echo "Switching to ZSH…"
-				chsh -s `which zsh`
-			;;
-			[nN] | [nN][oO])
-				echo "Leaving shell as $SHELL."
-		esac
-	fi
+    for file in "${files[@]}"
+    do
+        link_file $file
+    done
 }
 
 update()
 {
-	seperator $B_GREEN"Updating dots repository…"
-	git pull
+    seperator $B_GREEN"Updating dots repository…"
+    git pull
 
-	seperator $B_GREEN"Updating Git submodules…"
-	git submodule foreach git pull origin master
-	echo "Completed updating repository!"
+    seperator $B_GREEN"Updating Git submodules…"
+    git submodule foreach git pull origin master
+    echo "Completed updating repository!"
 
-	seperator $B_GREEN"Updating Vim bundles…"
-	vim -c PlugClean -c PlugInstall -c PlugeUpdate -c qall!
-	echo "Completed updating Vim bundles!"
+    seperator $B_GREEN"Updating Vim bundles…"
+    vim -c PlugClean -c PlugInstall -c PlugeUpdate -c qall!
+    echo "Completed updating Vim bundles!"
 
-	seperator $B_GREEN"Updating NeoVim bundles…"
-	nvim -c PlugClean -c PlugInstall -c PlugeUpdate -c qall!
-	echo "Completed updating NeoVim bundles!"
+    seperator $B_GREEN"Updating NeoVim bundles…"
+    nvim -c PlugClean -c PlugInstall -c PlugeUpdate -c qall!
+    echo "Completed updating NeoVim bundles!"
 }
 
 clean()
 {
-	seperator $B_RED"Uninstalling dots…"
+    seperator $B_RED"Uninstalling dots…"
 
-	local home_files=($HOME/.*)
+    local home_files=($HOME/.*)
 
-	for f in "${home_files[@]}"
-	do
-		# If symbolic link, delete it
-		if [[ -L "$f" ]]; then
-			rm -fv "$f"
-		fi
-	done
+    for f in "${home_files[@]}"
+    do
+        # If symbolic link, delete it
+        if [[ -L "$f" ]]; then
+            rm -fv "$f"
+        fi
+    done
 
-	seperator $B_RED"Uninstalling Oh-My-ZSH…"
-	rm -rfv "$HOME/.oh-my-zsh"
+    seperator $B_RED"Removing Pianobar config…"
+    rm -rfv "$HOME/.config/pianobar"
+    rm -rfv "$CF_LOC/nvim" "$CF_DEST/nvim"
 
-	seperator $B_RED"Removing Pianobar config…"
-	rm -rfv "$HOME/.config/pianobar"
-	rm -rfv "$CF_LOC/nvim" "$CF_DEST/nvim"
-
-	if [[ $platform == 'Linux' ]]; then
-		linux_custom_clean
-	fi
+    if [[ $platform == 'Linux' ]]; then
+        linux_custom_clean
+    fi
 }
 
 linux_custom_clean()
 {
-	seperator $B_RED"Removing Terminator config…"
-	rm -rfv "$HOME/.config/terminator"
-	rm -rfv "$HOME/.config/systemd"
-	rm -rfv "$HOME/.config/redshift.conf"
+    seperator $B_RED"Removing Terminator config…"
+    rm -rfv "$HOME/.config/terminator"
+    rm -rfv "$HOME/.config/systemd"
+    rm -rfv "$HOME/.config/redshift.conf"
+}
+
+git_repos()
+{
+    seperator $B_GREEN"Cloning git repos…"
+    mkdir -v $HOME/.lib
+    git clone https://github.com/jimeh/tmuxifier.git $HOME/.lib/tmuxifier
+    git clone https://github.com/chriskempson/base16-shell.git $HOME/.lib/base16-shell
+    git clone https://github.com/pipeseroni/pipes.sh.git $HOME/.lib/pipes
+    git clone https://github.com/eligundry/dotty.git $HOME/.lib/dotty
+    git clone https://github.com/zplug/zplug.git $HOME/.lib/zplug
 }
 
 display_help()
 {
-	echo "dots installer"
-	echo ""
-	echo "Usage: ./dots.sh [command]"
-	echo ""
-	echo "[--]install | -i:   Gets Git modules and links dotfiles"
-	echo "[--]relink  | -r:   Relink files"
-	echo "[--]update  | -u:   Update repo and submodules"
-	echo "[--]omz     | -o:   Install Oh-My-ZSH from GitHub"
-	echo "[--]clean   | -c:   Remove all installed files"
-	echo "[--]help    | -h:   Display this help message"
-	exit
+    echo "dots installer"
+    echo ""
+    echo "Usage: ./dots.sh [command]"
+    echo ""
+    echo "[--]install | -i:   Gets Git modules and links dotfiles"
+    echo "[--]relink  | -r:   Relink files"
+    echo "[--]update  | -u:   Update repo and submodules"
+    echo "[--]clean   | -c:   Remove all installed files"
+    echo "[--]help    | -h:   Display this help message"
+    exit
 }
 
 # Run the script
 
 if [[ "$#" -eq 0 ]]; then
-	display_help
+    display_help
 fi
 
 case "$1" in
-	'install' | '-i' | '--install')
-		git_modules
-		install
-		install_oh_my_zsh
-		custom_links
-	;;
-	'relink' | '-r' | '--relink')
-		install
-		custom_links
-	;;
-	'help' | '-h' | '--help')
-		display_help
-	;;
-	'update' | '-u' | '--update')
-		update
-	;;
-	'omz' | '-o' | '--omz')
-		install_oh_my_zsh
-	;;
-	'clean' | '-c' | '--clean')
-		clean
-	;;
+    'install' | '-i' | '--install')
+        git_modules
+        install
+        custom_links
+        git_repos
+    ;;
+    'relink' | '-r' | '--relink')
+        install
+        custom_links
+    ;;
+    'help' | '-h' | '--help')
+        display_help
+    ;;
+    'update' | '-u' | '--update')
+        update
+    ;;
+    'clean' | '-c' | '--clean')
+        clean
+    ;;
 esac
