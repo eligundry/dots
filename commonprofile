@@ -49,12 +49,11 @@ export NVM_DIR="$HOME/.nvm"
 # => Tmuxifier
 ################################################################################
 
-if [[ -z $SSH_CONNECTION ]]; then
-	pathadd "$HOME/.lib/tmuxifier/bin"
-	unset GREP_OPTIONS
-	export TMUXIFIER_LAYOUT_PATH="$DOTS/tmux-sessions"
-	eval "$(tmuxifier init -)"
-fi
+export TMUXIFIER="$HOME/.lib/tmuxifier"
+export TMUXIFIER_LAYOUT_PATH="$DOTS/tmux-sessions"
+pathadd "$TMUXIFIER/bin"
+unset GREP_OPTIONS
+eval "$(tmuxifier init -)"
 
 ################################################################################
 # => Default Variables

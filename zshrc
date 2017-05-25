@@ -57,3 +57,11 @@ if ! zplug check; then
 fi
 
 zplug load # --verbose
+
+################################################################################
+# => Custom Files
+################################################################################
+
+for config_file ($HOME/.zsh/*.zsh); do
+    source $config_file
+done
