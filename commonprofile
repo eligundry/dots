@@ -66,8 +66,6 @@ export INPUTRC=$HOME/.inputrc
 export LANG=en_US.UTF-8
 export MANPAGER=less
 export PAGER=less
-export ECLIPSE_HOME=/usr/share/eclipse
-export TESSDATA_PREFIX=/usr/local/tesseract
 
 if command_exists nvim; then
 	export EDITOR=nvim
@@ -99,6 +97,7 @@ export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
 
 BASE16_SHELL=$HOME/.lib/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+base16_default-dark
 
 ################################################################################
 # => /sbin Debian bullshit

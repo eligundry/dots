@@ -22,12 +22,11 @@ zplug "lib/history", from:oh-my-zsh
 zplug "lib/nvm", from:oh-my-zsh, if:"command_exists 'nvm'"
 zplug "lib/termsupport", from:oh-my-zsh
 zplug "lib/theme-and-appearance", from:oh-my-zsh
-zplug "plugins/archlinux", from:oh-my-zsh, if:"[[ `lsb_release -si | sed -n '/MANJARO\|ARCH/p' | wc -l` == 1 ]]"
+zplug "plugins/archlinux", from:oh-my-zsh, if:"command_exists 'pacman'"
 zplug "plugins/brew", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 zplug "plugins/brew-cask", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 zplug "plugins/colorize", from:oh-my-zsh
 zplug "plugins/composer", from:oh-my-zsh, if:"command_exists 'composer'"
-zplug "plugins/debian", from:oh-my-zsh, if:"[[ `lsb_release -si | sed -n '/Ubuntu\|Debian/p' | wc -l` == 1 ]]"
 zplug "plugins/docker", from:oh-my-zsh, if:"command_exists 'docker'"
 zplug "plugins/docker-compose", from:oh-my-zsh, if:"command_exists 'docker-compose'"
 zplug "plugins/emoji-clock", from:oh-my-zsh
@@ -47,6 +46,7 @@ zplug "zsh-users/zsh-history-substring-search"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "~/.zsh", use:"*.zsh", from:local
 zplug "~/.zsh/themes", use:"mitsuhiko.zsh-theme", from:local, as:theme
+zplug "plugins/npm", from:oh-my-zsh, if:"command_exists npm"
 
 # if ! zplug check --verbose; then
 if ! zplug check; then
