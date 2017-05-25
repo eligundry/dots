@@ -74,6 +74,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 " polyglot overriding
+Plug 'ap/vim-css-color'
 Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'elzr/vim-json'
 Plug 'groenewege/vim-less'
@@ -638,17 +639,17 @@ autocmd BufEnter man\ * setlocal filetype=man
 "===============================================================================
 
 if has('nvim')
-  let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+    let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 else
-  if empty($TMUX)
-    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-    let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-  else
-    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-    let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
-  endif
+    if empty($TMUX)
+        let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+        let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+        let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+    else
+        let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+        let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+        let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
+    endif
 endif
 
 "===============================================================================
@@ -685,14 +686,12 @@ let g:neomake_serialize = 1
 let g:neomake_serialize_abort_on_error = 1
 let g:neomake_open_list = 2
 " let g:neomake_python_enabled_makers = ['flake8']
+let g:neomake_php_enabled_makers = []
 
 " https://robots.thoughtbot.com/my-life-with-neovim
 function! NeomakeSettings()
     " Run NeoMake on read and write operations
     autocmd BufReadPost,BufWritePost * Neomake
-
-    " Auto open the warning/error list when finished, but don't focus on it
-    autocmd User NeomakeCountsChanged :lopen | wincmd k
 
     " Disable inherited syntastic
     let g:syntastic_mode_map = {
