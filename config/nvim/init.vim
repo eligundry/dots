@@ -57,6 +57,7 @@ Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
 Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
 Plug 'plasticboy/vim-markdown', { 'for': ['markdown'] }
+Plug 'ryanoasis/vim-devicons'
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
 Plug 'scrooloose/syntastic'
 Plug 'sheerun/vim-polyglot'
