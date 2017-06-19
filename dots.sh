@@ -53,6 +53,8 @@ custom_links()
     local CF_DEST="$HOME/.config"
 
     ln -vfsn "$CF_LOC/nvim" "$CF_DEST/nvim"
+    ln -vfsn "$CF_LOC/nvim" "$HOME/.vim"
+    ln -vfs "$CF_LOC/nvim/init.vim" "$HOME/.vimrc"
 
     if [[ $platform == "Linux" ]]; then
         linux_custom_links
