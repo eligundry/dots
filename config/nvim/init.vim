@@ -52,7 +52,7 @@ Plug 'klen/python-mode', { 'for': 'python' }
 Plug 'luochen1990/rainbow'
 Plug 'm2mdas/phpcomplete-extended', { 'for': ['php'] }
 Plug 'majutsushi/tagbar'
-Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'css', 'less', 'jinja', 'html.twig', 'html.handlebars', 'html.mustache'] }
+Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'css', 'less', 'jinja', 'html.twig', 'html.handlebars', 'html.mustache', 'html.markdown'] }
 Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
 Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
@@ -685,7 +685,7 @@ let g:syntastic_javascript_checkers = ['eslint']
 
 let g:neomake_serialize = 1
 let g:neomake_serialize_abort_on_error = 1
-let g:neomake_open_list = 2
+let g:neomake_open_list = 1
 " let g:neomake_python_enabled_makers = ['flake8']
 let g:neomake_php_enabled_makers = []
 
