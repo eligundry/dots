@@ -19,22 +19,14 @@ command_exists() {
 }
 
 ################################################################################
-# => RVM
-################################################################################
-
-if [[ -n $SSH_CONNECTION ]]; then
-	pathadd "$HOME/.rvm/bin"
-	[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
-	export rvmsudo_secure_path=1
-fi
-
-################################################################################
 # => Pyenv
 ################################################################################
 
-pathadd "$HOME/.pyenv/bin"
+PYENV_DEBUG=1
+export PYENV_ROOT="$HOME/.pyenv"
+pathadd "$PYENV_ROOT/bin"
 export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
-eval "$(pyenv init -)"
+eval "$(pyenv init - --no-rehash)"
 eval "$(pyenv virtualenv-init -)"
 
 ################################################################################
