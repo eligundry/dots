@@ -4,9 +4,9 @@
 " This is needed do deoplete can compile
 "===============================================================================
 
-function! DoRemote(arg)
-    UpdateRemotePlugins
-endfunction
+let g:loaded_python_provider = 1
+let g:python_host_prog = expand('~/.pyenv/versions/neovim2/bin/python')
+let g:python3_host_prog = expand('~/.pyenv/versions/neovim3/bin/python')
 
 "===============================================================================
 " => # Plug
@@ -22,7 +22,7 @@ endif
 call plug#begin(g:plug_path)
 
 if has('nvim')
-    Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
     Plug 'neomake/neomake'
     Plug 'zchee/deoplete-jedi', { 'for': 'python' }
     Plug 'Shougo/denite.nvim'
@@ -34,7 +34,7 @@ Plug 'IN3D/vim-raml'
 Plug 'Raimondi/delimitMate'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
-Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+Plug 'Shougo/vimproc.vim', { 'do' : 'make' }
 Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
 Plug 'airblade/vim-gitgutter'
 Plug 'altercation/vim-colors-solarized'
@@ -685,7 +685,7 @@ let g:syntastic_javascript_checkers = ['eslint']
 
 let g:neomake_serialize = 1
 let g:neomake_serialize_abort_on_error = 1
-let g:neomake_open_list = 1
+let g:neomake_open_list = 0
 " let g:neomake_python_enabled_makers = ['flake8']
 let g:neomake_php_enabled_makers = []
 
