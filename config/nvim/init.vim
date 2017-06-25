@@ -135,7 +135,11 @@ set directory=~/.neovim/swap
 if has("persistent_undo")
     set undofile
     set undolevels=3000
-    set undodir=~/.neovim/undo
+    set undodir=~/.vim/undo
+
+    if has('nvim')
+        set undodir=~/.config/nvim/undo
+    endif
 else
     " If persistent undo isn't available, let's enable backups.
     set backup
@@ -279,7 +283,7 @@ if has("windows") && has("vertsplit")
     set splitright
 endif
 
-" NO FREAKING BELLS
+" Editors should be seen and not heard
 set noerrorbells
 set novisualbell
 set t_vb=
@@ -468,13 +472,6 @@ if has("unix")
         vnoremap <Leader>Y :w !xclip -i<CR><CR>
     endif
 endif
-
-" Vimrc quick edit
-nnoremap <Leader>tv :tabnew $MYVIMRC<CR>
-nnoremap <Leader>ev :edit $MYVIMRC<CR>
-nnoremap <Leader>pv :split $MYVIMRC<CR>
-nnoremap <Leader>vv :vsplit $MYVIMRC<CR>
-nnoremap <Leader>rv :source $MYVIMRC<CR>
 
 " Buffer Navigation
 nnoremap <Leader>bb :buffers<CR>
