@@ -135,7 +135,11 @@ set directory=~/.neovim/swap
 if has("persistent_undo")
     set undofile
     set undolevels=3000
-    set undodir=~/.neovim/undo
+    set undodir=~/.vim/undo
+
+    if has('nvim')
+        set undodir=~/.config/nvim/undo
+    endif
 else
     " If persistent undo isn't available, let's enable backups.
     set backup
