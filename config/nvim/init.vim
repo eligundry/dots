@@ -21,49 +21,49 @@ endif
 
 call plug#begin(g:plug_path)
 
-if has('nvim')
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    Plug 'neomake/neomake'
-    Plug 'zchee/deoplete-jedi', { 'for': 'python' }
-    Plug 'Shougo/denite.nvim'
-else
-    Plug 'Shougo/neocomplete.vim'
-endif
-
-Plug 'IN3D/vim-raml'
-Plug 'Raimondi/delimitMate'
+" IDE Features
+Plug 'majutsushi/tagbar'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/vimproc.vim', { 'do' : 'make' }
-Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
+Plug 'ternjs/tern_for_vim', { 'do': 'npm install', 'for': ['javascript'] }
+
+if has('nvim')
+    Plug 'neomake/neomake'
+    Plug 'Shougo/denite.nvim'
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    Plug 'zchee/deoplete-jedi', { 'for': 'python' }
+else
+    Plug 'Shougo/neocomplete.vim'
+    Plug 'scrooloose/syntastic'
+endif
+
+" GUI Improvements
 Plug 'airblade/vim-gitgutter'
 Plug 'altercation/vim-colors-solarized'
-Plug 'bronson/vim-visual-star-search'
 Plug 'chriskempson/base16-vim'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'davidhalter/jedi', { 'for': 'python' }
-Plug 'davidoc/taskpaper.vim'
-Plug 'editorconfig/editorconfig-vim'
 Plug 'edkolev/tmuxline.vim'
-Plug 'ekalinin/Dockerfile.vim'
 Plug 'flazz/vim-colorschemes'
-Plug 'heavenshell/vim-pydocstring', { 'for': 'python' }
-Plug 'klen/python-mode', { 'for': 'python' }
 Plug 'luochen1990/rainbow'
-Plug 'm2mdas/phpcomplete-extended', { 'for': ['php'] }
-Plug 'majutsushi/tagbar'
-Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'css', 'less', 'jinja', 'html.twig', 'html.handlebars', 'html.mustache', 'html.markdown'] }
-Plug 'mattn/gist-vim'
-Plug 'mattn/webapi-vim'
 Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
-Plug 'plasticboy/vim-markdown', { 'for': ['markdown'] }
 Plug 'ryanoasis/vim-devicons'
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
-Plug 'scrooloose/syntastic'
-Plug 'sheerun/vim-polyglot'
-Plug 'sjl/clam.vim'
-Plug 'ternjs/tern_for_vim', { 'do': 'npm install', 'for': ['javascript'] }
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
+
+" Searching
+Plug 'bronson/vim-visual-star-search'
+Plug 'ctrlpvim/ctrlp.vim'
+
+" Editor Improvements
+Plug 'editorconfig/editorconfig-vim'
+Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'css', 'less', 'jinja', 'html.twig', 'html.handlebars', 'html.mustache', 'html.markdown'] }
+Plug 'Raimondi/delimitMate'
 Plug 'tomtom/tcomment_vim'
+
+" Vim God Tim Pope
+" https://twitter.com/EliGundry/status/874737347568574464
 Plug 'tpope/vim-afterimage'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-eunuch'
@@ -71,14 +71,26 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-tbone'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 
-" polyglot overriding
-Plug 'ap/vim-css-color'
+" Gists
+Plug 'mattn/gist-vim'
+Plug 'mattn/webapi-vim'
+
+" Python
+Plug 'davidhalter/jedi', { 'for': 'python' }
+Plug 'heavenshell/vim-pydocstring', { 'for': 'python' }
+Plug 'klen/python-mode', { 'for': 'python' }
+
+" Syntax Highlighting
+Plug 'sheerun/vim-polyglot' " This must come first so it can be overridden
 Plug 'Glench/Vim-Jinja2-Syntax'
+Plug 'IN3D/vim-raml'
+Plug 'ap/vim-css-color'
+Plug 'davidoc/taskpaper.vim'
+Plug 'ekalinin/Dockerfile.vim'
 Plug 'elzr/vim-json'
 Plug 'groenewege/vim-less'
+Plug 'plasticboy/vim-markdown', { 'for': ['markdown'] }
 Plug 'saltstack/salt-vim'
 
 call plug#end()
@@ -619,20 +631,6 @@ if has('gui')
 endif
 
 "===============================================================================
-" => # Clam
-"===============================================================================
-
-function! ClamSettings()
-    nnoremap ! :Clam<Space>
-    vnoremap ! :ClamVisual<Space>
-endfunction
-
-autocmd VimEnter * if exists("loaded_clam") | call ClamSettings() | endif
-
-" Setup colors for manpages
-autocmd BufEnter man\ * setlocal filetype=man
-
-"===============================================================================
 " => Change Tmux cursor
 "===============================================================================
 
@@ -710,13 +708,15 @@ let g:NERDTreeChDirMode = 1
 let g:NERDTreeDirArrows = 0
 let g:NERDTreeDirArrows = 0
 let g:NERDTreeHijackNetrw = 1
-let g:NERDTreeIgnore = ['\.swp$', '\~$', '\.pyc', '__pycache__', '.DS_Store', '\.egg-info', '.ropeproject', '.tox', '.cache', 'htmlcov']
 let g:NERDTreeMinimalUI = 1
 let g:NERDTreeShowBookmarks = 1
 let g:NERDTreeShowFiles = 1
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeShowLineNumbers = 0
 let g:NERDTreeWinSize = 22
+let g:NERDTreeIgnore = ['\.swp$', '\~$', '\.pyc', '__pycache__', '.DS_Store',
+                        \'\.egg-info', '.ropeproject', '.tox', '.cache',
+                        \'htmlcov']
 
 function! NERDTreeSettings()
     nnoremap <silent> <Leader>nt :UndotreeHide<CR>:NERDTreeToggle<CR>
@@ -882,7 +882,7 @@ autocmd VimEnter * if exists(":Tagbar") | call TagBarSettings() | endif
 " => TComment
 "===============================================================================
 
-let g:tcommentBlankLines = 1
+let g:tcomment#blank_lines = 1
 
 function! TCommentSettings()
     nnoremap <Leader>cc :TComment<CR>
@@ -917,12 +917,6 @@ if executable('ag')
     set grepprg=ag\ --vimgrep\ $*
     set grepformat=%f:%l:%c:%m
 endif
-
-"===============================================================================
-" => PHP Autocomplete Extended
-"===============================================================================
-
-let g:phpcomplete_index_composer_command = 'composer'
 
 "===============================================================================
 " => Rainbow Parentheses
