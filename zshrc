@@ -44,8 +44,8 @@ zplug "plugins/virtualenv", from:oh-my-zsh
 zplug "plugins/xcode", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 zplug "plugins/zsh_reload", from:oh-my-zsh
 zplug "pyinvoke/invoke", use:"completion/zsh", if:"command_exists 'python'"
-zplug "zsh-users/zsh-history-substring-search", defer:2
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "zsh-users/zsh-history-substring-search", defer:2
 zplug "~/.zsh", use:"*.zsh", from:local, defer:2
 zplug "~/.zsh/themes", use:"mitsuhiko.zsh-theme", from:local, as:theme
 
