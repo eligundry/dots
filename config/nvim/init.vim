@@ -46,11 +46,14 @@ Plug 'edkolev/tmuxline.vim'
 Plug 'flazz/vim-colorschemes'
 Plug 'luochen1990/rainbow'
 Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
-Plug 'ryanoasis/vim-devicons'
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
+
+if has('macunix')
+    Plug 'ryanoasis/vim-devicons'
+endif
 
 " Searching
 Plug 'bronson/vim-visual-star-search'
@@ -478,7 +481,7 @@ nnoremap Q <Nop>
 
 " Yank lines to system clipboard in visual
 if has("unix")
-    if system('uname -s') =~ 'Darwin'
+    if has('macunix')
         vnoremap <Leader>Y :w !pbcopy<CR><CR>
     else
         vnoremap <Leader>Y :w !xclip -i<CR><CR>
