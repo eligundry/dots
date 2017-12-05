@@ -10,13 +10,13 @@
 --exclude=build
 --exclude=dist
 
---langdef=markdown
---langmap=markdown:.mkd
---langmap=markdown:+.md
---langmap=markdown:+.markdown
---regex-markdown=/^#[ \t]+(.*)/\1/h,Heading_L1/
---regex-markdown=/^##[ \t]+(.*)/\1/i,Heading_L2/
---regex-markdown=/^###[ \t]+(.*)/\1/k,Heading_L3/
---regex-markdown=/^####[ \t]+(.*)/\1/k,Heading_L4/
---regex-markdown=/^#####[ \t]+(.*)/\1/k,Heading_L5/
---regex-markdown=/^######[ \t]+(.*)/\1/k,Heading_L6/
+# --langdef=markdown
+# --langmap=markdown:.mkd
+# --langmap=markdown:+.md
+# --langmap=markdown:+.markdown
+# --regex-markdown=/^#[ \t]+(.*)/\1/h,Heading_L1/
+# --regex-markdown=/^##[ \t]+(.*)/\1/i,Heading_L2/
+# --regex-markdown=/^###[ \t]+(.*)/\1/k,Heading_L3/
+# --regex-markdown=/^####[ \t]+(.*)/\1/k,Heading_L4/
+# --regex-markdown=/^#####[ \t]+(.*)/\1/k,Heading_L5/
+# --regex-markdown=/^######[ \t]+(.*)/\1/k,Heading_L6/

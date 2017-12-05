@@ -5,7 +5,7 @@ trap "rmdir .git/tags_lock; rm .git/tags.$$" EXIT
 ctags --tag-relative=yes \
       --recurse=yes \
       -f .git/tags.$$ \
-      --languages=,-css,-markdown,-json \
+      --languages=,-css,-json \
       --fields=+laimS \
       --exclude=vendor \
       --exclude=node_modules \
