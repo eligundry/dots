@@ -26,7 +26,7 @@ Plug 'majutsushi/tagbar'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/vimproc.vim', { 'do' : 'make' }
-Plug 'ternjs/tern_for_vim', { 'do': 'npm install', 'for': ['javascript'] }
+Plug 'ternjs/tern_for_vim', { 'do': 'npm install', 'for': ['javascript', 'javascript.jsx'] }
 
 if has('nvim')
     Plug 'neomake/neomake'
@@ -83,6 +83,13 @@ Plug 'mattn/webapi-vim'
 Plug 'davidhalter/jedi', { 'for': 'python' }
 Plug 'heavenshell/vim-pydocstring', { 'for': 'python' }
 Plug 'klen/python-mode', { 'for': 'python' }
+
+" Go
+Plug 'fatih/vim-go', { 'for': 'go' }
+
+if has('nvim')
+    Plug 'zchee/deoplete-go', { 'for': 'go' }
+endif
 
 " Syntax Highlighting
 Plug 'sheerun/vim-polyglot' " This must come first so it can be overridden
@@ -819,6 +826,12 @@ let g:pymode_syntax_slow_sync = 1
 "===============================================================================
 
 nnoremap <silent> <C-_> <Plug>(pydocstring)
+
+"===============================================================================
+" => Vim Go
+"===============================================================================
+
+" let g:deoplete#sources#go#gocode_binary = '/usr/lib/go-1.9/bin/go'
 
 "===============================================================================
 " => Vim Plug

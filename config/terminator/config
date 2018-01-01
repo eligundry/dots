@@ -17,12 +17,11 @@
   [[default]]
     background_color = "#2d2d2d"
     background_darkness = 0.95
-    background_image = None
     background_type = transparent
     cursor_blink = False
     cursor_color = "#d3d0c8"
     custom_command = tmux -2ul
-    font = Inconsolata 10
+    font = PragmataPro 10
     foreground_color = "#d3d0c8"
     icon_bell = False
     login_shell = True
@@ -35,7 +34,6 @@
   [[Base16 Tmux]]
     background_color = "#2d2d2d"
     background_darkness = 0.95
-    background_image = None
     background_type = transparent
     cursor_blink = False
     cursor_color = "#d3d0c8"
@@ -53,7 +51,6 @@
   [[Solarized Dark Tmux]]
     background_color = "#002b36"
     background_darkness = 0.95
-    background_image = None
     background_type = transparent
     cursor_blink = False
     cursor_color = "#d3d0c8"
