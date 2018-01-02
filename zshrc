@@ -55,7 +55,8 @@ zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "zsh-users/zsh-history-substring-search", defer:2
 zplug "~/.zsh", use:"*.zsh", from:local, defer:2
 zplug "~/.zsh/themes", use:"mitsuhiko.zsh-theme", from:local, as:theme
-# zplug "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk", use:"*.zsh.inc", if:'[ -d "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk" ] && [[ $OSTYPE == *darwin* ]]'
+zplug "~/.google-cloud-sdk/", use:"*.zsh.inc", from:local, if:"[[ -d ~/.google-cloud-sdk ]]"
+zplug "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/", use:"*.zsh.inc", from:local, if:"[[ $OSTYPE == *darwin* ]]"
 
 # if ! zplug check --verbose; then
 if ! zplug check; then
