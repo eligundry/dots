@@ -57,6 +57,7 @@ zplug "~/.zsh", use:"*.zsh", from:local, defer:2
 zplug "~/.zsh/themes", use:"mitsuhiko.zsh-theme", from:local, as:theme
 zplug "~/.google-cloud-sdk/", use:"*.zsh.inc", from:local, if:"[[ -d ~/.google-cloud-sdk ]]"
 zplug "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/", use:"*.zsh.inc", from:local, if:"[[ $OSTYPE == *darwin* ]]"
+zplug "/usr/local/bin/", use: "aws_completer.sh", from:local, if:"[[ -f /usr/local/bin/aws_completer.sh ]]"
 
 # if ! zplug check --verbose; then
 if ! zplug check; then

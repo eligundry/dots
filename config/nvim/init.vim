@@ -26,13 +26,14 @@ Plug 'majutsushi/tagbar'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/vimproc.vim', { 'do' : 'make' }
-Plug 'ternjs/tern_for_vim', { 'do': 'npm install', 'for': ['javascript', 'javascript.jsx'] }
+Plug 'autozimu/LanguageClient-neovim'
 
 if has('nvim')
     Plug 'neomake/neomake'
     Plug 'Shougo/denite.nvim'
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
     Plug 'zchee/deoplete-jedi', { 'for': 'python' }
+    Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs'}
 else
     Plug 'Shougo/neocomplete.vim'
     Plug 'scrooloose/syntastic'
@@ -746,14 +747,22 @@ endfunction
 autocmd VimEnter * if exists(":UndotreeShow") | call UndotreeSettings() | endif
 
 "===============================================================================
-" => Tern
+" => LanguageClient
 "===============================================================================
 
-if exists('g:plugs["tern_for_vim"]')
-    let g:tern_show_argument_hints = 'on_hold'
-    let g:tern_show_signature_in_pum = 1
-    autocmd FileType javascript setlocal omnifunc=tern#Complete
-endif
+nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+
+let g:LanguageClient_serverCommands = {
+\ 'css': ['css-languageserver', '--stdio'],
+\ 'less': ['css-languageserver', '--stdio'],
+\ 'scss': ['css-languageserver', '--stdio'],
+\ 'javascript': ['javascript-typescript-stdio'],
+\ 'javascript.jsx': ['javascript-typescript-stdio'],
+\ }
+
+autocmd FileType php LanguageClientStart
 
 "===============================================================================
 " => Neocomplete, Deoplete, & Neosnippet
