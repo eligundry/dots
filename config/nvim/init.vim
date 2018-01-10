@@ -33,7 +33,7 @@ if has('nvim')
     Plug 'Shougo/denite.nvim'
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
     Plug 'zchee/deoplete-jedi', { 'for': 'python' }
-    Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs'}
+    Plug 'roxma/LanguageServer-php-neovim',  { 'do': 'composer install && composer run-script parse-stubs' }
 else
     Plug 'Shougo/neocomplete.vim'
     Plug 'scrooloose/syntastic'
