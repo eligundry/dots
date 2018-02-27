@@ -41,7 +41,7 @@ eval "$(pyenv virtualenv-init -)"
 ################################################################################
 
 export TMUXIFIER="$HOME/.lib/tmuxifier"
-export TMUXIFIER_LAYOUT_PATH="$DOTS/tmux-sessions"
+export TMUXIFIER_LAYOUT_PATH="$HOME/.tmuxifier-sessions"
 pathadd "$TMUXIFIER/bin"
 unset GREP_OPTIONS
 eval "$(tmuxifier init -)"

@@ -47,6 +47,7 @@ Plug 'edkolev/tmuxline.vim'
 Plug 'flazz/vim-colorschemes'
 Plug 'luochen1990/rainbow'
 Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
+Plug 'mhinz/vim-startify'
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -62,7 +63,7 @@ Plug 'ctrlpvim/ctrlp.vim'
 
 " Editor Improvements
 Plug 'editorconfig/editorconfig-vim'
-Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'css', 'less', 'jinja', 'html.twig', 'html.handlebars', 'html.mustache', 'html.markdown'] }
+Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'css', 'less', 'jinja', 'html.twig', 'html.handlebars', 'html.mustache', 'html.markdown', 'php'] }
 Plug 'Raimondi/delimitMate'
 Plug 'tomtom/tcomment_vim'
 
@@ -931,6 +932,13 @@ function! TboneSettings()
 endfunction
 
 autocmd VimEnter * if exists(":Tmux") | call TboneSettings() | endif
+
+"===============================================================================
+" => vim-devicons
+"===============================================================================
+
+let g:webdevicons_enable_ctrlp = 1
+let g:WebDevIconsUnicodeGlyphDoubleWidth = 0
 
 "===============================================================================
 " => vim-json
