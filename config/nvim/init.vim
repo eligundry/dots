@@ -92,6 +92,10 @@ if has('nvim')
     Plug 'zchee/deoplete-go', { 'for': 'go' }
 endif
 
+" MySQL Console
+Plug 'NLKNguyen/pipe.vim'
+Plug 'NLKNguyen/pipe-mysql.vim'
+
 " Syntax Highlighting
 Plug 'sheerun/vim-polyglot' " This must come first so it can be overridden
 Plug 'Glench/Vim-Jinja2-Syntax'
@@ -760,6 +764,7 @@ let g:LanguageClient_serverCommands = {
 \ 'scss': ['css-languageserver', '--stdio'],
 \ 'javascript': ['javascript-typescript-stdio'],
 \ 'javascript.jsx': ['javascript-typescript-stdio'],
+\ 'typescript': ['javascript-typescript-stdio'],
 \ }
 
 autocmd FileType php LanguageClientStart
