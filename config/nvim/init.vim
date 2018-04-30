@@ -420,7 +420,7 @@ autocmd FileChangedRO * nnoremap <buffer> <Leader>s :SudoWrite<CR>
 autocmd! VimResized * exe "normal! \<C-w>="
 
 " Always spellcheck cause typos are dumb
-autocmd BufEnter * set spell
+" autocmd BufEnter * set spell
 
 "===============================================================================
 " => # Keyboard Shortcuts
