@@ -94,6 +94,10 @@ if has('nvim')
     Plug 'zchee/deoplete-go', { 'for': 'go' }
 endif
 
+" MySQL Console
+Plug 'NLKNguyen/pipe.vim'
+Plug 'NLKNguyen/pipe-mysql.vim'
+
 " Syntax Highlighting
 Plug 'sheerun/vim-polyglot' " This must come first so it can be overridden
 Plug 'Glench/Vim-Jinja2-Syntax'
@@ -417,7 +421,7 @@ autocmd FileChangedRO * nnoremap <buffer> <Leader>s :SudoWrite<CR>
 autocmd! VimResized * exe "normal! \<C-w>="
 
 " Always spellcheck cause typos are dumb
-autocmd BufEnter * set spell
+" autocmd BufEnter * set spell
 
 "===============================================================================
 " => # Keyboard Shortcuts
@@ -762,6 +766,7 @@ let g:LanguageClient_serverCommands = {
 \ 'scss': ['css-languageserver', '--stdio'],
 \ 'javascript': ['javascript-typescript-stdio'],
 \ 'javascript.jsx': ['javascript-typescript-stdio'],
+\ 'typescript': ['javascript-typescript-stdio'],
 \ }
 
 autocmd FileType php LanguageClientStart
