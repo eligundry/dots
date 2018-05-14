@@ -60,6 +60,7 @@ endif
 " Searching
 Plug 'bronson/vim-visual-star-search'
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'ddrscott/vim-side-search'
 
 " Editor Improvements
 Plug 'editorconfig/editorconfig-vim'
@@ -862,6 +863,8 @@ let g:ctrlp_custom_ignore = {
 
 function! CtrlPSettings()
     nnoremap <leader>ct :CtrlPTag<CR>
+    nnoremap <leader>cl :CtrlPLine<CR>
+
     if executable('ag')
         let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
     endif
@@ -933,7 +936,7 @@ autocmd VimEnter * if exists(":Tmux") | call TboneSettings() | endif
 "===============================================================================
 
 let g:webdevicons_enable_ctrlp = 1
-let g:WebDevIconsUnicodeGlyphDoubleWidth = 0
+let g:WebDevIconsUnicodeGlyphDoubleWidth = 1
 
 "===============================================================================
 " => vim-json
