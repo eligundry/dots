@@ -8,4 +8,4 @@
 " => Omnifunctions
 "===============================================================================
 
-setlocal omnifunc=javascriptcomplete#CompleteJS
+setlocal omnifunc=LanguageClient#complete

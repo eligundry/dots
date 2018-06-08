@@ -26,7 +26,7 @@ Plug 'majutsushi/tagbar'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/vimproc.vim', { 'do' : 'make' }
-Plug 'autozimu/LanguageClient-neovim'
+Plug 'autozimu/LanguageClient-neovim', { 'do': 'bash install.sh' }
 
 if has('nvim')
     Plug 'neomake/neomake'
@@ -60,22 +60,25 @@ endif
 " Searching
 Plug 'bronson/vim-visual-star-search'
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'mhinz/vim-grepper'
 
 " Editor Improvements
 Plug 'editorconfig/editorconfig-vim'
-Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'css', 'less', 'jinja', 'html.twig', 'html.handlebars', 'html.mustache', 'html.markdown', 'php'] }
+Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'css', 'less', 'jinja', 'html.twig', 'html.handlebars', 'html.mustache', 'html.markdown', 'php', 'javascript.jsx', 'javascript'] }
 Plug 'Raimondi/delimitMate'
 Plug 'tomtom/tcomment_vim'
 
 " Vim God Tim Pope
 " https://twitter.com/EliGundry/status/874737347568574464
 Plug 'tpope/vim-afterimage'
+Plug 'tpope/vim-dadbod'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-tbone'
+Plug 'tpope/vim-dotenv'
 
 " Gists
 Plug 'mattn/gist-vim'
@@ -93,14 +96,11 @@ if has('nvim')
     Plug 'zchee/deoplete-go', { 'for': 'go' }
 endif
 
-" MySQL Console
-Plug 'NLKNguyen/pipe.vim'
-Plug 'NLKNguyen/pipe-mysql.vim'
-
 " Syntax Highlighting
 Plug 'sheerun/vim-polyglot' " This must come first so it can be overridden
 Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'IN3D/vim-raml'
+Plug 'Quramy/vim-js-pretty-template', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'ap/vim-css-color'
 Plug 'davidoc/taskpaper.vim'
 Plug 'ekalinin/Dockerfile.vim'
@@ -303,7 +303,7 @@ set listchars=tab:▸∙,eol:␤,trail:∘
 " Timeout settings
 set timeout
 set nottimeout
-set timeoutlen=3000
+set timeoutlen=500
 
 " Split Handling
 if has("windows") && has("vertsplit")
@@ -420,7 +420,9 @@ autocmd FileChangedRO * nnoremap <buffer> <Leader>s :SudoWrite<CR>
 autocmd! VimResized * exe "normal! \<C-w>="
 
 " Always spellcheck cause typos are dumb
-autocmd BufEnter * set spell
+" autocmd BufEnter * set spell
+" Except when in Vim builtins, cause they are distracting
+" autocmd FileType nerdtree,startify set nospell
 
 "===============================================================================
 " => # Keyboard Shortcuts
@@ -696,9 +698,10 @@ let g:syntastic_javascript_checkers = ['eslint']
 
 let g:neomake_serialize = 1
 let g:neomake_serialize_abort_on_error = 1
-let g:neomake_open_list = 0
-" let g:neomake_python_enabled_makers = ['flake8']
-let g:neomake_php_enabled_makers = []
+let g:neomake_open_list = 2
+let g:neomake_python_enabled_makers = ['flake8']
+let g:neomake_php_enabled_makers = ['php', 'phpstan']
+let g:neomake_typescript_enabled_makers = ['tslint']
 
 " https://robots.thoughtbot.com/my-life-with-neovim
 function! NeomakeSettings()
@@ -766,6 +769,7 @@ let g:LanguageClient_serverCommands = {
 \ 'javascript': ['javascript-typescript-stdio'],
 \ 'javascript.jsx': ['javascript-typescript-stdio'],
 \ 'typescript': ['javascript-typescript-stdio'],
+\ 'typescript.jsx': ['javascript-typescript-stdio'],
 \ }
 
 autocmd FileType php LanguageClientStart
@@ -938,7 +942,7 @@ autocmd VimEnter * if exists(":Tmux") | call TboneSettings() | endif
 "===============================================================================
 
 let g:webdevicons_enable_ctrlp = 1
-let g:WebDevIconsUnicodeGlyphDoubleWidth = 0
+let g:WebDevIconsUnicodeGlyphDoubleWidth = 1
 
 "===============================================================================
 " => vim-json
@@ -954,7 +958,15 @@ let g:vim_json_syntax_conceal = 0
 if executable('ag')
     set grepprg=ag\ --vimgrep\ $*
     set grepformat=%f:%l:%c:%m
+    let g:ackprg = 'ag --vimgrep'
 endif
+
+"===============================================================================
+" => vim-gitgutter
+"===============================================================================
+
+set updatetime=100
+let g:gitgutter_async = 1
 
 "===============================================================================
 " => Rainbow Parentheses
