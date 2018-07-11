@@ -5,3 +5,6 @@ unalias ag
 alias -g ...='../..'
 alias -g ....='../../..'
 alias -g .....='../../../..'
+
+# Make rsync usable
+alias copy='rsync -avzhe --progress'
