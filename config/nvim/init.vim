@@ -871,6 +871,8 @@ let g:ctrlp_custom_ignore = {
 
 function! CtrlPSettings()
     nnoremap <leader>ct :CtrlPTag<CR>
+    nnoremap <leader>cl :CtrlPLine<CR>
+
     if executable('ag')
         let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
     endif
