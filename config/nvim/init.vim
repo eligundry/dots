@@ -89,6 +89,10 @@ Plug 'davidhalter/jedi', { 'for': 'python' }
 Plug 'heavenshell/vim-pydocstring', { 'for': 'python' }
 Plug 'klen/python-mode', { 'for': 'python' }
 
+" Ansible
+Plug 'pearofducks/ansible-vim'
+Plug 'b4b4r07/vim-ansible-vault'
+
 " Go
 Plug 'fatih/vim-go', { 'for': 'go' }
 
