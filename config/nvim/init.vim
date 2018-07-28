@@ -23,24 +23,19 @@ call plug#begin(g:plug_path)
 
 " IDE Features
 Plug 'majutsushi/tagbar'
-Plug 'Shougo/neosnippet'
-Plug 'Shougo/neosnippet-snippets'
-Plug 'Shougo/vimproc.vim', { 'do' : 'make' }
-Plug 'autozimu/LanguageClient-neovim'
+Plug 'autozimu/LanguageClient-neovim', { 'do': 'bash install.sh' }
+Plug 'neomake/neomake'
+Plug 'roxma/LanguageServer-php-neovim',  { 'do': 'composer install && composer run-script parse-stubs' }
+Plug 'roxma/nvim-yarp'
 
-if has('nvim')
-    Plug 'neomake/neomake'
-    Plug 'Shougo/denite.nvim'
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    Plug 'zchee/deoplete-jedi', { 'for': 'python' }
-    Plug 'roxma/LanguageServer-php-neovim',  { 'do': 'composer install && composer run-script parse-stubs' }
-else
-    Plug 'Shougo/neocomplete.vim'
-    Plug 'scrooloose/syntastic'
-endif
+" ncm2
+Plug 'ncm2/ncm2'
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-tmux'
+Plug 'ncm2/ncm2-path'
+Plug 'ncm2/ncm2-jedi'
 
 " GUI Improvements
-Plug 'airblade/vim-gitgutter'
 Plug 'altercation/vim-colors-solarized'
 Plug 'chriskempson/base16-vim'
 Plug 'edkolev/tmuxline.vim'
@@ -51,7 +46,6 @@ Plug 'mhinz/vim-startify'
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
 
 if has('macunix')
     Plug 'ryanoasis/vim-devicons'
@@ -73,10 +67,14 @@ Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-afterimage'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-eunuch'
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-tbone'
+
+" Git
+Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
+Plug 'mhinz/vim-signify'
+Plug 'tpope/vim-fugitive'
 
 " Gists
 Plug 'mattn/gist-vim'
@@ -89,14 +87,6 @@ Plug 'klen/python-mode', { 'for': 'python' }
 
 " Go
 Plug 'fatih/vim-go', { 'for': 'go' }
-
-if has('nvim')
-    Plug 'zchee/deoplete-go', { 'for': 'go' }
-endif
-
-" MySQL Console
-Plug 'NLKNguyen/pipe.vim'
-Plug 'NLKNguyen/pipe-mysql.vim'
 
 " Syntax Highlighting
 Plug 'sheerun/vim-polyglot' " This must come first so it can be overridden
@@ -753,6 +743,16 @@ endfunction
 autocmd VimEnter * if exists(":UndotreeShow") | call UndotreeSettings() | endif
 
 "===============================================================================
+" => ncm2
+"===============================================================================
+
+autocmd BufEnter * call ncm2#enable_for_buffer()
+autocmd TextChangedI * call ncm2#auto_trigger()
+set completeopt=noinsert,menuone,noselect
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+"===============================================================================
 " => LanguageClient
 "===============================================================================
 
@@ -772,42 +772,12 @@ let g:LanguageClient_serverCommands = {
 autocmd FileType php LanguageClientStart
 
 "===============================================================================
-" => Neocomplete, Deoplete, & Neosnippet
-" These are shared because they share the same API.
-""===============================================================================
-
-let g:deoplete#enable_at_startup = 1
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 0
-" This will allow neosnippet to load snippets automatically from plugins.
-" Why this isn't a default, I'll never know.
-let g:neosnippet#enable_snipmate_compatibility = 1
-
-if !exists('g:neocomplete#sources#omni#input_patterns')
-    let g:neocomplete#sources#omni#input_patterns = {}
-endif
-
-if !exists('g:neocomplete#force_omni_input_patterns.python')
-    let g:neocomplete#force_omni_input_patterns = {}
-endif
-
-let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-let g:neocomplete#sources#omni#input_patterns.java = '\k\.\k*'
-
-imap <C-k> <Plug>(neosnippet_expand_or_jump)
-smap <C-k> <Plug>(neosnippet_expand_or_jump)
-xmap <C-k> <Plug>(neosnippet_expand_target)
-
-"===============================================================================
 " => Jedi
 "===============================================================================
 
 let g:jedi#completions_enabled = 0
 let g:jedi#auto_vim_configuration = 0
 let g:jedi#smart_auto_mappings = 0
-let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
 
 "===============================================================================
 " => Deoplete-Jedi
@@ -996,3 +966,15 @@ let g:rainbow_conf = {
 \       'css': 0,
 \   }
 \}
+
+"===============================================================================
+" => vim-signify
+"===============================================================================
+
+let g:signify_vcs_list = [ 'git' ]
+let g:signify_sign_add               = '+'
+let g:signify_sign_delete            = '-'
+let g:signify_sign_delete_first_line = '-'
+let g:signify_sign_change            = '~'
+let g:signify_sign_changedelete      = g:signify_sign_change
+let g:signify_sign_show_text = 1
