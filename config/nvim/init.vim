@@ -71,6 +71,7 @@ Plug 'tomtom/tcomment_vim'
 " Vim God Tim Pope
 " https://twitter.com/EliGundry/status/874737347568574464
 Plug 'tpope/vim-afterimage'
+Plug 'tpope/vim-dadbod'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
