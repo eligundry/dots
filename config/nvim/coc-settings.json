@@ -1,0 +1,9 @@
+{
+    "languageserver": {
+        "php": {
+            "command": "php bin/php-language-server.php",
+            "filetypes": ["php"],
+            "cwd": "~/.config/nvim/plugged/LanguageServer-php-neovim/vendor"
+        }
+    }
+}
