@@ -95,9 +95,9 @@ if has('nvim')
     Plug 'zchee/deoplete-go', { 'for': 'go' }
 endif
 
-" MySQL Console
-Plug 'NLKNguyen/pipe.vim'
-Plug 'NLKNguyen/pipe-mysql.vim'
+" Ansible
+Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; ./generate.py' }
+Plug 'b4b4r07/vim-ansible-vault'
 
 " Syntax Highlighting
 Plug 'sheerun/vim-polyglot' " This must come first so it can be overridden
