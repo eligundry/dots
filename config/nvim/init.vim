@@ -23,7 +23,7 @@ call plug#begin(g:plug_path)
 
 " IDE Features
 Plug 'majutsushi/tagbar'
-Plug 'neoclide/coc.nvim', {'do': 'yarn install'}
+Plug 'neoclide/coc.nvim', { 'do': { -> coc#util#install() } }
 Plug 'roxma/LanguageServer-php-neovim',  { 'do': 'composer install && composer run-script parse-stubs' }
 Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
 
@@ -57,6 +57,7 @@ Plug 'tomtom/tcomment_vim'
 " Vim God Tim Pope
 " https://twitter.com/EliGundry/status/874737347568574464
 Plug 'tpope/vim-afterimage'
+Plug 'tpope/vim-dadbod'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-repeat'
@@ -77,8 +78,12 @@ Plug 'davidhalter/jedi', { 'for': 'python' }
 Plug 'heavenshell/vim-pydocstring', { 'for': 'python' }
 Plug 'klen/python-mode', { 'for': 'python' }
 
+" Ansible
+Plug 'pearofducks/ansible-vim'
+Plug 'b4b4r07/vim-ansible-vault'
+
 " Go
-Plug 'fatih/vim-go', { 'for': 'go' }
+Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoUpdateBinaries' }
 
 " Syntax Highlighting
 Plug 'sheerun/vim-polyglot' " This must come first so it can be overridden
