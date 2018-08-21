@@ -50,7 +50,7 @@ Plug 'ddrscott/vim-side-search'
 
 " Editor Improvements
 Plug 'editorconfig/editorconfig-vim'
-Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'css', 'less', 'jinja', 'html.twig', 'html.handlebars', 'html.mustache', 'html.markdown', 'php'] }
+Plug 'mattn/emmet-vim'
 Plug 'Raimondi/delimitMate'
 Plug 'tomtom/tcomment_vim'
 
