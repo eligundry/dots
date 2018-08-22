@@ -90,7 +90,7 @@ Plug 'heavenshell/vim-pydocstring', { 'for': 'python' }
 Plug 'klen/python-mode', { 'for': 'python' }
 
 " Ansible
-Plug 'pearofducks/ansible-vim'
+Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; ./generate.py' }
 Plug 'b4b4r07/vim-ansible-vault'
 
 " Go
