@@ -552,19 +552,6 @@ nnoremap <silent><Leader><C-]> <C-w><C-]><C-w>T
 nnoremap <A-]> :vsplit<CR>:exec("tag ".expand("<cword>"))<CR>
 
 "===============================================================================
-" => # Solarized
-"===============================================================================
-
-" let g:solarized_bold = 1
-" let g:solarized_italic = 1
-" let g:solarized_menu = 0
-" let g:solarized_termcolors = 256
-" let g:solarized_termtrans = 1
-" let g:solarized_visibility = "low"
-" call togglebg#map("<Leader>bg")
-" colorscheme solarized
-
-"===============================================================================
 " => # Base16
 "===============================================================================
 
@@ -627,11 +614,6 @@ if has("win32") || has("win64")
     let g:airline#extensions#tabline#left_alt_sep = '>'
     let g:airline#extensions#tabline#right_sep = '<'
     let g:airline#extensions#tabline#right_alt_sep = '<'
-endif
-
-" Fix Symbol issue in GUI
-if has('gui')
-    let g:airline_symbols.space = "\u3000"
 endif
 
 "===============================================================================

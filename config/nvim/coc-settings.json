@@ -5,5 +5,9 @@
             "filetypes": ["php"],
             "cwd": "~/.config/nvim/plugged/LanguageServer-php-neovim/vendor"
         }
-    }
+    },
+    "coc.source.gocode.enable": true,
+    "coc.source.gocode.priority": 99,
+    "coc.source.gocode.shortcut": "GOC",
+    "coc.source.gocode.triggerCharacters": [".",":"]
 }
