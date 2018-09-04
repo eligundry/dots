@@ -94,11 +94,11 @@ Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; ./generate.py' }
 Plug 'b4b4r07/vim-ansible-vault'
 
 " Go
-Plug 'fatih/vim-go', { 'for': 'go' }
+Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoUpdateBinaries' }
 
-if has('nvim')
-    Plug 'zchee/deoplete-go', { 'for': 'go' }
-endif
+" if has('nvim')
+"     Plug 'zchee/deoplete-go', { 'for': 'go', 'do': 'make' }
+" endif
 
 " Syntax Highlighting
 Plug 'sheerun/vim-polyglot' " This must come first so it can be overridden
