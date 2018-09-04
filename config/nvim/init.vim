@@ -1011,3 +1011,11 @@ let g:rainbow_conf = {
 \       'css': 0,
 \   }
 \}
+
+"===============================================================================
+" => Local Vim Customization
+"===============================================================================
+
+if !empty(glob('~/.config/nvim/local.init.vim'))
+    runtime local.init.vim
+endif
