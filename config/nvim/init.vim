@@ -26,7 +26,7 @@ Plug 'majutsushi/tagbar'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/vimproc.vim', { 'do' : 'make' }
-Plug 'autozimu/LanguageClient-neovim', { 'do': 'bash install.sh' }
+Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
 
 if has('nvim')
     Plug 'neomake/neomake'
