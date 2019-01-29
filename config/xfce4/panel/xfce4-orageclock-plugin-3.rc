@@ -1,14 +1,14 @@
-show_frame=false
+show_frame=true
 fg_set=false
 bg_set=false
-timezone=
+timezone=UTC
 width_set=true
 height_set=false
-lines_vertically=false
+lines_vertically=true
 rotation=0
-data0=%H:%M %Z
+data0=%H:%M UTC
 font0=
 tooltip=%A %d %B %Y/%V
 hib_timing=false
-width=61
+width=69
 

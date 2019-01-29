@@ -26,7 +26,7 @@ Plug 'majutsushi/tagbar'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/vimproc.vim', { 'do' : 'make' }
-Plug 'autozimu/LanguageClient-neovim', { 'do': 'bash install.sh' }
+Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
 
 if has('nvim')
     Plug 'neomake/neomake'
@@ -451,8 +451,8 @@ nnoremap <silent> <C-Right> :vertical resize +1<CR>
 nnoremap <Leader>ee :wincmd =<CR>
 
 " Alternate increment mappings for screen and tmux
-nnoremap + <C-a>
-nnoremap - <C-x>
+" nnoremap + <C-a>
+" nnoremap - <C-x>
 
 " Easier line jumping
 noremap H ^
@@ -534,7 +534,7 @@ nnoremap ; :!
 nnoremap <Leader>wp :set wrap!<CR>
 
 " Saving & Quiting Shortcuts
-nnoremap <Leader>s :update<CR>
+nnoremap <Leader>s :write<CR>
 nnoremap <Leader>ww :write<CR>
 nnoremap <Leader>wq :wq!<CR>
 nnoremap <Leader>wa :wall<CR>
