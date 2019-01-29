@@ -68,3 +68,8 @@ if ! zplug check; then
 fi
 
 zplug load # --verbose
+
+# Serverless uses tabtab which will automatically change this file unless these
+# lines are here. Fuck Amazon.
+# tabtab source for serverless package
+# tabtab source for sls package
