@@ -451,8 +451,8 @@ nnoremap <silent> <C-Right> :vertical resize +1<CR>
 nnoremap <Leader>ee :wincmd =<CR>
 
 " Alternate increment mappings for screen and tmux
-nnoremap + <C-a>
-nnoremap - <C-x>
+" nnoremap + <C-a>
+" nnoremap - <C-x>
 
 " Easier line jumping
 noremap H ^

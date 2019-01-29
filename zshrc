@@ -68,3 +68,10 @@ if ! zplug check; then
 fi
 
 zplug load # --verbose
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /home/eligundry/Code/TalentInc/lambda/navi/node_modules/tabtab/.completions/serverless.zsh ]] && . /home/eligundry/Code/TalentInc/lambda/navi/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /home/eligundry/Code/TalentInc/lambda/navi/node_modules/tabtab/.completions/sls.zsh ]] && . /home/eligundry/Code/TalentInc/lambda/navi/node_modules/tabtab/.completions/sls.zsh
