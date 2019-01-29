@@ -534,7 +534,7 @@ nnoremap ; :!
 nnoremap <Leader>wp :set wrap!<CR>
 
 " Saving & Quiting Shortcuts
-nnoremap <Leader>s :update<CR>
+nnoremap <Leader>s :write<CR>
 nnoremap <Leader>ww :write<CR>
 nnoremap <Leader>wq :wq!<CR>
 nnoremap <Leader>wa :wall<CR>
