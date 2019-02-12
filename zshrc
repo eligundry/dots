@@ -69,9 +69,7 @@ fi
 
 zplug load # --verbose
 
+# Serverless uses tabtab which will automatically change this file unless these
+# lines are here. Fuck Amazon.
 # tabtab source for serverless package
-# uninstall by removing these lines or running `tabtab uninstall serverless`
-[[ -f /home/eligundry/Code/TalentInc/lambda/navi/node_modules/tabtab/.completions/serverless.zsh ]] && . /home/eligundry/Code/TalentInc/lambda/navi/node_modules/tabtab/.completions/serverless.zsh
 # tabtab source for sls package
-# uninstall by removing these lines or running `tabtab uninstall sls`
-[[ -f /home/eligundry/Code/TalentInc/lambda/navi/node_modules/tabtab/.completions/sls.zsh ]] && . /home/eligundry/Code/TalentInc/lambda/navi/node_modules/tabtab/.completions/sls.zsh

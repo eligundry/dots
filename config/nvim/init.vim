@@ -1019,3 +1019,9 @@ let g:rainbow_conf = {
 if !empty(glob('~/.config/nvim/local.init.vim'))
     runtime local.init.vim
 endif
+
+"===============================================================================
+" => Notes
+"===============================================================================
+
+autocmd BufNewFile,BufRead ~/Notes/*.md set wrap textwidth=0 noexpandtab tabstop=2 softtabstop=2 shiftwidth=2

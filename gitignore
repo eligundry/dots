@@ -33,3 +33,4 @@
 *.hist
 **/.ropeproject
 **/.phpcomplete_extended
+**/.vscode
