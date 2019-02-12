@@ -1,5 +1,5 @@
 favorites=google-chrome.desktop,slack.desktop,spotify.desktop,clementine.desktop,steam.desktop,discord.desktop,exo-terminal-emulator.desktop,code.desktop
-recent=libreoffice-writer.desktop,org.gnome.DiskUtility.desktop,audacious.desktop,clementine.desktop,thunderbird.desktop,firefox-esr.desktop,mugshot.desktop,org.gnome.baobab.desktop,mattermost-desktop.desktop,icedove.desktop
+recent=org.gnome.DiskUtility.desktop,libreoffice-writer.desktop,audacious.desktop,clementine.desktop,thunderbird.desktop,firefox-esr.desktop,mugshot.desktop,org.gnome.baobab.desktop,mattermost-desktop.desktop,icedove.desktop
 button-title=Applications
 button-icon=xfce4-whiskermenu
 button-single-row=false
