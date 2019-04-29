@@ -73,3 +73,4 @@ zplug load # --verbose
 # lines are here. Fuck Amazon.
 # tabtab source for serverless package
 # tabtab source for sls package
+# tabtab source for slss package
