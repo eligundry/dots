@@ -23,14 +23,24 @@ call plug#begin(g:plug_path)
 
 " coc.nvim provides all IDE features
 function! InstallCocPlugins(info)
-    CocInstall coc-json coc-tsserver coc-html coc-css coc-phpls coc-yaml coc-python
-    call system('go get golang.org/x/tools/gopls@latest && go install golang.org/x/tools/gopls')
+    CocInstall coc-json
+    CocInstall coc-tsserver
+    CocInstall coc-html
+    CocInstall coc-css
+    CocInstall coc-phpls
+    CocInstall coc-yaml
+    CocInstall coc-python
+    " If this doesn't work, manually run it in the shell
+    call system('go get -u golang.org/x/tools/gopls')
 endfunction
 
 Plug 'neoclide/coc.nvim', {
-    \ 'branch': 'release',
-    \ 'do': function('InstallCocPlugins')
-    \ }
+\   'branch': 'release',
+\   'do': function('InstallCocPlugins')
+\ }
+
+" ale provides all the linting and fixing
+Plug 'w0rp/ale', { 'do': 'go get -u github.com/mgechev/revive' }
 
 " GUI Improvements
 Plug 'airblade/vim-gitgutter'
@@ -78,7 +88,6 @@ Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
 
 " Ansible
-Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; ./generate.py' }
 Plug 'b4b4r07/vim-ansible-vault'
 
 " Syntax Highlighting
@@ -393,7 +402,8 @@ augroup line_return
 augroup END
 
 " Remove trailing whitespace when saving files
-autocmd BufWritePre * :%s/\s\+$//e
+" ale is doing this now
+" autocmd BufWritePre * :%s/\s\+$//e
 
 " Exit paste mode upon leaving insert
 autocmd InsertLeave * set nopaste paste?
@@ -837,6 +847,25 @@ let g:rainbow_conf = {
 \       'css': 0,
 \   }
 \}
+
+"===============================================================================
+" => coc.nvim
+"===============================================================================
+
+"===============================================================================
+" => ale
+"===============================================================================
+
+" coc.nvim provides this
+let g:ale_completion_enabled = 0
+
+" let ale clean up all files with some default rules
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace']
+\}
+
+" show the quickfix list
+let g:ale_open_list = 1
 
 "===============================================================================
 " => Local Vim Customization

@@ -1,12 +1,21 @@
 "===============================================================================
-" File: typescript.vim
+" File: go.vim
 " Author: Eli Gundry <eligundry@gmail.com>
-" Description: Typescript specific vim settings
+" Description: go specific vim settings
 "===============================================================================
 
 "===============================================================================
 " => ale
 "===============================================================================
 
-let b:ale_fixers = ['prettier', 'eslint']
+call ale#linter#Define('go', {
+\   'name': 'revive',
+\   'output_stream': 'both',
+\   'executable': 'revive',
+\   'read_buffer': 0,
+\   'command': 'revive %t',
+\   'callback': 'ale#handlers#unix#HandleAsWarning',
+\})
+
+let b:ale_fixers = ['gofmt', 'goimports']
 let b:ale_fix_on_save = 1
