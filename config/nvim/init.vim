@@ -551,19 +551,6 @@ nnoremap <silent><Leader><C-]> <C-w><C-]><C-w>T
 nnoremap <A-]> :vsplit<CR>:exec("tag ".expand("<cword>"))<CR>
 
 "===============================================================================
-" => # Solarized
-"===============================================================================
-
-" let g:solarized_bold = 1
-" let g:solarized_italic = 1
-" let g:solarized_menu = 0
-" let g:solarized_termcolors = 256
-" let g:solarized_termtrans = 1
-" let g:solarized_visibility = "low"
-" call togglebg#map("<Leader>bg")
-" colorscheme solarized
-
-"===============================================================================
 " => # Base16
 "===============================================================================
 
@@ -659,50 +646,6 @@ let g:tmuxline_powerline_separators = 1
 let g:tmuxline_preset = 'powerline'
 
 "===============================================================================
-" => Syntastic
-"===============================================================================
-
-" let g:syntastic_auto_loc_list = 1
-" let g:syntastic_auto_jump = 0
-" let g:syntastic_check_on_open = 0
-" let g:syntastic_enable_balloons = 0
-" let g:syntastic_enable_highlighting = 1
-" let g:syntastic_enable_signs = 1
-" let g:syntastic_error_symbol = '✗'
-" let g:syntastic_warning_symbol = '⚠'
-" let g:syntastic_quiet_messages = {'level': 'warnings'}
-" let g:syntastic_mode_map = {
-"     \ 'mode': 'active',
-"     \ 'active_filetypes': ['html', 'xml', 'c', 'cpp', 'php', 'css', 'ruby', 'eruby', 'python', 'javascript'],
-"     \ 'passive_filetypes': ['less'] }
-" let g:syntastic_javascript_checkers = ['eslint']
-
-"===============================================================================
-" => Neomake
-"===============================================================================
-
-" let g:neomake_serialize = 1
-" let g:neomake_serialize_abort_on_error = 1
-" let g:neomake_open_list = 2
-" let g:neomake_python_enabled_makers = ['flake8']
-" let g:neomake_php_enabled_makers = ['php', 'phpstan']
-" let g:neomake_typescript_enabled_makers = ['tslint']
-"
-" " https://robots.thoughtbot.com/my-life-with-neovim
-" function! NeomakeSettings()
-"     " Run NeoMake on read and write operations
-"     autocmd BufReadPost,BufWritePost * Neomake
-"
-"     " Disable inherited syntastic
-"     let g:syntastic_mode_map = {
-"     \ "mode": "passive",
-"     \ "active_filetypes": [],
-"     \ "passive_filetypes": [] }
-" endfunction
-"
-" autocmd VimEnter * if exists(":Neomake") | call NeomakeSettings() | endif
-
-"===============================================================================
 " => NERDTree
 "===============================================================================
 
@@ -738,102 +681,6 @@ function! UndotreeSettings()
 endfunction
 
 autocmd VimEnter * if exists(":UndotreeShow") | call UndotreeSettings() | endif
-
-"===============================================================================
-" => LanguageClient
-"===============================================================================
-
-" nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-" nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-" nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
-"
-" let g:LanguageClient_serverCommands = {
-" \ 'css': ['css-languageserver', '--stdio'],
-" \ 'less': ['css-languageserver', '--stdio'],
-" \ 'scss': ['css-languageserver', '--stdio'],
-" \ 'javascript': ['javascript-typescript-stdio'],
-" \ 'javascript.jsx': ['javascript-typescript-stdio'],
-" \ 'typescript': ['javascript-typescript-stdio'],
-" \ 'typescript.jsx': ['javascript-typescript-stdio'],
-" \ }
-"
-" autocmd FileType php LanguageClientStart
-
-"===============================================================================
-" => Neocomplete, Deoplete, & Neosnippet
-" These are shared because they share the same API.
-""===============================================================================
-
-" let g:deoplete#enable_at_startup = 1
-" let g:neocomplete#enable_at_startup = 1
-" let g:neocomplete#enable_smart_case = 0
-" " This will allow neosnippet to load snippets automatically from plugins.
-" " Why this isn't a default, I'll never know.
-" let g:neosnippet#enable_snipmate_compatibility = 1
-"
-" if !exists('g:neocomplete#sources#omni#input_patterns')
-"     let g:neocomplete#sources#omni#input_patterns = {}
-" endif
-"
-" if !exists('g:neocomplete#force_omni_input_patterns.python')
-"     let g:neocomplete#force_omni_input_patterns = {}
-" endif
-"
-" let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-" let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-" let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-" let g:neocomplete#sources#omni#input_patterns.java = '\k\.\k*'
-"
-" imap <C-k> <Plug>(neosnippet_expand_or_jump)
-" smap <C-k> <Plug>(neosnippet_expand_or_jump)
-" xmap <C-k> <Plug>(neosnippet_expand_target)
-
-"===============================================================================
-" => Jedi
-"===============================================================================
-
-" let g:jedi#completions_enabled = 0
-" let g:jedi#auto_vim_configuration = 0
-" let g:jedi#smart_auto_mappings = 0
-" let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
-
-"===============================================================================
-" => Deoplete-Jedi
-"===============================================================================
-
-" let deoplete#sources#jedi#show_docstring = 1
-
-"===============================================================================
-" => Python Mode
-"===============================================================================
-
-" let g:pymode_virtualenv = 1
-" let g:pymode_breakpoint = 1
-" let g:pymode_breakpoint_bind = '<leader>bp'
-" " I'm using neomake because it's async
-" let g:pymode_lint = 0
-" " Not the biggest fan of rope, because it seems like other plugins do it's job,
-" " but leaving it enabled because it allows for pretty highlighting.
-" let g:pymode_rope = 1
-" " This here be the worst setting ever with neocomplete
-" let g:pymode_rope_complete_on_dot = 0
-" " Love the new highlighting
-" let g:pymode_syntax = 1
-" let g:pymode_syntax_all = 1
-" " It can highlight code blocks but it's slow. Okay, I'll take that hit.
-" let g:pymode_syntax_slow_sync = 1
-
-"===============================================================================
-" => vim-pydocstring
-"===============================================================================
-
-nnoremap <silent> <C-_> <Plug>(pydocstring)
-
-"===============================================================================
-" => Vim Go
-"===============================================================================
-
-" let g:deoplete#sources#go#gocode_binary = '/usr/lib/go-1.9/bin/go'
 
 "===============================================================================
 " => Vim Plug
