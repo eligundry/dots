@@ -888,7 +888,8 @@ let g:ale_fixers = {
 \}
 
 " show the quickfix list
-let g:ale_open_list = 1
+" disabled because it kept getting in my face
+" let g:ale_open_list = 1
 
 "===============================================================================
 " => Local Vim Customization
