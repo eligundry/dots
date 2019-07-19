@@ -30,6 +30,12 @@ function! InstallCocPlugins(info)
     CocInstall coc-phpls
     CocInstall coc-yaml
     CocInstall coc-python
+    CocInstall coc-docker
+    CocInstall coc-emoji
+    CocInstall coc-word
+    " coc-post is a Postman for vim
+    " https://github.com/iamcco/coc-post
+    CocInstall coc-post
     " If this doesn't work, manually run it in the shell
     call system('go get -u golang.org/x/tools/gopls')
 endfunction
@@ -97,7 +103,6 @@ Plug 'IN3D/vim-raml'
 Plug 'Quramy/vim-js-pretty-template', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'ap/vim-css-color'
 Plug 'davidoc/taskpaper.vim'
-Plug 'ekalinin/Dockerfile.vim'
 Plug 'elzr/vim-json'
 Plug 'groenewege/vim-less'
 Plug 'plasticboy/vim-markdown', { 'for': ['markdown'] }
