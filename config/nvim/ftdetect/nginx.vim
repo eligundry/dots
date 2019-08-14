@@ -5,3 +5,4 @@
 "===============================================================================
 
 autocmd BufRead,BufNewFile /etc/nginx/* setfiletype nginx
+autocmd BufRead,BufNewFile *.conf.erb setfiletype nginx

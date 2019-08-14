@@ -25,6 +25,7 @@ call plug#begin(g:plug_path)
 function! InstallCocPlugins(info)
     CocInstall coc-json
     CocInstall coc-tsserver
+    CocInstall coc-prettier
     CocInstall coc-html
     CocInstall coc-css
     CocInstall coc-phpls
@@ -36,8 +37,8 @@ function! InstallCocPlugins(info)
     " coc-post is a Postman for vim
     " https://github.com/iamcco/coc-post
     CocInstall coc-post
-    " If this doesn't work, manually run it in the shell
-    call system('go get -u golang.org/x/tools/gopls')
+    " coc-emmet does HTML expansion
+    CocInstall coc-emmet
 endfunction
 
 Plug 'neoclide/coc.nvim', {
@@ -46,14 +47,11 @@ Plug 'neoclide/coc.nvim', {
 \ }
 
 " ale provides all the linting and fixing
-Plug 'w0rp/ale', { 'do': 'go get -u github.com/mgechev/revive' }
+Plug 'w0rp/ale', { 'do': 'go get -u github.com/mgechev/revive golang.org/x/tools/gopls' }
 
 " GUI Improvements
 Plug 'airblade/vim-gitgutter'
-Plug 'altercation/vim-colors-solarized'
 Plug 'chriskempson/base16-vim'
-Plug 'edkolev/tmuxline.vim'
-Plug 'flazz/vim-colorschemes'
 Plug 'luochen1990/rainbow'
 Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
 Plug 'mhinz/vim-startify'
@@ -66,6 +64,9 @@ if has('macunix')
     Plug 'ryanoasis/vim-devicons'
 endif
 
+" tmux (because I guess you can configure it from vim?)
+Plug 'edkolev/tmuxline.vim'
+
 " Searching
 Plug 'bronson/vim-visual-star-search'
 Plug 'ctrlpvim/ctrlp.vim'
@@ -73,7 +74,6 @@ Plug 'mhinz/vim-grepper'
 
 " Editor Improvements
 Plug 'editorconfig/editorconfig-vim'
-Plug 'mattn/emmet-vim', { 'for': ['html', 'xml', 'htmldjango', 'xsl', 'haml', 'css', 'less', 'jinja', 'html.twig', 'html.handlebars', 'html.mustache', 'html.markdown', 'php', 'javascript.jsx', 'javascript'] }
 Plug 'Raimondi/delimitMate'
 Plug 'tomtom/tcomment_vim'
 
@@ -99,12 +99,9 @@ Plug 'b4b4r07/vim-ansible-vault'
 " Syntax Highlighting
 Plug 'sheerun/vim-polyglot' " This must come first so it can be overridden
 Plug 'Glench/Vim-Jinja2-Syntax'
-Plug 'IN3D/vim-raml'
-Plug 'Quramy/vim-js-pretty-template', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'ap/vim-css-color'
 Plug 'davidoc/taskpaper.vim'
 Plug 'elzr/vim-json'
-Plug 'groenewege/vim-less'
 Plug 'plasticboy/vim-markdown', { 'for': ['markdown'] }
 Plug 'saltstack/salt-vim'
 
@@ -302,7 +299,7 @@ set listchars=tab:▸∙,eol:␤,trail:∘
 " Timeout settings
 set timeout
 set nottimeout
-set timeoutlen=500
+set timeoutlen=1000
 
 " Split Handling
 if has("windows") && has("vertsplit")
@@ -447,8 +444,8 @@ nnoremap <silent> <C-Right> :vertical resize +1<CR>
 nnoremap <Leader>ee :wincmd =<CR>
 
 " Alternate increment mappings for screen and tmux
-" nnoremap + <C-a>
-" nnoremap - <C-x>
+nnoremap + <C-a>
+nnoremap - <C-x>
 
 " Easier line jumping
 noremap H ^
@@ -531,14 +528,10 @@ nnoremap <Leader>wp :set wrap!<CR>
 
 " Saving & Quiting Shortcuts
 nnoremap <Leader>s :write<CR>
-nnoremap <Leader>ww :write<CR>
-nnoremap <Leader>wq :wq!<CR>
-nnoremap <Leader>wa :wall<CR>
 nnoremap <Leader>qa :qall<CR>
 nnoremap <Leader>qq :quit<CR>
 nnoremap <Leader>tt :tabnew<CR>
 nnoremap <Leader>tc :tabclose<CR>
-nnoremap <Leader>to :tabonly<CR>
 
 " Reload all files open
 nnoremap <Leader>rr :bufdo e!<CR>:tabdo e!<CR>
@@ -549,21 +542,13 @@ noremap <silent> k gk
 noremap <silent> gj j
 noremap <silent> gk k
 
-" Bubble lines of text with optional repeat count
-nnoremap <silent> <S-j> @='ddp'<CR>
+" Bubble lines of text with optional repeat count in visual mode
 vnoremap <silent> <S-j> @='xp`[V`]'<CR>
-nnoremap <silent> <S-k> @='ddkP'<CR>
 vnoremap <silent> <S-k> @='xkP`[V`]'<CR>
 
-" Shift blocks visually
+" Shift blocks visually in visual mode and retain the selection
 vnoremap < <gv
 vnoremap > >gv
-
-" Open tag in new tab
-nnoremap <silent><Leader><C-]> <C-w><C-]><C-w>T
-
-" Open tag is vertical split
-nnoremap <A-]> :vsplit<CR>:exec("tag ".expand("<cword>"))<CR>
 
 "===============================================================================
 " => # Base16
@@ -715,9 +700,6 @@ let g:ctrlp_custom_ignore = {
 \ }
 
 function! CtrlPSettings()
-    nnoremap <leader>ct :CtrlPTag<CR>
-    nnoremap <leader>cl :CtrlPLine<CR>
-
     if executable('ag')
         let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
     endif
@@ -742,23 +724,10 @@ autocmd FileType vim,html,xml,xhtml let b:delimitMate_matchpairs = "(:),[:],{:},
 function! FugitiveSettings()
     nnoremap <silent> <Leader>gs :Gstatus<CR>
     nnoremap <silent> <Leader>gb :Gblame<CR>
-    nnoremap <silent> <Leader>gd :Gdiff<CR>
-    nnoremap <silent> <Leader>gp :Git push<CR>
-    nnoremap <silent> <Leader>gl :Glog<CR>
     autocmd FileType gitcommit nnoremap <buffer> <Leader>s :wq<CR>
 endfunction
 
 autocmd VimEnter * if exists("g:loaded_fugitive") | call FugitiveSettings() | endif
-
-"===============================================================================
-" => TagBar
-"===============================================================================
-
-function! TagBarSettings()
-    nnoremap <silent> <Leader>tb :Tagbar<CR>
-endfunction
-
-autocmd VimEnter * if exists(":Tagbar") | call TagBarSettings() | endif
 
 "===============================================================================
 " => TComment
@@ -789,7 +758,7 @@ autocmd VimEnter * if exists(":Tmux") | call TboneSettings() | endif
 "===============================================================================
 
 let g:webdevicons_enable_ctrlp = 1
-let g:WebDevIconsUnicodeGlyphDoubleWidth = 1
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
 
 "===============================================================================
 " => vim-json
