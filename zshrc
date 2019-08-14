@@ -48,7 +48,6 @@ zplug "plugins/python", from:oh-my-zsh, if:"command_exists 'python'"
 zplug "plugins/svn-fast-info", from:oh-my-zsh
 zplug "plugins/vagrant", from:oh-my-zsh, if:"command_exists 'vagrant'"
 zplug "plugins/virtualenv", from:oh-my-zsh
-zplug "plugins/xcode", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 zplug "plugins/zsh_reload", from:oh-my-zsh
 zplug "pyinvoke/invoke", use:"completion/zsh", if:"command_exists 'python'"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2

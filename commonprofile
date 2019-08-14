@@ -33,18 +33,9 @@ eval "$(pyenv virtualenv-init -)"
 # => NVM
 ################################################################################
 
+# Disabled because it's slow and I don't need it currently
 # export NVM_DIR="$HOME/.nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-
-################################################################################
-# => Tmuxifier
-################################################################################
-
-export TMUXIFIER="$HOME/.lib/tmuxifier"
-export TMUXIFIER_LAYOUT_PATH="$HOME/.tmuxifier-sessions"
-pathadd "$TMUXIFIER/bin"
-unset GREP_OPTIONS
-eval "$(tmuxifier init -)"
 
 ################################################################################
 # => Google Cloud SDK
@@ -54,7 +45,16 @@ eval "$(tmuxifier init -)"
 # source "$HOME/.google-cloud-sdk/path.zsh.inc"
 
 ################################################################################
-# => Go 1.9
+# => Homebrew
+################################################################################
+
+# EDG 2019-08-13: For some reason, MacOS ZSH isn't including the Homebrew bin
+# path, which breaks everything. Adding it manually seems to fix the issue.
+
+pathadd /usr/local/bin
+
+################################################################################
+# => Go
 ################################################################################
 
 export GOPATH=$HOME/Code/go
@@ -130,12 +130,7 @@ alias mkdir='mkdir -pv'
 alias mv='mv -v'
 alias rm='rm -v'
 alias s='sudo'
-alias s!='sudo !!'
-alias sctl='systemctl'
-alias so='source'
-alias svn_remove='find . -name .svn -print0 | xargs -0 rm -rf'
 alias git_clean='find . -name "*.orig" -delete'
-alias pip_upgrade_all='pip freeze --local | grep -v "^\-e" | cut -d = -f 1  | xargs -n1 pip install -U'
 alias highstate='sudo salt-call state.highstate'
 alias state-apply='sudo salt-call state.apply'
 
