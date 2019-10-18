@@ -99,7 +99,7 @@ Plug 'b4b4r07/vim-ansible-vault'
 " Syntax Highlighting
 Plug 'sheerun/vim-polyglot' " This must come first so it can be overridden
 Plug 'Glench/Vim-Jinja2-Syntax'
-Plug 'ap/vim-css-color'
+Plug 'norcalli/nvim-colorizer.lua'
 Plug 'davidoc/taskpaper.vim'
 Plug 'elzr/vim-json'
 Plug 'plasticboy/vim-markdown', { 'for': ['markdown'] }

@@ -8,9 +8,9 @@
         }
     },
     "coc.preferences.formatOnSaveFiletypes": [
-        "js",
-        "jsx",
-        "ts",
-        "tsx"
+        "javascript",
+        "javascript.jsx",
+        "typescript",
+        "typescript.tsx"
     ]
 }
