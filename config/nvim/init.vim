@@ -47,7 +47,7 @@ Plug 'neoclide/coc.nvim', {
 \ }
 
 " ale provides all the linting and fixing
-Plug 'w0rp/ale', { 'do': 'go get -u github.com/mgechev/revive golang.org/x/tools/gopls' }
+Plug 'w0rp/ale', { 'do': 'go get github.com/mgechev/revive golang.org/x/tools/gopls@latest' }
 
 " GUI Improvements
 Plug 'airblade/vim-gitgutter'
