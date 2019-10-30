@@ -23,9 +23,9 @@ call plug#begin(g:plug_path)
 
 " coc.nvim provides all IDE features
 function! InstallCocPlugins(info)
-    CocInstall coc-json
     CocInstall coc-tsserver
     CocInstall coc-prettier
+    CocInstall coc-json
     CocInstall coc-html
     CocInstall coc-css
     CocInstall coc-phpls

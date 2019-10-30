@@ -9,8 +9,11 @@
     },
     "coc.preferences.formatOnSaveFiletypes": [
         "javascript",
-        "javascript.jsx",
+        "javascriptreact",
         "typescript",
-        "typescript.tsx"
-    ]
+        "typescriptreact",
+        "json"
+    ],
+    "coc.preferences.extensionUpdateCheck": "never",
+    "prettier.requireConfig": true
 }
