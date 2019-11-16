@@ -325,6 +325,9 @@ endif
 " Make all comments italic
 highlight Comment cterm=italic
 
+" Sync spellfile to Dropbox
+set spellfile=~/Dropbox/vim/spell.en.utf-8.add
+
 "===============================================================================
 " => # Custom Functions
 "===============================================================================
@@ -877,4 +880,4 @@ endif
 " => Notes
 "===============================================================================
 
-autocmd BufNewFile,BufRead ~/Notes/*.md set wrap textwidth=0 noexpandtab tabstop=2 softtabstop=2 shiftwidth=2
+autocmd BufNewFile,BufRead ~/Notes/**.md,~/Dropbox/Notes/**.md set wrap textwidth=0 noexpandtab tabstop=2 softtabstop=2 shiftwidth=2
