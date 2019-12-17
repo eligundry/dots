@@ -30,6 +30,7 @@ zplug "lib/history", from:oh-my-zsh
 zplug "lib/nvm", from:oh-my-zsh, if:"command_exists 'nvm'"
 zplug "lib/termsupport", from:oh-my-zsh
 zplug "lib/theme-and-appearance", from:oh-my-zsh
+zplug "plugins/aws", from:oh-my-zsh
 zplug "plugins/archlinux", from:oh-my-zsh, if:"command_exists 'pacman'"
 zplug "plugins/brew", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 zplug "plugins/brew-cask", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
