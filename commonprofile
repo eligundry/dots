@@ -141,3 +141,10 @@ alias lla='ls -lAh'
 alias lr='ls -R'
 alias lar='ls -Arh'
 alias l.='ls -d .*'
+
+################################################################################
+# => AWS Access Environment Variables
+################################################################################
+
+export AWS_ACCESS_KEY_ID="$(aws configure get aws_access_key_id)"
+export AWS_SECRET_ACCESS_KEY="$(aws configure get aws_secret_access_key)"
