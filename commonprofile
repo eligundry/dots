@@ -59,6 +59,7 @@ pathadd /usr/local/bin
 
 export GOPATH=$HOME/Code/go
 pathadd $GOPATH/bin
+pathadd /usr/local/go/bin
 
 ################################################################################
 # => Default Variables
