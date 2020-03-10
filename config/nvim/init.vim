@@ -759,6 +759,7 @@ autocmd VimEnter * if exists(":Tmux") | call TboneSettings() | endif
 
 let g:webdevicons_enable_ctrlp = 1
 let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+let g:WebDevIconsNerdTreeAfterGlyphPadding = ' '
 
 "===============================================================================
 " => vim-json
