@@ -1,5 +1,5 @@
 [Configuration]
-FontName=FiraCode Nerd Font 12
+FontName=FiraCode Nerd Font 10
 MiscAlwaysShowTabs=FALSE
 MiscBell=FALSE
 MiscBellUrgent=FALSE
@@ -32,5 +32,11 @@ ColorForeground=#d8d8d8
 ColorBackground=#181818
 ColorCursor=x
 ColorPalette=#181818;#ab4642;#a1b56c;#f7ca88;#7cafc2;#ba8baf;#86c1b9;#d8d8d8;#585858;#ab4642;#a1b56c;#f7ca88;#7cafc2;#ba8baf;#86c1b9;#f8f8f8
+CommandLoginShell=TRUE
+ScrollingOnOutput=FALSE
+ScrollingOnKeystroke=FALSE
+ScrollingBar=TERMINAL_SCROLLBAR_NONE
+BackgroundMode=TERMINAL_BACKGROUND_TRANSPARENT
+BackgroundDarkness=0.850000
 ColorBoldIsBright=FALSE
 
