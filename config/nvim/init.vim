@@ -31,6 +31,7 @@ function! InstallCocPlugins(info)
     CocInstall coc-phpls
     CocInstall coc-yaml
     CocInstall coc-python
+    CocInstall coc-rust-analyzer
     CocInstall coc-docker
     CocInstall coc-emoji
     CocInstall coc-word
