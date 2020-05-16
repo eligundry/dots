@@ -80,7 +80,6 @@ Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-afterimage'
 Plug 'tpope/vim-dadbod'
 Plug 'tpope/vim-dispatch'
-Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
@@ -102,6 +101,9 @@ Plug 'davidoc/taskpaper.vim'
 Plug 'elzr/vim-json'
 Plug 'plasticboy/vim-markdown', { 'for': ['markdown'] }
 Plug 'saltstack/salt-vim'
+
+" Edit root files without elevating
+Plug 'lambdalisue/suda.vim'
 
 call plug#end()
 
@@ -412,7 +414,7 @@ augroup END
 autocmd InsertLeave * set nopaste paste?
 
 " Use SudoWrite on read only files
-autocmd FileChangedRO * nnoremap <buffer> <Leader>s :SudoWrite<CR>
+autocmd FileChangedRO * nnoremap <buffer> <Leader>s :w suda://%<CR>
 
 " Resize splits as vim is resized
 autocmd! VimResized * exe "normal! \<C-w>="
