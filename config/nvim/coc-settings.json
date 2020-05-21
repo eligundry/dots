@@ -18,7 +18,8 @@
         "javascriptreact",
         "typescript",
         "typescriptreact",
-        "json"
+        "json",
+        "go"
     ],
     "coc.preferences.extensionUpdateCheck": "never",
     "prettier.requireConfig": true
