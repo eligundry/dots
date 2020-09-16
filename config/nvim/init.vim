@@ -80,11 +80,12 @@ Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-afterimage'
 Plug 'tpope/vim-dadbod'
 Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-dotenv'
+Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-tbone'
-Plug 'tpope/vim-dotenv'
 
 " Gists
 Plug 'mattn/gist-vim'
