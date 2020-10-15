@@ -35,3 +35,4 @@
 **/.phpcomplete_extended
 **/.vscode
 **/blah.*
+**/blah/*
