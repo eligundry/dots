@@ -324,7 +324,7 @@ if has("linebreak")
 endif
 
 " Make all comments italic
-highlight Comment cterm=italic
+highlight Comment cterm=italic gui=italic
 
 " Sync spellfile to Dropbox
 set spellfile=~/Dropbox/vim/spell.en.utf-8.add
