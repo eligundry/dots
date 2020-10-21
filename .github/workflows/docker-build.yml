@@ -5,6 +5,10 @@ on:
       - master
       - dockerize
 
+  # Build daily at 4am UTC
+  schedule:
+    - cron: '0 4 * * *'
+
 jobs:
   build:
     runs-on: ubuntu-latest
