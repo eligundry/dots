@@ -15,7 +15,7 @@ platform=`uname`
 # Exclude files
 exclude=("README.markdown" "LICENSE" "dots.sh" "config" "tmuxline.conf"
          "tmux-sessions" "local" "bashrc" "bash_profile",
-         "iterm2_profiles.json")
+         "iterm2_profiles.json" "Dockerfile")
 
 if [[ $platform == "Darwin" ]]; then
     exclude+=("gtkrc-2.0" "xinitrc")
@@ -52,6 +52,7 @@ custom_links()
     local CF_LOC="$PWD/config"
     local CF_DEST="$HOME/.config"
 
+    mkdir -pv "$HOME/.config"
     ln -vfsn "$CF_LOC/nvim" "$CF_DEST/nvim"
     ln -vfsn "$CF_LOC/nvim" "$HOME/.vim"
     ln -vfs "$CF_LOC/nvim/init.vim" "$HOME/.vimrc"
@@ -171,7 +172,6 @@ fi
 
 case "$1" in
     'install' | '-i' | '--install')
-        git_modules
         install
         custom_links
         git_repos

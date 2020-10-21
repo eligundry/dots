@@ -26,8 +26,10 @@ PYENV_DEBUG=1
 export PYENV_ROOT="$HOME/.pyenv"
 pathadd "$PYENV_ROOT/bin"
 export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
-eval "$(pyenv init - --no-rehash)"
-eval "$(pyenv virtualenv-init -)"
+if command_exists pyenv; then
+    eval "$(pyenv init - --no-rehash)"
+    eval "$(pyenv virtualenv-init -)"
+fi
 
 ################################################################################
 # => NVM
@@ -147,5 +149,7 @@ alias l.='ls -d .*'
 # => AWS Access Environment Variables
 ################################################################################
 
-export AWS_ACCESS_KEY_ID="$(aws configure get aws_access_key_id)"
-export AWS_SECRET_ACCESS_KEY="$(aws configure get aws_secret_access_key)"
+if command_exists aws; then
+    export AWS_ACCESS_KEY_ID="$(aws configure get aws_access_key_id)"
+    export AWS_SECRET_ACCESS_KEY="$(aws configure get aws_secret_access_key)"
+fi

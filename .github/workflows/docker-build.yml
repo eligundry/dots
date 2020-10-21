@@ -1,0 +1,24 @@
+name: Docker Build + Push
+on:
+  push:
+    branches:
+      - master
+      - dockerize
+
+  # Build daily at 4am UTC
+  schedule:
+    - cron: '0 4 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: azure/docker-login@v1
+        with:
+          username: eligundry
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - uses: satackey/action-docker-layer-caching@v0.0.8
+        continue-on-error: true
+      - run: docker build -t eligundry/dots .
+      - run: docker push eligundry/dots

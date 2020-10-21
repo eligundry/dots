@@ -23,18 +23,19 @@ call plug#begin(g:plug_path)
 
 " coc.nvim provides all IDE features
 function! InstallCocPlugins(info)
-    CocInstall coc-tsserver
-    CocInstall coc-prettier
-    CocInstall coc-json
-    CocInstall coc-html
     CocInstall coc-css
-    CocInstall coc-phpls
-    CocInstall coc-yaml
-    CocInstall coc-python
-    CocInstall coc-rust-analyzer
     CocInstall coc-docker
     CocInstall coc-emoji
+    CocInstall coc-go
+    CocInstall coc-html
+    CocInstall coc-json
+    CocInstall coc-phpls
+    CocInstall coc-prettier
+    CocInstall coc-python
+    CocInstall coc-rust-analyzer
+    CocInstall coc-tsserver
     CocInstall coc-word
+    CocInstall coc-yaml
     " coc-post is a Postman for vim
     " https://github.com/iamcco/coc-post
     CocInstall coc-post
@@ -48,7 +49,7 @@ Plug 'neoclide/coc.nvim', {
 \ }
 
 " ale provides all the linting and fixing
-Plug 'w0rp/ale', { 'do': 'go get github.com/mgechev/revive golang.org/x/tools/gopls@latest' }
+" Plug 'w0rp/ale', { 'do': 'go get github.com/mgechev/revive golang.org/x/tools/gopls@latest' }
 
 " GUI Improvements
 Plug 'airblade/vim-gitgutter'
@@ -647,7 +648,15 @@ endif
 "===============================================================================
 
 let g:tmuxline_powerline_separators = 1
-let g:tmuxline_preset = 'powerline'
+let g:tmuxline_preset = {
+    \'a'    : '#S',
+    \'win'  : ['#I', '#W'],
+    \'cwin' : ['#I', '#W'],
+    \'x'    : '#(~/.tmux/scripts/now-playing.sh)',
+    \'y'    : ['%Y-%m-%d', '%R'],
+    \'z'    : '#H',
+    \'options': { 'status-justify': 'left' }
+\}
 
 "===============================================================================
 " => NERDTree
