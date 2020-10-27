@@ -4,14 +4,19 @@ RUN apk update \
   && apk add --no-cache \
     bash \
     curl \
+    fish \
     gawk \
     git \
     go \
     ncurses \
     neovim \
     nodejs \
+    npm \
     openssh \
     perl \
+    php7 \
+    python3 \
+    rust \
     the_silver_searcher \
     tmux \
     vim \
