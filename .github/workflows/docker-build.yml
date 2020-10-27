@@ -20,5 +20,5 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - uses: satackey/action-docker-layer-caching@v0.0.8
         continue-on-error: true
-      - run: docker build --pull --build-arg=CI=$CI -t eligundry/dots .
+      - run: docker build --pull -t eligundry/dots .
       - run: docker push eligundry/dots

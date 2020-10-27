@@ -23,8 +23,7 @@ RUN apk update \
     zsh \
   && GO111MODULE=on go get golang.org/x/tools/gopls@latest
 
-ARG CI="false"
-ENV CI=$CI
+ENV CI="true"
 ENV HOME=/home/root
 ENV TERM=xterm-256color
 WORKDIR /home/root
