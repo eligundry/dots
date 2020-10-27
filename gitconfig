@@ -91,5 +91,5 @@
 [github]
 	user = "eligundry"
 
-# [url "git@github.com:"]
-#     insteadOf = https://github.com/
+[url "git@github.com:TalentInc"]
+    insteadOf = https://github.com/TalentInc

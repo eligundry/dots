@@ -23,24 +23,7 @@ call plug#begin(g:plug_path)
 
 " coc.nvim provides all IDE features
 function! InstallCocPlugins(info)
-    CocInstall coc-css
-    CocInstall coc-docker
-    CocInstall coc-emoji
-    CocInstall coc-go
-    CocInstall coc-html
-    CocInstall coc-json
-    CocInstall coc-phpls
-    CocInstall coc-prettier
-    CocInstall coc-python
-    CocInstall coc-rust-analyzer
-    CocInstall coc-tsserver
-    CocInstall coc-word
-    CocInstall coc-yaml
-    " coc-post is a Postman for vim
-    " https://github.com/iamcco/coc-post
-    CocInstall coc-post
-    " coc-emmet does HTML expansion
-    CocInstall coc-emmet
+    CocInstall coc-css coc-docker coc-emoji coc-go coc-html coc-json coc-phpls coc-prettier coc-python coc-rust-analyzer coc-tsserver coc-word coc-yaml coc-post coc-emmet
 endfunction
 
 Plug 'neoclide/coc.nvim', {
