@@ -22,8 +22,14 @@ endif
 call plug#begin(g:plug_path)
 
 " coc.nvim provides all IDE features
+" If you add a plugin, you must add it to both because vim makes it hard to do
+" conditional arguments and the -sync is needed for the Docker build.
 function! InstallCocPlugins(info)
-    CocInstall coc-css coc-docker coc-emoji coc-go coc-html coc-json coc-phpls coc-prettier coc-python coc-rust-analyzer coc-tsserver coc-word coc-yaml coc-post coc-emmet
+    if $CI == "true"
+        CocInstall -sync coc-css coc-docker coc-emoji coc-go coc-html coc-json coc-phpls coc-prettier coc-python coc-rust-analyzer coc-tsserver coc-word coc-yaml coc-post coc-emmet
+    else
+        CocInstall coc-css coc-docker coc-emoji coc-go coc-html coc-json coc-phpls coc-prettier coc-python coc-rust-analyzer coc-tsserver coc-word coc-yaml coc-post coc-emmet
+    endif
 endfunction
 
 Plug 'neoclide/coc.nvim', {
@@ -546,6 +552,7 @@ if filereadable(expand("~/.vimrc_background"))
     let base16colorspace=256
     source ~/.vimrc_background
 else
+    let base16colorspace=256
     colorscheme base16-default-dark
 endif
 
