@@ -1,14 +1,4 @@
 "===============================================================================
-" => # Deoplete Setup
-"
-" This is needed do deoplete can compile
-"===============================================================================
-
-let g:loaded_python_provider = 1
-let g:python_host_prog = expand('~/.pyenv/versions/neovim2/bin/python')
-let g:python3_host_prog = expand('~/.pyenv/versions/neovim3/bin/python')
-
-"===============================================================================
 " => # Plug
 "===============================================================================
 
@@ -315,6 +305,7 @@ endif
 
 " Make all comments italic
 highlight Comment cterm=italic gui=italic
+autocmd BufNewFile,BufRead * highlight Comment cterm=italic gui=italic
 
 " Sync spellfile to Dropbox
 set spellfile=~/Dropbox/vim/spell.en.utf-8.add
