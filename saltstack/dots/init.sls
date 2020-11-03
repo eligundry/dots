@@ -41,7 +41,7 @@ dots-lib-{{ target }}:
 
 {% endfor %}
 
-{% for dst, src in salt['pillar.get']('dots:absent').items() %}
+{% for dst, src in salt['pillar.get']('dots:absent', {}).items() %}
 
 {{ home }}/{{ dst }}:
   file.absent:
