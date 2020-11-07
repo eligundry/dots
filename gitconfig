@@ -63,9 +63,6 @@
 	autocorrect = 1
 	format = man
 
-[init]
-	templatedir = ~/.git_template
-
 [log]
 	abbrevCommit = true
 	date = relative
@@ -91,5 +88,5 @@
 [github]
 	user = "eligundry"
 
-[url "git@github.com:TalentInc"]
-    insteadOf = https://github.com/TalentInc
+[url "git@github.com:"]
+    insteadOf = https://github.com/
