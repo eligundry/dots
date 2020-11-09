@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - master
-      - dockerize
 
   # Build daily at 4am UTC
   schedule:
@@ -18,7 +17,5 @@ jobs:
         with:
           username: eligundry
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - uses: satackey/action-docker-layer-caching@v0.0.8
-        continue-on-error: true
       - run: docker build --pull -t eligundry/dots .
       - run: docker push eligundry/dots
