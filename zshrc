@@ -23,6 +23,7 @@ DISABLE_AUTO_UPDATE=true
 
 export ZPLUG_HOME=$HOME/.lib/zplug
 source $ZPLUG_HOME/init.zsh
+HISTDB_TABULATE_CMD=(sed -e $'s/\x1f/\t/g')
 
 zplug "lib/completion", from:oh-my-zsh
 zplug "lib/directories", from:oh-my-zsh
@@ -51,6 +52,7 @@ zplug "plugins/vagrant", from:oh-my-zsh, if:"command_exists 'vagrant'"
 zplug "plugins/virtualenv", from:oh-my-zsh
 zplug "plugins/zsh_reload", from:oh-my-zsh
 zplug "pyinvoke/invoke", use:"completion/zsh", if:"command_exists 'python'"
+zplug "larkery/zsh-histdb"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "zsh-users/zsh-history-substring-search", defer:2
 zplug "~/.zsh", use:"*.zsh", from:local, defer:2
