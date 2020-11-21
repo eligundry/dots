@@ -16,9 +16,9 @@ call plug#begin(g:plug_path)
 " conditional arguments and the -sync is needed for the Docker build.
 function! InstallCocPlugins(info)
     if $CI == "true"
-        CocInstall -sync coc-css coc-docker coc-emoji coc-go coc-html coc-json coc-phpls coc-prettier coc-python coc-rust-analyzer coc-tsserver coc-word coc-yaml coc-post coc-emmet
+        CocInstall -sync coc-css coc-docker coc-emoji coc-go coc-html coc-json coc-phpls coc-prettier coc-python coc-rust-analyzer coc-tsserver coc-word coc-yaml coc-post coc-emmet coc-import-cost
     else
-        CocInstall coc-css coc-docker coc-emoji coc-go coc-html coc-json coc-phpls coc-prettier coc-python coc-rust-analyzer coc-tsserver coc-word coc-yaml coc-post coc-emmet
+        CocInstall coc-css coc-docker coc-emoji coc-go coc-html coc-json coc-phpls coc-prettier coc-python coc-rust-analyzer coc-tsserver coc-word coc-yaml coc-post coc-emmet coc-import-cost
     endif
 endfunction
 
