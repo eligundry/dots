@@ -17,5 +17,8 @@
         "go"
     ],
     "coc.preferences.extensionUpdateCheck": "never",
-    "prettier.requireConfig": true
+    "prettier.requireConfig": true,
+    "diagnostic-languageserver.filetypes": {
+        "sh": "shellcheck"
+    }
 }

@@ -1,9 +1,18 @@
 #!/bin/bash
 
-if [[ "$(playerctl -p spotify status)" == "Playing" ]]; then
-    playerctl -p spotify metadata --format "🎶 {{artist}} - {{title}}"
-elif [[ "$(playerctl -p chrome status)" == "Playing" ]]; then
-    playerctl -p chrome metadata --format "🎶 {{title}}"
-else
-    echo "😴"
-fi
+allowed_players=("spotify" "rhythmbox" "clementine" "chrome")
+format="🎶 {{artist}} - {{title}}"
+chrome_format="🎶 {{title}}"
+
+for player in "${allowed_players[@]}"; do
+    if [[ "$(playerctl -p "$player" status)" == "Playing" ]]; then
+        if [[ "$player" == "chrome" ]]; then
+            format=$chrome_format
+        fi
+
+        playerctl -p "$player" metadata --format "$format"
+        exit
+    fi
+done
+
+echo "😴"
