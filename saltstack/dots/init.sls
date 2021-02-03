@@ -8,7 +8,9 @@ dots-repo:
     - name: git@github.com:eligundry/dots.git
     - submodules: True
     - target: {{ dots }}
+    {% if grains['os'] != 'MacOS' %}
     - user: {{ user }}
+    {% endif %}
     - identity: {{ home }}/.ssh/no_pass
 
 {{ lib }}:
