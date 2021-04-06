@@ -16,9 +16,9 @@ call plug#begin(g:plug_path)
 " conditional arguments and the -sync is needed for the Docker build.
 function! InstallCocPlugins(info)
     if $CI == "true"
-        CocInstall -sync coc-css coc-docker coc-emoji coc-go coc-html coc-json coc-phpls coc-prettier coc-python coc-rust-analyzer coc-tsserver coc-word coc-yaml coc-post coc-emmet coc-import-cost coc-diagnostic
+        CocInstall -sync coc-css coc-docker coc-emoji coc-go coc-html coc-json coc-phpls coc-prettier coc-python coc-rust-analyzer coc-tsserver coc-word coc-yaml coc-post coc-emmet " coc-import-cost coc-diagnostic
     else
-        CocInstall coc-css coc-docker coc-emoji coc-go coc-html coc-json coc-phpls coc-prettier coc-python coc-rust-analyzer coc-tsserver coc-word coc-yaml coc-post coc-emmet coc-import-cost coc-diagnostic
+        CocInstall coc-css coc-docker coc-emoji coc-go coc-html coc-json coc-phpls coc-prettier coc-python coc-rust-analyzer coc-tsserver coc-word coc-yaml coc-post coc-emmet " coc-import-cost coc-diagnostic
     endif
 endfunction
 
@@ -304,8 +304,8 @@ if has("linebreak")
 endif
 
 " Make all comments italic
-highlight Comment cterm=italic gui=italic
-autocmd BufNewFile,BufRead * highlight Comment cterm=italic gui=italic
+" highlight Comment cterm=italic gui=italic
+" autocmd BufNewFile,BufRead * highlight Comment cterm=italic gui=italic
 
 " Sync spellfile to Dropbox
 set spellfile=~/Dropbox/vim/spell.en.utf-8.add
@@ -546,6 +546,9 @@ else
     let base16colorspace=256
     colorscheme base16-default-dark
 endif
+
+" Don't make my terminal less transparent
+hi Normal ctermbg=NONE
 
 " On Linux terminals with transparent backgrounds, Base16 is overriding the
 " background color making the Vim background solid. This will get around that.
