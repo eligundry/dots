@@ -56,6 +56,7 @@ custom_links()
     ln -vfsn "$CF_LOC/nvim" "$CF_DEST/nvim"
     ln -vfsn "$CF_LOC/nvim" "$HOME/.vim"
     ln -vfs "$CF_LOC/nvim/init.vim" "$HOME/.vimrc"
+    ln -vfsn "$CF_LOC/starship.toml" "$HOME/.config/starship.toml"
 
     if [[ $platform == "Linux" ]]; then
         linux_custom_links

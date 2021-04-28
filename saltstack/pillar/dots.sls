@@ -5,6 +5,7 @@ dots:
     .commonprofile: commonprofile
     .eslintrc: eslintrc
     .config/nvim: config/nvim
+    .config/starship.toml: config/starship.toml
     .dir_colors: dir_colors
     .gitattributes: gitattributes
     .gitconfig: gitconfig
