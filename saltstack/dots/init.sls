@@ -51,3 +51,16 @@ dots-lib-{{ target }}:
       - dots-repo
 
 {% endfor %}
+
+{% if grains['os'] == 'MacOS' %}
+
+starship:
+  pkg.installed
+
+{% else %}
+
+starship-curl-install:
+  cmd.run:
+    - name: 'sh -c "$(curl -fsSL https://starship.rs/install.sh)"'
+
+{% endif %}
