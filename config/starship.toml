@@ -1,0 +1,11 @@
+[aws]
+disabled = true
+
+[python]
+disabled = true
+
+[time]
+disabled = true
+
+[username]
+show_always = true

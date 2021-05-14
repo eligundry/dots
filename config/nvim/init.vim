@@ -261,6 +261,7 @@ if has('conceal')
 endif
 
 set t_Co=256 " 256 color support in terminal
+set termguicolors
 set background=dark " I like a dark background
 
 " When vertically scrolling, pad cursor 5 lines
@@ -539,16 +540,16 @@ vnoremap > >gv
 " => # Base16
 "===============================================================================
 
+let base16colorspace=256
+
 if filereadable(expand("~/.vimrc_background"))
-    let base16colorspace=256
     source ~/.vimrc_background
 else
-    let base16colorspace=256
     colorscheme base16-default-dark
 endif
 
 " Don't make my terminal less transparent
-hi Normal ctermbg=NONE
+hi Normal ctermbg=NONE guibg=NONE
 
 " On Linux terminals with transparent backgrounds, Base16 is overriding the
 " background color making the Vim background solid. This will get around that.
@@ -786,7 +787,8 @@ let g:gitgutter_async = 1
 " => Rainbow Parentheses
 "===============================================================================
 
-let g:rainbow_active = 1
+" @TODO This looks horrible with termguicolors enabled
+let g:rainbow_active = 0
 let g:rainbow_conf = {
 \   'guifgs': ['blue', 'yellow', 'red', 'cyan', 'magenta'],
 \   'ctermfgs': ['blue', 'yellow', 'red', 'cyan', 'magenta'],
@@ -862,6 +864,19 @@ let g:ale_fixers = {
 " show the quickfix list
 " disabled because it kept getting in my face
 " let g:ale_open_list = 1
+
+"===============================================================================
+" => nvim-colorizer.lua
+"===============================================================================
+
+lua require 'colorizer'.setup {
+\ 'css';
+\ 'javascript';
+\ 'typescript';
+\ html = {
+\   mode = 'foreground';
+\ }
+\ }
 
 "===============================================================================
 " => Local Vim Customization

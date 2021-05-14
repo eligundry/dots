@@ -3,7 +3,7 @@
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	ll = log --pretty=format:'%C(red)%h%Cred%d %Creset%s %Cgreen(%cr) %C(bold blue)<%cn>%Creset' --decorate --numstat --date=relative
 	rev = review
-	branch-recent = for-each-ref --sort=-committerdate refs/heads/
+	branch-recent = branch --sort=-committerdate
 	subup = "submodule foreach git pull origin master"
 	up = pull
 	ctags = !.git/hooks/ctags
