@@ -38,7 +38,9 @@ Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
 Plug 'mhinz/vim-startify'
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
 Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" This is pinned because the new versions break base16_google_light, even though
+" I'm not even setting them
+Plug 'vim-airline/vim-airline-themes', { 'commit': '27e7dc5bf186c1d0977a594b398847fcc84f7e24' }
 Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
 Plug 'ryanoasis/vim-devicons'
 
@@ -305,8 +307,8 @@ if has("linebreak")
 endif
 
 " Make all comments italic
-" highlight Comment cterm=italic gui=italic
-" autocmd BufNewFile,BufRead * highlight Comment cterm=italic gui=italic
+highlight Comment cterm=italic gui=italic
+autocmd BufNewFile,BufRead * highlight Comment cterm=italic gui=italic
 
 " Sync spellfile to Dropbox
 set spellfile=~/Dropbox/vim/spell.en.utf-8.add
@@ -564,13 +566,16 @@ endif
 let g:airline_powerline_fonts = 1
 
 " CSV Stuff
-let g:airline#extensions#csv#enabled = 1
+" let g:airline#extensions#csv#enabled = 1
 
 " Version Contols Stuff
-let g:airline#extensions#hunks#enabled = 1
+" let g:airline#extensions#hunks#enabled = 1
 
 " Virtualenv
-let g:airline#extensions#virtualenv#enabled = 1
+" let g:airline#extensions#virtualenv#enabled = 1
+
+" Coc
+let g:airline#extensions#coc#enabled = 1
 
 " Fancy Tabline
 let g:airline#extensions#tabline#enabled = 1
@@ -713,14 +718,14 @@ let delimitMateAutoClose = 1
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
 let delimitMate_smart_quotes = 1
-autocmd FileType vim,html,xml,xhtml let b:delimitMate_matchpairs = "(:),[:],{:},<:>"
+autocmd FileType vim,html,xml,xhtml,javascriptreact,typescriptreact let b:delimitMate_matchpairs = "(:),[:],{:},<:>"
 
 "===============================================================================
 " => Fugitive
 "===============================================================================
 
 function! FugitiveSettings()
-    nnoremap <silent> <Leader>gs :Gstatus<CR>
+    nnoremap <silent> <Leader>gs :Git<CR>
     nnoremap <silent> <Leader>gb :Gblame<CR>
     autocmd FileType gitcommit nnoremap <buffer> <Leader>s :wq<CR>
 endfunction
