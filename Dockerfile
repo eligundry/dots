@@ -23,6 +23,7 @@ RUN apk update \
     zsh \
   && GO111MODULE=on go get golang.org/x/tools/gopls@latest \
   && curl -fsSL https://starship.rs/install.sh -o /install.sh \
+  && chmod +x /install.sh \
   && /install.sh --yes \
   && rm /install.sh
 
