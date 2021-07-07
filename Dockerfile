@@ -8,6 +8,7 @@ RUN apk update \
     gawk \
     git \
     go \
+    lua \
     ncurses \
     neovim \
     nodejs \
