@@ -1,4 +1,4 @@
-FROM alpine:edge
+FROM alpine:edge AS builder
 
 RUN apk update \
   && apk add --no-cache \
@@ -34,5 +34,13 @@ RUN mkdir -p /home/root \
   && ./dots.sh -i \
   && nvim +PlugInstall +qa \
   && zsh -c 'source ~/.zshrc && zplug install'
+
+FROM alpine:edge
+
+COPY --from=builder / /
+ENV CI="true"
+ENV HOME=/home/root
+ENV TERM=xterm-256color
+WORKDIR /home/root
 
 ENTRYPOINT ["zsh"]
