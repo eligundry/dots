@@ -22,7 +22,9 @@ RUN apk update \
     vim \
     zsh \
   && GO111MODULE=on go get golang.org/x/tools/gopls@latest \
-  && sh -c "$(curl -fsSL https://starship.rs/install.sh)"
+  && curl -fsSL https://starship.rs/install.sh -o /install.sh \
+  && /install.sh --yes \
+  && rm /install.sh
 
 ENV CI="true"
 ENV HOME=/home/root
