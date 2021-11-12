@@ -32,12 +32,11 @@ if command_exists pyenv; then
 fi
 
 ################################################################################
-# => NVM
+# => fnm
+# https://github.com/Schniz/fnm
 ################################################################################
 
-# Disabled because it's slow and I don't need it currently
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+eval "$(fnm env)"
 
 ################################################################################
 # => Google Cloud SDK
