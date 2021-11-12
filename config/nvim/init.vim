@@ -37,6 +37,7 @@ Plug 'luochen1990/rainbow'
 Plug 'mbbill/undotree', { 'on': ['UndotreeHide', 'UndotreeShow'] }
 Plug 'mhinz/vim-startify'
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeClose'] }
+Plug 'ms-jpq/chadtree', { 'do': 'python3 -m chadtree deps', 'on': ['CHADopen'] }
 Plug 'vim-airline/vim-airline'
 " This is pinned because the new versions break base16_google_light, even though
 " I'm not even setting them
@@ -676,6 +677,17 @@ endfunction
 autocmd VimEnter * if exists(":NERDTree") | call NERDTreeSettings() | endif
 
 "===============================================================================
+" => CHADTree
+"===============================================================================
+
+function! CHADTreeSettings()
+    nnoremap <silent> <Leader>ct :UndotreeHide<CR>:CHADopen<CR>
+    autocmd FileType nerdtree setlocal colorcolumn=""
+endfunction
+
+autocmd VimEnter * if exists(":CHADopen") | call CHADTreeSettings() | endif
+
+"===============================================================================
 " => Undotree
 "===============================================================================
 
@@ -726,7 +738,8 @@ autocmd FileType vim,html,xml,xhtml,javascriptreact,typescriptreact let b:delimi
 
 function! FugitiveSettings()
     nnoremap <silent> <Leader>gs :Git<CR>
-    nnoremap <silent> <Leader>gb :Gblame<CR>
+    nnoremap <silent> <Leader>gb :Git blame<CR>
+    nnoremap <silent> <Leader>gp :Git pushy<CR>
     autocmd FileType gitcommit nnoremap <buffer> <Leader>s :wq<CR>
 endfunction
 
