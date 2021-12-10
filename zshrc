@@ -43,7 +43,7 @@ zplug "plugins/docker-compose", from:oh-my-zsh, if:"command_exists 'docker-compo
 zplug "plugins/git", from:oh-my-zsh
 # zplug "plugins/git-prompt", from:oh-my-zsh
 zplug "plugins/npm", from:oh-my-zsh, if:"command_exists npm"
-zplug "plugins/osx", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
+zplug "plugins/macos", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 zplug "plugins/pass", from:oh-my-zsh, if:"command_exists 'pass'"
 # zplug "plugins/pip", from:oh-my-zsh, if:"command_exists 'pip'"
 # zplug "plugins/python", from:oh-my-zsh, if:"command_exists 'python'"
