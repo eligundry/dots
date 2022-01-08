@@ -88,9 +88,8 @@
 [github]
 	user = "eligundry"
 
-# [url "git@github.com:"]
-#    insteadOf = https://github.com/
 [gpg]
 	program = gpg2
+
 [pull]
 	rebase = false
