@@ -4,21 +4,7 @@
 " Description: go specific vim settings
 "===============================================================================
 
-"===============================================================================
-" => ale
-"===============================================================================
-
-" call ale#linter#Define('go', {
-" \   'name': 'revive',
-" \   'output_stream': 'both',
-" \   'executable': 'revive',
-" \   'read_buffer': 0,
-" \   'command': 'revive %t',
-" \   'callback': 'ale#handlers#unix#HandleAsWarning',
-" \})
-"
-" let b:ale_fixers = ['gofmt', 'goimports']
-" let b:ale_fix_on_save = 1
+setlocal noexpandtab ts=4 sts=4 shiftwidth=4
 
 "===============================================================================
 " => coc.nvim

@@ -27,9 +27,6 @@ Plug 'neoclide/coc.nvim', {
 \   'do': function('InstallCocPlugins')
 \ }
 
-" ale provides all the linting and fixing
-" Plug 'w0rp/ale', { 'do': 'go get github.com/mgechev/revive golang.org/x/tools/gopls@latest' }
-
 " GUI Improvements
 Plug 'airblade/vim-gitgutter'
 Plug 'chriskempson/base16-vim'
@@ -79,6 +76,7 @@ Plug 'b4b4r07/vim-ansible-vault'
 
 " Syntax Highlighting
 Plug 'sheerun/vim-polyglot' " This must come first so it can be overridden
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'davidoc/taskpaper.vim'
@@ -805,45 +803,6 @@ set updatetime=100
 let g:gitgutter_async = 1
 
 "===============================================================================
-" => Rainbow Parentheses
-"===============================================================================
-
-" @TODO This looks horrible with termguicolors enabled
-let g:rainbow_active = 0
-let g:rainbow_conf = {
-\   'guifgs': ['blue', 'yellow', 'red', 'cyan', 'magenta'],
-\   'ctermfgs': ['blue', 'yellow', 'red', 'cyan', 'magenta'],
-\   'operators': '_,_',
-\   'parentheses': [
-\       'start=/(/ end=/)/ fold',
-\       'start=/\[/ end=/\]/ fold',
-\       'start=/{/ end=/}/ fold'
-\   ],
-\   'separately': {
-\       '*': {},
-\       'tex': {
-\           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
-\       },
-\       'vim': {
-\           'parentheses': [
-\               'start=/(/ end=/)/',
-\               'start=/\[/ end=/\]/',
-\               'start=/{/ end=/}/ fold',
-\               'start=/(/ end=/)/ containedin=vimFuncBody',
-\               'start=/\[/ end=/\]/ containedin=vimFuncBody',
-\               'start=/{/ end=/}/ fold containedin=vimFuncBody'
-\           ],
-\       },
-\       'html': {
-\           'parentheses': [
-\               'start=/\v\<((|html|title|body|h1|h2|h3|h4|h5|h6|p|br|hr|acronym|abbr|address|b|bdi|bdo|big|blockquote|center|cite|code|del|dfn|em|font|i|ins|kbd|mark|meter|pre|progress|q|rp|rt|ruby|s|samp|small|strike|strong|sub|sup|time|tt|u|var|wbr|form|input|textarea|button|select|optgroup|option|label|fieldset|legend|datalist|keygen|output|frame|frameset|noframes|iframe|img|map|area|canvas|figcaption|figure|audio|source|track|video|a|link|nav|ul|ol|li|dir|dl|dt|dd|menu|menuitem|table|caption|th|tr|td|thead|tbody|tfoot|col|colgroup|style|div|span|header|footer|main|section|article|aside|details|dialog|summary|head|meta|base|basefont|script|noscript|applet|embed|object|param)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'
-\           ],
-\       },
-\       'css': 0,
-\   }
-\}
-
-"===============================================================================
 " => coc.nvim
 "===============================================================================
 
@@ -871,22 +830,6 @@ augroup mygroup
 augroup end
 
 "===============================================================================
-" => ale
-"===============================================================================
-
-" coc.nvim provides this
-let g:ale_completion_enabled = 0
-
-" let ale clean up all files with some default rules
-let g:ale_fixers = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace']
-\}
-
-" show the quickfix list
-" disabled because it kept getting in my face
-" let g:ale_open_list = 1
-
-"===============================================================================
 " => nvim-colorizer.lua
 "===============================================================================
 
@@ -898,6 +841,37 @@ lua require 'colorizer'.setup {
 \   mode = 'foreground';
 \ }
 \ }
+
+"===============================================================================
+" => nvim-treesitter
+"===============================================================================
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  -- One of "all", "maintained" (parsers with maintainers), or a list of languages
+  ensure_installed = "maintained",
+
+  -- Install languages synchronously (only applied to `ensure_installed`)
+  sync_install = false,
+
+  -- List of parsers to ignore installing
+  ignore_install = {},
+
+  highlight = {
+    -- `false` will disable the whole extension
+    enable = true,
+
+    -- list of language that will be disabled
+    disable = {},
+
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF
 
 "===============================================================================
 " => Local Vim Customization
