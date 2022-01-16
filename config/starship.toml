@@ -4,8 +4,25 @@ disabled = true
 [gcloud]
 disabled = true
 
+[nodejs]
+format = "[$symbol($version )]($style)"
+version_format = "v${major}"
+
+[package]
+disabled = true
+
+[php]
+format = "[$symbol($version )]($style)"
+version_format = "v${major}.${minor}"
+
 [python]
 disabled = true
+format = "[$symbol($version )]($style)"
+version_format = "v${major}.${minor}"
+
+[rust]
+format = "[$symbol($version )]($style)"
+version_format = "v${major}.${minor}"
 
 [time]
 disabled = true
