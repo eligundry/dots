@@ -28,37 +28,25 @@ HISTDB_TABULATE_CMD=(sed -e $'s/\x1f/\t/g')
 zplug "lib/completion", from:oh-my-zsh
 zplug "lib/directories", from:oh-my-zsh
 zplug "lib/history", from:oh-my-zsh
-# zplug "lib/nvm", from:oh-my-zsh, if:"command_exists 'nvm'"
 zplug "lib/termsupport", from:oh-my-zsh
 zplug "lib/theme-and-appearance", from:oh-my-zsh
-zplug "plugins/aws", from:oh-my-zsh
-# zplug "plugins/archlinux", from:oh-my-zsh, if:"command_exists 'pacman'"
+zplug "plugins/ag", from:oh-my-zsh, if:"command_exists 'ag'"
+zplug "plugins/aws", from:oh-my-zsh, if:"command_exists 'aws'"
 zplug "plugins/brew", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 zplug "plugins/brew-cask", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
-# zplug "plugins/colorize", from:oh-my-zsh
-# zplug "plugins/composer", from:oh-my-zsh, if:"command_exists 'composer'"
 zplug "plugins/docker", from:oh-my-zsh, if:"command_exists 'docker'"
 zplug "plugins/docker-compose", from:oh-my-zsh, if:"command_exists 'docker-compose'"
-# zplug "plugins/emoji-clock", from:oh-my-zsh
+zplug "plugins/fnm", from:oh-my-zsh, if:"command_exists 'fnm'"
 zplug "plugins/git", from:oh-my-zsh
-# zplug "plugins/git-prompt", from:oh-my-zsh
-zplug "plugins/npm", from:oh-my-zsh, if:"command_exists npm"
+zplug "plugins/httpie", from:oh-my-zsh, if:"command_exists 'http'"
 zplug "plugins/macos", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
+zplug "plugins/npm", from:oh-my-zsh, if:"command_exists npm"
 zplug "plugins/pass", from:oh-my-zsh, if:"command_exists 'pass'"
-# zplug "plugins/pip", from:oh-my-zsh, if:"command_exists 'pip'"
-# zplug "plugins/python", from:oh-my-zsh, if:"command_exists 'python'"
-# zplug "plugins/svn-fast-info", from:oh-my-zsh
-# zplug "plugins/vagrant", from:oh-my-zsh, if:"command_exists 'vagrant'"
-# zplug "plugins/virtualenv", from:oh-my-zsh
-# zplug "plugins/zsh_reload", from:oh-my-zsh
-# zplug "pyinvoke/invoke", use:"completion/zsh", if:"command_exists 'python'"
+zplug "plugins/yarn", from:oh-my-zsh, if:"command_exists 'yarn'"
+zplug "plugins/history-substring-search", from:oh-my-zsh, defer:2
 zplug "larkery/zsh-histdb", use:"{zsh-histdb.plugin,histdb-interactive}.zsh"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
-zplug "zsh-users/zsh-history-substring-search", defer:2
 zplug "~/.zsh", use:"*.zsh", from:local, defer:2
-# zplug "~/.zsh/themes", use:"mitsuhiko.zsh-theme", from:local, as:theme
-# zplug "~/.google-cloud-sdk/", use:"*.zsh.inc", from:local, if:"[[ -d ~/.google-cloud-sdk ]]"
-# zplug "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/", use:"*.zsh.inc", from:local, if:"[[ $OSTYPE == *darwin* ]]"
 zplug "/usr/local/bin/", use: "aws_completer.sh", from:local, if:"[[ -f /usr/local/bin/aws_completer.sh ]]"
 
 # if ! zplug check --verbose; then

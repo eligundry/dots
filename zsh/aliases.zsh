@@ -8,3 +8,6 @@ alias -g .....='../../../..'
 
 # Make rsync usable
 alias copy='rsync -avzhe --progress'
+
+# Ugh git why?
+alias gcotb='git checkout --track=direct -b'
