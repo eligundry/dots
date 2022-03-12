@@ -24,6 +24,9 @@ version_format = "v${major}.${minor}"
 format = "[$symbol($version )]($style)"
 version_format = "v${major}.${minor}"
 
+[vagrant]
+disabled = true
+
 [time]
 disabled = true
 

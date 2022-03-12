@@ -59,8 +59,9 @@ starship:
 
 {% else %}
 
-starship-curl-install:
+starship:
   cmd.run:
-    - name: 'sh -c "$(curl -fsSL https://starship.rs/install.sh)"'
+    - name: 'snap install starship'
+      unless: 'command -v starship'
 
 {% endif %}

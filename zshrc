@@ -47,7 +47,6 @@ zplug "plugins/history-substring-search", from:oh-my-zsh, defer:2
 zplug "larkery/zsh-histdb", use:"{zsh-histdb.plugin,histdb-interactive}.zsh"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "~/.zsh", use:"*.zsh", from:local, defer:2
-zplug "/usr/local/bin/", use: "aws_completer.sh", from:local, if:"[[ -f /usr/local/bin/aws_completer.sh ]]"
 
 # if ! zplug check --verbose; then
 if ! zplug check; then
