@@ -3,7 +3,6 @@ dots:
     .bash_profile: bash_profile
     .bashrc: bashrc
     .commonprofile: commonprofile
-    .eslintrc: eslintrc
     .config/nvim: config/nvim
     .config/starship.toml: config/starship.toml
     .dir_colors: dir_colors
