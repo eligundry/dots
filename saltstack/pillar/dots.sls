@@ -42,7 +42,7 @@ dots:
     .zshenv: zshenv
     .themes/eligundry/gnome-shell/gnome-shell.css: themes/eligundry/gnome-shell/gnome-shell.css
     {% elif grains['kernel'] == 'Darwin' %}
-    .item2_profiles.json: item2_profiles.json
+    .config/iterm2/com.googlecode.iterm2.plist: config/iterm2/com.googlecode.iterm2.plist
     {% endif %}
   absent:
     .git_template: git_template
