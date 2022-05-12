@@ -83,6 +83,7 @@ Plug 'davidoc/taskpaper.vim'
 Plug 'elzr/vim-json'
 Plug 'plasticboy/vim-markdown', { 'for': ['markdown'] }
 Plug 'saltstack/salt-vim'
+Plug 'pantharshit00/vim-prisma'
 
 " Edit root files without elevating
 Plug 'lambdalisue/suda.vim'
