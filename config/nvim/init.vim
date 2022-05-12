@@ -392,8 +392,7 @@ augroup line_return
 augroup END
 
 " Remove trailing whitespace when saving files
-" ale is doing this now
-" autocmd BufWritePre * :%s/\s\+$//e
+autocmd BufWritePre * :%s/\s\+$//e
 
 " Exit paste mode upon leaving insert
 autocmd InsertLeave * set nopaste paste?
@@ -668,7 +667,7 @@ let g:NERDTreeShowHidden = 1
 let g:NERDTreeShowLineNumbers = 0
 let g:NERDTreeWinSize = 22
 let g:NERDTreeIgnore = ['\.swp$', '\~$', '\.pyc', '__pycache__', '.DS_Store',
-                        \'\.egg-info', '.ropeproject', '.tox', '.cache',
+                        \'\.egg-info', '.ropeproject', '.tox', '\.cache',
                         \'htmlcov']
 
 function! NERDTreeSettings()
