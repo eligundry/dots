@@ -85,6 +85,7 @@ Plug 'plasticboy/vim-markdown', { 'for': ['markdown'] }
 Plug 'saltstack/salt-vim'
 Plug 'pantharshit00/vim-prisma'
 Plug 'fourjay/vim-password-store'
+Plug 'wuelnerdotexe/vim-astro'
 
 " Edit root files without elevating
 Plug 'lambdalisue/suda.vim'
