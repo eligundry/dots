@@ -542,6 +542,14 @@ vnoremap > >gv
 " Insert horizontal ellipsis in insert mode
 inoremap \... …
 
+" Insert a long-ish paragraph of hipster ipsum
+function! HipsterIpsum()
+    let ipsum = system('curl -s "https://hipsum.co/api/?type=hipster-centric&sentences=5" | jq -r ".[]"')
+    execute "normal! i" . ipsum . "\<Esc>kgqqj"
+endfunction
+
+nnoremap <Leader>hi :call HipsterIpsum()<CR>
+
 "===============================================================================
 " => # Base16
 "===============================================================================
