@@ -28,5 +28,6 @@
     "prettier.requireConfig": true,
     "diagnostic-languageserver.filetypes": {
         "sh": "shellcheck"
-    }
+    },
+    "coc.preferences.noselect": false
 }
