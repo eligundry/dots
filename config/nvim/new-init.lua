@@ -30,7 +30,7 @@ require('packer').startup(function ()
         config = function ()
           require('mason-lspconfig').setup({
             automatic_install = true,
-            ensure_installed = {
+            automatic_installation = {
               'astro',
               'bashls',
               'cssls',
@@ -103,6 +103,9 @@ require('packer').startup(function ()
     config = function ()
       require'nvim-treesitter.configs'.setup {
         ensure_installed = 'all',
+        rainbow = {
+          enable = true,
+        },
       }
     end,
   }
@@ -149,6 +152,8 @@ require('packer').startup(function ()
   }
 
   -- GUI Improvements
+  use 'mhinz/vim-startify'
+  use 'RRethy/nvim-base16'
   use {
     'lewis6991/gitsigns.nvim',
     tag = 'release',
@@ -157,72 +162,17 @@ require('packer').startup(function ()
     end,
   }
   use {
-    'norcalli/nvim-base16.lua',
-    config = function ()
-      local base16 = require 'base16'
-      base16(base16.themes['default-dark'], true)
-
-      -- Don't make my terminal less transparent
-      vim.api.nvim_set_hl(0, 'Normal', {})
-    end,
-  }
-  use 'luochen1990/rainbow'
-  use {
     'mbbill/undotree',
     config = function ()
       vim.keymap.set('n', '<Leader>ut', ':UndotreeShow<CR>')
     end,
   }
-  use 'mhinz/vim-startify'
-  use 'vim-airline/vim-airline'
-  -- This is pinned because the new versions break base16_google_light, even
-  -- though I'm not even setting them
   use {
-    'vim-airline/vim-airline-themes',
-    commit = '27e7dc5bf186c1d0977a594b398847fcc84f7e24',
+    'nvim-lualine/lualine.nvim',
     config = function ()
-      vim.g.airline_powerline_fonts = 1
-
-      -- CSV Stuff
-      -- vim.g.airline#extensions#csv#enabled = 1
-
-      -- Version Contols Stuff
-      -- vim.g.airline#extensions#hunks#enabled = 1
-
-      -- Virtualenv
-      -- vim.g.airline#extensions#virtualenv#enabled = 1
-
-      -- Coc
-      vim.g['airline#extensions#coc#enabled'] = 1
-
-      -- Fancy Tabline
-      vim.g['airline#extensions#tabline#enabled'] = 1
-      vim.g['airline#extensions#tabline#left_sep'] = ''
-      vim.g['airline#extensions#tabline#left_alt_sep'] = ''
-      vim.g['airline#extensions#tabline#right_sep'] = ''
-      vim.g['airline#extensions#tabline#right_alt_sep'] = ''
-
-      -- Fancy Powerline symbols
-      vim.g.airline_left_sep = ''
-      vim.g.airline_left_alt_sep = ''
-      vim.g.airline_right_sep = ''
-      vim.g.airline_right_alt_sep = ''
-      vim.g['airline_symbols.branch'] = ''
-      vim.g['airline_symbols.readonly'] = ''
-      vim.g['airline_symbols.linenr'] = ''
-      -- }}}
-
-      -- Tmuxline {{{
-      vim.g.tmuxline_powerline_separators = 1
-      vim.g.tmuxline_preset = {
-        a = '#S',
-        win = { '#I', '#W' },
-        cwin = { '#I', '#W' },
-        x = '#(~/.tmux/scripts/now-playing.sh)',
-        y = { '%Y-%m-%d', '%R' },
-        z = '#H',
-        options = { ['status-justify'] = 'left' }
-      }
+      require('lualine').setup({
+        theme = 'base16',
+      })
     end,
   }
 
@@ -409,10 +359,6 @@ vim.opt.startofline = false
 -- Backspace all the things!
 vim.opt.backspace = 'indent,eol,start'
 
--- I don't want other people's files messing up my settings
-vim.opt.modeline = false
-vim.opt.modelines = 0
-
 -- Don't use more than one space after punctuation
 vim.opt.joinspaces = false
 
@@ -468,6 +414,26 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 -- }}}
 
+--- Theme (Base16) {{{
+-- I Think It's Beautiful That Your Are 256 Colors Too
+-- https://www.youtube.com/watch?v=bZ6b5ghZZN0
+vim.cmd('set t_Co=256') -- 256 color support in terminal
+vim.opt.termguicolors = true
+vim.opt.background = 'dark' -- I like a dark background
+
+if vim.fn.filereadable(vim.fn.expand('~/.vimrc_background')) then
+  vim.cmd('source ~/.vimrc_background')
+else
+  vim.cmd('colorscheme base16-default-dark')
+end
+
+-- Don't make my terminal less transparent
+vim.api.nvim_set_hl(0, 'Normal', {})
+
+-- Make all comments italic
+vim.cmd('highlight Comment cterm=italic gui=italic')
+-- }}}
+
 -- Look & Feel {{{
 -- Word Wrap
 vim.opt.wrap = false -- I like scrolling off the screen
@@ -503,12 +469,6 @@ vim.api.nvim_create_autocmd({ 'WinEnter', 'BufEnter', 'BufNewFile' }, {
 -- Completely hide concealed text (i.e. snippets)
 -- vim.opt.conceallevel = 2
 -- vim.opt.concealcursor = 'i'
-
--- I Think It's Beautiful That Your Are 256 Colors Too
--- https://www.youtube.com/watch?v=bZ6b5ghZZN0
--- vim.opt.t_Co = 256 -- 256 color support in terminal
-vim.opt.termguicolors = true
-vim.opt.background = 'dark' -- I like a dark background
 
 -- When vertically scrolling, pad cursor 5 lines
 vim.opt.scrolloff = 5
@@ -561,9 +521,6 @@ end, { desc = 'Cycle through relative and number, just number, no numbers' })
 
 -- Change Tmux cursor in insert mode
 vim.cmd('let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1')
-
--- Make all comments italic
-vim.api.nvim_set_hl(0, 'Comment', { cterm = { italic = true }, italic = true })
 --}}}
 
 -- Keyboard shortcuts {{{
@@ -714,7 +671,7 @@ local on_attach = function(client, bufnr)
     })
   end
 
-  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help)
+  -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help)
   vim.keymap.set('n', '<Leader>D', vim.lsp.buf.type_definition)
   vim.keymap.set('n', '<Leader>ca', vim.lsp.buf.code_action)
   vim.keymap.set('n', '<Leader>d', vim.lsp.buf.definition)
