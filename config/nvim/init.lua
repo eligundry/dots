@@ -156,6 +156,7 @@ require('packer').startup(function(use)
 
   -- Searching
   use 'bronson/vim-visual-star-search'
+  use 'mhinz/vim-grepper'
   use {
     'ctrlpvim/ctrlp.vim',
     config = function()
@@ -279,6 +280,12 @@ require('packer').startup(function(use)
 
   -- Edit root files without elevating
   use 'lambdalisue/suda.vim'
+
+  -- Automatically set up your configuration after cloning packer.nvim
+  -- Put this at the end after all plugins
+  if packer_bootstrap then
+    require('packer').sync()
+  end
 end)
 --- }}}
 
@@ -304,6 +311,7 @@ vim.g.fileencoding = 'utf-8'
 vim.g.bomb = false
 
 -- Indenting
+-- Most of these should be overridden by Editorconfig
 vim.opt.tabstop = 4 -- I like my tabs to seem like four spaces
 vim.opt.shiftwidth = 4 -- I'd also like to shift lines the same amount of spaces
 vim.opt.softtabstop = 4 -- If using expandtab for some reason, use four spaces
@@ -375,6 +383,10 @@ vim.opt.backspace = 'indent,eol,start'
 
 -- Don't use more than one space after punctuation
 vim.opt.joinspaces = false
+
+-- Folding
+vim.opt.foldenable = false
+vim.opt.foldmethod = 'marker'
 
 -- I don't need Vim telling me where I can't go!
 vim.opt.virtualedit = 'all'
@@ -513,27 +525,40 @@ vim.opt.visualbell = false
 
 -- Line Numbers
 -- Use hybrid lines by setting both
-vim.opt.number = true
-vim.opt.relativenumber = true
 vim.opt.numberwidth = 2
 
 local _numberingMode = 0
-vim.keymap.set('n', '<Leader>rn', function()
+local function numberingCycle(silent)
   if _numberingMode == 0 then
     vim.opt.number = true
-    _numberingMode = _numberingMode + 1
-    return
-  elseif _numberingMode == 1 then
     vim.opt.relativenumber = true
     _numberingMode = _numberingMode + 1
+    if not silent then
+      print('Hybrid number line!')
+    end
+    return
+  elseif _numberingMode == 1 then
+    vim.opt.number = true
+    vim.opt.relativenumber = false
+    _numberingMode = _numberingMode + 1
+    if not silent then
+      print('Normal number line!')
+    end
     return
   else
     vim.opt.number = false
     vim.opt.relativenumber = false
     _numberingMode = 0
+    if not silent then
+      print('No number line!')
+    end
     return
   end
-end, { desc = 'Cycle through relative and number, just number, no numbers' })
+end
+
+numberingCycle(true)
+
+vim.keymap.set('n', '<Leader>rn', numberingCycle, { desc = 'Cycle through relative and number, just number, no numbers' })
 
 -- Change Tmux cursor in insert mode
 vim.cmd('let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1')
@@ -687,7 +712,7 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<Leader>ca', vim.lsp.buf.code_action)
   vim.keymap.set('n', '<Leader>d', vim.lsp.buf.definition)
   -- vim.keymap.set('n', '<Leader>p', function() lsp_formatting(_opts.bufnr, true) end, _opts)
-  vim.keymap.set('n', '<Leader>rn', vim.lsp.buf.rename)
+  vim.keymap.set('n', '<Leader>RN', vim.lsp.buf.rename)
   vim.keymap.set('n', 'K', vim.lsp.buf.hover)
   vim.keymap.set('n', 'gD', vim.lsp.buf.declaration)
   vim.keymap.set('n', 'gi', vim.lsp.buf.implementation)
