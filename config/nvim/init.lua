@@ -12,7 +12,7 @@ end
 
 local packer_bootstrap = ensure_packer()
 
-require('packer').startup(function ()
+require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
 
   -- LSP & Autocompletion
@@ -21,13 +21,13 @@ require('packer').startup(function ()
     requires = {
       {
         'williamboman/mason.nvim',
-        config = function ()
+        config = function()
           require("mason").setup()
         end,
       },
       {
         'williamboman/mason-lspconfig.nvim',
-        config = function ()
+        config = function()
           require('mason-lspconfig').setup({
             automatic_install = true,
             automatic_installation = {
@@ -50,48 +50,13 @@ require('packer').startup(function ()
           })
         end
       },
-      {
-        'hrsh7th/nvim-cmp',
-        config = function ()
-          vim.opt.completeopt = 'menu,preview,noselect'
-          local cmp = require'cmp'
-          cmp.setup({
-            snippet = {
-              expand = function(args)
-                require('luasnip').lsp_expand(args.body)
-              end,
-            },
-            mapping = cmp.mapping.preset.insert({
-              ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), {'i','c'}),
-              ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), {'i','c'}),
-            }),
-            sources = cmp.config.sources({
-              { name = 'nvim_lsp' },
-              { name = 'luasnip' },
-            })
-          })
-        end,
-      },
+      { 'hrsh7th/nvim-cmp' },
       { 'hrsh7th/cmp-nvim-lsp' },
       { 'saadparwaiz1/cmp_luasnip' },
       { 'L3MON4D3/LuaSnip' },
-      {
-        'jose-elias-alvarez/null-ls.nvim',
-        config = function ()
-          local null_ls = require("null-ls")
-
-          null_ls.setup({
-            sources = {
-              null_ls.builtins.formatting.stylua,
-              null_ls.builtins.diagnostics.eslint,
-              null_ls.builtins.completion.spell,
-            },
-          })
-        end
-      }
+      { 'jose-elias-alvarez/null-ls.nvim' },
     }
   }
-  --
 
   -- Treesitter (syntax highlighting)
   use {
@@ -100,14 +65,21 @@ require('packer').startup(function ()
       local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
       ts_update()
     end,
-    config = function ()
-      require'nvim-treesitter.configs'.setup {
+    config = function()
+      require 'nvim-treesitter.configs'.setup {
         ensure_installed = 'all',
+        auto_install = true,
+        disable = {
+          'startify',
+        },
         rainbow = {
           enable = true,
         },
       }
     end,
+    requires = {
+      { 'p00f/nvim-ts-rainbow' }
+    }
   }
 
   -- Telescope (searching)
@@ -115,7 +87,7 @@ require('packer').startup(function ()
     'nvim-telescope/telescope.nvim',
     tag = '0.1.0',
     requires = { { 'nvim-lua/plenary.nvim' } },
-    config = function ()
+    config = function()
       local builtin = require('telescope.builtin')
       vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
       vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
@@ -132,7 +104,7 @@ require('packer').startup(function ()
       'nvim-tree/nvim-web-devicons',
     },
     tag = 'nightly',
-    config = function ()
+    config = function()
       require("nvim-tree").setup({
         view = {
           mappings = {
@@ -142,6 +114,9 @@ require('packer').startup(function ()
               { key = 'v', action = 'vsplit' },
               { key = 't', action = 'tabnew' },
               { key = 'x', action = 'close_node' },
+              { key = 'r', action = 'refresh' },
+              { key = 'R', action = 'rename' },
+              { key = 'c', action = 'cd' },
             }
           }
         }
@@ -157,19 +132,19 @@ require('packer').startup(function ()
   use {
     'lewis6991/gitsigns.nvim',
     tag = 'release',
-    config = function ()
+    config = function()
       require('gitsigns').setup()
     end,
   }
   use {
     'mbbill/undotree',
-    config = function ()
-      vim.keymap.set('n', '<Leader>ut', ':UndotreeShow<CR>')
+    config = function()
+      vim.keymap.set('n', '<Leader>ut', ':NvimTreeClose<CR>:UndotreeShow<CR>')
     end,
   }
   use {
     'nvim-lualine/lualine.nvim',
-    config = function ()
+    config = function()
       require('lualine').setup({
         theme = 'base16',
       })
@@ -181,7 +156,31 @@ require('packer').startup(function ()
 
   -- Searching
   use 'bronson/vim-visual-star-search'
-  use 'ctrlpvim/ctrlp.vim'
+  use {
+    'ctrlpvim/ctrlp.vim',
+    config = function()
+      vim.g.ctrlp_max_files = 0
+      vim.g.ctrlp_max_depth = 10
+      vim.g.ctrlp_custom_ignore = {
+        dir = '(.git|.hg|.svn|.vagrant|node_modules|vendor)$',
+        file = '.(exe|so|dll|pyo|pyc)$'
+      }
+
+      if vim.fn.executable('rg') then
+        vim.opt.grepprg = 'rg --color=never'
+        vim.opt.grepformat = '%f:%l:%c:%m'
+        vim.g.ackprg = 'rg --vimgrep'
+        vim.g.ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+        vim.g.ctrlp_use_caching = false
+      elseif vim.fn.executable('ag') then
+        vim.opt.grepprg = 'ag --vimgrep $*'
+        vim.opt.grepformat = '%f:%l:%c:%m'
+        vim.g.ackprg = 'ag --vimgrep'
+        vim.g.ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+        vim.g.ctrlp_use_caching = false
+      end
+    end,
+  }
 
   -- Editor Improvements
   use 'editorconfig/editorconfig-vim'
@@ -201,7 +200,7 @@ require('packer').startup(function ()
   }
   use {
     'tomtom/tcomment_vim',
-    config = function ()
+    config = function()
       vim.keymap.set('n', '<Leader>cc', ':TComment<CR>')
       vim.keymap.set('v', '<Leader>cc', ':TCommentBlock<CR>')
     end,
@@ -216,15 +215,15 @@ require('packer').startup(function ()
   use 'tpope/vim-eunuch'
   use {
     'tpope/vim-fugitive',
-    config = function ()
+    config = function()
       vim.keymap.set('n', '<Leader>gs', ':Git<CR>')
       vim.keymap.set('n', '<Leader>gb', ':Git blame<CR>')
       vim.keymap.set('n', '<Leader>gp', ':Git pushy<CR>')
 
       vim.api.nvim_create_autocmd('FileType', {
         pattern = 'gitcommit',
-        callback = function ()
-          vim.keymap.set('n', '<Leader>s', ':wq<CR>')
+        callback = function()
+          vim.keymap.set('n', '<Leader>s', ':wq<CR>', { buffer = true })
         end,
       })
     end,
@@ -233,31 +232,50 @@ require('packer').startup(function ()
   use 'tpope/vim-surround'
   use {
     'tpope/vim-tbone',
-    config = function ()
-      vim.keymap.set({'n', 'v'}, '<Leader>ty', ':Tyank<CR>')
-      vim.keymap.set({'n', 'v'}, '<Leader>tp', ':Tput<CR>')
+    config = function()
+      vim.keymap.set({ 'n', 'v' }, '<Leader>ty', ':Tyank<CR>')
+      vim.keymap.set({ 'n', 'v' }, '<Leader>tp', ':Tput<CR>')
     end,
   }
 
   -- Gists
-  -- use 'mattn/gist-vim'
-  -- use 'mattn/webapi-vim'
-
-  -- Ansible
-  use 'b4b4r07/vim-ansible-vault'
+  use 'mattn/gist-vim'
+  use 'mattn/webapi-vim'
 
   -- Syntax Highlighting
-  use 'sheerun/vim-polyglot' -- This must come first so it can be overridden
-  --  use 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-  use 'Glench/Vim-Jinja2-Syntax'
-  use 'norcalli/nvim-colorizer.lua'
-  use 'davidoc/taskpaper.vim'
-  use 'elzr/vim-json'
-  use 'plasticboy/vim-markdown'
-  use 'saltstack/salt-vim'
+  use {
+    'norcalli/nvim-colorizer.lua',
+    config = function()
+      require('colorizer').setup {
+        'css';
+        'javascript';
+        html = { mode = 'foreground' };
+      }
+    end,
+  }
+  use {
+    'elzr/vim-json',
+    ft = { 'json', 'jsonc' },
+    config = function()
+      vim.g.vim_json_syntax_conceal = false
+    end,
+  }
+  use {
+    'plasticboy/vim-markdown',
+    ft = 'markdown',
+    config = function()
+      vim.g.vim_markdown_folding_disabled = true
+      vim.g.markdown_fenced_languages = {
+        'coffee', 'css', 'erb=eruby', 'javascript', 'js=javascript',
+        'json=javascript', 'ruby', 'sass', 'xml', 'html', 'php',
+        'python', 'less', 'vim', 'sh', 'shell=sh', 'bash=sh',
+        'go', 'typescript',
+      }
+    end,
+  }
   use 'pantharshit00/vim-prisma'
+  use 'saltstack/salt-vim'
   use 'fourjay/vim-password-store'
-  use 'wuelnerdotexe/vim-astro'
 
   -- Edit root files without elevating
   use 'lambdalisue/suda.vim'
@@ -268,6 +286,7 @@ end)
 local function t(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
+
 -- }}}
 
 -- File handling {{{
@@ -320,11 +339,6 @@ vim.opt.undodir = '~/.config/nvim/undo'
 -- Behavior {{{
 -- Set the title properly
 vim.opt.title = true
--- vim.opt.titlestring = "%t%(\ %M%)%(\ (%{expand(\"%:~:.:h\")})%)%(\ %a%)"
--- vim.cmd([[
---   set t_ts=k
---   set t_fs=\
--- ]])
 
 -- Fancy (quick) search highlighting
 vim.opt.hlsearch = true
@@ -362,10 +376,6 @@ vim.opt.backspace = 'indent,eol,start'
 -- Don't use more than one space after punctuation
 vim.opt.joinspaces = false
 
--- Folds
-vim.opt.foldenable = false -- I hate folds…
-vim.opt.foldmethod = 'manual' -- …but if there are folds, let me control them
-
 -- I don't need Vim telling me where I can't go!
 vim.opt.virtualedit = 'all'
 
@@ -402,7 +412,7 @@ vim.api.nvim_create_autocmd('FileChangedRO', {
 -- Resize splits as vim is resized
 vim.api.nvim_create_autocmd('VimResized', {
   pattern = '*',
-  callback = function ()
+  callback = function()
     vim.cmd(t('normal! <C-w>='))
   end
 })
@@ -410,7 +420,7 @@ vim.api.nvim_create_autocmd('VimResized', {
 -- Only enable spell checking in some files
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'gitcommit', 'markdown', 'text' },
-  command = 'setlocal spell'
+  command = 'setlocal spell',
 })
 -- }}}
 
@@ -421,14 +431,20 @@ vim.cmd('set t_Co=256') -- 256 color support in terminal
 vim.opt.termguicolors = true
 vim.opt.background = 'dark' -- I like a dark background
 
-if vim.fn.filereadable(vim.fn.expand('~/.vimrc_background')) then
+if vim.env.BASE16_THEME then
+  vim.cmd.colorscheme(string.format('base16-%s', vim.env.BASE16_THEME))
+elseif vim.fn.filereadable(vim.fn.expand('~/.vimrc_background')) then
   vim.cmd('source ~/.vimrc_background')
 else
-  vim.cmd('colorscheme base16-default-dark')
+  vim.cmd.colorscheme('base16-default-dark')
 end
 
 -- Don't make my terminal less transparent
-vim.api.nvim_set_hl(0, 'Normal', {})
+-- NormalNC targets unfocused splits
+vim.cmd([[
+  hi Normal ctermbg=NONE guibg=NONE
+  hi NormalNC ctermbg=NONE guibg=NONE
+]])
 
 -- Make all comments italic
 vim.cmd('highlight Comment cterm=italic gui=italic')
@@ -453,17 +469,17 @@ vim.opt.cursorline = true
 vim.opt.colorcolumn = '+1'
 vim.api.nvim_create_autocmd('WinLeave', {
   pattern = '*',
-  callback = (function ()
+  callback = function()
     vim.opt.cursorline = false
     vim.opt.colorcolumn = ''
-  end)
+  end,
 })
 vim.api.nvim_create_autocmd({ 'WinEnter', 'BufEnter', 'BufNewFile' }, {
   pattern = '*',
-  callback = (function()
+  callback = function()
     vim.opt.cursorline = true
     vim.opt.colorcolumn = '+1'
-  end)
+  end,
 })
 
 -- Completely hide concealed text (i.e. snippets)
@@ -542,14 +558,14 @@ vim.keymap.set('n', '+', '<C-a>')
 vim.keymap.set('n', '-', '<C-x>')
 
 -- Easier line jumping
-vim.keymap.set({'n', 'v'}, 'H', '^')
-vim.keymap.set({'n', 'v'}, 'L', '$')
+vim.keymap.set({ 'n', 'v' }, 'H', '^')
+vim.keymap.set({ 'n', 'v' }, 'L', '$')
 
 vim.keymap.set('n', '<Leader><Leader>', ':nohlsearch<CR>', {
   desc = 'Toggle search highlighting'
 })
 
-vim.keymap.set('n', '<Leader>ve', function ()
+vim.keymap.set('n', '<Leader>ve', function()
   if vim.opt.virtualedit == 'all' then
     vim.opt.virtualedit = 'onemore'
   else
@@ -560,7 +576,7 @@ end, { desc = 'Toggle virtual editing' })
 -- Toggle arrow keys
 local _arrowKeysEnabled = true
 
-function toggleArrowKeys(silent)
+local function toggleArrowKeys(silent)
   _arrowKeysEnabled = not _arrowKeysEnabled
   vim.keymap.set('n', '<Up>', _arrowKeysEnabled and 'k' or ':resize +5<cr>')
   vim.keymap.set('n', '<Down>', _arrowKeysEnabled and 'j' or ':resize -5<cr>')
@@ -604,10 +620,10 @@ vim.keymap.set('v', '<Leader>Y', '"+y')
 
 -- Jump between bracket pairs easily
 -- Not using remap so I can use matchit
-vim.keymap.set({'n', 'v'}, '<Tab>', '%', { remap = true })
+vim.keymap.set({ 'n', 'v' }, '<Tab>', '%', { remap = true })
 
 -- Faster and more satisfying command mode access
-vim.keymap.set({'n', 'v'}, '<Space>', ':')
+vim.keymap.set({ 'n', 'v' }, '<Space>', ':')
 
 -- Toggle line wrapping
 vim.keymap.set('n', '<Leader>wp', ':set wrap!<CR>')
@@ -624,10 +640,6 @@ vim.keymap.set('n', 'j', 'gj')
 vim.keymap.set('n', 'k', 'gk')
 vim.keymap.set('n', 'gj', 'j')
 vim.keymap.set('n', 'gk', 'k')
-
--- Bubble lines of text with optional repeat count in visual mode
--- vim.keymap.set('n', '<S-j>', ":@='xp`[V`]'<CR>")
--- vim.keymap.set('n', '<S-k>', ":@='xkP`[V`]'<CR>")
 
 -- Shift blocks visually in visual mode and retain the selection
 vim.keymap.set('v', '<', '<gv')
@@ -652,7 +664,6 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local lsp_formatting = function(bufnr, isAsync)
   vim.lsp.buf.format {
     async = isAsync,
-    filter = function(client) return client.name == 'null-ls' end,
     bufnr = bufnr,
   }
 end
@@ -672,7 +683,7 @@ local on_attach = function(client, bufnr)
   end
 
   -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help)
-  vim.keymap.set('n', '<Leader>D', vim.lsp.buf.type_definition)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.type_definition)
   vim.keymap.set('n', '<Leader>ca', vim.lsp.buf.code_action)
   vim.keymap.set('n', '<Leader>d', vim.lsp.buf.definition)
   -- vim.keymap.set('n', '<Leader>p', function() lsp_formatting(_opts.bufnr, true) end, _opts)
@@ -693,16 +704,7 @@ masonLSP.setup_handlers {
       capabilities = capabilities,
     }
   end,
-  ['tsserver'] = function()
-    lspconfig.tsserver.setup {
-      capabilities = capabilities,
-      on_attach = function(client, bufnr)
-        on_attach(client, bufnr)
-        -- keymaps.tsserver(bufopts)
-      end,
-    }
-  end,
-  ['sumneko_lua'] = function()
+  ['sumneko_lua'] = function(server_name)
     lspconfig.sumneko_lua.setup {
       on_attach = on_attach,
       settings = {
@@ -710,9 +712,64 @@ masonLSP.setup_handlers {
           diagnostics = {
             globals = { 'vim' },
           },
+          workspace = {
+            -- Make the server aware of Neovim runtime files
+            library = vim.api.nvim_get_runtime_file("", true),
+          },
         },
       },
     }
   end,
 }
+
+local null_ls = require("null-ls")
+
+null_ls.setup({
+  sources = {
+    null_ls.builtins.formatting.stylua,
+    null_ls.builtins.diagnostics.eslint,
+    null_ls.builtins.completion.spell,
+  },
+})
+-- }}}
+
+-- Code completion (cmp) {{{
+local cmp = require('cmp')
+vim.opt.completeopt = 'menu,menuone,noselect'
+
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      require('luasnip').lsp_expand(args.body)
+    end,
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 'c' }),
+    ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 'c' }),
+  }),
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+    { name = 'buffer' },
+    { name = 'path' },
+  })
+})
+
+-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline({ '/', '?' }, {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
+  })
+})
 -- }}}

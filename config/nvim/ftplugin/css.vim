@@ -10,9 +10,3 @@
 
 " Alphabetize CSS styles
 nnoremap <buffer> <Leader>cs ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
-
-"===============================================================================
-" => Omnifunctions
-"===============================================================================
-
-setlocal omnifunc=csscomplete#CompleteCSS
