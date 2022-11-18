@@ -341,7 +341,7 @@ vim.opt.directory = '~/.neovim/swap'
 -- parts in time.
 vim.opt.undofile = true
 vim.opt.undolevels = 3000
-vim.opt.undodir = '~/.config/nvim/undo'
+-- vim.opt.undodir = '~/.config/nvim/undo'
 -- }}}
 
 -- Behavior {{{
