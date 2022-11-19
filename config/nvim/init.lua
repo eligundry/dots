@@ -185,6 +185,7 @@ require('packer').startup(function(use)
 
   -- Editor Improvements
   use 'editorconfig/editorconfig-vim'
+  use 'djoshea/vim-autoread'
   use {
     'Raimondi/delimitMate',
     config = function()
@@ -277,6 +278,7 @@ require('packer').startup(function(use)
   use 'pantharshit00/vim-prisma'
   use 'saltstack/salt-vim'
   use 'fourjay/vim-password-store'
+  use 'wuelnerdotexe/vim-astro'
 
   -- Edit root files without elevating
   use 'lambdalisue/suda.vim'
