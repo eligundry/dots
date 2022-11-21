@@ -18,6 +18,7 @@ require('packer').startup(function(use)
   -- LSP & Autocompletion
   use {
     'neovim/nvim-lspconfig',
+    run = 'npm i -g @fsouza/prettierd eslint_d',
     requires = {
       {
         'williamboman/mason.nvim',
