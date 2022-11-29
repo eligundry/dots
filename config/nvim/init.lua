@@ -25,18 +25,17 @@ require('packer').startup(function(use)
         config = function()
           require("mason").setup()
         end,
+        run = ':MasonInstall prettierd eslint_d'
       },
       {
         'williamboman/mason-lspconfig.nvim',
         config = function()
           require('mason-lspconfig').setup({
-            automatic_install = true,
-            automatic_installation = {
+            ensure_installed = {
               'astro',
               'bashls',
               'cssls',
               'dockerls',
-              'eslint',
               'gopls',
               'html',
               'jsonls',
@@ -56,6 +55,12 @@ require('packer').startup(function(use)
       { 'saadparwaiz1/cmp_luasnip' },
       { 'L3MON4D3/LuaSnip' },
       { 'jose-elias-alvarez/null-ls.nvim' },
+      {
+        'lukas-reineke/lsp-format.nvim',
+        config = function ()
+          require('lsp-format').setup()
+        end,
+      },
     }
   }
 
@@ -73,9 +78,9 @@ require('packer').startup(function(use)
         disable = {
           'startify',
         },
-        rainbow = {
-          enable = true,
-        },
+        -- rainbow = {
+        --   enable = true,
+        -- },
       }
     end,
     requires = {
@@ -686,12 +691,16 @@ end)
 
 -- LSP {{{
 local lspconfig = require('lspconfig')
+local lspformat = require('lsp-format')
 local masonLSP = require('mason-lspconfig')
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 local lsp_formatting = function(bufnr, isAsync)
   vim.lsp.buf.format {
     async = isAsync,
+    filter = function(client)
+      return client.name == 'null-ls'
+    end,
     bufnr = bufnr,
   }
 end
@@ -706,9 +715,13 @@ local on_attach = function(client, bufnr)
     vim.api.nvim_create_autocmd('BufWritePre', {
       group = lspFormattingAugroup,
       buffer = bufnr,
-      callback = function() lsp_formatting(bufnr, false) end,
+      callback = function()
+        lsp_formatting(bufnr, false)
+      end,
     })
   end
+
+  lspformat.on_attach(client)
 
   -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help)
   vim.keymap.set('n', 'gd', vim.lsp.buf.type_definition)
@@ -757,6 +770,7 @@ null_ls.setup({
     null_ls.builtins.formatting.stylua,
     null_ls.builtins.diagnostics.eslint,
     null_ls.builtins.completion.spell,
+    null_ls.builtins.formatting.prettierd,
   },
 })
 -- }}}
