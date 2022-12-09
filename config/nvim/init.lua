@@ -57,7 +57,7 @@ require('packer').startup(function(use)
       { 'jose-elias-alvarez/null-ls.nvim' },
       {
         'lukas-reineke/lsp-format.nvim',
-        config = function ()
+        config = function()
           require('lsp-format').setup()
         end,
       },
@@ -399,9 +399,6 @@ vim.opt.foldmethod = 'marker'
 -- I don't need Vim telling me where I can't go!
 vim.opt.virtualedit = 'all'
 
--- Change current directory to whatever file I'm editing
-vim.opt.autochdir = true
-
 -- Disable mouse is all modes in terminal Vim
 vim.opt.mouse = ''
 
@@ -680,6 +677,56 @@ vim.keymap.set('v', '>', '>gv')
 
 -- Insert horizontal ellipsis in insert mode
 vim.keymap.set('i', '\\...', '…')
+
+-- My ideal state of using vim is to have it always in autochdir. This means,
+-- whenever I open a new a file in a different directory, all vim commands for
+-- file operations become scoped to that directory. As I navigate splits, it
+-- will continuously change directories at the speed I move.
+--
+-- Unfortunately, almost no vim plugins work just right with that setup. ctrl-p
+-- will always be relative to the root of the git repo, which feels right.
+-- Grepper and telescope will be relative to the local file, which feels wrong.
+-- nerdtree will be relative to the focused file upon opening, but nvim-tree is
+-- gonna do whatever it likes. There is literally no way to win here.
+--
+-- Rather then fight these tools, I've switched up how autochdir can work for
+-- me.
+--
+-- <Leader>acd will toggle autochdir on and off, restoring the directory vim was
+-- opened with when it's off and setting it to the current file's directory when
+-- it turns on (just for that buffer tho, might want to get frisky and mess with
+-- some neighboring files in another split as I go)
+--
+-- <Leader>cd will set the working directory to the directory of the focused
+-- buffer for all of vim. This can be useful when I want vim's plugins to start
+-- operating relatively.
+--
+-- https://vimways.org/2019/vim-and-the-working-directory/
+local _workingDirectoryVimWasOpenedFrom = vim.fn.getcwd()
+local _acd = false
+vim.opt.autochdir = _acd
+
+vim.keymap.set('n', '<Leader>acd', function()
+  _acd = not _acd
+
+  if _acd then
+    vim.opt.autochdir = _acd
+    local _targetPath = vim.fs.dirname(vim.api.nvim_buf_get_name(0))
+    vim.api.nvim_set_current_dir(_targetPath)
+    print(string.format('turned on autochdir and set cwd to %s', _targetPath))
+  else
+    vim.opt.autochdir = _acd
+    vim.api.nvim_set_current_dir(_workingDirectoryVimWasOpenedFrom)
+    print(string.format('turned off autochdir and set cwd to %s', _workingDirectoryVimWasOpenedFrom))
+  end
+end)
+
+vim.keymap.set('n', '<Leader>cd', function()
+  local _targetPath = vim.fs.dirname(vim.api.nvim_buf_get_name(0))
+  _workingDirectoryVimWasOpenedFrom = _targetPath
+  vim.cmd(string.format('cd! %s', _targetPath))
+  print(string.format('set cwd to %s', _targetPath))
+end)
 
 -- Insert a long-ish paragraph of hipster ipsum
 vim.keymap.set('n', '<Leader>hi', function()
