@@ -95,6 +95,7 @@ require('packer').startup(function(use)
     requires = { { 'nvim-lua/plenary.nvim' } },
     config = function()
       local builtin = require('telescope.builtin')
+      vim.keymap.set('n', '<c-p>', builtin.find_files, {})
       vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
       vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
       vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
@@ -163,31 +164,34 @@ require('packer').startup(function(use)
   -- Searching
   use 'bronson/vim-visual-star-search'
   use 'mhinz/vim-grepper'
-  use {
-    'ctrlpvim/ctrlp.vim',
-    config = function()
-      vim.g.ctrlp_max_files = 0
-      vim.g.ctrlp_max_depth = 10
-      vim.g.ctrlp_custom_ignore = {
-        dir = '(.git|.hg|.svn|.vagrant|node_modules|vendor)$',
-        file = '.(exe|so|dll|pyo|pyc)$'
-      }
-
-      if vim.fn.executable('rg') then
-        vim.opt.grepprg = 'rg --color=never'
-        vim.opt.grepformat = '%f:%l:%c:%m'
-        vim.g.ackprg = 'rg --vimgrep'
-        vim.g.ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-        vim.g.ctrlp_use_caching = false
-      elseif vim.fn.executable('ag') then
-        vim.opt.grepprg = 'ag --vimgrep $*'
-        vim.opt.grepformat = '%f:%l:%c:%m'
-        vim.g.ackprg = 'ag --vimgrep'
-        vim.g.ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-        vim.g.ctrlp_use_caching = false
-      end
-    end,
-  }
+  -- Disabling ctrlp for now as it keeps crashing vim at random times. I think
+  -- it may be an issue with treesitter? I am going to try to replace it
+  -- completely with telescope.
+  -- use {
+  --   'ctrlpvim/ctrlp.vim',
+  --   config = function()
+  --     vim.g.ctrlp_max_files = 0
+  --     vim.g.ctrlp_max_depth = 10
+  --     vim.g.ctrlp_custom_ignore = {
+  --       dir = '(.git|.hg|.svn|.vagrant|node_modules|vendor)$',
+  --       file = '.(exe|so|dll|pyo|pyc)$'
+  --     }
+  --
+  --     if vim.fn.executable('rg') then
+  --       vim.opt.grepprg = 'rg --color=never'
+  --       vim.opt.grepformat = '%f:%l:%c:%m'
+  --       vim.g.ackprg = 'rg --vimgrep'
+  --       vim.g.ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+  --       vim.g.ctrlp_use_caching = false
+  --     elseif vim.fn.executable('ag') then
+  --       vim.opt.grepprg = 'ag --vimgrep $*'
+  --       vim.opt.grepformat = '%f:%l:%c:%m'
+  --       vim.g.ackprg = 'ag --vimgrep'
+  --       vim.g.ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  --       vim.g.ctrlp_use_caching = false
+  --     end
+  --   end,
+  -- }
 
   -- Editor Improvements
   use 'editorconfig/editorconfig-vim'
