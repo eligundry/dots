@@ -475,7 +475,7 @@ vim.cmd('highlight Comment cterm=italic gui=italic')
 -- Word Wrap
 vim.opt.wrap = false -- I like scrolling off the screen
 vim.opt.textwidth = 80 -- Standard width for terminals
-vim.opt.formatoptions = 'oqn1' -- Check out 'fo-table' to see what this does.
+vim.opt.formatoptions = 'oqn1tc' -- Check out 'fo-table' to see what this does.
 
 -- Status bar
 vim.opt.ruler = true

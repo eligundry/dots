@@ -8,6 +8,7 @@
 	up = pull
 	ctags = !.git/hooks/ctags
     pushy = push origin HEAD
+    cotb = checkout --track=direct -b
 
 [apply]
 	ignorewhitespace = change
