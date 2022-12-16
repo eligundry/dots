@@ -488,8 +488,11 @@ vim.opt.showmode = false -- Powerline shows mode now
 -- Put it back in when it gains focus
 vim.opt.cursorline = true
 vim.opt.colorcolumn = '+1'
+
+local crosshairAugroup = vim.api.nvim_create_augroup('BufferCrosshair', {})
 vim.api.nvim_create_autocmd('WinLeave', {
   pattern = '*',
+  group = crosshairAugroup,
   callback = function()
     vim.opt.cursorline = false
     vim.opt.colorcolumn = ''
@@ -497,6 +500,7 @@ vim.api.nvim_create_autocmd('WinLeave', {
 })
 vim.api.nvim_create_autocmd({ 'WinEnter', 'BufEnter', 'BufNewFile' }, {
   pattern = '*',
+  group = crosshairAugroup,
   callback = function()
     vim.opt.cursorline = true
     vim.opt.colorcolumn = '+1'
@@ -681,6 +685,9 @@ vim.keymap.set('v', '>', '>gv')
 
 -- Insert horizontal ellipsis in insert mode
 vim.keymap.set('i', '\\...', '…')
+
+-- Toggle local spelling
+vim.keymap.set('n', '<Leader>pl', 'setlocal spell!')
 
 -- My ideal state of using vim is to have it always in autochdir. This means,
 -- whenever I open a new a file in a different directory, all vim commands for
