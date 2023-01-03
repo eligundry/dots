@@ -411,7 +411,9 @@ vim.opt.mousehide = true
 
 -- Set <Leader> to be comma
 vim.g.mapleader = ','
+-- }}}
 
+-- autocmds {{{
 -- Remove trailing whitespace when saving files
 vim.api.nvim_create_autocmd('BufWritePre', {
   pattern = '*',
@@ -445,7 +447,7 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 -- }}}
 
---- Theme (Base16) {{{
+-- Theme (Base16) {{{
 -- I Think It's Beautiful That Your Are 256 Colors Too
 -- https://www.youtube.com/watch?v=bZ6b5ghZZN0
 vim.cmd('set t_Co=256') -- 256 color support in terminal
@@ -663,8 +665,8 @@ vim.keymap.set({ 'n', 'v' }, '<Tab>', '%', { remap = true })
 -- Faster and more satisfying command mode access
 vim.keymap.set({ 'n', 'v' }, '<Space>', ':')
 
--- Toggle line wrapping
-vim.keymap.set('n', '<Leader>wp', ':set wrap!<CR>')
+-- Toggle local line wrapping
+vim.keymap.set('n', '<Leader>wp', ':setlocal wrap!<CR>')
 
 -- Saving & Quiting Shortcuts
 vim.keymap.set('n', '<Leader>s', ':write<CR>')
