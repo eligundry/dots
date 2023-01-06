@@ -399,7 +399,7 @@ vim.opt.joinspaces = false
 
 -- Folding
 vim.opt.foldenable = false
-vim.opt.foldmethod = 'marker'
+vim.opt.foldmethod = 'manual'
 
 -- I don't need Vim telling me where I can't go!
 vim.opt.virtualedit = 'all'
