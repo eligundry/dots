@@ -42,6 +42,7 @@ zplug "plugins/httpie", from:oh-my-zsh, if:"command_exists 'http'"
 zplug "plugins/macos", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 zplug "plugins/npm", from:oh-my-zsh, if:"command_exists npm"
 zplug "plugins/pass", from:oh-my-zsh, if:"command_exists 'pass'"
+zplug "plugins/rbenv", from:oh-my-zsh, if:"command_exists 'rbenv'"
 zplug "plugins/yarn", from:oh-my-zsh, if:"command_exists 'yarn'"
 zplug "plugins/history-substring-search", from:oh-my-zsh, defer:2
 zplug "larkery/zsh-histdb", use:"{zsh-histdb.plugin,histdb-interactive}.zsh"

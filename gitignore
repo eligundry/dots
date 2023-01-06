@@ -22,7 +22,6 @@
 **/*.lst
 **/*.swo
 **/*.pyc
-**/*.sql
 **/*.hist
 **/*.orig
 **/ehthumbs.db

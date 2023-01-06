@@ -52,6 +52,8 @@ require('packer').startup(function(use)
       },
       { 'hrsh7th/nvim-cmp' },
       { 'hrsh7th/cmp-nvim-lsp' },
+      { 'hrsh7th/cmp-buffer' },
+      { 'hrsh7th/cmp-path' },
       { 'saadparwaiz1/cmp_luasnip' },
       { 'L3MON4D3/LuaSnip' },
       { 'jose-elias-alvarez/null-ls.nvim' },
@@ -74,7 +76,7 @@ require('packer').startup(function(use)
     config = function()
       require 'nvim-treesitter.configs'.setup {
         ensure_installed = 'all',
-        auto_install = true,
+        -- auto_install = true,
         disable = {
           'startify',
         },
@@ -86,22 +88,6 @@ require('packer').startup(function(use)
     requires = {
       { 'p00f/nvim-ts-rainbow' }
     }
-  }
-
-  -- Telescope (searching)
-  use {
-    'nvim-telescope/telescope.nvim',
-    tag = '0.1.0',
-    requires = { { 'nvim-lua/plenary.nvim' } },
-    config = function()
-      local builtin = require('telescope.builtin')
-      vim.keymap.set('n', '<c-p>', builtin.find_files, {})
-      vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-      vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
-      vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
-      vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
-      vim.keymap.set('n', '<leader>ft', builtin.treesitter, {})
-    end,
   }
 
   -- File tree
@@ -164,57 +150,72 @@ require('packer').startup(function(use)
   -- Searching
   use 'bronson/vim-visual-star-search'
   use 'mhinz/vim-grepper'
-  -- Disabling ctrlp for now as it keeps crashing vim at random times. I think
-  -- it may be an issue with treesitter? I am going to try to replace it
-  -- completely with telescope.
-  -- use {
-  --   'ctrlpvim/ctrlp.vim',
-  --   config = function()
-  --     vim.g.ctrlp_max_files = 0
-  --     vim.g.ctrlp_max_depth = 10
-  --     vim.g.ctrlp_custom_ignore = {
-  --       dir = '(.git|.hg|.svn|.vagrant|node_modules|vendor)$',
-  --       file = '.(exe|so|dll|pyo|pyc)$'
-  --     }
-  --
-  --     if vim.fn.executable('rg') then
-  --       vim.opt.grepprg = 'rg --color=never'
-  --       vim.opt.grepformat = '%f:%l:%c:%m'
-  --       vim.g.ackprg = 'rg --vimgrep'
-  --       vim.g.ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-  --       vim.g.ctrlp_use_caching = false
-  --     elseif vim.fn.executable('ag') then
-  --       vim.opt.grepprg = 'ag --vimgrep $*'
-  --       vim.opt.grepformat = '%f:%l:%c:%m'
-  --       vim.g.ackprg = 'ag --vimgrep'
-  --       vim.g.ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-  --       vim.g.ctrlp_use_caching = false
-  --     end
-  --   end,
-  -- }
+  use {
+    'nvim-telescope/telescope.nvim',
+    tag = '0.1.0',
+    requires = { { 'nvim-lua/plenary.nvim' } },
+    config = function()
+      local builtin = require('telescope.builtin')
+      vim.keymap.set('n', '<c-p>', builtin.find_files, {})
+      vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
+      vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
+      vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
+      vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+      vim.keymap.set('n', '<leader>ft', builtin.treesitter, {})
+    end,
+  }
 
   -- Editor Improvements
   use 'editorconfig/editorconfig-vim'
   use 'djoshea/vim-autoread'
   use {
-    'Raimondi/delimitMate',
+    'windwp/nvim-autopairs',
     config = function()
-      vim.g.delimitMateAutoClose = 1
-      vim.g.delimitMate_expand_cr = 1
-      vim.g.delimitMate_expand_space = 1
-      vim.g.delimitMate_smart_quotes = 1
-
-      vim.api.nvim_create_autocmd('FileType', {
-        pattern = { 'vim', 'html', 'xml', 'xhtml', 'javascriptreact', 'typescriptreact' },
-        command = 'let b:delimitMate_matchpairs = "(:),[:],{:},<:>"',
-      })
+      require('nvim-autopairs').setup()
     end,
   }
   use {
-    'tomtom/tcomment_vim',
+    'windwp/nvim-ts-autotag',
     config = function()
-      vim.keymap.set('n', '<Leader>cc', ':TComment<CR>')
-      vim.keymap.set('v', '<Leader>cc', ':TCommentBlock<CR>')
+      require('nvim-ts-autotag').setup()
+    end,
+  }
+  use {
+    'numToStr/Comment.nvim',
+    config = function()
+      require('Comment').setup({
+        ---LHS of toggle mappings in NORMAL mode
+        toggler = {
+          ---Line-comment toggle keymap
+          line = 'gcc',
+          ---Block-comment toggle keymap
+          block = 'gbc',
+        },
+        ---LHS of operator-pending mappings in NORMAL and VISUAL mode
+        opleader = {
+          ---Line-comment keymap
+          line = 'gc',
+          ---Block-comment keymap
+          block = 'gb',
+        },
+        ---LHS of extra mappings
+        extra = {
+          ---Add comment on the line above
+          above = 'gcO',
+          ---Add comment on the line below
+          below = 'gco',
+          ---Add comment at the end of line
+          eol = 'gcA',
+        },
+        ---Enable keybindings
+        ---NOTE: If given `false` then the plugin won't create any mappings
+        mappings = {
+          ---Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
+          basic = true,
+          ---Extra mapping; `gco`, `gcO`, `gcA`
+          extra = true,
+        },
+      })
     end,
   }
 
@@ -411,6 +412,17 @@ vim.opt.mousehide = true
 
 -- Set <Leader> to be comma
 vim.g.mapleader = ','
+
+-- Make searching blazing fast
+if vim.fn.executable('rg') then
+  vim.opt.grepprg = 'rg --color=never'
+  vim.opt.grepformat = '%f:%l:%c:%m'
+  vim.g.ackprg = 'rg --vimgrep'
+elseif vim.fn.executable('ag') then
+  vim.opt.grepprg = 'ag --vimgrep $*'
+  vim.opt.grepformat = '%f:%l:%c:%m'
+  vim.g.ackprg = 'ag --vimgrep'
+end
 -- }}}
 
 -- autocmds {{{
@@ -573,7 +585,9 @@ end
 
 numberingCycle(true)
 
-vim.keymap.set('n', '<Leader>rn', numberingCycle, { desc = 'Cycle through relative and number, just number, no numbers' })
+vim.keymap.set('n', '<Leader>rn', numberingCycle, {
+  desc = 'Cycle through relative and number, just number, no numbers',
+})
 
 -- Change Tmux cursor in insert mode
 vim.cmd('let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1')
