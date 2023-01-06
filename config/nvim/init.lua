@@ -80,9 +80,10 @@ require('packer').startup(function(use)
         disable = {
           'startify',
         },
-        -- rainbow = {
-        --   enable = true,
-        -- },
+        context_commentstring = {
+          enable = true,
+          enable_autocmd = false,
+        },
       }
     end,
     requires = {
@@ -180,6 +181,7 @@ require('packer').startup(function(use)
       require('nvim-ts-autotag').setup()
     end,
   }
+  use 'JoosepAlviste/nvim-ts-context-commentstring'
   use {
     'numToStr/Comment.nvim',
     config = function()
@@ -286,10 +288,16 @@ require('packer').startup(function(use)
       }
     end,
   }
-  use 'pantharshit00/vim-prisma'
+  use {
+    'pantharshit00/vim-prisma',
+    ft = 'prisma',
+  }
   use 'saltstack/salt-vim'
   use 'fourjay/vim-password-store'
-  use 'wuelnerdotexe/vim-astro'
+  use {
+    'wuelnerdotexe/vim-astro',
+    ft = 'astro',
+  }
 
   -- Edit root files without elevating
   use 'lambdalisue/suda.vim'
