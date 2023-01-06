@@ -15,7 +15,7 @@ local packer_bootstrap = ensure_packer()
 require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
 
-  -- LSP & Autocompletion
+  -- LSP & Autocompletion {{{
   use {
     'neovim/nvim-lspconfig',
     run = 'npm i -g @fsouza/prettierd eslint_d',
@@ -40,7 +40,6 @@ require('packer').startup(function(use)
               'html',
               'jsonls',
               'pyright',
-              'sqls',
               'sumneko_lua',
               'tailwindcss',
               'tsserver',
@@ -63,10 +62,23 @@ require('packer').startup(function(use)
           require('lsp-format').setup()
         end,
       },
+      {
+        'dcampos/cmp-emmet-vim',
+        requires = {
+          {
+            'mattn/emmet-vim',
+            config = function()
+              -- expand emmet snippet with <c-y>,
+              vim.g.user_emmet_leader_key = '<C-y>'
+            end,
+          },
+        },
+      },
     }
   }
+  -- }}}
 
-  -- Treesitter (syntax highlighting)
+  -- Treesitter (syntax highlighting) {{{
   use {
     'nvim-treesitter/nvim-treesitter',
     run = function()
@@ -90,8 +102,9 @@ require('packer').startup(function(use)
       { 'p00f/nvim-ts-rainbow' }
     }
   }
+  -- }}}
 
-  -- File tree
+  -- File tree {{{
   use {
     'nvim-tree/nvim-tree.lua',
     requires = {
@@ -119,10 +132,12 @@ require('packer').startup(function(use)
       vim.keymap.set('n', '<Leader>nt', ':NvimTreeToggle<CR>')
     end,
   }
+  -- }}}
 
-  -- GUI Improvements
+  -- GUI Improvements {{{
   use 'mhinz/vim-startify'
   use 'RRethy/nvim-base16'
+  use 'edkolev/tmuxline.vim' -- tmux (because I guess you can configure it from vim?)
   use {
     'lewis6991/gitsigns.nvim',
     tag = 'release',
@@ -144,11 +159,9 @@ require('packer').startup(function(use)
       })
     end,
   }
+  -- }}}
 
-  -- tmux (because I guess you can configure it from vim?)
-  use 'edkolev/tmuxline.vim'
-
-  -- Searching
+  -- Searching {{{
   use 'bronson/vim-visual-star-search'
   use 'mhinz/vim-grepper'
   use {
@@ -165,10 +178,21 @@ require('packer').startup(function(use)
       vim.keymap.set('n', '<leader>ft', builtin.treesitter, {})
     end,
   }
+  -- }}}
 
-  -- Editor Improvements
+  -- Editor Improvements {{{
   use 'editorconfig/editorconfig-vim'
   use 'djoshea/vim-autoread'
+  use {
+    'lambdalisue/suda.vim',
+    config = function()
+      -- Use SudoWrite on read only files
+      vim.api.nvim_create_autocmd('FileChangedRO', {
+        pattern = '*',
+        command = 'nnoremap <buffer> <Leader>s :w suda://%<CR>'
+      })
+    end,
+  }
   use {
     'windwp/nvim-autopairs',
     config = function()
@@ -220,9 +244,9 @@ require('packer').startup(function(use)
       })
     end,
   }
+  -- }}}
 
-  -- Vim God Tim Pope
-  -- https://twitter.com/EliGundry/status/874737347568574464
+  -- Vim God Tim Pope {{{
   use 'tpope/vim-afterimage'
   use 'tpope/vim-dadbod'
   use 'tpope/vim-dispatch'
@@ -252,12 +276,14 @@ require('packer').startup(function(use)
       vim.keymap.set({ 'n', 'v' }, '<Leader>tp', ':Tput<CR>')
     end,
   }
+  -- }}}
 
-  -- Gists
+  -- Gists {{{
   use 'mattn/gist-vim'
   use 'mattn/webapi-vim'
+  -- }}}
 
-  -- Syntax Highlighting
+  -- Syntax Highlighting {{{
   use {
     'norcalli/nvim-colorizer.lua',
     config = function()
@@ -298,9 +324,7 @@ require('packer').startup(function(use)
     'wuelnerdotexe/vim-astro',
     ft = 'astro',
   }
-
-  -- Edit root files without elevating
-  use 'lambdalisue/suda.vim'
+  -- }}}
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
@@ -444,12 +468,6 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 vim.api.nvim_create_autocmd('InsertLeave', {
   pattern = '*',
   command = 'set nopaste paste?'
-})
-
--- Use SudoWrite on read only files
-vim.api.nvim_create_autocmd('FileChangedRO', {
-  pattern = '*',
-  command = 'nnoremap <buffer> <Leader>s :w suda://%<CR>'
 })
 
 -- Resize splits as vim is resized
@@ -772,10 +790,10 @@ end)
 -- }}}
 
 -- LSP {{{
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local lspconfig = require('lspconfig')
 local lspformat = require('lsp-format')
 local masonLSP = require('mason-lspconfig')
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 local lsp_formatting = function(bufnr, isAsync)
   vim.lsp.buf.format {
@@ -859,23 +877,40 @@ null_ls.setup({
 
 -- Code completion (cmp) {{{
 local cmp = require('cmp')
+local luasnip = require('luasnip')
+
 vim.opt.completeopt = 'menu,menuone,noselect'
 
 cmp.setup({
   snippet = {
     expand = function(args)
-      require('luasnip').lsp_expand(args.body)
+      luasnip.lsp_expand(args.body)
     end,
   },
   mapping = cmp.mapping.preset.insert({
     ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 'c' }),
     ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 'c' }),
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' })
   }),
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
     { name = 'buffer' },
     { name = 'path' },
+    { name = 'emmet_vim' },
   })
 })
 
