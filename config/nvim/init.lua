@@ -278,9 +278,22 @@ require('packer').startup(function(use)
   }
   -- }}}
 
-  -- Gists {{{
-  use 'mattn/gist-vim'
-  use 'mattn/webapi-vim'
+  -- Github {{{
+  -- :Gist will post the current file to Github Gists
+  -- :Gist -p will do the same but private
+  use {
+    'mattn/gist-vim',
+    requires = {
+      'mattn/webapi-vim',
+    },
+  }
+  -- :OpenGithubFile will open the current file in Github for easy sharing
+  use {
+    'tyru/open-browser-github.vim',
+    requires = {
+      'tyru/open-browser.vim',
+    },
+  }
   -- }}}
 
   -- Syntax Highlighting {{{
