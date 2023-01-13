@@ -186,10 +186,10 @@ require('packer').startup(function(use)
   use {
     'lambdalisue/suda.vim',
     config = function()
-      -- Use SudoWrite on read only files
       vim.api.nvim_create_autocmd('FileChangedRO', {
         pattern = '*',
-        command = 'nnoremap <buffer> <Leader>s :w suda://%<CR>'
+        command = 'nnoremap <buffer> <Leader>s :w suda://%<CR>',
+        desc = 'Use SudoWrite on read only files'
       })
     end,
   }
@@ -264,6 +264,7 @@ require('packer').startup(function(use)
         callback = function()
           vim.keymap.set('n', '<Leader>s', ':wq<CR>', { buffer = true })
         end,
+        desc = 'My normal save shortcut will write the commit',
       })
     end,
   }
@@ -386,11 +387,9 @@ vim.opt.history = 10000
 -- I hate backups. There's no point anymore!
 vim.opt.backup = false
 vim.opt.writebackup = false
-vim.opt.backupdir = '~/.neovim/backup'
 
 -- I'm done using swaps. They are annoying.
 vim.opt.swapfile = false
-vim.opt.directory = '~/.neovim/swap'
 
 -- Persistent undo is pretty awesome. It basically builds all sorts
 -- of version control straight into your editor. It commits when ever
@@ -399,7 +398,6 @@ vim.opt.directory = '~/.neovim/swap'
 -- parts in time.
 vim.opt.undofile = true
 vim.opt.undolevels = 3000
--- vim.opt.undodir = '~/.config/nvim/undo'
 -- }}}
 
 -- Behavior {{{
@@ -471,30 +469,51 @@ end
 -- }}}
 
 -- autocmds {{{
--- Remove trailing whitespace when saving files
 vim.api.nvim_create_autocmd('BufWritePre', {
   pattern = '*',
-  command = ':%s/\\s\\+$//e'
+  command = ':%s/\\s\\+$//e',
+  desc = 'Remove trailing whitespace when saving files'
 })
 
--- Exit paste mode upon leaving insert
 vim.api.nvim_create_autocmd('InsertLeave', {
   pattern = '*',
-  command = 'set nopaste paste?'
+  command = 'set nopaste paste?',
+  desc = 'Exit paste mode upon leaving insert',
 })
 
--- Resize splits as vim is resized
 vim.api.nvim_create_autocmd('VimResized', {
   pattern = '*',
   callback = function()
     vim.cmd(t('normal! <C-w>='))
-  end
+  end,
+  desc = 'Resize splits as vim is resized'
 })
 
--- Only enable spell checking in some files
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'gitcommit', 'markdown', 'text' },
   command = 'setlocal spell',
+  desc = 'Only enable spell checking in some files'
+})
+
+local crosshairAugroup = vim.api.nvim_create_augroup('BufferCrosshair', {})
+vim.api.nvim_create_autocmd('WinLeave', {
+  pattern = '*',
+  group = crosshairAugroup,
+  callback = function()
+    vim.opt.cursorline = false
+    vim.opt.colorcolumn = ''
+  end,
+  desc = 'Window crosshair: Remove cursorline and colorcolumn when buffer loses focus'
+})
+
+vim.api.nvim_create_autocmd({ 'WinEnter', 'BufEnter', 'BufNewFile' }, {
+  pattern = '*',
+  group = crosshairAugroup,
+  callback = function()
+    vim.opt.cursorline = true
+    vim.opt.colorcolumn = '+1'
+  end,
+  desc = 'Window crosshair: Restore cursorline and colorcolumn when buffer gains focus'
 })
 -- }}}
 
@@ -536,29 +555,6 @@ vim.opt.showcmd = true
 vim.opt.cmdheight = 2
 vim.opt.laststatus = 2
 vim.opt.showmode = false -- Powerline shows mode now
-
--- Remove cursorline and colorcolumn when buffer loses focus
--- Put it back in when it gains focus
-vim.opt.cursorline = true
-vim.opt.colorcolumn = '+1'
-
-local crosshairAugroup = vim.api.nvim_create_augroup('BufferCrosshair', {})
-vim.api.nvim_create_autocmd('WinLeave', {
-  pattern = '*',
-  group = crosshairAugroup,
-  callback = function()
-    vim.opt.cursorline = false
-    vim.opt.colorcolumn = ''
-  end,
-})
-vim.api.nvim_create_autocmd({ 'WinEnter', 'BufEnter', 'BufNewFile' }, {
-  pattern = '*',
-  group = crosshairAugroup,
-  callback = function()
-    vim.opt.cursorline = true
-    vim.opt.colorcolumn = '+1'
-  end,
-})
 
 -- Completely hide concealed text (i.e. snippets)
 -- vim.opt.conceallevel = 2
