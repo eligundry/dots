@@ -87,7 +87,26 @@ require('packer').startup(function(use)
     end,
     config = function()
       require 'nvim-treesitter.configs'.setup {
-        ensure_installed = 'all',
+        ensure_installed = {
+          'bash',
+          'css',
+          'dockerfile',
+          'go',
+          'html',
+          'http',
+          'javascript',
+          'json',
+          'make',
+          'markdown',
+          'php',
+          'python',
+          'ruby',
+          'rust',
+          'sql',
+          'toml',
+          'typescript',
+          'yaml',
+        },
         -- auto_install = true,
         disable = {
           'startify',
@@ -98,9 +117,6 @@ require('packer').startup(function(use)
         },
       }
     end,
-    requires = {
-      { 'p00f/nvim-ts-rainbow' }
-    }
   }
   -- }}}
 
@@ -294,6 +310,36 @@ require('packer').startup(function(use)
     requires = {
       'tyru/open-browser.vim',
     },
+  }
+  -- }}}
+
+  -- HTTP Client {{{
+  use {
+    'rest-nvim/rest.nvim',
+    requires = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require('rest-nvim').setup({
+        result_split_horizontal = true,
+        encode_url = true,
+        result = {
+          show_url = true,
+          show_http_info = true,
+          show_headers = true,
+          formatters = {
+            json = 'jq',
+            html = false,
+          },
+        },
+      })
+
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'http',
+        callback = function()
+          vim.keymap.set('n', '<Leader>e', '<Plug>RestNvim', { buffer = true })
+        end,
+        desc = '<Leader>e will execute rest.nvm files',
+      })
+    end,
   }
   -- }}}
 
