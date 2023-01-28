@@ -271,7 +271,7 @@ require('packer').startup(function(use)
         pattern = 'sql',
         callback = function()
           vim.keymap.set('n', '<Leader>e', ':%DB g:auto<CR>', { buffer = true })
-          vim.keymap.sen('v', '<Leader>e', ':<>DB g:auto<CR>', { buffer = true })
+          vim.keymap.set('v', '<Leader>e', ':<>DB g:auto<CR>', { buffer = true })
         end,
         desc = '<Leader>e will execute the current sql with vim-dadbod against DB g:auto',
       })
