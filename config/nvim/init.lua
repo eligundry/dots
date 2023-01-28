@@ -264,7 +264,19 @@ require('packer').startup(function(use)
 
   -- Vim God Tim Pope {{{
   use 'tpope/vim-afterimage'
-  use 'tpope/vim-dadbod'
+  use {
+    'tpope/vim-dadbod',
+    config = function()
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'sql',
+        callback = function()
+          vim.keymap.set('n', '<Leader>e', ':%DB g:auto<CR>', { buffer = true })
+          vim.keymap.sen('v', '<Leader>e', ':<>DB g:auto<CR>', { buffer = true })
+        end,
+        desc = '<Leader>e will execute the current sql with vim-dadbod against DB g:auto',
+      })
+    end,
+  }
   use 'tpope/vim-dispatch'
   use 'tpope/vim-dotenv'
   use 'tpope/vim-eunuch'
@@ -289,7 +301,8 @@ require('packer').startup(function(use)
   use {
     'tpope/vim-tbone',
     config = function()
-      vim.keymap.set({ 'n', 'v' }, '<Leader>ty', ':Tyank<CR>')
+      vim.keymap.set('n', '<Leader>ty', ':Tyank<CR>')
+      vim.keymap.set('v', '<Leader>ty', ':<>Tyank<CR>')
       vim.keymap.set({ 'n', 'v' }, '<Leader>tp', ':Tput<CR>')
     end,
   }
@@ -337,7 +350,7 @@ require('packer').startup(function(use)
         callback = function()
           vim.keymap.set('n', '<Leader>e', '<Plug>RestNvim', { buffer = true })
         end,
-        desc = '<Leader>e will execute rest.nvm files',
+        desc = '<Leader>e will execute the current file with rest.nvin',
       })
     end,
   }
