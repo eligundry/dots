@@ -271,7 +271,7 @@ require('packer').startup(function(use)
         pattern = 'sql',
         callback = function()
           vim.keymap.set('n', '<Leader>e', ':%DB g:auto<CR>', { buffer = true })
-          vim.keymap.set('v', '<Leader>e', ':<>DB g:auto<CR>', { buffer = true })
+          vim.keymap.set('v', '<Leader>e', ":'<,'>DB g:auto<CR>", { buffer = true })
         end,
         desc = '<Leader>e will execute the current sql with vim-dadbod against DB g:auto',
       })
@@ -302,7 +302,7 @@ require('packer').startup(function(use)
     'tpope/vim-tbone',
     config = function()
       vim.keymap.set('n', '<Leader>ty', ':Tyank<CR>')
-      vim.keymap.set('v', '<Leader>ty', ':<>Tyank<CR>')
+      vim.keymap.set('v', '<Leader>ty', ":'<,'>Tyank<CR>")
       vim.keymap.set({ 'n', 'v' }, '<Leader>tp', ':Tput<CR>')
     end,
   }
