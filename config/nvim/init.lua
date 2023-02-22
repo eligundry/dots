@@ -40,7 +40,7 @@ require('packer').startup(function(use)
               'html',
               'jsonls',
               'pyright',
-              'sumneko_lua',
+              'lua_ls',
               'tailwindcss',
               'tsserver',
               'vimls',
@@ -50,8 +50,9 @@ require('packer').startup(function(use)
         end
       },
       { 'hrsh7th/nvim-cmp' },
-      { 'hrsh7th/cmp-nvim-lsp' },
       { 'hrsh7th/cmp-buffer' },
+      { 'hrsh7th/cmp-cmdline' },
+      { 'hrsh7th/cmp-nvim-lsp' },
       { 'hrsh7th/cmp-path' },
       { 'saadparwaiz1/cmp_luasnip' },
       { 'L3MON4D3/LuaSnip' },
@@ -361,9 +362,9 @@ require('packer').startup(function(use)
     'norcalli/nvim-colorizer.lua',
     config = function()
       require('colorizer').setup {
-        'css';
-        'javascript';
-        html = { mode = 'foreground' };
+        'css',
+        'javascript',
+        html = { mode = 'foreground' },
       }
     end,
   }
@@ -913,8 +914,8 @@ masonLSP.setup_handlers {
       capabilities = capabilities,
     }
   end,
-  ['sumneko_lua'] = function(server_name)
-    lspconfig.sumneko_lua.setup {
+  ['lua_ls'] = function(server_name)
+    lspconfig.lua_ls.setup {
       on_attach = on_attach,
       settings = {
         Lua = {
@@ -966,8 +967,8 @@ cmp.setup({
       end
     end, { 'i', 's' }),
     ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if luasnip.jumpable(-1) then
-        luasnip.jump(-1)
+      if luasnip.jumpable( -1) then
+        luasnip.jump( -1)
       else
         fallback()
       end
