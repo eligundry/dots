@@ -930,6 +930,17 @@ masonLSP.setup_handlers {
       },
     }
   end,
+  ['tailwindcss'] = function(server_name)
+    lspconfig.tailwindcss.setup {
+      on_attach = on_attach,
+      capabilities = capabilities,
+      settings = {
+        tailwindCSS = {
+          classAttributes = { "class", "className", "ngClass", 'class:list' },
+        }
+      }
+    }
+  end,
 }
 
 local null_ls = require("null-ls")
