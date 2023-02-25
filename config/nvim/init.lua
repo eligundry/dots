@@ -361,9 +361,9 @@ require('packer').startup(function(use)
     'norcalli/nvim-colorizer.lua',
     config = function()
       require('colorizer').setup {
-        'css';
-        'javascript';
-        html = { mode = 'foreground' };
+        'css',
+        'javascript',
+        html = { mode = 'foreground' },
       }
     end,
   }
@@ -799,6 +799,10 @@ vim.keymap.set('i', '\\...', '…')
 -- Toggle local spelling
 vim.keymap.set('n', '<Leader>pl', 'setlocal spell!')
 
+-- Format JSON easily
+vim.keymap.set('n', '<Leader>jq', ":%!jq '.'<CR>")
+vim.keymap.set('v', '<Leader>jq', ":'<,'>!jq '.'<CR>")
+
 -- My ideal state of using vim is to have it always in autochdir. This means,
 -- whenever I open a new a file in a different directory, all vim commands for
 -- file operations become scoped to that directory. As I navigate splits, it
@@ -966,8 +970,8 @@ cmp.setup({
       end
     end, { 'i', 's' }),
     ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if luasnip.jumpable(-1) then
-        luasnip.jump(-1)
+      if luasnip.jumpable( -1) then
+        luasnip.jump( -1)
       else
         fallback()
       end
