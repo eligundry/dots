@@ -31,21 +31,21 @@ require('packer').startup(function(use)
         'williamboman/mason-lspconfig.nvim',
         config = function()
           require('mason-lspconfig').setup({
-            ensure_installed = {
-              'astro',
-              'bashls',
-              'cssls',
-              'dockerls',
-              'gopls',
-              'html',
-              'jsonls',
-              'pyright',
-              'lua_ls',
-              'tailwindcss',
-              'tsserver',
-              'vimls',
-              'yamlls',
-            },
+            -- ensure_installed = {
+            --   'astro',
+            --   'bashls',
+            --   'cssls',
+            --   'dockerls',
+            --   'gopls',
+            --   'html',
+            --   'jsonls',
+            --   'pyright',
+            --   'lua_ls',
+            --   'tailwindcss',
+            --   'tsserver',
+            --   'vimls',
+            --   'yamlls',
+            -- },
           })
         end
       },
@@ -76,6 +76,27 @@ require('packer').startup(function(use)
         },
       },
     }
+  }
+  -- }}}
+
+  -- Github Copilot {{{
+  use {
+    'zbirenbaum/copilot-cmp',
+    after = { 'copilot.lua' },
+    requires = {
+      {
+        'zbirenbaum/copilot.lua',
+        config = function()
+          require('copilot').setup({
+            suggestion = { enabled = false },
+            panel = { enabled = false },
+          })
+        end,
+      }
+    },
+    config = function()
+      require('copilot_cmp').setup()
+    end,
   }
   -- }}}
 
@@ -958,6 +979,13 @@ null_ls.setup({
 -- Code completion (cmp) {{{
 local cmp = require('cmp')
 local luasnip = require('luasnip')
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+
+local has_words_before = function()
+  if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
+end
 
 vim.opt.completeopt = 'menu,menuone,noselect'
 
@@ -966,6 +994,25 @@ cmp.setup({
     expand = function(args)
       luasnip.lsp_expand(args.body)
     end,
+  },
+  style = {
+    winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
+  },
+  window = {
+    completion = {
+      border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+      scrollbar = "║",
+      winhighlight = 'Normal:CmpMenu,FloatBorder:CmpMenuBorder,CursorLine:CmpSelection,Search:None',
+      autocomplete = {
+        require("cmp.types").cmp.TriggerEvent.InsertEnter,
+        require("cmp.types").cmp.TriggerEvent.TextChanged,
+      },
+    },
+    documentation = {
+      border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+      winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
+      scrollbar = "║",
+    },
   },
   mapping = cmp.mapping.preset.insert({
     ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 'c' }),
@@ -983,9 +1030,21 @@ cmp.setup({
       else
         fallback()
       end
-    end, { 'i', 's' })
+    end, { 'i', 's' }),
+    ["<C-s>"] = cmp.mapping.complete({
+      config = {
+        sources = {
+          { name = 'copilot' },
+        }
+      }
+    }),
+    ["<CR>"] = cmp.mapping.confirm({
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = false,
+    }),
   }),
   sources = cmp.config.sources({
+    { name = 'copilot' },
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
     { name = 'buffer' },
@@ -1011,4 +1070,7 @@ cmp.setup.cmdline(':', {
     { name = 'cmdline' }
   })
 })
+
+-- Report to cmp when autopairs does it's thing
+cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({}))
 -- }}}
