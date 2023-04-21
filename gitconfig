@@ -1,14 +1,12 @@
 [alias]
-	co = checkout
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	ll = log --pretty=format:'%C(red)%h%Cred%d %Creset%s %Cgreen(%cr) %C(bold blue)<%cn>%Creset' --decorate --numstat --date=relative
-	rev = review
 	branch-recent = branch --sort=-committerdate
-	subup = "submodule foreach git pull origin master"
 	up = pull
-	ctags = !.git/hooks/ctags
     pushy = push origin HEAD
+    force-pushy = push --force origin HEAD
     cotb = checkout --track=direct -b
+    update-squashed-commit-date = !"GIT_COMMITTER_DATE=\"$(date)\" git commit --amend --no-edit --date=\"$(date)\""
 
 [apply]
 	ignorewhitespace = change
