@@ -132,7 +132,6 @@ alias mkdir='mkdir -pv'
 alias mv='mv -v'
 alias rm='rm -v'
 alias s='sudo'
-alias git_clean='find . -name "*.orig" -delete'
 alias highstate='sudo salt-call state.highstate'
 alias state-apply='sudo salt-call state.apply'
 

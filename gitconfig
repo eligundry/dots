@@ -6,9 +6,10 @@
 	branch-recent = branch --sort=-committerdate
 	subup = "submodule foreach git pull origin master"
 	up = pull
-	ctags = !.git/hooks/ctags
     pushy = push origin HEAD
+    force-pushy = push --force origin HEAD
     cotb = checkout --track=direct -b
+    merge-cleanup = !"find . -name '*.orig' -delete"
 
 [apply]
 	ignorewhitespace = change
