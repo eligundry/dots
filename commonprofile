@@ -18,6 +18,31 @@ command_exists() {
 	type "$1" &> /dev/null ;
 }
 
+# Extract a value from a Pass file
+# ex: pass google.com | pass_get_key "Recovery Codes"
+pass_get_key() {
+    local key="$1"
+
+    if [ -z "$key" ]; then
+        echo "must provide a key to extract"
+        return 1
+    fi
+
+    if [ "$key" = "password" ]; then
+        head -n 1 | tr -d '\n'
+        return 0
+    fi
+
+    command_exists shyaml
+    local shyaml_installed=$?
+
+    if [ $shyaml_installed -gt 0 ]; then
+        pip3 install shyaml
+    fi
+
+    tail -n +2 | shyaml get-value "$key"
+}
+
 ################################################################################
 # => Pyenv
 ################################################################################
