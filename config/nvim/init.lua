@@ -47,7 +47,7 @@ require("lazy").setup(
       tag = 'nightly',
       cmd = { 'NvimTreeToggle', 'NvimTreeFocus', 'NvimTreeFindFile', 'NvimTreeCollapse' },
       keys = {
-        { '<leader>nt', '<cmd>NvimTreeToggle<CR>', mode = 'n' },
+        { '<leader>nt', '<cmd>NvimTreeToggle<CR>', mode = 'n', desc = 'nvim-tree: toggle' },
       },
       config = function()
         require("nvim-tree").setup({
@@ -93,26 +93,21 @@ require("lazy").setup(
         'debugloop/telescope-undo.nvim',
       },
       cmd = { 'Telescope' },
-      keys = {
-        { '<c-p>',      mode = 'n',                desc = 'Fuzzy find files' },
-        { '<leader>ff', mode = 'n',                desc = 'Fuzzy find files' },
-        { '<leader>fg', mode = 'n',                desc = 'Live grep' },
-        { '<leader>fb', mode = 'n',                desc = 'Browse buffers' },
-        { '<leader>fh', mode = 'n',                desc = 'Browse help' },
-        { '<leader>ft', mode = 'n',                desc = 'Browse Treesitter' },
-        { '<leader>td', mode = 'n',                desc = 'Diagnostics' },
-        { '<leader>ut', '<cmd>Telescope undo<CR>', mode = 'n',                desc = 'Undotree' }
-      },
+      keys = function()
+        local builtin = require('telescope.builtin')
+        return {
+          { '<c-p>',      builtin.find_files,        mode = 'n', desc = 'telescope: Fuzzy find files' },
+          { '<leader>ff', builtin.find_files,        mode = 'n', desc = 'telescope: Fuzzy find files' },
+          { '<leader>fg', builtin.live_grep,         mode = 'n', desc = 'telescope: Live grep' },
+          { '<leader>fb', builtin.buffers,           mode = 'n', desc = 'telescope: Browse buffers' },
+          { '<leader>fh', builtin.help_tags,         mode = 'n', desc = 'telescope: Browse help' },
+          { '<leader>ft', builtin.treesitter,        mode = 'n', desc = 'telescope: Browse Treesitter' },
+          { '<leader>td', builtin.diagnostics,       mode = 'n', desc = 'telescope: Diagnostics' },
+          { '<leader>ut', '<cmd>Telescope undo<CR>', mode = 'n', desc = 'telescope: Undotree' }
+        }
+      end,
       config = function()
         require("telescope").load_extension("undo")
-        local builtin = require('telescope.builtin')
-        vim.keymap.set('n', '<c-p>', builtin.find_files, {})
-        vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-        vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
-        vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
-        vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
-        vim.keymap.set('n', '<leader>ft', builtin.treesitter, {})
-        vim.keymap.set('n', '<leader>td', builtin.diagnostic, {})
       end,
     },
     -- }}}
@@ -223,7 +218,7 @@ require("lazy").setup(
               capabilities = capabilities,
             }
           end,
-          ['lua_ls'] = function(server_name)
+          ['lua_ls'] = function()
             lspconfig.lua_ls.setup {
               on_attach = on_attach,
               settings = {
@@ -246,7 +241,7 @@ require("lazy").setup(
               },
             }
           end,
-          ['tailwindcss'] = function(server_name)
+          ['tailwindcss'] = function()
             lspconfig.tailwindcss.setup {
               on_attach = on_attach,
               capabilities = capabilities,
@@ -489,13 +484,13 @@ require("lazy").setup(
     {
       'numToStr/Comment.nvim',
       keys = {
-        { 'gcc', mode = { 'n', 'v' }, desc = 'Line-comment toggle' },
-        { 'gbc', mode = { 'n', 'v' }, desc = 'Block-comment toggle keymap' },
-        { 'gc',  mode = { 'n', 'v' }, desc = 'Line-comment keymap' },
-        { 'gb',  mode = { 'n', 'v' }, desc = 'Block-comment keymap' },
-        { 'gcO', mode = { 'n', 'v' }, desc = 'Add comment on the line above' },
-        { 'gco', mode = { 'n', 'v' }, desc = 'Add comment on the line below' },
-        { 'gcA', mode = { 'n', 'v' }, desc = 'Add comment at the end of line' },
+        { 'gcc', mode = { 'n', 'v' }, desc = 'Comment.nvim: Line-comment toggle' },
+        { 'gbc', mode = { 'n', 'v' }, desc = 'Comment.nvim: Block-comment toggle keymap' },
+        { 'gc',  mode = { 'n', 'v' }, desc = 'Comment.nvim: Line-comment keymap' },
+        { 'gb',  mode = { 'n', 'v' }, desc = 'Comment.nvim: Block-comment keymap' },
+        { 'gcO', mode = { 'n', 'v' }, desc = 'Comment.nvim: Add comment on the line above' },
+        { 'gco', mode = { 'n', 'v' }, desc = 'Comment.nvim: Add comment on the line below' },
+        { 'gcA', mode = { 'n', 'v' }, desc = 'Comment.nvim: Add comment at the end of line' },
       },
       config = function()
         require('Comment').setup({
@@ -591,9 +586,9 @@ require("lazy").setup(
       'tpope/vim-tbone',
       cmd = { 'Tmux', 'Twrite', 'Tattach', 'Tynak', 'Tput' },
       keys = {
-        { '<leader>ty', '<cmd>Tyank<CR>',      mode = 'n',          desc = 'Yank line into tmux buffer' },
-        { '<leader>ty', "<cmd>'<,'>Tyank<CR>", mode = 'v',          desc = 'Yank selection into tmux buffer' },
-        { '<leader>tp', '<cmd>Tput<CR>',       mode = { 'n', 'v' }, desc = 'Paste text from tmux buffer' }
+        { '<leader>ty', '<cmd>Tyank<CR>',      mode = 'n',          desc = 'tbone: Yank line into tmux buffer' },
+        { '<leader>ty', "<cmd>'<,'>Tyank<CR>", mode = 'v',          desc = 'tbone: Yank selection into tmux buffer' },
+        { '<leader>tp', '<cmd>Tput<CR>',       mode = { 'n', 'v' }, desc = 'tbone: Paste text from tmux buffer' }
       },
     },
     -- }}}
@@ -969,10 +964,18 @@ vim.cmd('let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1')
 
 -- Keyboard shortcuts {{{
 -- Window Navigation
-vim.keymap.set('n', '<C-h>', ':wincmd h<CR>')
-vim.keymap.set('n', '<C-j>', ':wincmd j<CR>')
-vim.keymap.set('n', '<C-k>', ':wincmd k<CR>')
-vim.keymap.set('n', '<C-l>', ':wincmd l<CR>')
+vim.keymap.set('n', '<C-h>', ':wincmd h<CR>', {
+  desc = 'Navigate to window left',
+})
+vim.keymap.set('n', '<C-j>', ':wincmd j<CR>', {
+  desc = 'Navigate to window below',
+})
+vim.keymap.set('n', '<C-k>', ':wincmd k<CR>', {
+  desc = 'Navigate to window above',
+})
+vim.keymap.set('n', '<C-l>', ':wincmd l<CR>', {
+  desc = 'Navigate to window right',
+})
 
 -- Window Resizing
 vim.keymap.set('n', '<C-Up>', ':resize +1<CR>')
@@ -982,12 +985,20 @@ vim.keymap.set('n', '<C-Right>', ':vertical resize +1<CR>')
 vim.keymap.set('n', '<Leader>ee', ':wincmd =<CR>')
 
 -- Alternate increment mappings for screen and tmux
-vim.keymap.set('n', '+', '<C-a>')
-vim.keymap.set('n', '-', '<C-x>')
+vim.keymap.set('n', '+', '<C-a>', {
+  desc = 'Increment number under cursor',
+})
+vim.keymap.set('n', '-', '<C-x>', {
+  desc = 'Decrement number under cursor',
+})
 
 -- Easier line jumping
-vim.keymap.set({ 'n', 'v' }, 'H', '^')
-vim.keymap.set({ 'n', 'v' }, 'L', '$')
+vim.keymap.set({ 'n', 'v' }, 'H', '^', {
+  desc = 'Move to beginning of line',
+})
+vim.keymap.set({ 'n', 'v' }, 'L', '$', {
+  desc = 'Move to end of line',
+})
 
 vim.keymap.set('n', '<Leader><Leader>', ':nohlsearch<CR>', {
   desc = 'Toggle search highlighting'
@@ -1034,10 +1045,14 @@ vim.keymap.set('i', 'JJ', '<Esc>')
 vim.keymap.set('n', '<Leader>pt', ':set paste! paste?<CR>')
 
 -- Yank should work just like every other Vim verb
-vim.keymap.set('n', 'Y', 'y$')
+vim.keymap.set('n', 'Y', 'y$', {
+  desc = 'Yank to end of line',
+})
 
 -- D yanks to end of line like every other Vim verb
-vim.keymap.set('n', 'D', 'd$')
+vim.keymap.set('n', 'D', 'd$', {
+  desc = 'Delete to end of line',
+})
 
 -- Undo/redo now make sense
 vim.keymap.set('n', 'U', ':redo<CR>')
@@ -1046,17 +1061,26 @@ vim.keymap.set('n', 'U', ':redo<CR>')
 vim.keymap.set('n', '#', '#')
 
 -- Yank lines to system clipboard in visual
-vim.keymap.set('v', '<Leader>Y', '"+y')
+vim.keymap.set('v', '<Leader>Y', '"+y', {
+  desc = 'Yank lines to system clipboard',
+})
 
 -- Jump between bracket pairs easily
 -- Not using remap so I can use matchit
-vim.keymap.set({ 'n', 'v' }, '<Tab>', '%', { remap = true })
+vim.keymap.set({ 'n', 'v' }, '<Tab>', '%', {
+  remap = true,
+  desc = 'Jump between matching pairs',
+})
 
 -- Faster and more satisfying command mode access
-vim.keymap.set({ 'n', 'v' }, '<Space>', ':')
+vim.keymap.set({ 'n', 'v' }, '<Space>', ':', {
+  desc = 'Smack the space bar as hard as you can to enter command mode',
+})
 
 -- Toggle local line wrapping
-vim.keymap.set('n', '<Leader>wp', ':setlocal wrap!<CR>')
+vim.keymap.set('n', '<Leader>wp', ':setlocal wrap!<CR>', {
+  desc = 'Toggle line wrapping',
+})
 
 -- Saving & Quiting Shortcuts
 vim.keymap.set('n', '<Leader>s', ':write<CR>')
@@ -1072,8 +1096,12 @@ vim.keymap.set('n', 'gj', 'j')
 vim.keymap.set('n', 'gk', 'k')
 
 -- Shift blocks visually in visual mode and retain the selection
-vim.keymap.set('v', '<', '<gv')
-vim.keymap.set('v', '>', '>gv')
+vim.keymap.set('v', '<', '<gv', {
+  desc = 'Shift block left while retaining selection',
+})
+vim.keymap.set('v', '>', '>gv', {
+  desc = 'Shift block right while retaining selection',
+})
 
 -- Insert horizontal ellipsis in insert mode
 vim.keymap.set('i', '\\...', '…')
@@ -1114,32 +1142,41 @@ local _workingDirectoryVimWasOpenedFrom = vim.fn.getcwd()
 local _acd = false
 vim.opt.autochdir = _acd
 
-vim.keymap.set('n', '<Leader>acd', function()
-  _acd = not _acd
+vim.keymap.set('n', '<Leader>acd',
+  function()
+    _acd = not _acd
 
-  if _acd then
-    vim.opt.autochdir = _acd
+    if _acd then
+      vim.opt.autochdir = _acd
+      local _targetPath = vim.fs.dirname(vim.api.nvim_buf_get_name(0))
+      vim.api.nvim_set_current_dir(_targetPath)
+      print(string.format('turned on autochdir and set cwd to %s', _targetPath))
+    else
+      vim.opt.autochdir = _acd
+      vim.api.nvim_set_current_dir(_workingDirectoryVimWasOpenedFrom)
+      print(string.format('turned off autochdir and set cwd to %s', _workingDirectoryVimWasOpenedFrom))
+    end
+  end,
+  { desc = 'Toggle autochdir automagically' }
+)
+
+vim.keymap.set('n', '<Leader>cd',
+  function()
     local _targetPath = vim.fs.dirname(vim.api.nvim_buf_get_name(0))
-    vim.api.nvim_set_current_dir(_targetPath)
-    print(string.format('turned on autochdir and set cwd to %s', _targetPath))
-  else
-    vim.opt.autochdir = _acd
-    vim.api.nvim_set_current_dir(_workingDirectoryVimWasOpenedFrom)
-    print(string.format('turned off autochdir and set cwd to %s', _workingDirectoryVimWasOpenedFrom))
-  end
-end)
-
-vim.keymap.set('n', '<Leader>cd', function()
-  local _targetPath = vim.fs.dirname(vim.api.nvim_buf_get_name(0))
-  _workingDirectoryVimWasOpenedFrom = _targetPath
-  vim.cmd(string.format('cd! %s', _targetPath))
-  print(string.format('set cwd to %s', _targetPath))
-end)
+    _workingDirectoryVimWasOpenedFrom = _targetPath
+    vim.cmd(string.format('cd! %s', _targetPath))
+    print(string.format('set cwd to %s', _targetPath))
+  end,
+  { desc = 'Set working directory to the directory of the focused buffer' }
+)
 
 -- Insert a long-ish paragraph of hipster ipsum
-vim.keymap.set('n', '<Leader>hi', function()
-  local ipsum = vim.fn.system('curl -s "https://hipsum.co/api/?type=hipster-centric&sentences=5" | jq -r ".[]"')
-  vim.fn.execute(string.format('normal! i%s', ipsum))
-  vim.fn.execute('normal! kgqqj')
-end)
+vim.keymap.set('n', '<Leader>hi',
+  function()
+    local ipsum = vim.fn.system('curl -s "https://hipsum.co/api/?type=hipster-centric&sentences=5" | jq -r ".[]"')
+    vim.fn.execute(string.format('normal! i%s', ipsum))
+    vim.fn.execute('normal! kgqqj')
+  end,
+  { desc = 'Insert a paragraph of hipster ipsum' }
+)
 -- }}}
