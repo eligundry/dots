@@ -79,6 +79,19 @@ require("lazy").setup(
         })
       end,
     },
+    {
+      'windwp/nvim-autopairs',
+      event = 'InsertEnter',
+      config = function()
+        require('nvim-autopairs').setup()
+
+        -- Make cmp work with nvim-autopairs
+        -- https://github.com/windwp/nvim-autopairs/blob/ae5b41ce880a6d850055e262d6dfebd362bb276e/README.md#you-need-to-add-mapping-cr-on-nvim-cmp-setupcheck-readmemd-on-nvim-cmp-repo
+        local cmp = require('cmp')
+        local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+        cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+      end,
+    },
     -- }}}
     -- Searching {{{
     {
@@ -111,7 +124,7 @@ require("lazy").setup(
       end,
     },
     -- }}}
-    -- Treesitter (syntax highlighting) {{{
+    -- Treesitter (syntax highlighting and so much more) {{{
     {
       'nvim-treesitter/nvim-treesitter',
       config = function()
@@ -125,7 +138,22 @@ require("lazy").setup(
             enable = true,
             enable_autocmd = false,
           },
+          autotag = {
+            enable = true,
+          }
         })
+      end,
+    },
+    {
+      'windwp/nvim-ts-autotag',
+      dependencies = {},
+      ft = {
+        'html', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact',
+        'svelte', 'vue', 'tsx', 'jsx', 'rescript', 'xml', 'php', 'markdown',
+        'astro', 'glimmer', 'handlebars', 'hbs'
+      },
+      config = function()
+        require('nvim-ts-autotag').setup()
       end,
     },
     -- }}}
@@ -288,7 +316,11 @@ require("lazy").setup(
         {
           'dcampos/cmp-emmet-vim',
           keys = {
-            { '<c-y>', mode = 'i', desc = 'Emmet expansion in insert mode (you probably need to type `<c-y>,`)' }
+            {
+              '<c-y>',
+              mode = 'i',
+              desc = 'Emmet expansion in insert mode (you probably need to type `<c-y>,`)'
+            }
           },
           dependencies = {
             {
@@ -318,17 +350,9 @@ require("lazy").setup(
             require('copilot_cmp').setup()
           end,
         },
-        {
-          'windwp/nvim-autopairs',
-          event = 'InsertEnter',
-          config = function()
-            require('nvim-autopairs').setup()
-          end,
-        },
       },
       config = function()
         local cmp = require('cmp')
-        local cmp_autopairs = require('nvim-autopairs.completion.cmp')
         local luasnip = require('luasnip')
         local lspkind = require('lspkind')
 
@@ -449,10 +473,6 @@ require("lazy").setup(
           fg = 'red',
           ctermfg = 'red',
         })
-
-        -- Make cmp work with nvim-autopairs
-        -- https://github.com/windwp/nvim-autopairs/blob/ae5b41ce880a6d850055e262d6dfebd362bb276e/README.md#you-need-to-add-mapping-cr-on-nvim-cmp-setupcheck-readmemd-on-nvim-cmp-repo
-        cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
 
         -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
         cmp.setup.cmdline({ '/', '?' }, {
@@ -636,9 +656,15 @@ require("lazy").setup(
       'tpope/vim-tbone',
       cmd = { 'Tmux', 'Twrite', 'Tattach', 'Tynak', 'Tput' },
       keys = {
-        { '<leader>ty', '<cmd>Tyank<CR>',      mode = 'n',          desc = 'tbone: Yank line into tmux buffer' },
-        { '<leader>ty', "<cmd>'<,'>Tyank<CR>", mode = 'v',          desc = 'tbone: Yank selection into tmux buffer' },
-        { '<leader>tp', '<cmd>Tput<CR>',       mode = { 'n', 'v' }, desc = 'tbone: Paste text from tmux buffer' }
+        { '<leader>ty', '<cmd>Tyank<CR>', mode = 'n',          desc = 'tbone: Yank line into tmux buffer' },
+        {
+          '<leader>ty',
+          "<cmd>'<,'>Tyank<CR>",
+          mode = 'v',
+          desc =
+          'tbone: Yank selection into tmux buffer'
+        },
+        { '<leader>tp', '<cmd>Tput<CR>',  mode = { 'n', 'v' }, desc = 'tbone: Paste text from tmux buffer' }
       },
     },
     -- }}}
@@ -687,11 +713,13 @@ require("lazy").setup(
     -- Syntax Highlighting {{{
     {
       'norcalli/nvim-colorizer.lua',
-      ft = { 'css', 'less', 'scss', 'sass', 'html', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
+      ft = { 'css', 'less', 'scss', 'sass', 'html', 'javascript', 'javascriptreact', 'typescript',
+        'typescriptreact' },
       config = function()
         require('colorizer').setup(
           {
-            'css', 'less', 'scss', 'sass', 'html', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact'
+            'css', 'less', 'scss', 'sass', 'html', 'javascript', 'javascriptreact', 'typescript',
+            'typescriptreact'
           },
           {
             css = true,
