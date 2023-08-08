@@ -85,7 +85,7 @@ require("lazy").setup(
     -- Searching {{{
     {
       'bronson/vim-visual-star-search',
-      keys = { { '*', mode = 'n' }, { '#', mode = 'n' } }
+      keys = { { '*', mode = 'v' }, { '#', mode = 'v' } }
     },
     {
       'nvim-telescope/telescope.nvim',
@@ -102,6 +102,7 @@ require("lazy").setup(
         { '<leader>fb', mode = 'n',                desc = 'Browse buffers' },
         { '<leader>fh', mode = 'n',                desc = 'Browse help' },
         { '<leader>ft', mode = 'n',                desc = 'Browse Treesitter' },
+        { '<leader>td', mode = 'n',                desc = 'Diagnostics' },
         { '<leader>ut', '<cmd>Telescope undo<CR>', mode = 'n',                desc = 'Undotree' }
       },
       config = function()
@@ -113,6 +114,7 @@ require("lazy").setup(
         vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
         vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
         vim.keymap.set('n', '<leader>ft', builtin.treesitter, {})
+        vim.keymap.set('n', '<leader>td', builtin.diagnostic, {})
       end,
     },
     -- }}}
@@ -168,6 +170,90 @@ require("lazy").setup(
           end
         },
       },
+      config = function()
+        local capabilities = require('cmp_nvim_lsp').default_capabilities()
+        local lspconfig = require('lspconfig')
+        local lspformat = require('lsp-format')
+        local mason_lsp = require('mason-lspconfig')
+        local lsp_formatting = function(bufnr, isAsync)
+          vim.lsp.buf.format {
+            async = isAsync,
+            bufnr = bufnr,
+          }
+        end
+        local lsp_formatting_augroup = vim.api.nvim_create_augroup('LspFormatting', {})
+
+        local on_attach = function(client, bufnr)
+          vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+          -- Disables really 💩 syntax highlighting, Treesitter is so much
+          -- better
+          client.server_capabilities.semanticTokensProvider = nil
+
+          if client.supports_method 'textDocument/formatting' then
+            vim.api.nvim_clear_autocmds { group = lsp_formatting_augroup, buffer = bufnr }
+            vim.api.nvim_create_autocmd('BufWritePre', {
+              group = lsp_formatting_augroup,
+              buffer = bufnr,
+              callback = function()
+                lsp_formatting(bufnr, false)
+              end,
+            })
+          end
+
+          lspformat.on_attach(client)
+
+          -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help)
+          vim.keymap.set('n', 'gd', vim.lsp.buf.type_definition)
+          vim.keymap.set('n', '<Leader>ca', vim.lsp.buf.code_action)
+          vim.keymap.set('n', '<Leader>d', vim.lsp.buf.definition)
+          -- vim.keymap.set('n', '<Leader>p', function() lsp_formatting(_opts.bufnr, true) end, _opts)
+          vim.keymap.set('n', '<Leader>RN', vim.lsp.buf.rename)
+          vim.keymap.set('n', 'K', vim.lsp.buf.hover)
+          vim.keymap.set('n', 'gD', vim.lsp.buf.declaration)
+          vim.keymap.set('n', 'gi', vim.lsp.buf.implementation)
+          vim.keymap.set('n', 'gr', vim.lsp.buf.references)
+        end
+
+        mason_lsp.setup_handlers {
+          -- The first entry (without a key) will be the default handler
+          -- and will be called for each installed server that doesn't have
+          -- a dedicated handler.
+          function(server_name)
+            lspconfig[server_name].setup {
+              on_attach = on_attach,
+              capabilities = capabilities,
+            }
+          end,
+          ['lua_ls'] = function(server_name)
+            lspconfig.lua_ls.setup {
+              on_attach = on_attach,
+              settings = {
+                Lua = {
+                  diagnostics = {
+                    globals = { 'vim' },
+                  },
+                  workspace = {
+                    -- Make the server aware of Neovim runtime files
+                    library = vim.api.nvim_get_runtime_file("", true),
+                  },
+                },
+              },
+            }
+          end,
+          ['tailwindcss'] = function(server_name)
+            lspconfig.tailwindcss.setup {
+              on_attach = on_attach,
+              capabilities = capabilities,
+              settings = {
+                tailwindCSS = {
+                  classAttributes = { "class", "className", "ngClass", 'class:list' },
+                }
+              }
+            }
+          end,
+        }
+      end,
     },
     {
       'hrsh7th/nvim-cmp',
@@ -188,7 +274,7 @@ require("lazy").setup(
         {
           'dcampos/cmp-emmet-vim',
           keys = {
-            { '<c-y>', mode = 'i', desc = 'Emmet expansion in insert mode' }
+            { '<c-y>', mode = 'i', desc = 'Emmet expansion in insert mode (you probably need to type `<c-y>,`)' }
           },
           dependencies = {
             {
@@ -316,6 +402,24 @@ require("lazy").setup(
         -- Make cmp work with nvim-autopairs
         -- https://github.com/windwp/nvim-autopairs/blob/ae5b41ce880a6d850055e262d6dfebd362bb276e/README.md#you-need-to-add-mapping-cr-on-nvim-cmp-setupcheck-readmemd-on-nvim-cmp-repo
         cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+
+        -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+        cmp.setup.cmdline({ '/', '?' }, {
+          mapping = cmp.mapping.preset.cmdline(),
+          sources = {
+            { name = 'buffer' }
+          }
+        })
+
+        -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+        cmp.setup.cmdline(':', {
+          mapping = cmp.mapping.preset.cmdline(),
+          sources = cmp.config.sources({
+            { name = 'path' }
+          }, {
+            { name = 'cmdline' }
+          })
+        })
       end,
     },
     -- }}}
@@ -799,7 +903,9 @@ end
 
 toggleArrowKeys(true)
 
-vim.keymap.set('n', '<Leader>ak', toggleArrowKeys, { desc = 'Toggle arrow keys for weaklings trying to use my vim' })
+vim.keymap.set('n', '<Leader>ak', toggleArrowKeys, {
+  desc = 'Toggle arrow keys for weaklings trying to use my vim',
+})
 
 -- Map <Esc> to my right hand
 vim.keymap.set('i', 'jj', '<Esc>')
@@ -855,6 +961,11 @@ vim.keymap.set('i', '\\...', '…')
 
 -- Toggle local spelling
 vim.keymap.set('n', '<Leader>pl', 'setlocal spell!')
+
+-- Open the quickfix window for the buffer
+vim.keymap.set('n', '<Leader>ql', vim.diagnostic.setqflist, {
+  desc = 'Open the quickfix list for the buffer',
+})
 
 -- My ideal state of using vim is to have it always in autochdir. This means,
 -- whenever I open a new a file in a different directory, all vim commands for
