@@ -478,6 +478,56 @@ require("lazy").setup(
         })
       end,
     },
+    {
+      'mhartington/formatter.nvim',
+      event = 'BufWritePre',
+      config = function()
+        local javascript = require("formatter.filetypes.javascript")
+        local typescript = require("formatter.filetypes.typescript")
+        local go = require("formatter.filetypes.go")
+
+        require("formatter").setup({
+          logging = true,
+          log_level = vim.log.levels.WARN,
+          filetype = {
+            ['*'] = {
+              require("formatter.filetypes.any").remove_trailing_whitespace,
+            },
+            css = {
+              require("formatter.filetypes.css").prettierd,
+            },
+            go = {
+              go.gofmt,
+              go.goimports,
+            },
+            javascript = {
+              javascript.prettierd,
+              javascript.eslint_d,
+            },
+            javascriptreact = {
+              javascript.prettierd,
+              javascript.eslint_d,
+            },
+            json = {
+              require("formatter.filetypes.json").prettierd,
+            },
+            typescript = {
+              typescript.prettierd,
+              typescript.eslint_d,
+            },
+            typescriptreact = {
+              typescript.prettierd,
+              typescript.eslint_d,
+            },
+          }
+        })
+
+        vim.api.nvim_create_autocmd('BufWritePost', {
+          pattern = '*',
+          command = 'FormatWrite',
+        })
+      end,
+    },
     -- }}}
     -- Commenting {{{
     'JoosepAlviste/nvim-ts-context-commentstring',
@@ -805,11 +855,11 @@ end
 -- }}}
 
 -- autocmds {{{
-vim.api.nvim_create_autocmd('BufWritePre', {
-  pattern = '*',
-  command = ':%s/\\s\\+$//e',
-  desc = 'Remove trailing whitespace when saving files'
-})
+-- vim.api.nvim_create_autocmd('BufWritePre', {
+--   pattern = '*',
+--   command = ':%s/\\s\\+$//e',
+--   desc = 'Remove trailing whitespace when saving files'
+-- })
 
 vim.api.nvim_create_autocmd('InsertLeave', {
   pattern = '*',
