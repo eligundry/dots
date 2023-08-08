@@ -12,5 +12,6 @@ config/nvim/.netrwhist
 config/nvim/autoload/plug.vim.old
 config/nvim/spell/*
 config/nvim/local.init.vim
-config/nvim/plugin/packer_compiled.lua
+config/nvim/dict/*
+!config/nvim/dict/.gitkeep
 .luarc.json
