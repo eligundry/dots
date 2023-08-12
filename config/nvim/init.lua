@@ -21,7 +21,7 @@ require("lazy").setup(
     -- Editor & GUI Improvements {{{
     "mhinz/vim-startify",
     "RRethy/nvim-base16",
-    "edkolev/tmuxline.vim", -- tmux (because I guess you can configure it from vim?)
+    "edkolev/tmuxline.vim",       -- tmux (because I guess you can configure it from vim?)
     "djoshea/vim-autoread",
     "gpanders/editorconfig.nvim", -- supposedly, nvim supports editorconfig natively, but I cannot get it to work _just_ right
     {
@@ -179,9 +179,36 @@ require("lazy").setup(
         {
           "williamboman/mason.nvim",
           config = function()
-            require("mason").setup()
+            require("mason").setup({
+              max_concurrent_installers = 10,
+            })
           end,
-          build = ":MasonInstall prettierd eslint_d",
+          build = function()
+            local ensure_installed = {
+              'shellcheck',
+              'efm',
+              'prettierd',
+              'astro-language-server',
+              'bash-language-server',
+              'css-lsp',
+              'dockerfile-language-server',
+              'eslint_d',
+              'fixjson',
+              'gopls',
+              'html-lsp',
+              'intelephense',
+              'json-lsp',
+              'lua-language-server',
+              'pyright',
+              'tailwindcss-language-server',
+              'taplo',
+              'typescript-language-server',
+              'vim-language-server',
+              'yaml-language-server',
+            }
+
+            vim.cmd("MasonInstall " .. table.concat(ensure_installed, " "))
+          end,
         },
         {
           "williamboman/mason-lspconfig.nvim",
@@ -192,6 +219,7 @@ require("lazy").setup(
                 "astro",
                 "bashls",
                 "cssls",
+                "efm",
                 "gopls",
                 "html",
                 "intelephense", -- PHP
@@ -205,11 +233,26 @@ require("lazy").setup(
             })
           end,
         },
+        {
+          "lukas-reineke/lsp-format.nvim",
+          config = function()
+            require("lsp-format").setup()
+          end,
+        },
+        {
+          "mattn/efm-langserver",
+          dependencies = {
+            {
+              'creativenull/efmls-configs-nvim',
+              version = 'v0.2.x',
+            },
+          },
+        },
       },
       config = function()
         local capabilities = require("cmp_nvim_lsp").default_capabilities()
         local lspconfig = require("lspconfig")
-        local lspformat = require("lsp-format")
+        local lsp_format = require("lsp-format")
         local mason_lsp = require("mason-lspconfig")
         local lsp_formatting = function(bufnr, isAsync)
           vim.lsp.buf.format({
@@ -220,8 +263,6 @@ require("lazy").setup(
         local lsp_formatting_augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
         local on_attach = function(client, bufnr)
-          vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-
           -- Disables really 💩 syntax highlighting, Treesitter is so much
           -- better
           client.server_capabilities.semanticTokensProvider = nil
@@ -237,7 +278,7 @@ require("lazy").setup(
             })
           end
 
-          lspformat.on_attach(client)
+          lsp_format.on_attach(client)
 
           -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help)
           vim.keymap.set("n", "gd", vim.lsp.buf.type_definition)
@@ -295,6 +336,51 @@ require("lazy").setup(
               },
             })
           end,
+          ["efm"] = function()
+            local eslint = require 'efmls-configs.linters.eslint_d'
+            local gofmt = require 'efmls-configs.formatters.gofmt'
+            local goimports = require 'efmls-configs.formatters.goimports'
+            local prettier = require 'efmls-configs.formatters.prettier_d'
+            local shellcheck = require 'efmls-configs.linters.shellcheck'
+            local stylelint = require 'efmls-configs.linters.stylelint'
+            local write_good = require 'efmls-configs.linters.write_good'
+            local yamllint = require 'efmls-configs.linters.yamllint'
+
+            local efm_filetypes = {}
+            local efm_languages = {
+              astro = { prettier, eslint },
+              css = { prettier, stylelint },
+              go = { gofmt, goimports },
+              html = { prettier },
+              javascript = { prettier, eslint },
+              javascriptreact = { prettier, eslint },
+              json = { prettier },
+              less = { prettier, stylelint },
+              markdown = { write_good, prettier },
+              sass = { prettier, stylelint },
+              scss = { prettier, stylelint },
+              sh = { shellcheck },
+              typescript = { prettier, eslint },
+              typescriptreact = { prettier, eslint },
+              yaml = { yamllint, prettier },
+              zsh = { shellcheck },
+            }
+
+            local n = 0
+            for k, _ in pairs(efm_languages) do
+              n = n + 1
+              efm_filetypes[n] = k
+            end
+
+            lspconfig.efm.setup({
+              init_options = { documentFormatting = true },
+              filetypes = efm_filetypes,
+              settings = {
+                rootMarkers = { ".git/" },
+                languages = efm_languages,
+              },
+            })
+          end,
         })
       end,
     },
@@ -321,12 +407,6 @@ require("lazy").setup(
         {
           "saadparwaiz1/cmp_luasnip",
           dependencies = { "L3MON4D3/LuaSnip" },
-        },
-        {
-          "lukas-reineke/lsp-format.nvim",
-          config = function()
-            require("lsp-format").setup()
-          end,
         },
         {
           "dcampos/cmp-emmet-vim",
@@ -411,8 +491,8 @@ require("lazy").setup(
               end
             end, { "i", "s" }),
             ["<S-Tab>"] = cmp.mapping(function(fallback)
-              if luasnip.jumpable( -1) then
-                luasnip.jump( -1)
+              if luasnip.jumpable(-1) then
+                luasnip.jump(-1)
               else
                 fallback()
               end
@@ -496,36 +576,6 @@ require("lazy").setup(
             { name = "path",    group_index = 1 },
             { name = "cmdline", group_index = 2 },
           }),
-        })
-      end,
-    },
-    {
-      "mhartington/formatter.nvim",
-      event = "BufWritePre",
-      config = function()
-        local javascript = require("formatter.filetypes.javascript")
-        local typescript = require("formatter.filetypes.typescript")
-        local go = require("formatter.filetypes.go")
-
-        require("formatter").setup({
-          logging = true,
-          log_level = vim.log.levels.WARN,
-          filetype = {
-            ["*"] = { require("formatter.filetypes.any").remove_trailing_whitespace },
-            css = { require("formatter.filetypes.css").prettierd },
-            go = { go.gofmt, go.goimports },
-            javascript = { javascript.prettierd, javascript.eslint_d },
-            javascriptreact = { javascript.prettierd, javascript.eslint_d },
-            json = { require("formatter.filetypes.json").prettierd },
-            -- lua = { require("formatter.filetypes.lua").stylua },
-            typescript = { typescript.prettierd, typescript.eslint_d },
-            typescriptreact = { typescript.prettierd, typescript.eslint_d },
-          },
-        })
-
-        vim.api.nvim_create_autocmd("BufWritePost", {
-          pattern = "*",
-          command = "FormatWrite",
         })
       end,
     },
@@ -745,25 +795,25 @@ require("lazy").setup(
       config = function()
         vim.g.vim_markdown_folding_disabled = true
         vim.g.markdown_fenced_languages = {
+          "bash=sh",
           "coffee",
           "css",
           "erb=eruby",
+          "go",
+          "html",
           "javascript",
           "js=javascript",
           "json=javascript",
-          "ruby",
-          "sass",
-          "xml",
-          "html",
+          "less",
           "php",
           "python",
-          "less",
-          "vim",
+          "ruby",
+          "sass",
           "sh",
           "shell=sh",
-          "bash=sh",
-          "go",
           "typescript",
+          "vim",
+          "xml",
         }
       end,
     },
@@ -807,13 +857,13 @@ vim.opt.autoread = true
 
 -- Indenting
 -- Most of these should be overridden by Editorconfig
-vim.opt.tabstop = 4 -- I like my tabs to seem like four spaces
-vim.opt.shiftwidth = 4 -- I'd also like to shift lines the same amount of spaces
-vim.opt.softtabstop = 4 -- If using expandtab for some reason, use four spaces
-vim.opt.autoindent = true -- Copy indenting from original block of text when yanked/pulled
-vim.opt.expandtab = true -- Hard tabs are fun in theory, but don't work with other people
-vim.opt.smarttab = true -- Make expandtab more tolerable
-vim.opt.shiftround = true -- Round indents to multiples of shiftwidth
+vim.opt.tabstop = 2         -- I like my tabs to seem like two spaces
+vim.opt.shiftwidth = 2      -- I'd also like to shift lines the same amount of spaces
+vim.opt.softtabstop = 2     -- If using expandtab for some reason, use two spaces
+vim.opt.autoindent = true   -- Copy indenting from original block of text when yanked/pulled
+vim.opt.expandtab = true    -- Hard tabs are fun in theory, but don't work with other people
+vim.opt.smarttab = true     -- Make expandtab more tolerable
+vim.opt.shiftround = true   -- Round indents to multiples of shiftwidth
 vim.opt.copyindent = true
 vim.opt.smartindent = false -- Disabling this because it messes up pasting with indents
 
@@ -848,10 +898,10 @@ vim.opt.incsearch = true
 -- When I search, I don't need to capitalize…
 vim.opt.ignorecase = true
 vim.opt.infercase = true
-vim.opt.smartcase = true -- …but when I do, it'll pair down the search.
+vim.opt.smartcase = true  -- …but when I do, it'll pair down the search.
 vim.opt.shellslash = true -- When in Windows, you can use / instead of \
-vim.opt.magic = true -- Do You Believe In (Perl) Magic?
-vim.opt.gdefault = true -- Use global by default when replacing
+vim.opt.magic = true      -- Do You Believe In (Perl) Magic?
+vim.opt.gdefault = true   -- Use global by default when replacing
 
 -- I have these wildignores commented out because they prevent NERDTree from
 -- showing these files and will break Fugitive. Uncomment these if you want to
@@ -902,11 +952,11 @@ end
 -- }}}
 
 -- autocmds {{{
--- vim.api.nvim_create_autocmd('BufWritePre', {
---   pattern = '*',
---   command = ':%s/\\s\\+$//e',
---   desc = 'Remove trailing whitespace when saving files'
--- })
+vim.api.nvim_create_autocmd('BufWritePre', {
+  pattern = '*',
+  command = ':%s/\\s\\+$//e',
+  desc = 'Remove trailing whitespace when saving files'
+})
 
 vim.api.nvim_create_autocmd("InsertLeave", {
   pattern = "*",
@@ -953,7 +1003,7 @@ vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "BufNewFile" }, {
 -- Theme (Base16) {{{
 -- I Think It's Beautiful That Your Are 256 Colors Too
 -- https://www.youtube.com/watch?v=bZ6b5ghZZN0
-vim.cmd("set t_Co=256") -- 256 color support in terminal
+vim.cmd("set t_Co=256")     -- 256 color support in terminal
 vim.opt.termguicolors = true
 vim.opt.background = "dark" -- I like a dark background
 
@@ -976,8 +1026,8 @@ vim.cmd("highlight Comment cterm=italic gui=italic")
 
 -- Look & Feel {{{
 -- Word Wrap
-vim.opt.wrap = false -- I like scrolling off the screen
-vim.opt.textwidth = 80 -- Standard width for terminals
+vim.opt.wrap = false             -- I like scrolling off the screen
+vim.opt.textwidth = 80           -- Standard width for terminals
 vim.opt.formatoptions = "oqn1tc" -- Check out 'fo-table' to see what this does.
 
 -- Status bar
