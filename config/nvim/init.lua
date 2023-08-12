@@ -20,10 +20,21 @@ require("lazy").setup(
   {
     -- Editor & GUI Improvements {{{
     "mhinz/vim-startify",
-    "RRethy/nvim-base16",
-    "edkolev/tmuxline.vim",       -- tmux (because I guess you can configure it from vim?)
     "djoshea/vim-autoread",
     "gpanders/editorconfig.nvim", -- supposedly, nvim supports editorconfig natively, but I cannot get it to work _just_ right
+    {
+      "RRethy/nvim-base16",
+      lazy = false,
+      config = function()
+        if vim.env.BASE16_THEME then
+          vim.cmd.colorscheme(string.format("base16-%s", vim.env.BASE16_THEME))
+        elseif vim.fn.filereadable(vim.fn.expand("~/.vimrc_background")) then
+          vim.cmd("source ~/.vimrc_background")
+        else
+          vim.cmd.colorscheme("base16-default-dark")
+        end
+      end,
+    },
     {
       "nvim-tree/nvim-web-devicons",
       lazy = false,
@@ -355,6 +366,7 @@ require("lazy").setup(
               javascript = { prettier, eslint },
               javascriptreact = { prettier, eslint },
               json = { prettier },
+              jsonc = { prettier },
               less = { prettier, stylelint },
               markdown = { write_good, prettier },
               sass = { prettier, stylelint },
@@ -1000,20 +1012,12 @@ vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "BufNewFile" }, {
 })
 -- }}}
 
--- Theme (Base16) {{{
+-- Theme {{{
 -- I Think It's Beautiful That Your Are 256 Colors Too
 -- https://www.youtube.com/watch?v=bZ6b5ghZZN0
 vim.cmd("set t_Co=256")     -- 256 color support in terminal
 vim.opt.termguicolors = true
 vim.opt.background = "dark" -- I like a dark background
-
-if vim.env.BASE16_THEME then
-  vim.cmd.colorscheme(string.format("base16-%s", vim.env.BASE16_THEME))
-elseif vim.fn.filereadable(vim.fn.expand("~/.vimrc_background")) then
-  vim.cmd("source ~/.vimrc_background")
-else
-  vim.cmd.colorscheme("base16-default-dark")
-end
 
 -- Don't make my terminal less transparent
 -- NormalNC targets unfocused splits
