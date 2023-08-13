@@ -38,6 +38,7 @@
   "suda.vim": { "branch": "master", "commit": "8b0fc3711760195aba104e2d190cff9af8267052" },
   "telescope-undo.nvim": { "branch": "main", "commit": "3dec002ea3e7952071d26fbb5d01e2038a58a554" },
   "telescope.nvim": { "branch": "master", "commit": "776b509f80dd49d8205b9b0d94485568236d1192" },
+  "troublesum.nvim": { "branch": "master", "commit": "9b520629e7bb84435f8d55bdb4b9170872d2dd42" },
   "vim-astro": { "branch": "main", "commit": "34732be5e9a5c28c2409f4490edf92d46d8b55a9" },
   "vim-autoread": { "branch": "master", "commit": "24061f84652d768bfb85d222c88580b3af138dab" },
   "vim-dadbod": { "branch": "master", "commit": "7d80bbd11c407a09e0f7b869c38f3dec3902805f" },

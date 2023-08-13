@@ -183,7 +183,7 @@ require("lazy").setup(
       end,
     },
     -- }}}
-    -- LSP & Autocompletion {{{
+    -- IDE Features (LSP, autocompletion, formatting & linting) {{{
     {
       "neovim/nvim-lspconfig",
       dependencies = {
@@ -394,6 +394,13 @@ require("lazy").setup(
             })
           end,
         })
+      end,
+    },
+    {
+      "ivanjermakov/troublesum.nvim",
+      event = 'DiagnosticChanged',
+      config = function()
+        require("troublesum").setup()
       end,
     },
     {
@@ -663,6 +670,7 @@ require("lazy").setup(
     {
       "tpope/vim-eunuch",
       cmd = {
+        "Rename",
         "Remove",
         "Delete",
         "Move",
