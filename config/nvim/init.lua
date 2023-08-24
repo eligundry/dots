@@ -22,6 +22,7 @@ require("lazy").setup(
     "mhinz/vim-startify",
     "djoshea/vim-autoread",
     "gpanders/editorconfig.nvim", -- supposedly, nvim supports editorconfig natively, but I cannot get it to work _just_ right
+    "nvim-tree/nvim-web-devicons",
     {
       "RRethy/nvim-base16",
       lazy = false,
@@ -36,23 +37,14 @@ require("lazy").setup(
       end,
     },
     {
-      "nvim-tree/nvim-web-devicons",
-      lazy = false,
-    },
-    {
       "lewis6991/gitsigns.nvim",
       tag = "release",
-      config = function()
-        require("gitsigns").setup()
-      end,
+      config = true,
     },
     {
       "nvim-lualine/lualine.nvim",
-      config = function()
-        require("lualine").setup({
-          theme = "base16",
-        })
-      end,
+      config = true,
+      opts = { theme = "base16" },
     },
     {
       "nvim-tree/nvim-tree.lua",
@@ -61,24 +53,23 @@ require("lazy").setup(
       keys = {
         { "<leader>nt", "<cmd>NvimTreeToggle<CR>", mode = "n", desc = "nvim-tree: toggle" },
       },
-      config = function()
-        require("nvim-tree").setup({
-          view = {
-            mappings = {
-              list = {
-                { key = "u", action = "dir_up" },
-                { key = "s", action = "split" },
-                { key = "v", action = "vsplit" },
-                { key = "t", action = "tabnew" },
-                { key = "x", action = "close_node" },
-                { key = "r", action = "refresh" },
-                { key = "R", action = "rename" },
-                { key = "c", action = "cd" },
-              },
+      config = true,
+      opts = {
+        view = {
+          mappings = {
+            list = {
+              { key = "u", action = "dir_up" },
+              { key = "s", action = "split" },
+              { key = "v", action = "vsplit" },
+              { key = "t", action = "tabnew" },
+              { key = "x", action = "close_node" },
+              { key = "r", action = "refresh" },
+              { key = "R", action = "rename" },
+              { key = "c", action = "cd" },
             },
           },
-        })
-      end,
+        },
+      },
     },
     {
       "lambdalisue/suda.vim",
@@ -159,6 +150,7 @@ require("lazy").setup(
     {
       "windwp/nvim-ts-autotag",
       dependencies = {},
+      config = true,
       ft = {
         "html",
         "javascript",
@@ -178,9 +170,6 @@ require("lazy").setup(
         "handlebars",
         "hbs",
       },
-      config = function()
-        require("nvim-ts-autotag").setup()
-      end,
     },
     -- }}}
     -- IDE Features (LSP, autocompletion, formatting & linting) {{{
@@ -189,11 +178,8 @@ require("lazy").setup(
       dependencies = {
         {
           "williamboman/mason.nvim",
-          config = function()
-            require("mason").setup({
-              max_concurrent_installers = 10,
-            })
-          end,
+          config = true,
+          opts = { max_concurrent_installers = 10 },
           build = function()
             local ensure_installed = {
               'shellcheck',
@@ -223,32 +209,29 @@ require("lazy").setup(
         },
         {
           "williamboman/mason-lspconfig.nvim",
-          config = function()
-            require("mason-lspconfig").setup({
-              automatic_install = true,
-              ensure_installed = {
-                "astro",
-                "bashls",
-                "cssls",
-                "efm",
-                "gopls",
-                "html",
-                "intelephense", -- PHP
-                "jsonls",
-                "lua_ls",
-                "taplo", -- TOML
-                "tsserver",
-                "vimls",
-                "yamlls",
-              },
-            })
-          end,
+          config = true,
+          opts = {
+            automatic_install = true,
+            ensure_installed = {
+              "astro",
+              "bashls",
+              "cssls",
+              "efm",
+              "gopls",
+              "html",
+              "intelephense", -- PHP
+              "jsonls",
+              "lua_ls",
+              "taplo", -- TOML
+              "tsserver",
+              "vimls",
+              "yamlls",
+            },
+          },
         },
         {
           "lukas-reineke/lsp-format.nvim",
-          config = function()
-            require("lsp-format").setup()
-          end,
+          config = true,
         },
         {
           "mattn/efm-langserver",
@@ -399,9 +382,7 @@ require("lazy").setup(
     {
       "ivanjermakov/troublesum.nvim",
       event = 'DiagnosticChanged',
-      config = function()
-        require("troublesum").setup()
-      end,
+      config = true,
     },
     {
       "hrsh7th/nvim-cmp",
@@ -449,20 +430,17 @@ require("lazy").setup(
         -- Pressing <CR> on a Copilot suggestion will expand it
         {
           "zbirenbaum/copilot-cmp",
+          config = true,
           dependencies = {
             {
               "zbirenbaum/copilot.lua",
-              config = function()
-                require("copilot").setup({
-                  suggestion = { enabled = false },
-                  panel = { enabled = false },
-                })
-              end,
+              config = true,
+              opts = {
+                suggestion = { enabled = false },
+                panel = { enabled = false },
+              },
             },
           },
-          config = function()
-            require("copilot_cmp").setup()
-          end,
         },
       },
       config = function()
@@ -612,41 +590,40 @@ require("lazy").setup(
         { "gco", mode = { "n", "v" }, desc = "Comment.nvim: Add comment on the line below" },
         { "gcA", mode = { "n", "v" }, desc = "Comment.nvim: Add comment at the end of line" },
       },
-      config = function()
-        require("Comment").setup({
-          ---LHS of toggle mappings in NORMAL mode
-          toggler = {
-            ---Line-comment toggle keymap
-            line = "gcc",
-            ---Block-comment toggle keymap
-            block = "gbc",
-          },
-          ---LHS of operator-pending mappings in NORMAL and VISUAL mode
-          opleader = {
-            ---Line-comment keymap
-            line = "gc",
-            ---Block-comment keymap
-            block = "gb",
-          },
-          ---LHS of extra mappings
-          extra = {
-            ---Add comment on the line above
-            above = "gcO",
-            ---Add comment on the line below
-            below = "gco",
-            ---Add comment at the end of line
-            eol = "gcA",
-          },
-          ---Enable keybindings
-          ---NOTE: If given `false` then the plugin won't create any mappings
-          mappings = {
-            ---Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
-            basic = true,
-            ---Extra mapping; `gco`, `gcO`, `gcA`
-            extra = true,
-          },
-        })
-      end,
+      config = true,
+      opts = {
+        ---LHS of toggle mappings in NORMAL mode
+        toggler = {
+          ---Line-comment toggle keymap
+          line = "gcc",
+          ---Block-comment toggle keymap
+          block = "gbc",
+        },
+        ---LHS of operator-pending mappings in NORMAL and VISUAL mode
+        opleader = {
+          ---Line-comment keymap
+          line = "gc",
+          ---Block-comment keymap
+          block = "gb",
+        },
+        ---LHS of extra mappings
+        extra = {
+          ---Add comment on the line above
+          above = "gcO",
+          ---Add comment on the line below
+          below = "gco",
+          ---Add comment at the end of line
+          eol = "gcA",
+        },
+        ---Enable keybindings
+        ---NOTE: If given `false` then the plugin won't create any mappings
+        mappings = {
+          ---Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
+          basic = true,
+          ---Extra mapping; `gco`, `gcO`, `gcA`
+          extra = true,
+        },
+      },
     },
     -- }}}
     -- Vim God Tim Pope {{{
@@ -734,6 +711,18 @@ require("lazy").setup(
       "mattn/vim-gist",
       dependencies = { "mattn/webapi-vim" },
       cmd = "Gist",
+    },
+    {
+      "tyru/open-browser.vim",
+      cmd = { "OpenBrowser", "OpenBrowserSearch" },
+      keys = {
+        {
+          '<leader>os',
+          '<Plug>(openbrowser-search)',
+          mode = { "n", "v" },
+          desc = "open-browser-github.vim: search text in web browser"
+        },
+      },
     },
     {
       "tyru/open-browser-github.vim",
@@ -837,14 +826,8 @@ require("lazy").setup(
         }
       end,
     },
-    {
-      "fourjay/vim-password-store",
-      ft = "pass",
-    },
-    {
-      "wuelnerdotexe/vim-astro",
-      ft = "astro",
-    },
+    { "fourjay/vim-password-store", ft = "pass" },
+    { "wuelnerdotexe/vim-astro",    ft = "astro" },
     -- }}}
   }
 -- }}}
