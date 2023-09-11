@@ -95,35 +95,48 @@ require("lazy").setup(
         cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
       end,
     },
-    -- }}}
-    -- Searching {{{
     {
       "bronson/vim-visual-star-search",
       keys = { { "*", mode = "v" }, { "#", mode = "v" } },
     },
+    -- }}}
+    -- Searching {{{
     {
       "nvim-telescope/telescope.nvim",
       tag = "0.1.2",
-      dependencies = {
-        "nvim-lua/plenary.nvim",
-        "debugloop/telescope-undo.nvim",
-      },
+      dependencies = { "nvim-lua/plenary.nvim" },
       cmd = { "Telescope" },
       keys = function()
         local builtin = require("telescope.builtin")
         return {
-          { "<c-p>",      builtin.find_files,        mode = "n", desc = "telescope: Fuzzy find files" },
-          { "<leader>ff", builtin.find_files,        mode = "n", desc = "telescope: Fuzzy find files" },
-          { "<leader>fg", builtin.live_grep,         mode = "n", desc = "telescope: Live grep" },
-          { "<leader>fb", builtin.buffers,           mode = "n", desc = "telescope: Browse buffers" },
-          { "<leader>fh", builtin.help_tags,         mode = "n", desc = "telescope: Browse help" },
-          { "<leader>ft", builtin.treesitter,        mode = "n", desc = "telescope: Browse Treesitter" },
-          { "<leader>td", builtin.diagnostics,       mode = "n", desc = "telescope: Diagnostics" },
-          { "<leader>ut", "<cmd>Telescope undo<CR>", mode = "n", desc = "telescope: Undotree" },
+          { "<c-p>",      builtin.find_files,  mode = "n", desc = "telescope: Fuzzy find files" },
+          { "<leader>ff", builtin.find_files,  mode = "n", desc = "telescope: Fuzzy find files" },
+          { "<leader>fg", builtin.live_grep,   mode = "n", desc = "telescope: Live grep" },
+          { "<leader>fb", builtin.buffers,     mode = "n", desc = "telescope: Browse buffers" },
+          { "<leader>fh", builtin.help_tags,   mode = "n", desc = "telescope: Browse help" },
+          { "<leader>ft", builtin.treesitter,  mode = "n", desc = "telescope: Browse Treesitter" },
+          { "<leader>td", builtin.diagnostics, mode = "n", desc = "telescope: Diagnostics" },
         }
       end,
+    },
+    {
+      "debugloop/telescope-undo.nvim",
+      dependencies = { "nvim-telescope/telescope.nvim" },
+      keys = {
+        { "<leader>ut", "<cmd>Telescope undo<CR>", mode = "n", desc = "telescope: Undotree" },
+      },
       config = function()
         require("telescope").load_extension("undo")
+      end,
+    },
+    {
+      "piersolenski/telescope-import.nvim",
+      dependencies = { "nvim-telescope/telescope.nvim" },
+      keys = {
+        { "<leader>fi", "<cmd>Telescope import<CR>", mode = "n", desc = "telescope: Find and insert imports" },
+      },
+      config = function()
+        require("telescope").load_extension("import")
       end,
     },
     -- }}}
@@ -325,7 +338,7 @@ require("lazy").setup(
               capabilities = capabilities,
               settings = {
                 tailwindCSS = {
-                  classAttributes = { "class", "className", "ngClass", "class:list" },
+                  classAttributes = { "class", "className", "classNames", "ngClass", "class:list" },
                 },
               },
             })
