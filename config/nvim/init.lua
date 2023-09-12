@@ -99,6 +99,12 @@ require("lazy").setup(
       "bronson/vim-visual-star-search",
       keys = { { "*", mode = "v" }, { "#", mode = "v" } },
     },
+    {
+      "kevinhwang91/nvim-fundo", -- Better persistent undo
+      config = function()
+        require('fundo').install()
+      end,
+    },
     -- }}}
     -- Searching {{{
     {
@@ -455,6 +461,11 @@ require("lazy").setup(
             },
           },
         },
+        {
+          "roobert/tailwindcss-colorizer-cmp.nvim",
+          config = true,
+          opts = { color_square_width = 2 },
+        }
       },
       config = function()
         local cmp = require("cmp")
@@ -587,6 +598,11 @@ require("lazy").setup(
             { name = "cmdline", group_index = 2 },
           }),
         })
+
+        -- Preview tailwind colors in code completion
+        cmp.config.formatting = {
+          format = require("tailwindcss-colorizer-cmp").formatter
+        }
       end,
     },
     -- }}}
@@ -899,7 +915,7 @@ vim.opt.swapfile = false
 -- see all of your edits in diff style so you can revert back to certain
 -- parts in time.
 vim.opt.undofile = true
-vim.opt.undolevels = 3000
+vim.opt.undolevels = 10000
 -- }}}
 
 -- Behavior {{{
