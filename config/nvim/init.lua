@@ -96,10 +96,6 @@ require("lazy").setup(
       end,
     },
     {
-      "bronson/vim-visual-star-search",
-      keys = { { "*", mode = "v" }, { "#", mode = "v" } },
-    },
-    {
       "kevinhwang91/nvim-fundo", -- Better persistent undo
       config = function()
         require('fundo').install()
@@ -107,6 +103,10 @@ require("lazy").setup(
     },
     -- }}}
     -- Searching {{{
+    {
+      "bronson/vim-visual-star-search",
+      keys = { { "*", mode = "v" }, { "#", mode = "v" } },
+    },
     {
       "nvim-telescope/telescope.nvim",
       tag = "0.1.2",
@@ -144,6 +144,15 @@ require("lazy").setup(
       config = function()
         require("telescope").load_extension("import")
       end,
+    },
+    {
+      "nvim-pack/nvim-spectre",
+      dependencies = { "nvim-lua/plenary.nvim" },
+      config = true,
+      cmd = { "Spectre" },
+      keys = {
+        { "<leader>fs", '<cmd>lua require("spectre").toggle()<CR>', desc = "Toggle Spectre (find and replace pane)" },
+      },
     },
     -- }}}
     -- Treesitter (syntax highlighting and so much more) {{{
