@@ -190,6 +190,10 @@ require("lazy").setup(
         "hbs",
       },
     },
+    {
+      "chrisgrieser/nvim-puppeteer",
+      dependencies = "nvim-treesitter/nvim-treesitter",
+    },
     -- }}}
     -- IDE Features (LSP, autocompletion, formatting & linting) {{{
     {
