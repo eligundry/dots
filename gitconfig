@@ -1,97 +1,98 @@
 [alias]
-	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-	ll = log --pretty=format:'%C(red)%h%Cred%d %Creset%s %Cgreen(%cr) %C(bold blue)<%cn>%Creset' --decorate --numstat --date=relative
-	branch-recent = branch --sort=-committerdate
-	up = pull
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    ll = log --pretty=format:'%C(red)%h%Cred%d %Creset%s %Cgreen(%cr) %C(bold blue)<%cn>%Creset' --decorate --numstat --date=relative
+    branch-recent = branch --sort=-committerdate
+    up = pull
     pushy = push origin HEAD
     force-pushy = push --force origin HEAD
     cotb = checkout --track=direct -b
     merge-cleanup = !"find . -name '*.orig' -delete"
     update-squashed-commit-date = !"GIT_COMMITTER_DATE=\"$(date)\" git commit --amend --no-edit --date=\"$(date)\""
+    cherry-pick-revert = "!git show -R \"$1\" | git apply"
 
 [apply]
-	ignorewhitespace = change
-	whitespace = fix
+    ignorewhitespace = change
+    whitespace = fix
 
 [color]
-	ui = auto
+    ui = auto
 
 [color "branch"]
-	remote = yellow reverse
-	local = yellow
-	remote = green
+    remote = yellow reverse
+    local = yellow
+    remote = green
 
 [color "diff"]
-	meta = yellow bold
-	frag = magenta bold
-	old = red bold
-	new = green bold
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
 
 [color "status"]
-	added = green
-	changed = yellow
-	removed = red
-	untracked = cyan
+    added = green
+    changed = yellow
+    removed = red
+    untracked = cyan
 
 [commit]
-	gpgsign = true
+    gpgsign = true
 
 [core]
-	attributesFile = ~/.gitattributes
-	autocrlf = input
-	editor = nvim
-	eol = lf
-	excludesfile = ~/.gitignore
-	fileMode = false
-	safecrlf = false
-	symlinks = true
+    attributesFile = ~/.gitattributes
+    autocrlf = input
+    editor = nvim
+    eol = lf
+    excludesfile = ~/.gitignore
+    fileMode = false
+    safecrlf = false
+    symlinks = true
 
 [credential]
-	helper = cache
+    helper = cache
 
 [diff]
-	renames = copies
-	tool = vimdiff
+    renames = copies
+    tool = vimdiff
 
 [fetch]
-	recurseSubmodules = true
+    recurseSubmodules = true
 
 [format]
-	pretty = %Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset
+    pretty = %Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset
 
 [help]
-	autocorrect = 1
-	format = man
+    autocorrect = 1
+    format = man
 
 [log]
-	abbrevCommit = true
-	date = relative
-	graph = true
+    abbrevCommit = true
+    date = relative
+    graph = true
 
 [merge]
-	tool = vimdiff
+    tool = vimdiff
 
 [mergetool]
-	prompt = true
+    prompt = true
 
 [mergetool "vimdiff"]
-	cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+    cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 
 [push]
-	default = matching
+    default = matching
 
 [user]
-	name = "Eli Gundry"
-	email = "eligundry@gmail.com"
-	signingkey = "B05C707D991F1E5FFCCFFDC26BA2E3B5B281BE37"
+    name = "Eli Gundry"
+    email = "eligundry@gmail.com"
+    signingkey = "B05C707D991F1E5FFCCFFDC26BA2E3B5B281BE37"
 
 [github]
-	user = "eligundry"
+    user = "eligundry"
 
 [gpg]
-	program = gpg
+    program = gpg
 
 [pull]
-	rebase = false
+    rebase = false
 [init]
-	defaultBranch = main
+    defaultBranch = main
