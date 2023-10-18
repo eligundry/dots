@@ -212,7 +212,7 @@ require("lazy").setup(
             local ensure_installed = {
               'shellcheck',
               'efm',
-              'prettierd',
+              'prettier',
               'astro-language-server',
               'bash-language-server',
               'css-lsp',
@@ -362,7 +362,7 @@ require("lazy").setup(
             local eslint = require 'efmls-configs.linters.eslint_d'
             local gofmt = require 'efmls-configs.formatters.gofmt'
             local goimports = require 'efmls-configs.formatters.goimports'
-            local prettier = require 'efmls-configs.formatters.prettier_d'
+            local prettier = require 'efmls-configs.formatters.prettier'
             local shellcheck = require 'efmls-configs.linters.shellcheck'
             local stylelint = require 'efmls-configs.linters.stylelint'
             local write_good = require 'efmls-configs.linters.write_good'
@@ -1351,4 +1351,5 @@ vim.keymap.set("n", "<Leader>hi", function()
   vim.fn.execute(string.format("normal! i%s", ipsum))
   vim.fn.execute("normal! kgqqj")
 end, { desc = "Insert a paragraph of hipster ipsum" })
+-- }}}
 -- }}}
