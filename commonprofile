@@ -146,8 +146,11 @@ pathadd "/usr/sbin"
 
 if command_exists nvim; then
 	alias v='nvim'
+	# This allows for piping of any command into vim like less. You exit with Q
+	alias -g iv='| nvim -R -c ":map Q :q!<enter>" -'
 else
 	alias v='vim'
+	alias -g iv='| vim -R -c ":map Q :q!<enter>" -'
 fi
 
 alias c='clear'
