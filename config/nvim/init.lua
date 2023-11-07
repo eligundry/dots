@@ -27,10 +27,10 @@ require("lazy").setup(
       "RRethy/nvim-base16",
       lazy = false,
       config = function()
-        if vim.env.BASE16_THEME then
-          vim.cmd.colorscheme(string.format("base16-%s", vim.env.BASE16_THEME))
-        elseif vim.fn.filereadable(vim.fn.expand("~/.vimrc_background")) then
+        if vim.fn.filereadable(vim.fn.expand("~/.vimrc_background")) then
           vim.cmd("source ~/.vimrc_background")
+        elseif vim.env.BASE16_THEME then
+          vim.cmd.colorscheme(string.format("base16-%s", vim.env.BASE16_THEME))
         else
           vim.cmd.colorscheme("base16-default-dark")
         end
@@ -1053,6 +1053,15 @@ vim.opt.background = "dark" -- I like a dark background
 -- NormalNC targets unfocused splits
 vim.api.nvim_set_hl(0, "Normal", { bg = "NONE", ctermbg = "NONE" })
 vim.api.nvim_set_hl(0, "NormalNC", { bg = "NONE", ctermbg = "NONE" })
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "*",
+  callback = function()
+    vim.api.nvim_set_hl(0, "Normal", { bg = "NONE", ctermbg = "NONE" })
+    vim.api.nvim_set_hl(0, "NormalNC", { bg = "NONE", ctermbg = "NONE" })
+  end,
+  desc = "Maintain terminal transparency",
+})
 
 -- Make all comments italic
 vim.cmd("highlight Comment cterm=italic gui=italic")
