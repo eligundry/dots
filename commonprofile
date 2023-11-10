@@ -47,7 +47,7 @@ pass_get_key() {
 # => Pyenv
 ################################################################################
 
-PYENV_DEBUG=1
+# export PYENV_DEBUG=1
 export PYENV_ROOT="$HOME/.pyenv"
 pathadd "$PYENV_ROOT/bin"
 export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
@@ -61,7 +61,7 @@ fi
 # https://github.com/Schniz/fnm
 ################################################################################
 
-eval "$(fnm env --use-on-cd)"
+eval "$(fnm env --use-on-cd --log-level quiet)"
 
 ################################################################################
 # => Google Cloud SDK
@@ -83,8 +83,8 @@ pathadd /usr/local/bin
 # => Go
 ################################################################################
 
-export GOPATH=$HOME/Code/go
-pathadd $GOPATH/bin
+export GOPATH="$HOME/Code/go"
+pathadd "$GOPATH/bin"
 pathadd /usr/local/go/bin
 
 ################################################################################
@@ -126,8 +126,8 @@ export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
 # => Base16 Colorschemes
 ################################################################################
 
-BASE16_SHELL=$HOME/.lib/base16-shell/
-[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+BASE16_SHELL="$HOME/.lib/base16-shell/"
+[ -n "$PS1" ] && [ -s "$BASE16_SHELL/profile_helper.sh" ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
 ################################################################################
 # => /sbin Debian bullshit

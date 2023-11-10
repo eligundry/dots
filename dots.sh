@@ -113,9 +113,7 @@ clean()
 {
     seperator "${B_RED}Uninstalling dots…"
 
-    local home_files=("$HOME/.*")
-
-    for f in "${home_files[@]}"
+    for f in "$HOME"/.*
     do
         # If symbolic link, delete it
         if [[ -L "$f" ]]; then
