@@ -428,12 +428,13 @@ require("lazy").setup(
         "onsails/lspkind.nvim",
         {
           "uga-rosa/cmp-dictionary",
-          build = "aspell -d en dump master | aspell -l en expand > $DOTS/config/nvim/dict/en.dict",
+          build =
+          "mkdir $HOME/.local/share/nvim/dict && aspell -d en dump master | aspell -l en expand > $HOME/.local/share/nvim/dict/en.dict",
           config = function()
             local dict = require("cmp_dictionary")
             dict.switcher({
               spelllang = {
-                en = vim.fn.expand("$DOTS/config/nvim/dict/en.dict"),
+                en = vim.fn.expand("$HOME/.local/share/nvim/dict/en.dict"),
               },
             })
           end,
