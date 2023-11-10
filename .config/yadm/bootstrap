@@ -20,4 +20,6 @@ if [ "$system_type" = "Darwin" ]; then
     defaults write com.googlecode.iterm2 PrefsCustomFolder "$HOME/.iterm2"
   fi
 
+  fnm install --lts
+  fnm default lts-latest
 fi
