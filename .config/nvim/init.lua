@@ -24,6 +24,12 @@ require("lazy").setup(
     "gpanders/editorconfig.nvim", -- supposedly, nvim supports editorconfig natively, but I cannot get it to work _just_ right
     "nvim-tree/nvim-web-devicons",
     {
+      "seanbreckenridge/yadm-git.vim",
+      dependencies = {
+        "tpope/vim-fugitive",
+      },
+    },
+    {
       "RRethy/nvim-base16",
       lazy = false,
       config = function()
@@ -1360,5 +1366,4 @@ vim.keymap.set("n", "<Leader>hi", function()
   vim.fn.execute(string.format("normal! i%s", ipsum))
   vim.fn.execute("normal! kgqqj")
 end, { desc = "Insert a paragraph of hipster ipsum" })
--- }}}
 -- }}}
