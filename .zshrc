@@ -21,8 +21,7 @@ fpath=(/usr/local/share/zsh/site-functions $fpath)
 
 DISABLE_AUTO_UPDATE=true
 
-export ZPLUG_HOME=$HOME/.local/share/dots/zplug
-source $ZPLUG_HOME/init.zsh
+source "$HOME"/.local/share/dots/zplug/init.zsh
 HISTDB_TABULATE_CMD=(sed -e $'s/\x1f/\t/g')
 
 zplug "lib/completion", from:oh-my-zsh
