@@ -7,7 +7,7 @@
 # => Common Profile
 ################################################################################
 
-source "$HOME/.commonprofile"
+source $HOME/.commonprofile
 
 ################################################################################
 # => Fix Stupid ZSH
@@ -29,12 +29,14 @@ zplug "lib/directories", from:oh-my-zsh
 zplug "lib/history", from:oh-my-zsh
 zplug "lib/termsupport", from:oh-my-zsh
 zplug "lib/theme-and-appearance", from:oh-my-zsh
+zplug "chriskempson/base16-shell", from:github
 zplug "plugins/ag", from:oh-my-zsh, if:"command_exists 'ag'"
 zplug "plugins/aws", from:oh-my-zsh, if:"command_exists 'aws'"
 zplug "plugins/brew", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 zplug "plugins/brew-cask", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 zplug "plugins/docker", from:oh-my-zsh, if:"command_exists 'docker'"
 zplug "plugins/docker-compose", from:oh-my-zsh, if:"command_exists 'docker-compose'"
+zplug "plugins/dotenv", from:oh-my-zsh
 zplug "plugins/fnm", from:oh-my-zsh, if:"command_exists 'fnm'"
 zplug "plugins/git", from:oh-my-zsh
 zplug "plugins/httpie", from:oh-my-zsh, if:"command_exists 'http'"
@@ -46,7 +48,7 @@ zplug "plugins/yarn", from:oh-my-zsh, if:"command_exists 'yarn'"
 zplug "plugins/history-substring-search", from:oh-my-zsh, defer:2
 zplug "larkery/zsh-histdb", use:"{zsh-histdb.plugin,histdb-interactive}.zsh"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
-zplug "~/.zsh", use:"*.zsh", from:local, defer:2
+zplug "$HOME/.zsh", use:"*.zsh", from:local, defer:2
 
 # if ! zplug check --verbose; then
 if ! zplug check; then
