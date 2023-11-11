@@ -11,22 +11,22 @@
         "revision": "78b98d8f9d2eb483b9edd3a868ffa9e29fbcc8b5"
       },
       "heroku/brew": {
-        "revision": "26afdc76a586ed3ed1a38f41a72133e2ff3a9a05"
+        "revision": "379bc49cf928a18cb0e7dcad4946278ff831e420"
       },
       "homebrew/bundle": {
         "revision": "73fe1415f01bc26ce4df0c4f52099ab1a0ef5b9d"
       },
       "homebrew/cask-fonts": {
-        "revision": "e8845c0c5f1b9ec74bd6b053ae5e8524fcdc0586"
+        "revision": "45d77e5752ea310e1974d161fb05e44d7706d1c7"
       },
       "homebrew/services": {
         "revision": "c17b19e0ff4acc6db35123ec5f91311ee4520bd2"
       },
       "shivammathur/php": {
-        "revision": "26dc614eeff37b1bc778951b4f2b760baad2a26b"
+        "revision": "ee78f3aef27fb912a459fa41532a0636c74ed728"
       },
       "shopify/shopify": {
-        "revision": "dea8009114bbd11b5eaeceea49b9edf5d89907df"
+        "revision": "3f7a0b131a33f84a0a4ba1a42c1fe1e0824a323d"
       }
     },
     "brew": {
@@ -2130,7 +2130,7 @@
         }
       },
       "spotify": {
-        "version": "1.2.23.1125,920a7ada,850",
+        "version": "1.2.24.756,7a7fc7f0,642",
         "options": {
           "full_name": "spotify"
         }
@@ -2139,6 +2139,12 @@
         "version": "1.84.2",
         "options": {
           "full_name": "visual-studio-code"
+        }
+      },
+      "alacritty": {
+        "version": "0.12.3",
+        "options": {
+          "full_name": "alacritty"
         }
       }
     }
@@ -2152,6 +2158,14 @@
         "CLT": "15.0.0.0.1.1694021235",
         "Xcode": "15.0.1",
         "macOS": "14.1"
+      },
+      "ventura": {
+        "HOMEBREW_VERSION": "4.1.19",
+        "HOMEBREW_PREFIX": "/opt/homebrew",
+        "Homebrew/homebrew-core": "api",
+        "CLT": "14.3.1.0.1.1683849156",
+        "Xcode": "15.0.1",
+        "macOS": "13.5.2"
       }
     }
   }
