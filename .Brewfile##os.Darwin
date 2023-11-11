@@ -48,7 +48,7 @@ brew "yarn"
 brew "ydiff"
 brew "zsh"
 brew "amar1729/formulae/browserpass"
-cask "alacritty"
+cask "alacritty", args: { "no-quarantine": true }
 cask "bettertouchtool"
 cask "discord"
 cask "disk-inventory-x"
