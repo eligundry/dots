@@ -5,6 +5,15 @@ font:
   normal:
     family: "CaskaydiaCove Nerd Font"
     style: "Regular"
+  italic:
+    family: "CaskaydiaCove Nerd Font"
+    style: "Italic"
+  bold:
+    family: "CaskaydiaCove Nerd Font"
+    style: "Bold"
+  bold_italic:
+    family: "CaskaydiaCove Nerd Font"
+    style: "Bold Italic"
 
 window:
   decorations: "buttonless"
