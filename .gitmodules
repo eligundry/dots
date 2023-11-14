@@ -4,3 +4,6 @@
 [submodule ".local/share/dots/pipes"]
 	path = .local/share/dots/pipes
 	url = https://github.com/pipeseroni/pipes.sh.git
+[submodule ".local/share/dots/base16-alacritty"]
+	path = .local/share/dots/base16-alacritty
+	url = https://github.com/aarowill/base16-alacritty.git
