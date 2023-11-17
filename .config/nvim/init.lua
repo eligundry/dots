@@ -221,7 +221,7 @@ require("lazy").setup(
               'css-lsp',
               'dockerfile-language-server',
               'efm',
-              'eslint_d',
+              'eslint-lsp',
               'fixjson',
               'goimports',
               'gopls',
@@ -369,7 +369,7 @@ require("lazy").setup(
             })
           end,
           ["efm"] = function()
-            local eslint = require 'efmls-configs.linters.eslint_d'
+            local eslint = require 'efmls-configs.linters.eslint'
             local gofmt = require 'efmls-configs.formatters.gofmt'
             local goimports = require 'efmls-configs.formatters.goimports'
             local prettier = require 'efmls-configs.formatters.prettier'
