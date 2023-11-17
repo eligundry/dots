@@ -1,4 +1,6 @@
 live_config_reload: true
+import:
+  - "~/.local/share/dots/base16-alacritty/colors/base16-default-dark.yml"
 
 font:
   size: 12
