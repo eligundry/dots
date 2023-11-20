@@ -39,6 +39,7 @@ zplug "plugins/docker-compose", from:oh-my-zsh, if:"command_exists 'docker-compo
 zplug "plugins/dotenv", from:oh-my-zsh
 zplug "plugins/fnm", from:oh-my-zsh, if:"command_exists 'fnm'"
 zplug "plugins/git", from:oh-my-zsh
+zplug "plugins/gh", from:oh-my-zsh, if:"command_exists 'gh'"
 zplug "plugins/httpie", from:oh-my-zsh, if:"command_exists 'http'"
 zplug "plugins/macos", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 zplug "plugins/npm", from:oh-my-zsh, if:"command_exists npm"

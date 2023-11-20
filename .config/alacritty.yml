@@ -1,6 +1,6 @@
 live_config_reload: true
 import:
-  - "~/.local/share/dots/base16-alacritty/colors/base16-default-dark.yml"
+  - "~/.local/share/dots/base16-alacritty/colors/base16-default-dark-256.yml"
 
 font:
   size: 12
@@ -27,3 +27,8 @@ window:
 
 scrolling:
   history: 0
+
+key_bindings:
+  - key: 'N'
+    mods: 'Command'
+    action: 'SpawnNewInstance'
