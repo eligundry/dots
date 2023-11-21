@@ -33,10 +33,10 @@ require("lazy").setup(
       "RRethy/nvim-base16",
       lazy = false,
       config = function()
-        if vim.fn.filereadable(vim.fn.expand("~/.vimrc_background")) then
-          vim.cmd("source ~/.vimrc_background")
-        elseif vim.env.BASE16_THEME then
+        if vim.env.BASE16_THEME then
           vim.cmd.colorscheme(string.format("base16-%s", vim.env.BASE16_THEME))
+        elseif vim.fn.filereadable(vim.fn.expand("~/.vimrc_background")) then
+          vim.cmd("source ~/.vimrc_background")
         else
           vim.cmd.colorscheme("base16-default-dark")
         end
@@ -216,26 +216,30 @@ require("lazy").setup(
           opts = { max_concurrent_installers = 10 },
           build = function()
             local ensure_installed = {
-              'shellcheck',
-              'efm',
-              'prettier',
               'astro-language-server',
               'bash-language-server',
               'css-lsp',
               'dockerfile-language-server',
-              'eslint_d',
+              'efm',
+              'eslint-lsp',
               'fixjson',
+              'goimports',
               'gopls',
               'html-lsp',
               'intelephense',
               'json-lsp',
               'lua-language-server',
+              'prettier',
               'pyright',
+              'shellcheck',
+              'stylelint',
               'tailwindcss-language-server',
               'taplo',
               'typescript-language-server',
               'vim-language-server',
+              'write-good',
               'yaml-language-server',
+              'yamllint',
             }
 
             vim.cmd("MasonInstall " .. table.concat(ensure_installed, " "))
@@ -365,7 +369,7 @@ require("lazy").setup(
             })
           end,
           ["efm"] = function()
-            local eslint = require 'efmls-configs.linters.eslint_d'
+            local eslint = require 'efmls-configs.linters.eslint'
             local gofmt = require 'efmls-configs.formatters.gofmt'
             local goimports = require 'efmls-configs.formatters.goimports'
             local prettier = require 'efmls-configs.formatters.prettier'

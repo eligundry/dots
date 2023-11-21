@@ -1,0 +1,11 @@
+# @TODO This is not quite right
+session_name: dev
+windows:
+  - window_name: editor
+    focus: 'true'
+    layout: tiled
+    panes:
+    - shell_command: nvim
+      focus: 'true'
+    - ''
+    - ''
