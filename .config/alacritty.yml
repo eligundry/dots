@@ -1,6 +1,10 @@
 live_config_reload: true
+
 import:
   - "~/.local/share/dots/base16-alacritty/colors/base16-default-dark-256.yml"
+
+env:
+  TERM: "xterm-256color"
 
 font:
   size: 12
