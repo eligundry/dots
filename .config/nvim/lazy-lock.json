@@ -51,8 +51,6 @@
   "vim-eunuch": { "branch": "master", "commit": "67f3dd32b4dcd1c427085f42ff5f29c7adc645c6" },
   "vim-fugitive": { "branch": "master", "commit": "cbe9dfa162c178946afa689dd3f42d4ea8bf89c1" },
   "vim-gist": { "branch": "master", "commit": "5bfbb5450d9eff248f6c074de0b7800392439304" },
-  "vim-json": { "branch": "master", "commit": "3727f089410e23ae113be6222e8a08dd2613ecf2" },
-  "vim-markdown": { "branch": "master", "commit": "4e9b4deda11d05a157ab34e97f76089669b5b7af" },
   "vim-password-store": { "branch": "master", "commit": "474a7dfc1c49986ed92fa78925963080b673926a" },
   "vim-repeat": { "branch": "master", "commit": "24afe922e6a05891756ecf331f39a1f6743d3d5a" },
   "vim-startify": { "branch": "master", "commit": "4e089dffdad46f3f5593f34362d530e8fe823dcf" },

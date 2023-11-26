@@ -168,6 +168,10 @@ require("lazy").setup(
         require("nvim-treesitter.configs").setup({
           sync_install = false,
           auto_install = true,
+          highlight = {
+            enable = true,
+            disable = { 'lua' },
+          },
           disable = {
             "startify",
           },
@@ -839,41 +843,6 @@ require("lazy").setup(
           css = true,
           css_fn = true,
         })
-      end,
-    },
-    {
-      "elzr/vim-json",
-      ft = { "json", "jsonc" },
-      config = function()
-        vim.g.vim_json_syntax_conceal = false
-      end,
-    },
-    {
-      "plasticboy/vim-markdown",
-      ft = "markdown",
-      config = function()
-        vim.g.vim_markdown_folding_disabled = true
-        vim.g.markdown_fenced_languages = {
-          "bash=sh",
-          "coffee",
-          "css",
-          "erb=eruby",
-          "go",
-          "html",
-          "javascript",
-          "js=javascript",
-          "json=javascript",
-          "less",
-          "php",
-          "python",
-          "ruby",
-          "sass",
-          "sh",
-          "shell=sh",
-          "typescript",
-          "vim",
-          "xml",
-        }
       end,
     },
     { "fourjay/vim-password-store", ft = "pass" },

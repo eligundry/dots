@@ -12,8 +12,8 @@ This will manage all the config files + any programs that I generally need.
 
 ## Installation
 
-```shell
-$ cd ~
-$ yadm clone https://github.com/eligundry/dots.git
-$ yadm bootstrap
+```bash
+cd ~
+yadm clone https://github.com/eligundry/dots.git
+yadm bootstrap
 ```
