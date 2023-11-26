@@ -107,26 +107,6 @@ require("lazy").setup(
         require('fundo').install()
       end,
     },
-    {
-      -- Better word wise movement
-      "chrisgrieser/nvim-spider",
-      keys = function()
-        local keys = { "w", "e", "b", "ge" }
-        local keysMappings = {}
-
-        for _, key in pairs(keys) do
-          table.insert(keysMappings,
-            {
-              key,
-              string.format("<cmd>lua require('spider').motion('%s')<CR>", key),
-              mode = { "n", "o", "x" },
-              desc = string.format("Spider-%s", key)
-            })
-        end
-
-        return keysMappings
-      end,
-    },
     -- }}}
     -- Searching {{{
     {
