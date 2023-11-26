@@ -32,6 +32,6 @@ if [ "$system_type" = "Darwin" ]; then
   fnm default lts-latest
 fi
 
-# Install Neovim modules
+echo "Installing Neovim modules"
 pip3 install neovim
 npm install -g neovim
