@@ -2102,6 +2102,10 @@
             }
           }
         }
+      },
+      "benbjohnson/litestream/litestream": {
+        "version": "0.3.13",
+        "bottle": false
       }
     },
     "cask": {
@@ -2224,7 +2228,7 @@
         "HOMEBREW_VERSION": "4.1.21",
         "HOMEBREW_PREFIX": "/opt/homebrew",
         "Homebrew/homebrew-core": "api",
-        "CLT": "14.3.1.0.1.1683849156",
+        "CLT": "15.0.0.0.1.1694021235",
         "Xcode": "15.0.1",
         "macOS": "14.1.1"
       }

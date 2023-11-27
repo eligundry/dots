@@ -47,6 +47,7 @@ brew "yarn"
 brew "ydiff"
 brew "zsh"
 brew "amar1729/formulae/browserpass"
+brew "benbjohnson/litestream/litestream"
 cask "alacritty", args: { "no-quarantine": true }
 cask "bettertouchtool"
 cask "discord"
