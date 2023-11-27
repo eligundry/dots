@@ -1103,6 +1103,9 @@ vim.opt.visualbell = false
 -- Use hybrid lines by setting both
 vim.opt.numberwidth = 2
 
+-- Default cursor to block, but change to bar in insert mode
+vim.opt.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50"
+
 local _numberingMode = 0
 local function numberingCycle(silent)
   if _numberingMode == 0 then
@@ -1137,9 +1140,6 @@ numberingCycle(true)
 vim.keymap.set("n", "<Leader>rn", numberingCycle, {
   desc = "Cycle through relative and number, just number, no numbers",
 })
-
--- Change Tmux cursor in insert mode
-vim.cmd("let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1")
 --}}}
 
 -- Keyboard shortcuts {{{
