@@ -1,3 +1,15 @@
+-- Local functions {{{
+local function t(str)
+  return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
+local function update_hl(group, tbl)
+  local old_hl = vim.api.nvim_get_hl_by_name(group, true)
+  local new_hl = vim.tbl_extend('force', old_hl, tbl)
+  vim.api.nvim_set_hl(0, group, new_hl)
+end
+-- }}}
+
 -- lazy.nvim {{{
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -59,7 +71,11 @@ require("lazy").setup(
       keys = {
         { "<leader>nt", "<cmd>NvimTreeToggle<CR>", mode = "n", desc = "nvim-tree: toggle" },
       },
-      config = true,
+      config = function(plugin, opts)
+        require('nvim-tree').setup(opts)
+
+        update_hl('NvimTreeSpecialFile', { underline = false })
+      end,
       opts = {
         view = {
           mappings = {
@@ -853,13 +869,6 @@ require("lazy").setup(
 )
 -- }}}
 
--- Local functions {{{
-local function t(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
-
--- }}}
-
 -- File handling {{{
 -- Gotta have these
 vim.cmd("filetype plugin indent on")
@@ -1044,17 +1053,15 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 })
 
 -- Make most comments italic
-vim.cmd("highlight Comment cterm=italic gui=italic")
+update_hl("Comment", { italic = true })
 
-local unitalic_comment_highlight = vim.api.nvim_get_hl(0, { name = 'Comment' })
-unitalic_comment_highlight['italic'] = false
-unitalic_comment_highlight['cterm']['italic'] = false
-
--- Override some treesitter colors
+-- Override some treesitter/default styles
 -- Use `:Inspect` to see the group under the cursor is
-vim.api.nvim_set_hl(0, 'TSVariable', { link = 'TSText' })
-vim.api.nvim_set_hl(0, 'TSTypeBuiltIn', { link = 'TSType' })
-vim.api.nvim_set_hl(0, '@comment.gitcommit', unitalic_comment_highlight)
+update_hl('TSVariable', { link = 'TSText' })
+update_hl('TSTypeBuiltin', { link = 'TSType' })
+update_hl('TSVariableBuiltin', { italic = false })
+update_hl('@comment.gitcommit', { italic = false })
+update_hl('@property.tsx', { link = 'TSLabel' })
 -- }}}
 
 -- Look & Feel {{{
