@@ -2219,6 +2219,12 @@
         "options": {
           "full_name": "wezterm"
         }
+      },
+      "font-comic-shanns-mono-nerd-font": {
+        "version": "3.1.1",
+        "options": {
+          "full_name": "font-comic-shanns-mono-nerd-font"
+        }
       }
     }
   },
