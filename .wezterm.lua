@@ -6,8 +6,25 @@ if wezterm.config_builder then
 end
 
 -- Fonts
-config.font = wezterm.font('CaskaydiaCove Nerd Font', { weight = 'DemiBold' })
-config.font_size = 13
+config.font_size = 12
+config.font = wezterm.font('MonaspiceNe Nerd Font Mono', { weight = 'DemiBold' })
+config.font_rules = {
+  {
+    italic = true,
+    font = wezterm.font('MonaspiceRn Nerd Font Mono', {
+      italic = true,
+      weight = 'DemiBold',
+    })
+  },
+  {
+    italic = true,
+    intensity = 'Bold',
+    font = wezterm.font('MonaspiceRn Nerd Font Mono', {
+      italic = true,
+      weight = 'Bold',
+    })
+  },
+}
 
 -- Transparency
 config.window_background_opacity = 0.95

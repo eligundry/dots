@@ -324,8 +324,8 @@ require("lazy").setup(
           vim.keymap.set("n", "<Leader>RN", vim.lsp.buf.rename)
           vim.keymap.set("n", "K", vim.lsp.buf.hover)
           vim.keymap.set("n", "gD", vim.lsp.buf.declaration)
-          vim.keymap.set("n", "gi", vim.lsp.buf.implementation)
-          vim.keymap.set("n", "gr", vim.lsp.buf.references)
+          vim.keymap.set("n", "gI", vim.lsp.buf.implementation)
+          vim.keymap.set("n", "gR", vim.lsp.buf.references)
         end
 
         mason_lsp.setup_handlers({
@@ -1043,13 +1043,18 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   desc = "Maintain terminal transparency",
 })
 
--- Make all comments italic
+-- Make most comments italic
 vim.cmd("highlight Comment cterm=italic gui=italic")
+
+local unitalic_comment_highlight = vim.api.nvim_get_hl(0, { name = 'Comment' })
+unitalic_comment_highlight['italic'] = false
+unitalic_comment_highlight['cterm']['italic'] = false
 
 -- Override some treesitter colors
 -- Use `:Inspect` to see the group under the cursor is
 vim.api.nvim_set_hl(0, 'TSVariable', { link = 'TSText' })
 vim.api.nvim_set_hl(0, 'TSTypeBuiltIn', { link = 'TSType' })
+vim.api.nvim_set_hl(0, '@comment.gitcommit', unitalic_comment_highlight)
 -- }}}
 
 -- Look & Feel {{{
