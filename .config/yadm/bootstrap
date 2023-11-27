@@ -19,12 +19,12 @@ if [ "$system_type" = "Darwin" ]; then
 
   if [ -f "$HOME/.Brewfile" ]; then
     echo "Updating homebrew bundle"
-    brew bundle --global --file "$HOME/.Brewfile"
+    brew bundle --global --debug --file "$HOME/.Brewfile"
   fi
 
   if [ -d "$HOME/.iterm2" ]; then
     echo "Setting iTerm preference folder"
-    defaults write com.googlecode.iterm2 PrefsCustomFolder "$HOME/.iterm2"
+    defaults write com.googlecode.iterm2 PrefsCustomFolder "$HOME/.iterm2##os.Darwin"
   fi
 
   echo "Installing a node LTS version with fnm"

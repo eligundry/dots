@@ -1060,6 +1060,8 @@ update_hl("Comment", { italic = true })
 update_hl('TSVariable', { link = 'TSText' })
 update_hl('TSTypeBuiltin', { link = 'TSType' })
 update_hl('TSVariableBuiltin', { italic = false })
+update_hl('TSFuncBuiltin', { italic = false })
+update_hl('PreProc', { italic = false })
 update_hl('@comment.gitcommit', { italic = false })
 update_hl('@property.tsx', { link = 'TSLabel' })
 -- }}}
