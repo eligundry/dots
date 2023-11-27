@@ -1045,6 +1045,11 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 
 -- Make all comments italic
 vim.cmd("highlight Comment cterm=italic gui=italic")
+
+-- Override some treesitter colors
+-- Use `:Inspect` to see the group under the cursor is
+vim.api.nvim_set_hl(0, 'TSVariable', { link = 'TSText' })
+vim.api.nvim_set_hl(0, 'TSTypeBuiltIn', { link = 'TSType' })
 -- }}}
 
 -- Look & Feel {{{
