@@ -39,7 +39,55 @@ require("lazy").setup(
       "seanbreckenridge/yadm-git.vim",
       dependencies = {
         "tpope/vim-fugitive",
+        "mhinz/vim-startify",
       },
+      -- If neovim is opened in the home directory OR a file tracked by YADM,
+      -- scope all Telescope operations to YADM files, as that's what I probably
+      -- want.
+      config = function()
+        local yadm_files = vim.fn.systemlist(
+          "yadm list | awk '!/\\.local\\/share\\/dots/ {print ENVIRON[\"HOME\"] \"/\" $0}'")
+        local yadm_telescope_mappings = function()
+          local telescope = require("telescope.builtin")
+          local yadm_file_search = function()
+            return telescope.find_files({
+              search_dirs = yadm_files,
+            })
+          end
+          local yadm_live_grep = function()
+            return telescope.live_grep({
+              search_dirs = yadm_files,
+            })
+          end
+
+          vim.keymap.set('n', '<c-p>', yadm_file_search, {
+            buffer = true,
+            desc = "Telescope: yadm scoped fuzzy find files",
+          })
+          vim.keymap.set('n', '<leader>ff', yadm_file_search, {
+            buffer = true,
+            desc = "Telescope: yadm scoped fuzzy find files",
+          })
+          vim.keymap.set('n', '<leader>fg', yadm_live_grep, {
+            buffer = true,
+            desc = "Telescope: yadm scoped live grep",
+          })
+        end
+
+        vim.api.nvim_create_autocmd("BufEnter", {
+          pattern = yadm_files,
+          callback = yadm_telescope_mappings,
+        })
+
+        vim.api.nvim_create_autocmd("FileType", {
+          pattern = "startify",
+          callback = function()
+            if vim.loop.cwd() == vim.fn.expand('~') then
+              yadm_telescope_mappings()
+            end
+          end,
+        })
+      end,
     },
     {
       "RRethy/nvim-base16",
@@ -132,7 +180,15 @@ require("lazy").setup(
     {
       "nvim-telescope/telescope.nvim",
       tag = "0.1.2",
-      dependencies = { "nvim-lua/plenary.nvim" },
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+        {
+          "nvim-telescope/telescope-frecency.nvim",
+          config = function()
+            require("telescope").load_extension "frecency"
+          end,
+        }
+      },
       cmd = { "Telescope" },
       keys = function()
         local builtin = require("telescope.builtin")

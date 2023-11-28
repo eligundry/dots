@@ -39,6 +39,7 @@
   "rest.nvim": { "branch": "main", "commit": "5bcaa1012ea8efd6093c69d2a4c67fbde760d043" },
   "suda.vim": { "branch": "master", "commit": "8b0fc3711760195aba104e2d190cff9af8267052" },
   "tailwindcss-colorizer-cmp.nvim": { "branch": "main", "commit": "bc25c56083939f274edcfe395c6ff7de23b67c50" },
+  "telescope-frecency.nvim": { "branch": "master", "commit": "ca5fa5326fc2b2ebd3269176594c4341ad720ac5" },
   "telescope-import.nvim": { "branch": "main", "commit": "2f559d6b6cbce323b135821f200781063b9aacde" },
   "telescope-undo.nvim": { "branch": "main", "commit": "3dec002ea3e7952071d26fbb5d01e2038a58a554" },
   "telescope.nvim": { "branch": "master", "commit": "776b509f80dd49d8205b9b0d94485568236d1192" },
