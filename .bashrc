@@ -36,3 +36,6 @@ set completion-ignore-case on
 
 # Allow tab cycling
 [[ $- = *i* ]] && bind TAB:menu-complete
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"

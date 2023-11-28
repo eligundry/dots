@@ -15,7 +15,7 @@ pathadd() {
 }
 
 command_exists() {
-	type "$1" &> /dev/null ;
+	command -v "$1" &> /dev/null
 }
 
 # Extract a value from a Pass file
@@ -37,7 +37,7 @@ pass_get_key() {
     local shyaml_installed=$?
 
     if [ $shyaml_installed -gt 0 ]; then
-        pip3 install shyaml
+        pip3 install shyaml &> /dev/null
     fi
 
     tail -n +2 | shyaml get-value "$key"

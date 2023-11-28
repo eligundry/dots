@@ -9,6 +9,7 @@ end
 -- comments, but I'm just not that person.)
 config.font_size = 13
 config.font = wezterm.font('CaskaydiaCove Nerd Font Mono', { weight = 'DemiBold' })
+config.cell_width = 0.85
 -- config.font_size = 12
 -- config.font = wezterm.font('MonaspiceNe Nerd Font Mono', { weight = 'DemiBold' })
 -- config.font_rules = {

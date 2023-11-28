@@ -68,3 +68,6 @@ eval "$(starship init zsh)"
 # tabtab source for serverless package
 # tabtab source for sls package
 # tabtab source for slss package
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"

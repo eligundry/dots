@@ -35,3 +35,8 @@ fi
 echo "Installing Neovim modules"
 pip3 install neovim
 npm install -g neovim
+
+if ! command -v serviceman &> /dev/null; then
+  echo "Installing serviceman"
+  curl -sS https://webi.sh/serviceman | sh
+fi
