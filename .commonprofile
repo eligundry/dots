@@ -92,7 +92,6 @@ pathadd /usr/local/go/bin
 ################################################################################
 
 export BROWSER=google-chrome-stable
-export DOTS=$HOME/dots
 export INPUTRC=$HOME/.inputrc
 export LANG=en_US.UTF-8
 export MANPAGER=less
