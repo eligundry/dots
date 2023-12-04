@@ -7,3 +7,6 @@
 [submodule ".local/share/dots/base16-alacritty"]
 	path = .local/share/dots/base16-alacritty
 	url = https://github.com/aarowill/base16-alacritty.git
+[submodule ".tmux/plugins/tpm"]
+	path = .tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm.git

@@ -91,7 +91,6 @@ pathadd /usr/local/go/bin
 # => Default Variables
 ################################################################################
 
-export BROWSER=google-chrome-stable
 export INPUTRC=$HOME/.inputrc
 export LANG=en_US.UTF-8
 export MANPAGER=less
@@ -103,6 +102,12 @@ if command_exists nvim; then
 else
 	export EDITOR=vim
 	export VISUAL=vim
+fi
+
+if command_exists google-chrome-stable; then
+  export BROWSER=google-chrome-stable
+else
+  export BROWSER="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 fi
 
 # Turn off flow control
