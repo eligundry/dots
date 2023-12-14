@@ -247,10 +247,6 @@ require("lazy").setup(
           disable = {
             "startify",
           },
-          context_commentstring = {
-            enable = true,
-            enable_autocmd = false,
-          },
           autotag = {
             enable = true,
           },
@@ -703,7 +699,13 @@ require("lazy").setup(
     },
     -- }}}
     -- Commenting {{{
-    "JoosepAlviste/nvim-ts-context-commentstring",
+    {
+      "JoosepAlviste/nvim-ts-context-commentstring",
+      config = function()
+        require('ts_context_commentstring').setup()
+        vim.g.skip_ts_context_commentstring_module = true
+      end,
+    },
     {
       "numToStr/Comment.nvim",
       keys = {
@@ -1020,8 +1022,9 @@ vim.opt.foldmethod = "manual"
 -- I don't need Vim telling me where I can't go!
 vim.opt.virtualedit = "all"
 
--- Disable mouse is all modes in terminal Vim
-vim.opt.mouse = ""
+-- Enable the mouse in the default modes
+-- I'm done being an anti-mouse zealot
+vim.opt.mouse = "nvi"
 
 -- Hide mouse when typing
 vim.opt.mousehide = true
