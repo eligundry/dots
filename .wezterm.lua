@@ -1,6 +1,21 @@
 local wezterm = require 'wezterm'
 local config = {}
 
+-- Functions {{{
+local function require_module_by_path(module_path)
+  local status, module = pcall(dofile, module_path)
+  if status then
+    return module
+  else
+    return nil
+  end
+end
+
+local function expand_path(path)
+  return os.getenv("HOME") .. "/" .. path
+end
+-- }}}
+
 if wezterm.config_builder then
   config = wezterm.config_builder()
 end
@@ -10,31 +25,19 @@ end
 config.font_size = 13
 config.font = wezterm.font('CaskaydiaCove Nerd Font Mono', { weight = 'DemiBold' })
 config.cell_width = 0.85
--- config.font_size = 12
--- config.font = wezterm.font('MonaspiceNe Nerd Font Mono', { weight = 'DemiBold' })
--- config.font_rules = {
---   {
---     italic = true,
---     font = wezterm.font('MonaspiceRn Nerd Font Mono', {
---       italic = true,
---       weight = 'DemiBold',
---     })
---   },
---   {
---     italic = true,
---     intensity = 'Bold',
---     font = wezterm.font('MonaspiceRn Nerd Font Mono', {
---       italic = true,
---       weight = 'Bold',
---     })
---   },
--- }
 
 -- Transparency
 config.window_background_opacity = 0.95
 
 -- Base16 Colors
+local terminal_theme = require_module_by_path(expand_path(".local/share/base16-theme.lua"))
 config.color_scheme = 'Default Dark (base16)'
+
+-- In order for this to all work with wezterm, you must also press
+-- ctrl-shift-r to reload the config
+if terminal_theme then
+  config.color_scheme = terminal_theme.wezterm
+end
 
 -- GUI
 config.hide_tab_bar_if_only_one_tab = true

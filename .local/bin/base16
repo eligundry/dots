@@ -1,16 +1,4 @@
 #!/usr/bin/env zsh
-#
-source "$HOME/.zshrc"
-
-# Custom completion function
-_base16_custom_completion() {
-  local completions
-  completions=($(find ~/.zplug/repos/chriskempson/base16-shell/scripts -type f -name "*.sh" | sed -e 's/.*base16-//' -e 's/\.sh//' | sort))
-  _describe 'values' completions
-}
-
-# Register the custom completion function for the script
-compdef _base16_custom_completion base16
 
 # Main function to set the shell theme and generate the Lua file
 main() {
@@ -20,16 +8,19 @@ main() {
   fi
 
   local theme="$1"
-  local theme_script="$HOME/.zplug/repos/chriskempson/base16-shell/scripts/base16-$theme.sh"
+  local theme_script="$BASE16_SHELL/scripts/base16-$theme.sh"
 
   if [[ -f "$theme_script" ]]; then
     # Set the shell theme
-    # source "$theme_script"
+    source "$theme_script"
 
     # Generate the Lua file for WezTerm and Neovim
     local wezterm_theme_name="$(echo "$theme" | gsed 's/-/ /g; s/\b\(.\)/\u\1/g') (base16)"
     local neovim_theme_name="base16-$theme"
-    echo "return { wezterm = \"${wezterm_theme_name}\", neovim = \"${neovim_theme_name}\" }" > "$HOME/.config/base16-local.lua"
+    echo "return { wezterm = \"${wezterm_theme_name}\", neovim = \"${neovim_theme_name}\" }" > "$HOME/.local/share/base16-theme.lua"
+    ln -fs $theme_script $HOME/.base16_theme
+    # In order for this to all work with wezterm, you must also press
+    # ctrl-shift-r to reload the config
   else
     echo "Theme '$theme' not found."
     return 1
@@ -37,4 +28,17 @@ main() {
 }
 
 # Call the main function with the provided argument
-main "$@"
+if [[ $ZSH_EVAL_CONTEXT == 'toplevel' ]]; then
+  source "$HOME/.zshrc"
+  main "$@"
+else
+  # Custom completion function
+  _base16_custom_completion() {
+    local completions
+    completions=($(find "$BASE16_SHELL/scripts" -type f -name "*.sh" | sed -e 's/.*base16-//' -e 's/\.sh//' | sort))
+    _describe 'values' completions
+  }
+
+  # Register the custom completion function for the script
+  compdef _base16_custom_completion base16
+fi

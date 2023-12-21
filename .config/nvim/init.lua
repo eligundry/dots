@@ -8,6 +8,22 @@ local function update_hl(group, tbl)
   local new_hl = vim.tbl_extend('force', old_hl, tbl)
   vim.api.nvim_set_hl(0, group, new_hl)
 end
+
+local function set_colorscheme(colorscheme)
+  vim.cmd.colorscheme(colorscheme)
+  vim.api.nvim_set_hl(0, "Normal", { bg = "NONE", ctermbg = "NONE" })
+  vim.api.nvim_set_hl(0, "NormalNC", { bg = "NONE", ctermbg = "NONE" })
+end
+
+-- Define a function to conditionally import a module by absolute path
+local function require_module_by_path(module_path)
+  local status, module = pcall(dofile, module_path)
+  if status then
+    return module
+  else
+    return nil
+  end
+end
 -- }}}
 
 -- lazy.nvim {{{
@@ -93,13 +109,25 @@ require("lazy").setup(
       "RRethy/nvim-base16",
       lazy = false,
       config = function()
-        if vim.env.BASE16_THEME then
-          vim.cmd.colorscheme(string.format("base16-%s", vim.env.BASE16_THEME))
-        elseif vim.fn.filereadable(vim.fn.expand("~/.vimrc_background")) then
-          vim.cmd("source ~/.vimrc_background")
+        local local_base16_theme = require_module_by_path(vim.fn.expand("~/.local/share/base16-theme.lua"))
+
+        if local_base16_theme then
+          set_colorscheme(local_base16_theme.neovim)
         else
-          vim.cmd.colorscheme("base16-default-dark")
+          set_colorscheme("base16-default-dark")
         end
+
+        vim.api.nvim_create_autocmd("FocusGained", {
+          pattern = "*",
+          callback = function()
+            local updated_theme = require_module_by_path(vim.fn.expand("~/.local/share/base16-theme.lua"))
+
+            if updated_theme and updated_theme.neovim ~= vim.g.colors_name then
+              set_colorscheme(updated_theme.neovim)
+            end
+          end,
+          desc = "base16: Update colorscheme if the terminal's theme has changed"
+        })
       end,
     },
     {

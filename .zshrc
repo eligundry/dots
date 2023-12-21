@@ -58,6 +58,7 @@ zplug "plugins/history-substring-search", from:oh-my-zsh, defer:2
 zplug "larkery/zsh-histdb", use:"{zsh-histdb.plugin,histdb-interactive}.zsh"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "$HOME/.zsh", use:"*.zsh", from:local, defer:2
+zplug "$HOME/.local/bin", use:"base16", from:local, defer:2
 
 # if ! zplug check --verbose; then
 if ! zplug check; then
