@@ -23,8 +23,15 @@ end
 -- Fonts (I would love to be a person that could be into a handwriting font for
 -- comments, but I'm just not that person.)
 config.font_size = 13
-config.font = wezterm.font('CaskaydiaCove Nerd Font Mono', { weight = 'DemiBold' })
 config.cell_width = 0.85
+config.font = wezterm.font_with_fallback({
+  { family = "CaskaydiaCove Nerd Font Mono", weight = "DemiBold" },
+  "JetBrains Mono",
+  "Apple Color Emoji",
+  "Noto Color Emoji",
+  "Symbols Nerd Font Mono",
+})
+
 
 -- Transparency
 config.window_background_opacity = 0.95
