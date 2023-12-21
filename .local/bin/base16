@@ -1,0 +1,40 @@
+#!/usr/bin/env zsh
+#
+source "$HOME/.zshrc"
+
+# Custom completion function
+_base16_custom_completion() {
+  local completions
+  completions=($(find ~/.zplug/repos/chriskempson/base16-shell/scripts -type f -name "*.sh" | sed -e 's/.*base16-//' -e 's/\.sh//' | sort))
+  _describe 'values' completions
+}
+
+# Register the custom completion function for the script
+compdef _base16_custom_completion base16
+
+# Main function to set the shell theme and generate the Lua file
+main() {
+  if [[ $# -ne 1 ]]; then
+    echo "Usage: $0 <theme>"
+    return 1
+  fi
+
+  local theme="$1"
+  local theme_script="$HOME/.zplug/repos/chriskempson/base16-shell/scripts/base16-$theme.sh"
+
+  if [[ -f "$theme_script" ]]; then
+    # Set the shell theme
+    # source "$theme_script"
+
+    # Generate the Lua file for WezTerm and Neovim
+    local wezterm_theme_name="$(echo "$theme" | gsed 's/-/ /g; s/\b\(.\)/\u\1/g') (base16)"
+    local neovim_theme_name="base16-$theme"
+    echo "return { wezterm = \"${wezterm_theme_name}\", neovim = \"${neovim_theme_name}\" }" > "$HOME/.config/base16-local.lua"
+  else
+    echo "Theme '$theme' not found."
+    return 1
+  fi
+}
+
+# Call the main function with the provided argument
+main "$@"

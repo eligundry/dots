@@ -14,6 +14,14 @@ source $HOME/.commonprofile
 ################################################################################
 
 fpath=(/usr/local/share/zsh/site-functions $fpath)
+fpath=($HOME/.local/bin $fpath)
+
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+
+  autoload -Uz compinit
+  compinit
+fi
 
 ################################################################################
 # => ZPlug
