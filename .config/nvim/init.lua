@@ -930,18 +930,8 @@ require("lazy").setup(
         "typescript",
         "typescriptreact",
       },
-      config = function()
-        require("colorizer").setup({
-          "css",
-          "less",
-          "scss",
-          "sass",
-          "html",
-          "javascript",
-          "javascriptreact",
-          "typescript",
-          "typescriptreact",
-        }, {
+      config = function(self)
+        require("colorizer").setup(self.ft, {
           css = true,
           css_fn = true,
         })

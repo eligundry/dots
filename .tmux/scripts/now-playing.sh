@@ -18,7 +18,7 @@ if command -v playerctl &> /dev/null; then
 fi
 
 if command -v osascript &> /dev/null; then
-  osascript "$HOME/.tmux/scripts/spotify.applescript" | jq -r '"💿  \(.name[0:30]) - \(.artist[0:30])"'
+  osascript "$HOME/.tmux/scripts/spotify.applescript" | jq -r '"💿 \(.name[0:30]) - \(.artist[0:30])"'
 exit
 
 fi
