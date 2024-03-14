@@ -528,14 +528,10 @@ require("lazy").setup(
           "uga-rosa/cmp-dictionary",
           build =
           "mkdir $HOME/.local/share/nvim/dict && aspell -d en dump master | aspell -l en expand > $HOME/.local/share/nvim/dict/en.dict",
-          config = function()
-            local dict = require("cmp_dictionary")
-            dict.switcher({
-              spelllang = {
-                en = vim.fn.expand("$HOME/.local/share/nvim/dict/en.dict"),
-              },
-            })
-          end,
+          config = true,
+          opts = {
+            paths = { vim.fn.expand("$HOME/.local/share/nvim/dict/en.dict") }
+          },
         },
         {
           "saadparwaiz1/cmp_luasnip",
