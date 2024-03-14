@@ -654,28 +654,28 @@ require("lazy").setup(
           sources = cmp.config.sources({
             {
               name = "copilot",
-              group_index = 1,
-              priority = 1,
+              -- group_index = 1,
+              priority = 10,
             },
             {
               name = "nvim_lsp",
-              group_index = 1,
-              priority = 2,
+              -- group_index = 1,
+              priority = 9,
+            },
+            {
+              name = "buffer",
+              -- group_index = 3,
+              priority = 7,
             },
             {
               name = "path",
-              group_index = 2,
+              -- group_index = 6,
               priority = 2,
             },
             {
               name = "emmet_vim",
-              group_index = 2,
+              group_index = 5,
               priority = 2,
-            },
-            {
-              name = "buffer",
-              group_index = 3,
-              priority = 3,
             },
             {
               name = "dictionary",
