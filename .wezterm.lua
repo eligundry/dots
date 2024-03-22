@@ -51,4 +51,14 @@ config.hide_tab_bar_if_only_one_tab = true
 config.scrollback_lines = 0
 config.window_decorations = 'RESIZE'
 
+-- Mouse
+-- https://github.com/wez/wezterm/issues/4235
+config.mouse_bindings = {
+  {
+    event = { Up = { streak = 1, button = "Left" } },
+    mods = "CMD",
+    action = wezterm.action.OpenLinkAtMouseCursor
+  }
+}
+
 return config

@@ -879,6 +879,7 @@ require("lazy").setup(
     {
       "rest-nvim/rest.nvim",
       dependencies = { "nvim-lua/plenary.nvim" },
+      tag = "v1.1.0",
       ft = "http",
       config = function()
         require("rest-nvim").setup({
