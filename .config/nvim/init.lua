@@ -1363,6 +1363,9 @@ vim.keymap.set("v", ">", ">gv", {
 -- Insert horizontal ellipsis in insert mode
 vim.keymap.set("i", "\\...", "…")
 
+-- Insert plus-minus in insert mode
+vim.keymap.set("i", "\\+-", "±")
+
 -- Toggle local spelling
 vim.keymap.set("n", "<Leader>pl", "setlocal spell!")
 
@@ -1370,6 +1373,16 @@ vim.keymap.set("n", "<Leader>pl", "setlocal spell!")
 vim.keymap.set("n", "<Leader>fl", vim.diagnostic.setqflist, {
   desc = "Open the quickfix list for the buffer",
 })
+
+-- Open the URL under the cursor if using MacOS
+if vim.fn.has("mac") == 1 then
+  vim.keymap.set("n", "gx", function()
+    local url = vim.fn.expand("<cWORD>")
+    if url:match("^https?://") then
+      vim.fn.jobstart({ "open", url })
+    end
+  end)
+end
 
 -- My ideal state of using vim is to have it always in autochdir. This means,
 -- whenever I open a new a file in a different directory, all vim commands for
