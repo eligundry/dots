@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [[ $# -ne 1 ]]; then
+  echo "Usage: kill-on-port <port>"
+  exit 1
+fi
+
+port="$1"
+process="$(lsof -i:"$port" -t)"
+
+kill "$process"
