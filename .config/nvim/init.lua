@@ -716,6 +716,15 @@ require("lazy").setup(
       end,
     },
     -- }}}
+    -- 🤖 AI {{{
+    {
+      "robitx/gp.nvim",
+      config = true,
+      opts = {
+        openai_api_key = { "pass", "Dev/openai.com/gp.nvim-api-key" }
+      },
+    },
+    -- }}}
     -- Commenting {{{
     {
       "JoosepAlviste/nvim-ts-context-commentstring",
