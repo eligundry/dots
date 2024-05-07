@@ -6,8 +6,23 @@ system_type=$(uname -s)
 # be run from within $HOME (assuming this is the root of your dotfiles)
 cd "$HOME" || exit
 
-echo "Init submodules"
-yadm submodule update --recursive --init
+clone_or_update_repository() {
+  local path=$1
+  local url=$2
+
+  if [ ! -d "$path" ]; then
+    # If the directory doesn't exist, clone the repository
+    git clone "$url" "$path"
+  else
+    # If the directory exists, update the repository
+    (cd "$path" && git pull)
+  fi
+}
+
+clone_or_update_repository "$HOME/.local/share/dots/zplug" "https://github.com/zplug/zplug.git"
+clone_or_update_repository "$HOME/.local/share/dots/pipes" "https://github.com/pipeseroni/pipes.sh.git"
+clone_or_update_repository "$HOME/.local/share/dots/base16-alacritty" "https://github.com/aarowill/base16-alacritty.git"
+clone_or_update_repository "$HOME/.tmux/plugins/tpm" "https://github.com/tmux-plugins/tpm.git"
 
 if [ "$system_type" = "Darwin" ]; then
 

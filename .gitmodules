@@ -1,6 +1,0 @@
-[submodule ".local/share/dots/zplug"]
-	path = ~/.local/share/dots/zplug
-	url = https://github.com/zplug/zplug.git
-[submodule ".tmux/plugins/tpm"]
-	path = ~/.tmux/plugins/tpm
-	url = https://github.com/tmux-plugins/tpm.git
