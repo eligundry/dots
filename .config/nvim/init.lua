@@ -721,7 +721,7 @@ require("lazy").setup(
       "robitx/gp.nvim",
       config = true,
       opts = {
-        openai_api_key = { "pass", "Dev/openai.com/gp.nvim-api-key" }
+        openai_api_key = { "pass", "Dev/openai.com/gp.nvim-api-key" },
       },
     },
     -- }}}
