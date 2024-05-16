@@ -1005,10 +1005,13 @@ vim.opt.incsearch = true
 -- When I search, I don't need to capitalize…
 vim.opt.ignorecase = true
 vim.opt.infercase = true
-vim.opt.smartcase = true  -- …but when I do, it'll pair down the search.
-vim.opt.shellslash = true -- When in Windows, you can use / instead of \
-vim.opt.magic = true      -- Do You Believe In (Perl) Magic?
-vim.opt.gdefault = true   -- Use global by default when replacing
+vim.opt.smartcase = true -- …but when I do, it'll pair down the search.
+vim.opt.magic = true     -- Do You Believe In (Perl) Magic?
+vim.opt.gdefault = true  -- Use global by default when replacing
+
+if vim.fn.exists('shellslash') == 1 then
+  vim.opt.shellslash = true -- When in Windows, you can use / instead of \
+end
 
 -- I have these wildignores commented out because they prevent NERDTree from
 -- showing these files and will break Fugitive. Uncomment these if you want to
