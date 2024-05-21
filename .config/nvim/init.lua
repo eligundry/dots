@@ -1277,15 +1277,19 @@ vim.keymap.set("n", "<Leader>rn", numberingCycle, {
 -- Window Navigation
 vim.keymap.set("n", "<C-h>", ":wincmd h<CR>", {
   desc = "Navigate to window left",
+  silent = true,
 })
 vim.keymap.set("n", "<C-j>", ":wincmd j<CR>", {
   desc = "Navigate to window below",
+  silent = true,
 })
 vim.keymap.set("n", "<C-k>", ":wincmd k<CR>", {
   desc = "Navigate to window above",
+  silent = true,
 })
 vim.keymap.set("n", "<C-l>", ":wincmd l<CR>", {
   desc = "Navigate to window right",
+  silent = true,
 })
 
 -- Window Resizing
