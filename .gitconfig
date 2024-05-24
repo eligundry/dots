@@ -9,6 +9,7 @@
     merge-cleanup = !"find . -name '*.orig' -delete"
     update-squashed-commit-date = !"GIT_COMMITTER_DATE=\"$(date)\" git commit --amend --no-edit --date=\"$(date)\""
     cherry-pick-revert = "!git show -R \"$1\" | git apply"
+    get-co-authors = "!git log --pretty=format:'%an <%ae>' | uniq -u"
 
 [apply]
     ignorewhitespace = change
