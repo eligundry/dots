@@ -18,9 +18,13 @@ if command -v playerctl &> /dev/null; then
 fi
 
 if command -v osascript &> /dev/null; then
-  osascript "$HOME/.tmux/scripts/spotify.applescript" | jq -r '"💿 \(.name[0:30]) - \(.artist[0:30])"'
-exit
+  output="$(osascript "$HOME/.tmux/scripts/spotify.applescript")"
+  spotify_is_running="$(echo "$output" | jq 'has("error") | not')"
 
+  if [ "$spotify_is_running" == "true" ]; then
+    echo "$output" | jq -r '"💿 \(.name[0:30]) - \(.artist[0:30])"'
+    exit
+  fi
 fi
 
-echo "😴"
+echo "💿😴"
