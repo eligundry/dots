@@ -269,9 +269,6 @@ require("lazy").setup(
           disable = {
             "startify",
           },
-          autotag = {
-            enable = true,
-          },
         })
       end,
     },
@@ -364,6 +361,11 @@ require("lazy").setup(
         {
           "lukas-reineke/lsp-format.nvim",
           config = true,
+        },
+        {
+          "Fildo7525/pretty_hover",
+          event = "LspAttach",
+          opts = {}
         },
         {
           "mattn/efm-langserver",
@@ -918,6 +920,12 @@ require("lazy").setup(
           mode = { "n", "v" },
           desc = "open-browser-github.vim: search text in web browser"
         },
+        {
+          'gx',
+          '<Plug>(openbrowser-search)',
+          mode = { "n", "v" },
+          desc = "open-browser-github.vim: search text in web browser"
+        },
       },
     },
     {
@@ -1431,16 +1439,6 @@ vim.keymap.set("n", "<Leader>pl", "setlocal spell!")
 vim.keymap.set("n", "<Leader>fl", vim.diagnostic.setqflist, {
   desc = "Open the quickfix list for the buffer",
 })
-
--- Open the URL under the cursor if using MacOS
-if vim.fn.has("mac") == 1 then
-  vim.keymap.set("n", "gx", function()
-    local url = vim.fn.expand("<cWORD>")
-    if url:match("^https?://") then
-      vim.fn.jobstart({ "open", url })
-    end
-  end)
-end
 
 -- My ideal state of using vim is to have it always in autochdir. This means,
 -- whenever I open a new a file in a different directory, all vim commands for
