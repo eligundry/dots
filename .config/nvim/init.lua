@@ -734,7 +734,9 @@ require("lazy").setup(
         return {
           openai_api_key = { "pass", "Dev/openai.com/gp.nvim-api-key" },
           chat_dir = chat_dir,
-          image_dir = image_dir,
+          image = {
+            store_dir = image_dir,
+          },
           agents = {
             {
               name = "ChatGPT4",
