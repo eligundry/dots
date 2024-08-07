@@ -529,7 +529,7 @@ require("lazy").setup(
         {
           "uga-rosa/cmp-dictionary",
           build =
-          "mkdir $HOME/.local/share/nvim/dict && aspell -d en dump master | aspell -l en expand > $HOME/.local/share/nvim/dict/en.dict",
+          "mkdir -pf $HOME/.local/share/nvim/dict && aspell -d en dump master | aspell -l en expand > $HOME/.local/share/nvim/dict/en.dict",
           config = true,
           opts = {
             paths = { vim.fn.expand("$HOME/.local/share/nvim/dict/en.dict") }
