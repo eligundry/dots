@@ -23,6 +23,7 @@ clone_or_update_repository "$HOME/.local/share/dots/zplug" "https://github.com/z
 clone_or_update_repository "$HOME/.local/share/dots/pipes" "https://github.com/pipeseroni/pipes.sh.git"
 clone_or_update_repository "$HOME/.local/share/dots/base16-alacritty" "https://github.com/aarowill/base16-alacritty.git"
 clone_or_update_repository "$HOME/.tmux/plugins/tpm" "https://github.com/tmux-plugins/tpm.git"
+clone_or_update_repository "$HOME/.local/share/pass/audit" "https://github.com/benburwell/pass-audit.git"
 
 if [ "$system_type" = "Darwin" ]; then
 
@@ -55,3 +56,6 @@ if ! command -v serviceman &> /dev/null; then
   echo "Installing serviceman"
   curl -sS https://webi.sh/serviceman | sh
 fi
+
+# Install pass audit so I can check password leaks
+PREFIX="/opt/homebrew/opt/pass" make install -f "$HOME/.local/share/pass/audit/Makefile"
