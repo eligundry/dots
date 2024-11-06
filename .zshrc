@@ -71,6 +71,7 @@ fi
 zplug load # --verbose
 
 eval "$(starship init zsh)"
+eval "$(atuin init zsh)"
 
 # Serverless uses tabtab which will automatically change this file unless these
 # lines are here. Fuck Amazon.

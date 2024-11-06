@@ -221,7 +221,7 @@ require("lazy").setup(
           { "<leader>fb", builtin.buffers,     mode = "n", desc = "telescope: Browse buffers" },
           { "<leader>fh", builtin.help_tags,   mode = "n", desc = "telescope: Browse help" },
           { "<leader>ft", builtin.treesitter,  mode = "n", desc = "telescope: Browse Treesitter" },
-          { "<leader>td", builtin.diagnostics, mode = "n", desc = "telescope: Diagnostics" },
+          { "<leader>td", builtin.diagnostics, mode = "n", desc = "telescope: Diagnostics (quickfix list)" },
         }
       end,
     },
@@ -289,7 +289,7 @@ require("lazy").setup(
         "rescript",
         "xml",
         "php",
-        "markdown",
+        -- "markdown",
         "astro",
         "glimmer",
         "handlebars",
@@ -352,7 +352,7 @@ require("lazy").setup(
               "jsonls",
               "lua_ls",
               "taplo", -- TOML
-              "tsserver",
+              "ts_ls", -- Typescript / tsserver
               "vimls",
               "yamlls",
             },
@@ -485,7 +485,7 @@ require("lazy").setup(
               json = { prettier },
               jsonc = { prettier },
               less = { prettier, stylelint },
-              markdown = { write_good, prettier },
+              -- markdown = { write_good, prettier },
               sass = { prettier, stylelint },
               scss = { prettier, stylelint },
               sh = { shellcheck },
