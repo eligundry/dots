@@ -51,6 +51,7 @@ pass_get_key() {
 export PYENV_ROOT="$HOME/.pyenv"
 pathadd "$PYENV_ROOT/bin"
 export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 if command_exists pyenv; then
     eval "$(pyenv init - --no-rehash)"
     eval "$(pyenv virtualenv-init -)"

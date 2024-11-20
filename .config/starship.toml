@@ -30,5 +30,8 @@ disabled = true
 [time]
 disabled = true
 
-[username]
-show_always = true
+[git_status]
+ahead = "⇡"
+behind = "⇣"
+stashed = '🎒'
+deleted = "✖"

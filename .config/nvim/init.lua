@@ -990,7 +990,6 @@ require("lazy").setup(
       end,
     },
     { "fourjay/vim-password-store", ft = "pass" },
-    { "wuelnerdotexe/vim-astro",    ft = "astro" },
     -- }}}
   }
 -- }}}

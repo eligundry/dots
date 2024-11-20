@@ -55,7 +55,6 @@ zplug "plugins/pass", from:oh-my-zsh, if:"command_exists 'pass'"
 zplug "plugins/rbenv", from:oh-my-zsh, if:"command_exists 'rbenv'"
 zplug "plugins/yarn", from:oh-my-zsh, if:"command_exists 'yarn'"
 zplug "plugins/history-substring-search", from:oh-my-zsh, defer:2
-zplug "larkery/zsh-histdb", use:"{zsh-histdb.plugin,histdb-interactive}.zsh"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "$HOME/.zsh", use:"*.zsh", from:local, defer:2
 zplug "$HOME/.local/bin", use:"base16", from:local, defer:2
@@ -71,7 +70,11 @@ fi
 zplug load # --verbose
 
 eval "$(starship init zsh)"
+
+# atuin.sh
+export ATUIN_NOBIND="true"
 eval "$(atuin init zsh)"
+bindkey '^r' atuin-search
 
 # Serverless uses tabtab which will automatically change this file unless these
 # lines are here. Fuck Amazon.
