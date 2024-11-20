@@ -33,5 +33,8 @@ disabled = true
 [git_status]
 ahead = "⇡"
 behind = "⇣"
-stashed = '🎒'
+stashed = '⚑'
 deleted = "✖"
+
+[directory]
+truncate_to_repo = false
