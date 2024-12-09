@@ -258,7 +258,9 @@ require("lazy").setup(
     -- Treesitter (syntax highlighting and so much more) {{{
     {
       "nvim-treesitter/nvim-treesitter",
-      build = "TSUpdate",
+      build = function()
+        vim.cmd(":TSUpdate")
+      end,
       config = function()
         require("nvim-treesitter.configs").setup({
           ensure_installed = {},
@@ -269,10 +271,14 @@ require("lazy").setup(
           highlight = {
             enable = true,
             disable = { 'lua' },
+            additional_vim_regex_highlighting = false,
           },
           disable = {
             "startify",
           },
+          indent = {
+            enable = true,
+          }
         })
       end,
     },
