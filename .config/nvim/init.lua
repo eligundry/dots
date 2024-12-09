@@ -258,8 +258,12 @@ require("lazy").setup(
     -- Treesitter (syntax highlighting and so much more) {{{
     {
       "nvim-treesitter/nvim-treesitter",
+      build = "TSUpdate",
       config = function()
         require("nvim-treesitter.configs").setup({
+          ensure_installed = {},
+          modules = {},
+          ignore_install = {},
           sync_install = false,
           auto_install = true,
           highlight = {
@@ -769,6 +773,50 @@ require("lazy").setup(
           },
         }
       end,
+    },
+    {
+      "yetone/avante.nvim",
+      event = "VeryLazy",
+      lazy = false,
+      version = false,
+      opts = {
+        provider = "openai",
+        auto_suggestions_provider = "copilot",
+      },
+      build = "make",
+      dependencies = {
+        "stevearc/dressing.nvim",
+        "nvim-lua/plenary.nvim",
+        "MunifTanjim/nui.nvim",
+        --- The below dependencies are optional,
+        "hrsh7th/nvim-cmp",
+        "nvim-tree/nvim-web-devicons",
+        {
+          -- support for image pasting
+          "HakonHarnes/img-clip.nvim",
+          event = "VeryLazy",
+          opts = {
+            -- recommended settings
+            default = {
+              embed_image_as_base64 = false,
+              prompt_for_file_name = false,
+              drag_and_drop = {
+                insert_mode = true,
+              },
+              -- required for Windows users
+              use_absolute_path = true,
+            },
+          },
+        },
+        {
+          -- Make sure to set this up properly if you have lazy=true
+          'MeanderingProgrammer/render-markdown.nvim',
+          opts = {
+            file_types = { "markdown", "Avante" },
+          },
+          ft = { "markdown", "Avante" },
+        },
+      },
     },
     -- }}}
     -- Commenting {{{
