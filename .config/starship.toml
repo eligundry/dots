@@ -16,7 +16,7 @@ format = "[$symbol($version )]($style)"
 version_format = "v${major}.${minor}"
 
 [python]
-disabled = true
+disabled = false
 format = "[$symbol($version )]($style)"
 version_format = "v${major}.${minor}"
 
