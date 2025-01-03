@@ -1,6 +1,7 @@
 font-family = CaskaydiaCove Nerd Font Mono SemiBold
-font-size = 12
+font-size = 12.5
 font-thicken = true
-adjust-cell-width = -15%
+adjust-cell-width = -18%
 theme = base16-default-dark
-
+background-opacity = 0.95
+background-blur-radius = 5
