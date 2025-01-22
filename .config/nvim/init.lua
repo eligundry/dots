@@ -769,10 +769,8 @@ require("lazy").setup(
       version = false,
       opts = {
         provider = "claude",
-        -- provider = "openai",
-        auto_suggestions_provider = "copilot",
         behaviour = {
-          auto_suggestions = true,
+          auto_suggestions = false,
         },
       },
       build = "make",
@@ -781,8 +779,12 @@ require("lazy").setup(
         "nvim-lua/plenary.nvim",
         "MunifTanjim/nui.nvim",
         --- The below dependencies are optional,
-        "hrsh7th/nvim-cmp",
-        "nvim-tree/nvim-web-devicons",
+        "echasnovski/mini.pick",         -- for file_selector provider mini.pick
+        "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+        "hrsh7th/nvim-cmp",              -- autocompletion for avante commands and mentions
+        "ibhagwan/fzf-lua",              -- for file_selector provider fzf
+        "nvim-tree/nvim-web-devicons",   -- or echasnovski/mini.icons
+        "zbirenbaum/copilot.lua",        -- for providers='copilot'
         {
           -- support for image pasting
           "HakonHarnes/img-clip.nvim",
@@ -1246,9 +1248,18 @@ vim.opt.formatoptions = "oqn1tc" -- Check out 'fo-table' to see what this does.
 -- Status bar
 vim.opt.ruler = true
 vim.opt.showcmd = true
-vim.opt.cmdheight = 2
 vim.opt.laststatus = 2
 vim.opt.showmode = false -- Powerline shows mode now
+
+
+-- Avante likes the status bar to clear out lualine
+vim.opt.cmdheight = 2
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "Avante*" },
+  callback = function()
+    vim.opt_local.laststatus = 3
+  end,
+})
 
 -- Completely hide concealed text (i.e. snippets)
 -- vim.opt.conceallevel = 2
