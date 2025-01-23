@@ -178,17 +178,3 @@ alias l.='ls -d .*'
 
 export OPENAI_API_KEY="$(pass Dev/openai.com/gp.nvim-api-key)"
 export ANTHROPIC_API_KEY="$(pass Dev/anthropic.com/api-key)"
-
-################################################################################
-# => Pyenv
-################################################################################
-
-# export PYENV_DEBUG=1
-export PYENV_ROOT="$HOME/.pyenv"
-pathadd "$PYENV_ROOT/bin"
-export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-if command_exists pyenv; then
-    eval "$(pyenv init --path)"
-    eval "$(pyenv init -)"
-fi
