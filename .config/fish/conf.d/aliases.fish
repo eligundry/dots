@@ -6,5 +6,8 @@ if status is-interactive
   alias s='sudo'
   alias la='ls -A'
   alias ll='ls -lh'
+
+  alias g='git'
+  alias gst='git status'
   alias gcotb='git checkout --track=direct -b'
 end
