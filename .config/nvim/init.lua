@@ -966,7 +966,7 @@ require("lazy").setup(
         },
         {
           'gx',
-          '<Plug>(openbrowser-search)',
+          '<Plug>(openbrowser-open)',
           mode = { "n", "v" },
           desc = "open-browser-github.vim: search text in web browser"
         },

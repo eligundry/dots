@@ -1,0 +1,2 @@
+export PASSWORD_STORE_ENABLE_EXTENSIONS=true
+export EDITOR=nvim
