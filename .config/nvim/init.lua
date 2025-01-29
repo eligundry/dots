@@ -263,7 +263,7 @@ require("lazy").setup(
       end,
       config = function()
         require("nvim-treesitter.configs").setup({
-          ensure_installed = {},
+          ensure_installed = { "http" },
           modules = {},
           ignore_install = {},
           sync_install = false,
@@ -982,28 +982,26 @@ require("lazy").setup(
     {
       "rest-nvim/rest.nvim",
       dependencies = { "nvim-lua/plenary.nvim" },
-      tag = "v1.1.0",
+      tag = "v3.9.1",
       ft = "http",
       config = function()
         require("rest-nvim").setup({
-          result_split_horizontal = true,
-          encode_url = true,
-          result = {
-            show_url = true,
-            skip_ssl_verification = true,
-            show_http_info = true,
-            show_headers = true,
-            formatters = {
-              json = "jq",
-              html = false,
+          ui = {
+            winbar = true,
+            ---@class rest.Config.UI.Keybinds
+            keybinds = {
+              ---@type string Mapping for cycle to previous result pane
+              prev = "H",
+              ---@type string Mapping for cycle to next result pane
+              next = "L",
             },
-          },
+          }
         })
 
         vim.api.nvim_create_autocmd("FileType", {
           pattern = "http",
           callback = function()
-            vim.keymap.set("n", "<Leader>e", "<Plug>RestNvim", { buffer = true })
+            vim.keymap.set("n", "<Leader>e", ":hor Rest run<CR>", { buffer = true })
           end,
           desc = "<Leader>e will execute the current file with rest.nvim",
         })
@@ -1491,6 +1489,10 @@ vim.keymap.set("n", "<Leader>pl", "setlocal spell!")
 vim.keymap.set("n", "<Leader>fl", vim.diagnostic.setqflist, {
   desc = "Open the quickfix list for the buffer",
 })
+
+vim.keymap.set('n', "<Leader>pwd", function()
+  print(vim.fn.expand("%:p"))
+end, { desc = "Print path to current file" })
 
 -- My ideal state of using vim is to have it always in autochdir. This means,
 -- whenever I open a new a file in a different directory, all vim commands for

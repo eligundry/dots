@@ -10,6 +10,7 @@ if status is-interactive
 
   alias g='git'
   alias gst='git status'
+  alias gb='git branch'
   alias gco='git checkout'
   alias gcotb='git checkout --track=direct -b'
 end
