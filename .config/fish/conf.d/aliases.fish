@@ -13,4 +13,6 @@ if status is-interactive
   alias gb='git branch'
   alias gco='git checkout'
   alias gcotb='git checkout --track=direct -b'
+
+  alias shadcn='pnpm dlx shadcn@latest'
 end
