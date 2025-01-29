@@ -11,6 +11,13 @@ yadm clone https://github.com/eligundry/dots.git
 yadm bootstrap
 ```
 
+## Common Commands
+
+```bash
+# This will install/update dependencies in .Brewfile and update the lockfile
+brew bundle --file "$HOME/.Brewfile" && brew bundle dump --force
+```
+
 ## litestream-zsh-histdb-s3
 
 As a part of a long term project for me, I want to keep track of every shell
