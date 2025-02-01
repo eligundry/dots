@@ -1,0 +1,28 @@
+background = #262626
+foreground = #5F5F87
+
+selection-background = #5F875F
+selection-foreground = #262626
+
+palette = 0=#262626
+palette = 1=#444444
+palette = 2=#FFFFAF
+palette = 3=#87AF87
+palette = 4=#8787AF
+palette = 5=#5FAFAF
+palette = 6=#87AFD7
+palette = 7=#5F5F87
+palette = 8=#87875F
+palette = 9=#444444
+palette = 10=#FFFFAF
+palette = 11=#87AF87
+palette = 12=#8787AF
+palette = 13=#5FAFAF
+palette = 14=#87AFD7
+palette = 15=#6C6C6C
+palette = 16=#FF8700
+palette = 17=#BCBCBC
+palette = 18=#AF5F5F
+palette = 19=#5F875F
+palette = 20=#5F87AF
+palette = 21=#5F8787
