@@ -15,4 +15,12 @@ if status is-interactive
   alias gcotb='git checkout --track=direct -b'
 
   alias shadcn='pnpm dlx shadcn@latest'
+
+  function ... --description 'cd up 2 directories'
+    cd ../..
+  end
+
+  function .... --description 'cd up 3 directories'
+    cd ../../..
+  end
 end
