@@ -124,6 +124,9 @@ require("lazy").setup(
 
             if updated_theme and updated_theme.neovim ~= vim.g.colors_name then
               set_colorscheme(updated_theme.neovim)
+
+              -- Refresh Lualine statusline to match updated theme
+              require("lualine").setup({ theme = 'auto' })
             end
           end,
           desc = "base16: Update colorscheme if the terminal's theme has changed"

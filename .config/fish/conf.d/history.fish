@@ -1,3 +1,4 @@
+# Sync shell history to the cloud with atuin
 set -gx ATUIN_NOBIND "true"
 atuin init fish | source
 
@@ -5,7 +6,7 @@ atuin init fish | source
 bind \cr _atuin_search
 
 # Bind up arrow to search through history with current input
-# bind -k up '_atuin_search_widget --shell-up-key-binding'
+bind -k up '_atuin_search_widget --shell-up-key-binding'
 
 # Bind down arrow to search through history with current input
-# bind -k down '_atuin_search_widget --shell-down-key-binding'
+bind -k down '_atuin_search_widget --shell-down-key-binding'
