@@ -23,4 +23,8 @@ if status is-interactive
   function .... --description 'cd up 3 directories'
     cd ../../..
   end
+
+  function ..... --description 'cd up 4 directories'
+    cd ../../../..
+  end
 end
