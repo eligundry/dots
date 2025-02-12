@@ -324,7 +324,6 @@ require("lazy").setup(
               'bash-language-server',
               'css-lsp',
               'dockerfile-language-server',
-              'efm',
               'eslint-lsp',
               'fixjson',
               'goimports',
@@ -358,7 +357,6 @@ require("lazy").setup(
               "astro",
               "bashls",
               "cssls",
-              "efm",
               "gopls",
               "html",
               "intelephense", -- PHP
@@ -381,13 +379,65 @@ require("lazy").setup(
           opts = {}
         },
         {
-          "mattn/efm-langserver",
-          dependencies = {
-            {
-              'creativenull/efmls-configs-nvim',
-              version = 'v0.2.x',
+          "stevearc/conform.nvim",
+          config = true,
+          opts = {
+            formatters_by_ft = {
+              astro = { "prettier" },
+              css = { "prettier" },
+              go = { "gofmt" },
+              html = { "prettier" },
+              javascript = { "prettier" },
+              javascriptreact = { "prettier" },
+              json = { "prettier" },
+              jsonc = { "prettier" },
+              less = { "prettier" },
+              lua = { "stylua" },
+              typescript = { "prettier" },
+              typescriptreact = { "prettier" },
+              yaml = { "prettier" },
             },
-          },
+            format_on_save = {
+              timeout_ms = 500,
+              lsp_format = "fallback",
+            },
+          }
+        },
+        {
+          "mfussenegger/nvim-lint",
+          config = function()
+            local lint = require('lint')
+
+            lint.linters_by_ft = {
+              astro = { "eslint" },
+              css = { "stylelint" },
+              go = { "golangci-lint" },
+              html = { "eslint" },
+              javascript = { "eslint" },
+              javascriptreact = { "eslint" },
+              json = { "jsonlint" },
+              jsonc = { "jsonlint" },
+              less = { "stylelint" },
+              lua = { "luacheck" },
+              markdown = { "vale" },
+              php = { "phpcs" },
+              ruby = { "rubocop" },
+              sass = { "stylelint" },
+              scss = { "stylelint" },
+              sh = { "shellcheck" },
+              shell = { "shellcheck", "shfmt" },
+              typescript = { "eslint" },
+              typescriptreact = { "eslint" },
+              vue = { "eslint" },
+              yaml = { "yamllint" },
+            }
+
+            vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+              callback = function()
+                require("lint").try_lint()
+              end,
+            })
+          end,
         },
       },
       config = function()
@@ -474,52 +524,6 @@ require("lazy").setup(
                 tailwindCSS = {
                   classAttributes = { "class", "className", "classNames", "ngClass", "class:list" },
                 },
-              },
-            })
-          end,
-          ["efm"] = function()
-            local eslint = require 'efmls-configs.linters.eslint'
-            local gofmt = require 'efmls-configs.formatters.gofmt'
-            local goimports = require 'efmls-configs.formatters.goimports'
-            local prettier = require 'efmls-configs.formatters.prettier'
-            local shellcheck = require 'efmls-configs.linters.shellcheck'
-            local stylelint = require 'efmls-configs.linters.stylelint'
-            local write_good = require 'efmls-configs.linters.write_good'
-            local yamllint = require 'efmls-configs.linters.yamllint'
-
-            local efm_filetypes = {}
-            local efm_languages = {
-              astro = { prettier, eslint },
-              css = { prettier, stylelint },
-              go = { gofmt, goimports },
-              html = { prettier },
-              javascript = { prettier, eslint },
-              javascriptreact = { prettier, eslint },
-              json = { prettier },
-              jsonc = { prettier },
-              less = { prettier, stylelint },
-              -- markdown = { write_good, prettier },
-              sass = { prettier, stylelint },
-              scss = { prettier, stylelint },
-              sh = { shellcheck },
-              typescript = { prettier, eslint },
-              typescriptreact = { prettier, eslint },
-              yaml = { yamllint, prettier },
-              zsh = { shellcheck },
-            }
-
-            local n = 0
-            for k, _ in pairs(efm_languages) do
-              n = n + 1
-              efm_filetypes[n] = k
-            end
-
-            lspconfig.efm.setup({
-              init_options = { documentFormatting = true },
-              filetypes = efm_filetypes,
-              settings = {
-                rootMarkers = { ".git/" },
-                languages = efm_languages,
               },
             })
           end,
@@ -775,17 +779,18 @@ require("lazy").setup(
         behaviour = {
           auto_suggestions = false,
         },
+        file_selector = {
+          --- @alias FileSelectorProvider "native" | "fzf" | "mini.pick" | "snacks" | "telescope" | string | fun(params: avante.file_selector.IParams|nil): nil
+          provider = "telescope",
+        }
       },
       build = "make",
       dependencies = {
         "stevearc/dressing.nvim",
         "nvim-lua/plenary.nvim",
         "MunifTanjim/nui.nvim",
-        --- The below dependencies are optional,
-        "echasnovski/mini.pick",         -- for file_selector provider mini.pick
         "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
         "hrsh7th/nvim-cmp",              -- autocompletion for avante commands and mentions
-        "ibhagwan/fzf-lua",              -- for file_selector provider fzf
         "nvim-tree/nvim-web-devicons",   -- or echasnovski/mini.icons
         "zbirenbaum/copilot.lua",        -- for providers='copilot'
         {
@@ -1258,7 +1263,7 @@ vim.opt.cmdheight = 2
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "Avante*" },
   callback = function()
-    vim.opt_local.laststatus = 3
+    vim.opt.laststatus = 3
   end,
 })
 
