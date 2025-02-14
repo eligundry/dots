@@ -5,3 +5,4 @@
 
 export OPENAI_API_KEY="$(pass Dev/openai.com/gp.nvim-api-key)"
 export ANTHROPIC_API_KEY="$(pass Dev/anthropic.com/api-key)"
+export TAVILY_API_KEY="$(pass Dev/tavily.com/api-key)"

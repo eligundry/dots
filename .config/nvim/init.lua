@@ -5,7 +5,7 @@ end
 
 local function update_hl(group, tbl)
   local old_hl = vim.api.nvim_get_hl_by_name(group, true)
-  local new_hl = vim.tbl_extend('force', old_hl, tbl)
+  local new_hl = vim.tbl_extend("force", old_hl, tbl)
   vim.api.nvim_set_hl(0, group, new_hl)
 end
 
@@ -61,8 +61,8 @@ require("lazy").setup(
       -- scope all Telescope operations to YADM files, as that's what I probably
       -- want.
       config = function()
-        local yadm_files = vim.fn.systemlist(
-          "yadm list | awk '!/\\.local\\/share\\/dots/ {print ENVIRON[\"HOME\"] \"/\" $0}'")
+        local yadm_files =
+            vim.fn.systemlist('yadm list | awk \'!/\\.local\\/share\\/dots/ {print ENVIRON["HOME"] "/" $0}\'')
         local yadm_telescope_mappings = function()
           local telescope = require("telescope.builtin")
           local yadm_file_search = function()
@@ -76,15 +76,15 @@ require("lazy").setup(
             })
           end
 
-          vim.keymap.set('n', '<c-p>', yadm_file_search, {
+          vim.keymap.set("n", "<c-p>", yadm_file_search, {
             buffer = true,
             desc = "Telescope: yadm scoped fuzzy find files",
           })
-          vim.keymap.set('n', '<leader>ff', yadm_file_search, {
+          vim.keymap.set("n", "<leader>ff", yadm_file_search, {
             buffer = true,
             desc = "Telescope: yadm scoped fuzzy find files",
           })
-          vim.keymap.set('n', '<leader>fg', yadm_live_grep, {
+          vim.keymap.set("n", "<leader>fg", yadm_live_grep, {
             buffer = true,
             desc = "Telescope: yadm scoped live grep",
           })
@@ -98,7 +98,7 @@ require("lazy").setup(
         vim.api.nvim_create_autocmd("FileType", {
           pattern = "startify",
           callback = function()
-            if vim.loop.cwd() == vim.fn.expand('~') then
+            if vim.loop.cwd() == vim.fn.expand("~") then
               yadm_telescope_mappings()
             end
           end,
@@ -126,10 +126,10 @@ require("lazy").setup(
               set_colorscheme(updated_theme.neovim)
 
               -- Refresh Lualine statusline to match updated theme
-              require("lualine").setup({ theme = 'auto' })
+              require("lualine").setup({ theme = "auto" })
             end
           end,
-          desc = "base16: Update colorscheme if the terminal's theme has changed"
+          desc = "base16: Update colorscheme if the terminal's theme has changed",
         })
       end,
     },
@@ -151,9 +151,9 @@ require("lazy").setup(
         { "<leader>nt", "<cmd>NvimTreeToggle<CR>", mode = "n", desc = "nvim-tree: toggle" },
       },
       config = function(plugin, opts)
-        require('nvim-tree').setup(opts)
+        require("nvim-tree").setup(opts)
 
-        update_hl('NvimTreeSpecialFile', { underline = false })
+        update_hl("NvimTreeSpecialFile", { underline = false })
       end,
       opts = {
         view = {
@@ -199,7 +199,7 @@ require("lazy").setup(
     {
       "kevinhwang91/nvim-fundo", -- Better persistent undo
       config = function()
-        require('fundo').install()
+        require("fundo").install()
       end,
     },
     -- }}}
@@ -273,7 +273,7 @@ require("lazy").setup(
           auto_install = true,
           highlight = {
             enable = true,
-            disable = { 'lua' },
+            disable = { "lua" },
             additional_vim_regex_highlighting = false,
           },
           disable = {
@@ -281,7 +281,7 @@ require("lazy").setup(
           },
           indent = {
             enable = true,
-          }
+          },
         })
       end,
     },
@@ -320,29 +320,32 @@ require("lazy").setup(
           opts = { max_concurrent_installers = 10 },
           build = function()
             local ensure_installed = {
-              'astro-language-server',
-              'bash-language-server',
-              'css-lsp',
-              'dockerfile-language-server',
-              'eslint-lsp',
-              'fixjson',
-              'goimports',
-              'gopls',
-              'html-lsp',
-              'intelephense',
-              'json-lsp',
-              'lua-language-server',
-              'prettier',
-              'pyright',
-              'shellcheck',
-              'stylelint',
-              'tailwindcss-language-server',
-              'taplo',
-              'typescript-language-server',
-              'vim-language-server',
-              'write-good',
-              'yaml-language-server',
-              'yamllint',
+              "astro-language-server",
+              "bash-language-server",
+              "css-lsp",
+              "dockerfile-language-server",
+              "eslint-lsp",
+              "fixjson",
+              "goimports",
+              "gopls",
+              "html-lsp",
+              "intelephense",
+              "json-lsp",
+              "jsonlint",
+              "lua-language-server",
+              "luacheck",
+              "prettier",
+              "pyright",
+              "shellcheck",
+              "stylelint",
+              "stylua",
+              "tailwindcss-language-server",
+              "taplo",
+              "typescript-language-server",
+              "vim-language-server",
+              "write-good",
+              "yaml-language-server",
+              "yamllint",
             }
 
             vim.cmd("MasonInstall " .. table.concat(ensure_installed, " "))
@@ -376,7 +379,7 @@ require("lazy").setup(
         {
           "Fildo7525/pretty_hover",
           event = "LspAttach",
-          opts = {}
+          opts = {},
         },
         {
           "stevearc/conform.nvim",
@@ -389,7 +392,7 @@ require("lazy").setup(
               html = { "prettier" },
               javascript = { "prettier" },
               javascriptreact = { "prettier" },
-              json = { "prettier" },
+              json = { "fixjson", "prettier" },
               jsonc = { "prettier" },
               less = { "prettier" },
               lua = { "stylua" },
@@ -401,44 +404,44 @@ require("lazy").setup(
               timeout_ms = 500,
               lsp_format = "fallback",
             },
-          }
+          },
         },
-        {
-          "mfussenegger/nvim-lint",
-          config = function()
-            local lint = require('lint')
-
-            lint.linters_by_ft = {
-              astro = { "eslint" },
-              css = { "stylelint" },
-              go = { "golangci-lint" },
-              html = { "eslint" },
-              javascript = { "eslint" },
-              javascriptreact = { "eslint" },
-              json = { "jsonlint" },
-              jsonc = { "jsonlint" },
-              less = { "stylelint" },
-              lua = { "luacheck" },
-              markdown = { "vale" },
-              php = { "phpcs" },
-              ruby = { "rubocop" },
-              sass = { "stylelint" },
-              scss = { "stylelint" },
-              sh = { "shellcheck" },
-              shell = { "shellcheck", "shfmt" },
-              typescript = { "eslint" },
-              typescriptreact = { "eslint" },
-              vue = { "eslint" },
-              yaml = { "yamllint" },
-            }
-
-            vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-              callback = function()
-                require("lint").try_lint()
-              end,
-            })
-          end,
-        },
+        -- {
+        --   "mfussenegger/nvim-lint",
+        --   config = function()
+        --     local lint = require("lint")
+        --
+        --     lint.linters_by_ft = {
+        --       astro = { "eslint" },
+        --       css = { "stylelint" },
+        --       go = { "golangci-lint" },
+        --       html = { "eslint" },
+        --       javascript = { "eslint" },
+        --       javascriptreact = { "eslint" },
+        --       json = { "jsonlint" },
+        --       jsonc = { "jsonlint" },
+        --       less = { "stylelint" },
+        --       -- lua = { "luacheck" },
+        --       markdown = { "vale" },
+        --       php = { "phpcs" },
+        --       ruby = { "rubocop" },
+        --       sass = { "stylelint" },
+        --       scss = { "stylelint" },
+        --       sh = { "shellcheck" },
+        --       shell = { "shellcheck", "shfmt" },
+        --       typescript = { "eslint" },
+        --       typescriptreact = { "eslint" },
+        --       vue = { "eslint" },
+        --       yaml = { "yamllint" },
+        --     }
+        --
+        --     vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+        --       callback = function()
+        --         require("lint").try_lint()
+        --       end,
+        --     })
+        --   end,
+        -- },
       },
       config = function()
         local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -532,7 +535,7 @@ require("lazy").setup(
     },
     {
       "ivanjermakov/troublesum.nvim",
-      event = 'DiagnosticChanged',
+      event = "DiagnosticChanged",
       config = true,
     },
     {
@@ -549,7 +552,7 @@ require("lazy").setup(
           "mkdir -pf $HOME/.local/share/nvim/dict && aspell -d en dump master | aspell -l en expand > $HOME/.local/share/nvim/dict/en.dict",
           config = true,
           opts = {
-            paths = { vim.fn.expand("$HOME/.local/share/nvim/dict/en.dict") }
+            paths = { vim.fn.expand("$HOME/.local/share/nvim/dict/en.dict") },
           },
         },
         {
@@ -594,7 +597,7 @@ require("lazy").setup(
           "roobert/tailwindcss-colorizer-cmp.nvim",
           config = true,
           opts = { color_square_width = 2 },
-        }
+        },
       },
       config = function()
         local cmp = require("cmp")
@@ -730,7 +733,7 @@ require("lazy").setup(
 
         -- Preview tailwind colors in code completion
         cmp.config.formatting = {
-          format = require("tailwindcss-colorizer-cmp").formatter
+          format = require("tailwindcss-colorizer-cmp").formatter,
         }
       end,
     },
@@ -755,7 +758,7 @@ require("lazy").setup(
               secret = { "pass", "Dev/openai.com/gp.nvim-api-key" },
             },
             anthropic = {
-              secret = { "pass", "Dev/anthropic.com/api-key" }
+              secret = { "pass", "Dev/anthropic.com/api-key" },
             },
           },
           chat_dir = chat_dir,
@@ -782,7 +785,7 @@ require("lazy").setup(
         file_selector = {
           --- @alias FileSelectorProvider "native" | "fzf" | "mini.pick" | "snacks" | "telescope" | string | fun(params: avante.file_selector.IParams|nil): nil
           provider = "telescope",
-        }
+        },
       },
       build = "make",
       dependencies = {
@@ -812,7 +815,7 @@ require("lazy").setup(
         },
         {
           -- Make sure to set this up properly if you have lazy=true
-          'MeanderingProgrammer/render-markdown.nvim',
+          "MeanderingProgrammer/render-markdown.nvim",
           opts = {
             file_types = { "markdown", "Avante" },
           },
@@ -825,7 +828,7 @@ require("lazy").setup(
     {
       "JoosepAlviste/nvim-ts-context-commentstring",
       config = function()
-        require('ts_context_commentstring').setup()
+        require("ts_context_commentstring").setup()
         vim.g.skip_ts_context_commentstring_module = true
       end,
     },
@@ -967,16 +970,16 @@ require("lazy").setup(
       cmd = { "OpenBrowser", "OpenBrowserSearch" },
       keys = {
         {
-          '<leader>os',
-          '<Plug>(openbrowser-search)',
+          "<leader>os",
+          "<Plug>(openbrowser-search)",
           mode = { "n", "v" },
-          desc = "open-browser-github.vim: search text in web browser"
+          desc = "open-browser-github.vim: search text in web browser",
         },
         {
-          'gx',
-          '<Plug>(openbrowser-open)',
+          "gx",
+          "<Plug>(openbrowser-open)",
           mode = { "n", "v" },
-          desc = "open-browser-github.vim: search text in web browser"
+          desc = "open-browser-github.vim: search text in web browser",
         },
       },
     },
@@ -1003,7 +1006,7 @@ require("lazy").setup(
               ---@type string Mapping for cycle to next result pane
               next = "L",
             },
-          }
+          },
         })
 
         vim.api.nvim_create_autocmd("FileType", {
@@ -1108,7 +1111,7 @@ vim.opt.smartcase = true -- …but when I do, it'll pair down the search.
 vim.opt.magic = true     -- Do You Believe In (Perl) Magic?
 vim.opt.gdefault = true  -- Use global by default when replacing
 
-if vim.fn.exists('shellslash') == 1 then
+if vim.fn.exists("shellslash") == 1 then
   vim.opt.shellslash = true -- When in Windows, you can use / instead of \
 end
 
@@ -1162,10 +1165,10 @@ end
 -- }}}
 
 -- autocmds {{{
-vim.api.nvim_create_autocmd('BufWritePre', {
-  pattern = '*',
-  command = ':%s/\\s\\+$//e',
-  desc = 'Remove trailing whitespace when saving files'
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*",
+  command = ":%s/\\s\\+$//e",
+  desc = "Remove trailing whitespace when saving files",
 })
 
 vim.api.nvim_create_autocmd("InsertLeave", {
@@ -1236,13 +1239,13 @@ update_hl("Comment", { italic = true })
 
 -- Override some treesitter/default styles
 -- Use `:Inspect` to see the group under the cursor is
-update_hl('TSVariable', { link = 'TSText' })
-update_hl('TSTypeBuiltin', { link = 'TSType' })
-update_hl('TSVariableBuiltin', { italic = false })
-update_hl('TSFuncBuiltin', { italic = false })
-update_hl('PreProc', { italic = false })
-update_hl('@comment.gitcommit', { italic = false })
-update_hl('@property.tsx', { link = 'TSLabel' })
+update_hl("TSVariable", { link = "TSText" })
+update_hl("TSTypeBuiltin", { link = "TSType" })
+update_hl("TSVariableBuiltin", { italic = false })
+update_hl("TSFuncBuiltin", { italic = false })
+update_hl("PreProc", { italic = false })
+update_hl("@comment.gitcommit", { italic = false })
+update_hl("@property.tsx", { link = "TSLabel" })
 -- }}}
 
 -- Look & Feel {{{
@@ -1256,7 +1259,6 @@ vim.opt.ruler = true
 vim.opt.showcmd = true
 vim.opt.laststatus = 2
 vim.opt.showmode = false -- Powerline shows mode now
-
 
 -- Avante likes the status bar to clear out lualine
 vim.opt.cmdheight = 2
@@ -1498,7 +1500,7 @@ vim.keymap.set("n", "<Leader>fl", vim.diagnostic.setqflist, {
   desc = "Open the quickfix list for the buffer",
 })
 
-vim.keymap.set('n', "<Leader>pwd", function()
+vim.keymap.set("n", "<Leader>pwd", function()
   print(vim.fn.expand("%:p"))
 end, { desc = "Print path to current file" })
 
