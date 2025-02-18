@@ -7,7 +7,29 @@ if status is-interactive
 
   # Fun lil greeting when starting up the shell
   function fish_greeting
-    fortune | cowsay
+    # Get terminal height
+    set -l term_height $LINES
+
+    if test -z "$term_height"
+      # Fallback if $LINES is not set
+      set term_height (tput lines)
+    end
+
+    # Calculate max fortune length based on terminal height
+    # Cowsay adds about 4 lines of overhead (cow drawing)
+    # Leave 4 lines for prompt and command space
+    set -l max_lines (math "$term_height - 8")
+
+    if test $max_lines -lt 5
+      # Terminal too small, skip greeting
+      return
+    else if test $max_lines -lt 10
+      # Small terminal, use short fortunes
+      fortune -s | cowsay
+    else
+      # Normal terminal, use regular fortune
+      fortune | cowsay
+    end
   end
 
   # Set terminal title
