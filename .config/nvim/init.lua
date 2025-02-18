@@ -737,6 +737,15 @@ require("lazy").setup(
         }
       end,
     },
+    {
+      "rachartier/tiny-inline-diagnostic.nvim",
+      event = "VeryLazy", -- Or `LspAttach`
+      priority = 1000,    -- needs to be loaded in first
+      config = function()
+        require("tiny-inline-diagnostic").setup()
+        vim.diagnostic.config({ virtual_text = false }) -- Only if needed in your configuration, if you already have native LSP diagnostics
+      end,
+    },
     -- }}}
     -- 🤖 AI {{{
     {
@@ -993,7 +1002,7 @@ require("lazy").setup(
     {
       "rest-nvim/rest.nvim",
       dependencies = { "nvim-lua/plenary.nvim" },
-      tag = "v3.9.1",
+      tag = "v3.11.1",
       ft = "http",
       config = function()
         require("rest-nvim").setup({
@@ -1005,6 +1014,11 @@ require("lazy").setup(
               prev = "H",
               ---@type string Mapping for cycle to next result pane
               next = "L",
+            },
+          },
+          clients = {
+            curl = {
+              statistics = {},
             },
           },
         })
