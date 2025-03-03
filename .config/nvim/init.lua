@@ -791,10 +791,6 @@ require("lazy").setup(
         behaviour = {
           auto_suggestions = false,
         },
-        file_selector = {
-          --- @alias FileSelectorProvider "native" | "fzf" | "mini.pick" | "snacks" | "telescope" | string | fun(params: avante.file_selector.IParams|nil): nil
-          provider = "telescope",
-        },
       },
       build = "make",
       dependencies = {
@@ -1055,6 +1051,11 @@ require("lazy").setup(
       end,
     },
     { "fourjay/vim-password-store", ft = "pass" },
+    {
+      "davidmh/mdx.nvim",
+      config = true,
+      dependencies = { "nvim-treesitter/nvim-treesitter" },
+    },
     -- }}}
   }
 -- }}}
