@@ -791,6 +791,18 @@ require("lazy").setup(
         behaviour = {
           auto_suggestions = false,
         },
+        -- MCPHub setup
+        -- The system_prompt type supports both a string and a function that returns a string. Using a function here allows dynamically updating the prompt with mcphub
+        system_prompt = function()
+          local hub = require("mcphub").get_hub_instance()
+          return hub:get_active_servers_prompt()
+        end,
+        -- The custom_tools type supports both a list and a function that returns a list. Using a function here prevents requiring mcphub before it's loaded
+        custom_tools = function()
+          return {
+            require("mcphub.extensions.avante").mcp_tool(),
+          }
+        end,
       },
       build = "make",
       dependencies = {
@@ -801,6 +813,7 @@ require("lazy").setup(
         "hrsh7th/nvim-cmp",              -- autocompletion for avante commands and mentions
         "nvim-tree/nvim-web-devicons",   -- or echasnovski/mini.icons
         "zbirenbaum/copilot.lua",        -- for providers='copilot'
+        "ravitemer/mcphub.nvim",
         {
           -- support for image pasting
           "HakonHarnes/img-clip.nvim",
@@ -826,6 +839,62 @@ require("lazy").setup(
           },
           ft = { "markdown", "Avante" },
         },
+      },
+    },
+    {
+      "ravitemer/mcphub.nvim",
+      dependencies = {
+        "nvim-lua/plenary.nvim", -- Required for Job and HTTP requests
+      },
+      -- cmd = "MCPHub", -- lazily start the hub when `MCPHub` is called
+      build = "npm install -g mcp-hub@latest", -- Installs required mcp-hub npm module
+      config = function()
+        require("mcphub").setup({
+          -- Required options
+          port = 3500,                                  -- Port for MCP Hub server
+          config = vim.fn.expand("~/.mcpservers.json"), -- Absolute path to config file
+
+          -- Optional options
+          on_ready = function(hub)
+            -- Called when hub is ready
+          end,
+          on_error = function(err)
+            -- Called on errors
+          end,
+          log = {
+            level = vim.log.levels.WARN,
+            to_file = false,
+            file_path = nil,
+            prefix = "MCPHub",
+          },
+        })
+      end,
+    },
+    {
+      "olimorris/codecompanion.nvim",
+      config = true,
+      opts = {
+        strategies = {
+          chat = {
+            tools = {
+              ["mcp"] = {
+                -- calling it in a function would prevent mcphub from being loaded before it's needed
+                callback = function()
+                  return require("mcphub.extensions.codecompanion")
+                end,
+                description = "Call tools and resources from the MCP Servers",
+                opts = {
+                  requires_approval = true,
+                },
+              },
+            },
+          },
+        },
+      },
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+        "nvim-treesitter/nvim-treesitter",
+        "ravitemer/mcphub.nvim",
       },
     },
     -- }}}
