@@ -373,10 +373,6 @@ require("lazy").setup(
           },
         },
         {
-          "lukas-reineke/lsp-format.nvim",
-          config = true,
-        },
-        {
           "Fildo7525/pretty_hover",
           event = "LspAttach",
           opts = {},
@@ -402,51 +398,14 @@ require("lazy").setup(
             },
             format_on_save = {
               timeout_ms = 500,
-              lsp_format = "fallback",
+              -- lsp_format = "fallback",
             },
           },
         },
-        -- {
-        --   "mfussenegger/nvim-lint",
-        --   config = function()
-        --     local lint = require("lint")
-        --
-        --     lint.linters_by_ft = {
-        --       astro = { "eslint" },
-        --       css = { "stylelint" },
-        --       go = { "golangci-lint" },
-        --       html = { "eslint" },
-        --       javascript = { "eslint" },
-        --       javascriptreact = { "eslint" },
-        --       json = { "jsonlint" },
-        --       jsonc = { "jsonlint" },
-        --       less = { "stylelint" },
-        --       -- lua = { "luacheck" },
-        --       markdown = { "vale" },
-        --       php = { "phpcs" },
-        --       ruby = { "rubocop" },
-        --       sass = { "stylelint" },
-        --       scss = { "stylelint" },
-        --       sh = { "shellcheck" },
-        --       shell = { "shellcheck", "shfmt" },
-        --       typescript = { "eslint" },
-        --       typescriptreact = { "eslint" },
-        --       vue = { "eslint" },
-        --       yaml = { "yamllint" },
-        --     }
-        --
-        --     vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-        --       callback = function()
-        --         require("lint").try_lint()
-        --       end,
-        --     })
-        --   end,
-        -- },
       },
       config = function()
         local capabilities = require("cmp_nvim_lsp").default_capabilities()
         local lspconfig = require("lspconfig")
-        local lsp_format = require("lsp-format")
         local mason_lsp = require("mason-lspconfig")
         local lsp_formatting = function(bufnr, isAsync)
           vim.lsp.buf.format({
@@ -471,8 +430,6 @@ require("lazy").setup(
               end,
             })
           end
-
-          lsp_format.on_attach(client)
 
           -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help)
           vim.keymap.set("n", "gd", vim.lsp.buf.type_definition)
@@ -1342,16 +1299,8 @@ vim.opt.formatoptions = "oqn1tc" -- Check out 'fo-table' to see what this does.
 vim.opt.ruler = true
 vim.opt.showcmd = true
 vim.opt.laststatus = 2
-vim.opt.showmode = false -- Powerline shows mode now
-
--- Avante likes the status bar to clear out lualine
 vim.opt.cmdheight = 2
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "Avante*" },
-  callback = function()
-    vim.opt.laststatus = 3
-  end,
-})
+vim.opt.showmode = false -- Powerline shows mode now
 
 -- Completely hide concealed text (i.e. snippets)
 -- vim.opt.conceallevel = 2
