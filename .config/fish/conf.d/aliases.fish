@@ -7,6 +7,7 @@ if status is-interactive
   alias s='sudo'
   alias la='ls -A'
   alias ll='ls -lh'
+  alias lla='ls -lhA'
 
   alias g='git'
   alias gst='git status'

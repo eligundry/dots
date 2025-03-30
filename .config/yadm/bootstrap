@@ -38,11 +38,6 @@ if [ "$system_type" = "Darwin" ]; then
     brew bundle --global --debug --file "$HOME/.Brewfile"
   fi
 
-  if [ -d "$HOME/.iterm2" ]; then
-    echo "Setting iTerm preference folder"
-    defaults write com.googlecode.iterm2 PrefsCustomFolder "$HOME/.iterm2##os.Darwin"
-  fi
-
   echo "Installing a node LTS version with fnm"
   fnm install --lts
   fnm default lts-latest
@@ -51,11 +46,6 @@ fi
 echo "Installing Neovim modules"
 pip3 install neovim
 npm install -g neovim
-
-if ! command -v serviceman &> /dev/null; then
-  echo "Installing serviceman"
-  curl -sS https://webi.sh/serviceman | sh
-fi
 
 # Install pass audit so I can check password leaks
 PREFIX="/opt/homebrew/opt/pass" make install -f "$HOME/.local/share/pass/audit/Makefile"
