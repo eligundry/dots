@@ -431,16 +431,23 @@ require("lazy").setup(
             })
           end
 
-          -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help)
-          vim.keymap.set("n", "gd", vim.lsp.buf.type_definition)
-          vim.keymap.set("n", "<Leader>ca", vim.lsp.buf.code_action)
-          vim.keymap.set("n", "<Leader>d", vim.lsp.buf.definition)
-          -- vim.keymap.set('n', '<Leader>p', function() lsp_formatting(_opts.bufnr, true) end, _opts)
-          vim.keymap.set("n", "<Leader>RN", vim.lsp.buf.rename)
-          vim.keymap.set("n", "K", vim.lsp.buf.hover)
-          vim.keymap.set("n", "gD", vim.lsp.buf.declaration)
-          vim.keymap.set("n", "gI", vim.lsp.buf.implementation)
-          vim.keymap.set("n", "gR", vim.lsp.buf.references)
+          vim.keymap.set("n", "gd", vim.lsp.buf.type_definition, { buffer = bufnr, desc = "Go to type definition" })
+          vim.keymap.set("n", "<Leader>ca", vim.lsp.buf.code_action, { buffer = bufnr, desc = "Show code actions" })
+          vim.keymap.set("n", "<Leader>d", vim.lsp.buf.definition, { buffer = bufnr, desc = "Go to definition" })
+          vim.keymap.set("n", "<Leader>RN", vim.lsp.buf.rename, { buffer = bufnr, desc = "Rename symbol" })
+          vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr, desc = "Show hover documentation" })
+          vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = bufnr, desc = "Go to declaration" })
+          vim.keymap.set("n", "gI", vim.lsp.buf.implementation, { buffer = bufnr, desc = "Go to implementation" })
+          vim.keymap.set("n", "gR", vim.lsp.buf.references, { buffer = bufnr, desc = "Find references" })
+          -- Remove unused imports
+          vim.keymap.set("n", "<Leader>ui", function()
+            vim.lsp.buf.code_action({
+              context = {
+                only = { "source.removeUnused" },
+                diagnostics = {},
+              },
+            })
+          end, { buffer = bufnr, desc = "Remove unused imports" })
         end
 
         mason_lsp.setup_handlers({
@@ -506,7 +513,7 @@ require("lazy").setup(
         {
           "uga-rosa/cmp-dictionary",
           build =
-          "mkdir -pf $HOME/.local/share/nvim/dict && aspell -d en dump master | aspell -l en expand > $HOME/.local/share/nvim/dict/en.dict",
+          "mkdir -pv $HOME/.local/share/nvim/dict && aspell -d en dump master | aspell -l en expand > $HOME/.local/share/nvim/dict/en.dict",
           config = true,
           opts = {
             paths = { vim.fn.expand("$HOME/.local/share/nvim/dict/en.dict") },
@@ -833,6 +840,7 @@ require("lazy").setup(
       opts = {
         strategies = {
           chat = {
+            adapter = "anthropic",
             tools = {
               ["mcp"] = {
                 -- calling it in a function would prevent mcphub from being loaded before it's needed
