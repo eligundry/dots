@@ -36,3 +36,7 @@ a sqlite3 database, which is then continuously replicated to S3 with
   AWS_SECRET_ACCESS_KEY='xxx'
   ```
 3. Run `./.local/bin/install-zsh-histdb-sync.sh`
+
+## Tips
+
+- You can ignore directories for nvim's telescope by adding to [`.rgignore`](./.rgignore)

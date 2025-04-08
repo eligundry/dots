@@ -24,6 +24,10 @@ local function require_module_by_path(module_path)
     return nil
   end
 end
+
+local function yadm_files()
+  return vim.fn.systemlist('yadm list | awk \'!/\\.local\\/share\\/dots/ {print ENVIRON["HOME"] "/" $0}\'')
+end
 -- }}}
 
 -- lazy.nvim {{{
@@ -43,6 +47,7 @@ vim.opt.rtp:prepend(lazypath)
 -- Set <Leader> to be comma
 vim.g.mapleader = ","
 
+
 require("lazy").setup(
 -- Plugins {{{
   {
@@ -61,18 +66,16 @@ require("lazy").setup(
       -- scope all Telescope operations to YADM files, as that's what I probably
       -- want.
       config = function()
-        local yadm_files =
-            vim.fn.systemlist('yadm list | awk \'!/\\.local\\/share\\/dots/ {print ENVIRON["HOME"] "/" $0}\'')
         local yadm_telescope_mappings = function()
           local telescope = require("telescope.builtin")
           local yadm_file_search = function()
             return telescope.find_files({
-              search_dirs = yadm_files,
+              search_dirs = yadm_files(),
             })
           end
           local yadm_live_grep = function()
             return telescope.live_grep({
-              search_dirs = yadm_files,
+              search_dirs = yadm_files(),
             })
           end
 
@@ -91,7 +94,7 @@ require("lazy").setup(
         end
 
         vim.api.nvim_create_autocmd("BufEnter", {
-          pattern = yadm_files,
+          pattern = yadm_files(),
           callback = yadm_telescope_mappings,
         })
 
@@ -781,6 +784,15 @@ require("lazy").setup(
             require("mcphub.extensions.avante").mcp_tool(),
           }
         end,
+        file_selector = {
+          provider = "telescope",
+          provider_opts = {
+            preview = {
+              treesitter = true,
+              hide_on_startup = false,
+            },
+          },
+        },
       },
       build = "make",
       dependencies = {
