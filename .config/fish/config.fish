@@ -5,6 +5,11 @@ if status is-interactive
   # Gotta have vi mode
   fish_vi_key_bindings
 
+  # Add Homebrew vendor completions directory to the completions path
+  if test -d /opt/homebrew/share/fish/vendor_completions.d
+    set -p fish_complete_path /opt/homebrew/share/fish/vendor_completions.d
+  end
+
   # Fun lil greeting when starting up the shell
   function fish_greeting
     # Get terminal height
@@ -44,3 +49,4 @@ if status is-interactive
     end
   end
 end
+
