@@ -145,7 +145,6 @@ require("lazy").setup(
     },
     {
       "nvim-tree/nvim-tree.lua",
-      tag = "nightly",
       cmd = { "NvimTreeToggle", "NvimTreeFocus", "NvimTreeFindFile", "NvimTreeCollapse" },
       keys = {
         { "<leader>nt", "<cmd>NvimTreeToggle<CR>", mode = "n", desc = "nvim-tree: toggle" },
@@ -510,6 +509,7 @@ require("lazy").setup(
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-path",
         "onsails/lspkind.nvim",
+        "kristijanhusak/vim-dadbod-completion",
         {
           "uga-rosa/cmp-dictionary",
           build =
@@ -649,6 +649,11 @@ require("lazy").setup(
               priority = 9,
             },
             {
+              name = "vim-dadbod-completion",
+              priority = 9,
+              ft = { "sql", "mysql", "plsql" },
+            },
+            {
               name = "buffer",
               -- group_index = 3,
               priority = 7,
@@ -699,6 +704,15 @@ require("lazy").setup(
         cmp.config.formatting = {
           format = require("tailwindcss-colorizer-cmp").formatter,
         }
+
+        -- Set up special configuration for SQL filetypes
+        cmp.setup.filetype({ 'sql', 'mysql', 'plsql' }, {
+          sources = cmp.config.sources({
+            { name = 'vim-dadbod-completion' },
+            { name = 'buffer' },
+            { name = 'luasnip' },
+          })
+        })
       end,
     },
     {
@@ -799,9 +813,9 @@ require("lazy").setup(
           -- Make sure to set this up properly if you have lazy=true
           "MeanderingProgrammer/render-markdown.nvim",
           opts = {
-            file_types = { "markdown", "Avante" },
+            file_types = { "markdown", "mdx", "Avante" },
           },
-          ft = { "markdown", "Avante" },
+          ft = { "markdown", "mdx", "Avante" },
         },
       },
     },
@@ -920,18 +934,48 @@ require("lazy").setup(
     -- }}}
     -- Vim God Tim Pope {{{
     {
-      "tpope/vim-dadbod",
-      ft = "sql",
-      cmd = "DB",
-      config = function()
-        vim.api.nvim_create_autocmd("FileType", {
-          pattern = "sql",
-          callback = function()
-            vim.keymap.set("n", "<Leader>e", ":%DB g:auto<CR>", { buffer = true })
-            vim.keymap.set("v", "<Leader>e", ":'<,'>DB g:auto<CR>", { buffer = true })
+      'kristijanhusak/vim-dadbod-ui',
+      dependencies = {
+        {
+          'tpope/vim-dadbod',
+          lazy = true,
+          ft = "sql",
+          cmd = "DB",
+          config = function()
+            vim.api.nvim_create_autocmd("FileType", {
+              pattern = "sql",
+              callback = function()
+                vim.keymap.set("n", "<Leader>e", ":%DB g:auto<CR>", { buffer = true })
+                vim.keymap.set("v", "<Leader>e", ":'<,'>DB g:auto<CR>", { buffer = true })
+              end,
+              desc = "<Leader>e will execute the current sql with vim-dadbod against DB g:auto",
+            })
           end,
-          desc = "<Leader>e will execute the current sql with vim-dadbod against DB g:auto",
-        })
+        },
+        {
+          'kristijanhusak/vim-dadbod-completion',
+          ft = { 'sql', 'mysql', 'plsql' },
+          lazy = true,
+          config = function()
+            vim.api.nvim_create_autocmd("FileType", {
+              pattern = { "sql", "mysql", "plsql" },
+              callback = function()
+                require('cmp').setup.buffer({ sources = { { name = 'vim-dadbod-completion' } } })
+              end,
+              desc = "Enable vim-dadbod-completion in SQL buffers",
+            })
+          end,
+        },
+      },
+      cmd = {
+        'DBUI',
+        'DBUIToggle',
+        'DBUIAddConnection',
+        'DBUIFindBuffer',
+      },
+      init = function()
+        -- Your DBUI configuration
+        vim.g.db_ui_use_nerd_fonts = 1
       end,
     },
     "tpope/vim-dispatch",
@@ -1089,6 +1133,7 @@ require("lazy").setup(
       "davidmh/mdx.nvim",
       config = true,
       dependencies = { "nvim-treesitter/nvim-treesitter" },
+      event = { "BufEnter *.mdx" }
     },
     -- }}}
   }

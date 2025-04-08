@@ -12,6 +12,22 @@
         "-y",
         "@mastra/mcp-docs-server"
       ]
+    },
+    "github.com/AgentDeskAI/browser-tools-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@agentdeskai/browser-tools-mcp@latest"
+      ]
+    },
+    "github.com/cline/linear-mcp": {
+      "command": "node",
+      "args": [
+        "/Users/eligundry/.mcphub/servers/linear-mcp/build/index.js"
+      ],
+      "env": {
+        "LINEAR_ACCESS_TOKEN": "your_personal_access_token"
+      }
     }
   }
 }
