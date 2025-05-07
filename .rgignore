@@ -6,3 +6,4 @@
 .netlify
 .husky
 .devenv
+public/build
