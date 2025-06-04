@@ -23,7 +23,7 @@ function tail-devenv-log
         return 1
     end
 
-    tail -f .devenv/processes.log | rg "\[$argv[1]" | sed -E 's/^\['$argv[1]'[[:space:]]*\] //'
+    tail -f .devenv/processes.log | rg --line-buffered "\[$argv[1]" | sed -E 's/^\['$argv[1]'[[:space:]]*\] //'
 end
 
 function __tail_devenv_log_completions

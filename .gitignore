@@ -37,3 +37,5 @@
 **/blah/*
 .workbook
 **/.aider*/*
+**/.aider*
+

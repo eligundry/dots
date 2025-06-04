@@ -19,13 +19,16 @@ function base16 --description "Set base16 theme for shell and ghostty"
   if test -n "$GHOSTTY_BIN_DIR"
       echo "Press <Cmd-shift-,> to refresh Ghostty config"
   end
+
+  # Update Aider environment variables to match the new theme
+  set_aider_theme_vars
 end
 
-# Add completions from base16-shell themes
+# Add completions from ghostty themes directory
 complete -c base16 -f -a "(
-  if test -d ~/.zplug/repos/chriskempson/base16-shell/scripts
-    find ~/.zplug/repos/chriskempson/base16-shell/scripts -type f -name \"base16-*.sh\" | \
-    sed -e 's/.*base16-//' -e 's/\.sh\$//g' | \
+  if test -d ~/.config/ghostty/themes
+    find ~/.config/ghostty/themes -type f -name \"base16-*\" | \
+    sed -e 's|.*/base16-||' | \
     sort
   end
 )"

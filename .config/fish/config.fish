@@ -4,6 +4,9 @@ if status is-interactive
 
   # Gotta have vi mode
   fish_vi_key_bindings
+  
+  # Set Aider environment variables based on current theme
+  set_aider_theme_vars
 
   # Add Homebrew vendor completions directory to the completions path
   if test -d /opt/homebrew/share/fish/vendor_completions.d
