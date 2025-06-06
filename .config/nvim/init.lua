@@ -47,9 +47,8 @@ vim.opt.rtp:prepend(lazypath)
 -- Set <Leader> to be comma
 vim.g.mapleader = ","
 
-
 require("lazy").setup(
--- Plugins {{{
+  -- Plugins {{{
   {
     -- Editor & GUI Improvements {{{
     "mhinz/vim-startify",
@@ -149,30 +148,35 @@ require("lazy").setup(
     {
       "nvim-tree/nvim-tree.lua",
       cmd = { "NvimTreeToggle", "NvimTreeFocus", "NvimTreeFindFile", "NvimTreeCollapse" },
-      keys = {
-        { "<leader>nt", "<cmd>NvimTreeToggle<CR>", mode = "n", desc = "nvim-tree: toggle" },
-      },
+      keys = function()
+        local api = require("nvim-tree.api")
+
+        return {
+          { "<leader>nt", "<cmd>NvimTreeToggle<CR>", mode = "n", desc = "nvim-tree: toggle" },
+          { "s", api.node.open.horizontal, ft = "NvimTree", desc = "nvim-tree: Open: Horizontal Split " },
+          { "v", api.node.open.vertical, ft = "NvimTree", desc = "nvim-tree: Open: Horizontal Split " },
+        }
+      end,
       config = function(plugin, opts)
         require("nvim-tree").setup(opts)
-
         update_hl("NvimTreeSpecialFile", { underline = false })
       end,
-      opts = {
-        view = {
-          mappings = {
-            list = {
-              { key = "u", action = "dir_up" },
-              { key = "s", action = "split" },
-              { key = "v", action = "vsplit" },
-              { key = "t", action = "tabnew" },
-              { key = "x", action = "close_node" },
-              { key = "r", action = "refresh" },
-              { key = "R", action = "rename" },
-              { key = "c", action = "cd" },
-            },
-          },
-        },
-      },
+      -- opts = {
+      --   view = {
+      --     mappings = {
+      --       list = {
+      --         { key = "u", action = "dir_up" },
+      --         { key = "s", action = "split" },
+      --         { key = "v", action = "vsplit" },
+      --         { key = "t", action = "tabnew" },
+      --         { key = "x", action = "close_node" },
+      --         { key = "r", action = "refresh" },
+      --         { key = "R", action = "rename" },
+      --         { key = "c", action = "cd" },
+      --       },
+      --     },
+      --   },
+      -- },
     },
     {
       "lambdalisue/suda.vim",
@@ -220,12 +224,12 @@ require("lazy").setup(
       keys = function()
         local builtin = require("telescope.builtin")
         return {
-          { "<c-p>",      builtin.find_files,  mode = "n", desc = "telescope: Fuzzy find files" },
-          { "<leader>ff", builtin.find_files,  mode = "n", desc = "telescope: Fuzzy find files" },
-          { "<leader>fg", builtin.live_grep,   mode = "n", desc = "telescope: Live grep" },
-          { "<leader>fb", builtin.buffers,     mode = "n", desc = "telescope: Browse buffers" },
-          { "<leader>fh", builtin.help_tags,   mode = "n", desc = "telescope: Browse help" },
-          { "<leader>ft", builtin.treesitter,  mode = "n", desc = "telescope: Browse Treesitter" },
+          { "<c-p>", builtin.find_files, mode = "n", desc = "telescope: Fuzzy find files" },
+          { "<leader>ff", builtin.find_files, mode = "n", desc = "telescope: Fuzzy find files" },
+          { "<leader>fg", builtin.live_grep, mode = "n", desc = "telescope: Live grep" },
+          { "<leader>fb", builtin.buffers, mode = "n", desc = "telescope: Browse buffers" },
+          { "<leader>fh", builtin.help_tags, mode = "n", desc = "telescope: Browse help" },
+          { "<leader>ft", builtin.treesitter, mode = "n", desc = "telescope: Browse Treesitter" },
           { "<leader>td", builtin.diagnostics, mode = "n", desc = "telescope: Diagnostics (quickfix list)" },
         }
       end,
@@ -452,50 +456,41 @@ require("lazy").setup(
           end, { buffer = bufnr, desc = "Remove unused imports" })
         end
 
-        mason_lsp.setup_handlers({
-          -- The first entry (without a key) will be the default handler
-          -- and will be called for each installed server that doesn't have
-          -- a dedicated handler.
-          function(server_name)
-            lspconfig[server_name].setup({
-              on_attach = on_attach,
-              capabilities = capabilities,
-            })
-          end,
-          ["lua_ls"] = function()
-            lspconfig.lua_ls.setup({
-              on_attach = on_attach,
-              settings = {
-                Lua = {
-                  runtime = {
-                    version = "LuaJIT",
-                  },
-                  diagnostics = {
-                    globals = { "vim" },
-                  },
-                  workspace = {
-                    -- Make the server aware of Neovim runtime files
-                    library = vim.api.nvim_get_runtime_file("", true),
-                    checkThirdParty = false,
-                  },
-                  telemetry = {
-                    enable = false,
-                  },
-                },
+        vim.lsp.config("*", {
+          on_attach = on_attach,
+          capabilities = capabilities,
+        })
+
+        vim.lsp.config("lua_ls", {
+          on_attach = on_attach,
+          settings = {
+            Lua = {
+              runtime = {
+                version = "LuaJIT",
               },
-            })
-          end,
-          ["tailwindcss"] = function()
-            lspconfig.tailwindcss.setup({
-              on_attach = on_attach,
-              capabilities = capabilities,
-              settings = {
-                tailwindCSS = {
-                  classAttributes = { "class", "className", "classNames", "ngClass", "class:list" },
-                },
+              diagnostics = {
+                globals = { "vim" },
               },
-            })
-          end,
+              workspace = {
+                -- Make the server aware of Neovim runtime files
+                library = vim.api.nvim_get_runtime_file("", true),
+                checkThirdParty = false,
+              },
+              telemetry = {
+                enable = false,
+              },
+            },
+          },
+        })
+
+        vim.lsp.config("tailwindcss", {
+          on_attach = on_attach,
+          capabilities = capabilities,
+          settings = {
+            tailwindCSS = {
+              classAttributes = { "class", "className", "classNames", "ngClass", "class:list" },
+            },
+          },
         })
       end,
     },
@@ -515,8 +510,7 @@ require("lazy").setup(
         "kristijanhusak/vim-dadbod-completion",
         {
           "uga-rosa/cmp-dictionary",
-          build =
-          "mkdir -pv $HOME/.local/share/nvim/dict && aspell -d en dump master | aspell -l en expand > $HOME/.local/share/nvim/dict/en.dict",
+          build = "mkdir -pv $HOME/.local/share/nvim/dict && aspell -d en dump master | aspell -l en expand > $HOME/.local/share/nvim/dict/en.dict",
           config = true,
           opts = {
             paths = { vim.fn.expand("$HOME/.local/share/nvim/dict/en.dict") },
@@ -698,7 +692,7 @@ require("lazy").setup(
         cmp.setup.cmdline(":", {
           mapping = cmp.mapping.preset.cmdline(),
           sources = cmp.config.sources({
-            { name = "path",    group_index = 1 },
+            { name = "path", group_index = 1 },
             { name = "cmdline", group_index = 2 },
           }),
         })
@@ -709,19 +703,19 @@ require("lazy").setup(
         }
 
         -- Set up special configuration for SQL filetypes
-        cmp.setup.filetype({ 'sql', 'mysql', 'plsql' }, {
+        cmp.setup.filetype({ "sql", "mysql", "plsql" }, {
           sources = cmp.config.sources({
-            { name = 'vim-dadbod-completion' },
-            { name = 'buffer' },
-            { name = 'luasnip' },
-          })
+            { name = "vim-dadbod-completion" },
+            { name = "buffer" },
+            { name = "luasnip" },
+          }),
         })
       end,
     },
     {
       "rachartier/tiny-inline-diagnostic.nvim",
       event = "VeryLazy", -- Or `LspAttach`
-      priority = 1000,    -- needs to be loaded in first
+      priority = 1000, -- needs to be loaded in first
       config = function()
         require("tiny-inline-diagnostic").setup()
         vim.diagnostic.config({ virtual_text = false }) -- Only if needed in your configuration, if you already have native LSP diagnostics
@@ -756,7 +750,7 @@ require("lazy").setup(
             store_dir = image_dir,
           },
           agents = {
-            { name = "ChatGPT3-5",     disable = true },
+            { name = "ChatGPT3-5", disable = true },
             { name = "ChatGPT4o-mini", disable = true },
           },
         }
@@ -771,6 +765,7 @@ require("lazy").setup(
         provider = "claude",
         behaviour = {
           auto_suggestions = false,
+          use_cwd_as_project_root = false,
         },
         -- MCPHub setup
         -- The system_prompt type supports both a string and a function that returns a string. Using a function here allows dynamically updating the prompt with mcphub
@@ -800,27 +795,27 @@ require("lazy").setup(
         "nvim-lua/plenary.nvim",
         "MunifTanjim/nui.nvim",
         "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
-        "hrsh7th/nvim-cmp",              -- autocompletion for avante commands and mentions
-        "nvim-tree/nvim-web-devicons",   -- or echasnovski/mini.icons
-        "zbirenbaum/copilot.lua",        -- for providers='copilot'
+        "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
+        "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+        "zbirenbaum/copilot.lua", -- for providers='copilot'
         "ravitemer/mcphub.nvim",
-        {
-          -- support for image pasting
-          "HakonHarnes/img-clip.nvim",
-          event = "VeryLazy",
-          opts = {
-            -- recommended settings
-            default = {
-              embed_image_as_base64 = false,
-              prompt_for_file_name = false,
-              drag_and_drop = {
-                insert_mode = true,
-              },
-              -- required for Windows users
-              use_absolute_path = true,
-            },
-          },
-        },
+        -- {
+        --   -- support for image pasting
+        --   "HakonHarnes/img-clip.nvim",
+        --   event = "VeryLazy",
+        --   opts = {
+        --     -- recommended settings
+        --     default = {
+        --       embed_image_as_base64 = false,
+        --       prompt_for_file_name = false,
+        --       drag_and_drop = {
+        --         insert_mode = true,
+        --       },
+        --       -- required for Windows users
+        --       use_absolute_path = true,
+        --     },
+        --   },
+        -- },
         {
           -- Make sure to set this up properly if you have lazy=true
           "MeanderingProgrammer/render-markdown.nvim",
@@ -841,7 +836,7 @@ require("lazy").setup(
       config = function()
         require("mcphub").setup({
           -- Required options
-          port = 3500,                                  -- Port for MCP Hub server
+          port = 3500, -- Port for MCP Hub server
           config = vim.fn.expand("~/.mcpservers.json"), -- Absolute path to config file
 
           -- Optional options
@@ -902,8 +897,8 @@ require("lazy").setup(
       keys = {
         { "gcc", mode = { "n", "v" }, desc = "Comment.nvim: Line-comment toggle" },
         { "gbc", mode = { "n", "v" }, desc = "Comment.nvim: Block-comment toggle keymap" },
-        { "gc",  mode = { "n", "v" }, desc = "Comment.nvim: Line-comment keymap" },
-        { "gb",  mode = { "n", "v" }, desc = "Comment.nvim: Block-comment keymap" },
+        { "gc", mode = { "n", "v" }, desc = "Comment.nvim: Line-comment keymap" },
+        { "gb", mode = { "n", "v" }, desc = "Comment.nvim: Block-comment keymap" },
         { "gcO", mode = { "n", "v" }, desc = "Comment.nvim: Add comment on the line above" },
         { "gco", mode = { "n", "v" }, desc = "Comment.nvim: Add comment on the line below" },
         { "gcA", mode = { "n", "v" }, desc = "Comment.nvim: Add comment at the end of line" },
@@ -946,10 +941,10 @@ require("lazy").setup(
     -- }}}
     -- Vim God Tim Pope {{{
     {
-      'kristijanhusak/vim-dadbod-ui',
+      "kristijanhusak/vim-dadbod-ui",
       dependencies = {
         {
-          'tpope/vim-dadbod',
+          "tpope/vim-dadbod",
           lazy = true,
           ft = "sql",
           cmd = "DB",
@@ -965,14 +960,14 @@ require("lazy").setup(
           end,
         },
         {
-          'kristijanhusak/vim-dadbod-completion',
-          ft = { 'sql', 'mysql', 'plsql' },
+          "kristijanhusak/vim-dadbod-completion",
+          ft = { "sql", "mysql", "plsql" },
           lazy = true,
           config = function()
             vim.api.nvim_create_autocmd("FileType", {
               pattern = { "sql", "mysql", "plsql" },
               callback = function()
-                require('cmp').setup.buffer({ sources = { { name = 'vim-dadbod-completion' } } })
+                require("cmp").setup.buffer({ sources = { { name = "vim-dadbod-completion" } } })
               end,
               desc = "Enable vim-dadbod-completion in SQL buffers",
             })
@@ -980,10 +975,10 @@ require("lazy").setup(
         },
       },
       cmd = {
-        'DBUI',
-        'DBUIToggle',
-        'DBUIAddConnection',
-        'DBUIFindBuffer',
+        "DBUI",
+        "DBUIToggle",
+        "DBUIAddConnection",
+        "DBUIFindBuffer",
       },
       init = function()
         -- Your DBUI configuration
@@ -1013,7 +1008,7 @@ require("lazy").setup(
       "tpope/vim-fugitive",
       cmd = "Git",
       keys = {
-        { "<leader>gs", "<cmd>Git<CR>",       mode = "n", desc = "Git status" },
+        { "<leader>gs", "<cmd>Git<CR>", mode = "n", desc = "Git status" },
         { "<leader>gb", "<cmd>Git blame<CR>", mode = "n", desc = "Git blame" },
         { "<leader>gp", "<cmd>Git pushy<CR>", mode = "n", desc = "Git pushy" },
       },
@@ -1036,21 +1031,21 @@ require("lazy").setup(
         { "cs", desc = "vim-surround: change surrouding delimiter" },
         { "ds", desc = "vim-surround: delete surrouding delimiter" },
         { "ys", desc = "vim-surround: add surrouding delimiter" },
-        { "S",  desc = "vim-surround: add delimiter to selection", mode = "v" },
+        { "S", desc = "vim-surround: add delimiter to selection", mode = "v" },
       },
     },
     {
       "tpope/vim-tbone",
       cmd = { "Tmux", "Twrite", "Tattach", "Tynak", "Tput" },
       keys = {
-        { "<leader>ty", "<cmd>Tyank<CR>", mode = "n",          desc = "tbone: Yank line into tmux buffer" },
+        { "<leader>ty", "<cmd>Tyank<CR>", mode = "n", desc = "tbone: Yank line into tmux buffer" },
         {
           "<leader>ty",
           "<cmd>'<,'>Tyank<CR>",
           mode = "v",
           desc = "tbone: Yank selection into tmux buffer",
         },
-        { "<leader>tp", "<cmd>Tput<CR>",  mode = { "n", "v" }, desc = "tbone: Paste text from tmux buffer" },
+        { "<leader>tp", "<cmd>Tput<CR>", mode = { "n", "v" }, desc = "tbone: Paste text from tmux buffer" },
       },
     },
     -- }}}
@@ -1145,11 +1140,11 @@ require("lazy").setup(
       "davidmh/mdx.nvim",
       config = true,
       dependencies = { "nvim-treesitter/nvim-treesitter" },
-      event = { "BufEnter *.mdx" }
+      event = { "BufEnter *.mdx" },
     },
     -- }}}
   }
--- }}}
+  -- }}}
 )
 -- }}}
 
@@ -1172,13 +1167,13 @@ vim.opt.autoread = true
 
 -- Indenting
 -- Most of these should be overridden by Editorconfig
-vim.opt.tabstop = 2         -- I like my tabs to seem like two spaces
-vim.opt.shiftwidth = 2      -- I'd also like to shift lines the same amount of spaces
-vim.opt.softtabstop = 2     -- If using expandtab for some reason, use two spaces
-vim.opt.autoindent = true   -- Copy indenting from original block of text when yanked/pulled
-vim.opt.expandtab = true    -- Hard tabs are fun in theory, but don't work with other people
-vim.opt.smarttab = true     -- Make expandtab more tolerable
-vim.opt.shiftround = true   -- Round indents to multiples of shiftwidth
+vim.opt.tabstop = 2 -- I like my tabs to seem like two spaces
+vim.opt.shiftwidth = 2 -- I'd also like to shift lines the same amount of spaces
+vim.opt.softtabstop = 2 -- If using expandtab for some reason, use two spaces
+vim.opt.autoindent = true -- Copy indenting from original block of text when yanked/pulled
+vim.opt.expandtab = true -- Hard tabs are fun in theory, but don't work with other people
+vim.opt.smarttab = true -- Make expandtab more tolerable
+vim.opt.shiftround = true -- Round indents to multiples of shiftwidth
 vim.opt.copyindent = true
 vim.opt.smartindent = false -- Disabling this because it messes up pasting with indents
 
@@ -1214,8 +1209,8 @@ vim.opt.incsearch = true
 vim.opt.ignorecase = true
 vim.opt.infercase = true
 vim.opt.smartcase = true -- …but when I do, it'll pair down the search.
-vim.opt.magic = true     -- Do You Believe In (Perl) Magic?
-vim.opt.gdefault = true  -- Use global by default when replacing
+vim.opt.magic = true -- Do You Believe In (Perl) Magic?
+vim.opt.gdefault = true -- Use global by default when replacing
 
 if vim.fn.exists("shellslash") == 1 then
   vim.opt.shellslash = true -- When in Windows, you can use / instead of \
@@ -1322,7 +1317,7 @@ vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "BufNewFile" }, {
 -- Theme {{{
 -- I Think It's Beautiful That Your Are 256 Colors Too
 -- https://www.youtube.com/watch?v=bZ6b5ghZZN0
-vim.cmd("set t_Co=256")     -- 256 color support in terminal
+vim.cmd("set t_Co=256") -- 256 color support in terminal
 vim.opt.termguicolors = true
 vim.opt.background = "dark" -- I like a dark background
 
@@ -1356,8 +1351,8 @@ update_hl("@property.tsx", { link = "TSLabel" })
 
 -- Look & Feel {{{
 -- Word Wrap
-vim.opt.wrap = false             -- I like scrolling off the screen
-vim.opt.textwidth = 80           -- Standard width for terminals
+vim.opt.wrap = false -- I like scrolling off the screen
+vim.opt.textwidth = 80 -- Standard width for terminals
 vim.opt.formatoptions = "oqn1tc" -- Check out 'fo-table' to see what this does.
 
 -- Status bar
