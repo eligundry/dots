@@ -43,6 +43,13 @@ if [ "$system_type" = "Darwin" ]; then
   fnm default lts-latest
 fi
 
+# Install aider
+if ! command -v aider >/dev/null 2>&1; then
+  echo "Installing aider"
+  python3 -m pip install aider-install
+  aider-install
+fi
+
 echo "Installing Neovim modules"
 pip3 install neovim
 npm install -g neovim
