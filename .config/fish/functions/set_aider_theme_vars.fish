@@ -36,8 +36,13 @@ function set_aider_theme_vars --description "Set Aider environment variables bas
     set -l base0E (grep "^palette = 5=" "$theme_file" | cut -d'=' -f3)  # Purple
     set -l base0F (grep "^palette = 17=" "$theme_file" | cut -d'=' -f3) # Brown
     
-    # Set dark mode for dark themes (most base16 themes are dark)
-    set -gx AIDER_DARK_MODE "true"
+    # Set dark mode based on theme name
+    if string match -q "*light*" $theme
+        set -gx AIDER_DARK_MODE "false"
+    else
+        # Default to dark mode for most themes
+        set -gx AIDER_DARK_MODE "true"
+    end
     
     # Set the actual color variables for Aider using the parsed colors
     set -gx AIDER_USER_INPUT_COLOR "$base0B"          # Green - Strings
