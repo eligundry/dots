@@ -925,9 +925,18 @@ require("lazy").setup(
     -- }}}
     -- Github {{{
     {
-      "mattn/vim-gist",
-      dependencies = { "mattn/webapi-vim" },
-      cmd = "Gist",
+      "Rawnly/gist.nvim",
+      cmd = { "GistCreate", "GistCreateFromFile", "GistsList" },
+      config = true,
+      dependencies = {
+        {
+          "samjwill/nvim-unception",
+          lazy = false,
+          init = function()
+            vim.g.unception_block_while_host_edits = true
+          end,
+        },
+      },
     },
     {
       "tyru/open-browser.vim",
