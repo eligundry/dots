@@ -39,3 +39,5 @@
 **/.aider*/*
 **/.aider*
 **/.claude
+!**/.claude/agents
+**/.playwright-mcp/*
