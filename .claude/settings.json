@@ -1,5 +1,16 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "env": {
-    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": true
+    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "true"
+  },
+  "permissions": {
+    "deny": [
+      "Read(.aider*)",
+      "Read(.git/**)"
+    ]
+  },
+  "alwaysThinkingEnabled": false,
+  "feedbackSurveyState": {
+    "lastShownTime": 1755793168053
   }
 }

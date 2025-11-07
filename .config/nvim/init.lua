@@ -925,9 +925,18 @@ require("lazy").setup(
     -- }}}
     -- Github {{{
     {
-      "mattn/vim-gist",
-      dependencies = { "mattn/webapi-vim" },
-      cmd = "Gist",
+      "Rawnly/gist.nvim",
+      cmd = { "GistCreate", "GistCreateFromFile", "GistsList" },
+      config = true,
+      dependencies = {
+        {
+          "samjwill/nvim-unception",
+          lazy = false,
+          init = function()
+            vim.g.unception_block_while_host_edits = true
+          end,
+        },
+      },
     },
     {
       "tyru/open-browser.vim",
@@ -1468,8 +1477,11 @@ vim.keymap.set("n", "<Leader>fl", vim.diagnostic.setqflist, {
 })
 
 vim.keymap.set("n", "<Leader>pwd", function()
-  print(vim.fn.expand("%:p"))
-end, { desc = "Print path to current file" })
+  local absolute_path = vim.fn.expand("%:p")
+  local relative_path = vim.fn.fnamemodify(absolute_path, ":~:.")
+  vim.fn.setreg("+", relative_path)
+  print(relative_path .. " (copied to clipboard)")
+end, { desc = "Print relative path to current file and copy to clipboard" })
 
 -- My ideal state of using vim is to have it always in autochdir. This means,
 -- whenever I open a new a file in a different directory, all vim commands for
