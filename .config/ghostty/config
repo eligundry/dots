@@ -5,3 +5,4 @@ adjust-cell-width = -15%
 background-opacity = 0.95
 background-blur-radius = 5
 config-file = ?base16
+keybind = shift+enter=text:\x1b\r

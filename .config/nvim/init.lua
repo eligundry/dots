@@ -508,15 +508,15 @@ require("lazy").setup(
         "hrsh7th/cmp-path",
         "onsails/lspkind.nvim",
         "kristijanhusak/vim-dadbod-completion",
-        {
-          "uga-rosa/cmp-dictionary",
-          build =
-          "mkdir -pv $HOME/.local/share/nvim/dict && aspell -d en dump master | aspell -l en expand > $HOME/.local/share/nvim/dict/en.dict",
-          config = true,
-          opts = {
-            paths = { vim.fn.expand("$HOME/.local/share/nvim/dict/en.dict") },
-          },
-        },
+        -- {
+        --   "uga-rosa/cmp-dictionary",
+        --   build =
+        --   "mkdir -pv $HOME/.local/share/nvim/dict && aspell -d en dump master | aspell -l en expand > $HOME/.local/share/nvim/dict/en.dict",
+        --   config = true,
+        --   opts = {
+        --     paths = { vim.fn.expand("$HOME/.local/share/nvim/dict/en.dict") },
+        --   },
+        -- },
         {
           "saadparwaiz1/cmp_luasnip",
           dependencies = { "L3MON4D3/LuaSnip" },
@@ -1024,6 +1024,14 @@ require("lazy").setup(
       config = true,
       dependencies = { "nvim-treesitter/nvim-treesitter" },
       event = { "BufEnter *.mdx" },
+    },
+    {
+      -- Make sure to set this up properly if you have lazy=true
+      'MeanderingProgrammer/render-markdown.nvim',
+      opts = {
+        file_types = { "markdown", "Avante" },
+      },
+      ft = { "markdown", "Avante" },
     },
     -- }}}
   }

@@ -9,7 +9,7 @@
       "Read(.git/**)"
     ]
   },
-  "alwaysThinkingEnabled": false,
+  "alwaysThinkingEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1755793168053
   }
