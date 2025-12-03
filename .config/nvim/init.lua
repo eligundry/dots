@@ -722,23 +722,6 @@ require("lazy").setup(
       end,
     },
     -- }}}
-    -- Dictionary {{{
-    {
-      "jalvesaq/dict.nvim",
-      dependencies = { "nvim-telescope/telescope.nvim" },
-      keys = {
-        {
-          "<Leader>d",
-          function()
-            require("dict").lookup()
-          end,
-          mode = "n",
-          desc = "dict.nvim: Look up word under cursor",
-        },
-      },
-      opts = {},
-    },
-    -- }}}
     -- 🤖 AI {{{
     {
       "robitx/gp.nvim",
@@ -1563,4 +1546,37 @@ vim.keymap.set("n", "<Leader>hi", function()
   vim.fn.execute(string.format("normal! i%s", ipsum))
   vim.fn.execute("normal! kgqqj")
 end, { desc = "Insert a paragraph of hipster ipsum" })
+
+-- Dictionary lookup using dict.org (requires ~/.dictrc with "server dict.org")
+vim.keymap.set("n", "<Leader>d", function()
+  local word = vim.fn.expand("<cword>")
+  if word == "" then return end
+
+  local output = vim.fn.system("dict '" .. word .. "' 2>&1")
+  local lines = vim.split(output, "\n")
+
+  -- Create buffer and window
+  local buf = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+  vim.api.nvim_set_option_value("buftype", "nofile", { buf = buf })
+  vim.api.nvim_set_option_value("bufhidden", "wipe", { buf = buf })
+  vim.api.nvim_set_option_value("filetype", "markdown", { buf = buf })
+
+  local width = math.min(80, vim.o.columns - 4)
+  local height = math.min(#lines, vim.o.lines - 4)
+  local win = vim.api.nvim_open_win(buf, true, {
+    relative = "editor",
+    width = width,
+    height = height,
+    col = math.floor((vim.o.columns - width) / 2),
+    row = math.floor((vim.o.lines - height) / 2),
+    style = "minimal",
+    border = "rounded",
+    title = " " .. word .. " ",
+    title_pos = "center",
+  })
+
+  vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = buf, silent = true })
+  vim.keymap.set("n", "<Esc>", "<cmd>close<CR>", { buffer = buf, silent = true })
+end, { desc = "Look up word under cursor in dictionary (dict.org)" })
 -- }}}
