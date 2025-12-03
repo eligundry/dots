@@ -11,12 +11,22 @@ yadm clone https://github.com/eligundry/dots.git
 yadm bootstrap
 ```
 
-## Common Commands
+## Package Management
+
+Homebrew packages are managed via `~/.Brewfile`. The `brew bundle` command is built into Homebrew (no tap required).
 
 ```bash
-# This will install/update dependencies in .Brewfile and update the lockfile
-brew bundle --file "$HOME/.Brewfile" && brew bundle dump --force
+# Install all packages from Brewfile
+brew bundle --global
+
+# Install and update the lockfile
+brew bundle --global && brew bundle dump --global --force
+
+# Add a new package: edit ~/.Brewfile, then run
+brew bundle --global
 ```
+
+**Note:** The `--global` flag uses `~/.Brewfile` automatically. The old `tap "homebrew/bundle"` is deprecated and no longer needed.
 
 ## litestream-zsh-histdb-s3
 

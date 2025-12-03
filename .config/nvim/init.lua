@@ -48,7 +48,7 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = ","
 
 require("lazy").setup(
--- Plugins {{{
+  -- Plugins {{{
   {
     -- Editor & GUI Improvements {{{
     "mhinz/vim-startify",
@@ -152,9 +152,9 @@ require("lazy").setup(
         local api = require("nvim-tree.api")
 
         return {
-          { "<leader>nt", "<cmd>NvimTreeToggle<CR>", mode = "n",      desc = "nvim-tree: toggle" },
-          { "s",          api.node.open.horizontal,  ft = "NvimTree", desc = "nvim-tree: Open: Horizontal Split " },
-          { "v",          api.node.open.vertical,    ft = "NvimTree", desc = "nvim-tree: Open: Horizontal Split " },
+          { "<leader>nt", "<cmd>NvimTreeToggle<CR>", mode = "n", desc = "nvim-tree: toggle" },
+          { "s", api.node.open.horizontal, ft = "NvimTree", desc = "nvim-tree: Open: Horizontal Split " },
+          { "v", api.node.open.vertical, ft = "NvimTree", desc = "nvim-tree: Open: Horizontal Split " },
         }
       end,
       config = function(plugin, opts)
@@ -224,12 +224,12 @@ require("lazy").setup(
       keys = function()
         local builtin = require("telescope.builtin")
         return {
-          { "<c-p>",      builtin.find_files,  mode = "n", desc = "telescope: Fuzzy find files" },
-          { "<leader>ff", builtin.find_files,  mode = "n", desc = "telescope: Fuzzy find files" },
-          { "<leader>fg", builtin.live_grep,   mode = "n", desc = "telescope: Live grep" },
-          { "<leader>fb", builtin.buffers,     mode = "n", desc = "telescope: Browse buffers" },
-          { "<leader>fh", builtin.help_tags,   mode = "n", desc = "telescope: Browse help" },
-          { "<leader>ft", builtin.treesitter,  mode = "n", desc = "telescope: Browse Treesitter" },
+          { "<c-p>", builtin.find_files, mode = "n", desc = "telescope: Fuzzy find files" },
+          { "<leader>ff", builtin.find_files, mode = "n", desc = "telescope: Fuzzy find files" },
+          { "<leader>fg", builtin.live_grep, mode = "n", desc = "telescope: Live grep" },
+          { "<leader>fb", builtin.buffers, mode = "n", desc = "telescope: Browse buffers" },
+          { "<leader>fh", builtin.help_tags, mode = "n", desc = "telescope: Browse help" },
+          { "<leader>ft", builtin.treesitter, mode = "n", desc = "telescope: Browse Treesitter" },
           { "<leader>td", builtin.diagnostics, mode = "n", desc = "telescope: Diagnostics (quickfix list)" },
         }
       end,
@@ -439,7 +439,6 @@ require("lazy").setup(
 
           vim.keymap.set("n", "gd", vim.lsp.buf.type_definition, { buffer = bufnr, desc = "Go to type definition" })
           vim.keymap.set("n", "<Leader>ca", vim.lsp.buf.code_action, { buffer = bufnr, desc = "Show code actions" })
-          vim.keymap.set("n", "<Leader>d", vim.lsp.buf.definition, { buffer = bufnr, desc = "Go to definition" })
           vim.keymap.set("n", "<Leader>RN", vim.lsp.buf.rename, { buffer = bufnr, desc = "Rename symbol" })
           vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr, desc = "Show hover documentation" })
           vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = bufnr, desc = "Go to declaration" })
@@ -693,7 +692,7 @@ require("lazy").setup(
         cmp.setup.cmdline(":", {
           mapping = cmp.mapping.preset.cmdline(),
           sources = cmp.config.sources({
-            { name = "path",    group_index = 1 },
+            { name = "path", group_index = 1 },
             { name = "cmdline", group_index = 2 },
           }),
         })
@@ -716,11 +715,28 @@ require("lazy").setup(
     {
       "rachartier/tiny-inline-diagnostic.nvim",
       event = "VeryLazy", -- Or `LspAttach`
-      priority = 1000,    -- needs to be loaded in first
+      priority = 1000, -- needs to be loaded in first
       config = function()
         require("tiny-inline-diagnostic").setup()
         vim.diagnostic.config({ virtual_text = false }) -- Only if needed in your configuration, if you already have native LSP diagnostics
       end,
+    },
+    -- }}}
+    -- Dictionary {{{
+    {
+      "jalvesaq/dict.nvim",
+      dependencies = { "nvim-telescope/telescope.nvim" },
+      keys = {
+        {
+          "<Leader>d",
+          function()
+            require("dict").lookup()
+          end,
+          mode = "n",
+          desc = "dict.nvim: Look up word under cursor",
+        },
+      },
+      opts = {},
     },
     -- }}}
     -- 🤖 AI {{{
@@ -751,7 +767,7 @@ require("lazy").setup(
             store_dir = image_dir,
           },
           agents = {
-            { name = "ChatGPT3-5",     disable = true },
+            { name = "ChatGPT3-5", disable = true },
             { name = "ChatGPT4o-mini", disable = true },
           },
         }
@@ -771,8 +787,8 @@ require("lazy").setup(
       keys = {
         { "gcc", mode = { "n", "v" }, desc = "Comment.nvim: Line-comment toggle" },
         { "gbc", mode = { "n", "v" }, desc = "Comment.nvim: Block-comment toggle keymap" },
-        { "gc",  mode = { "n", "v" }, desc = "Comment.nvim: Line-comment keymap" },
-        { "gb",  mode = { "n", "v" }, desc = "Comment.nvim: Block-comment keymap" },
+        { "gc", mode = { "n", "v" }, desc = "Comment.nvim: Line-comment keymap" },
+        { "gb", mode = { "n", "v" }, desc = "Comment.nvim: Block-comment keymap" },
         { "gcO", mode = { "n", "v" }, desc = "Comment.nvim: Add comment on the line above" },
         { "gco", mode = { "n", "v" }, desc = "Comment.nvim: Add comment on the line below" },
         { "gcA", mode = { "n", "v" }, desc = "Comment.nvim: Add comment at the end of line" },
@@ -882,7 +898,7 @@ require("lazy").setup(
       "tpope/vim-fugitive",
       cmd = "Git",
       keys = {
-        { "<leader>gs", "<cmd>Git<CR>",       mode = "n", desc = "Git status" },
+        { "<leader>gs", "<cmd>Git<CR>", mode = "n", desc = "Git status" },
         { "<leader>gb", "<cmd>Git blame<CR>", mode = "n", desc = "Git blame" },
         { "<leader>gp", "<cmd>Git pushy<CR>", mode = "n", desc = "Git pushy" },
       },
@@ -905,21 +921,21 @@ require("lazy").setup(
         { "cs", desc = "vim-surround: change surrouding delimiter" },
         { "ds", desc = "vim-surround: delete surrouding delimiter" },
         { "ys", desc = "vim-surround: add surrouding delimiter" },
-        { "S",  desc = "vim-surround: add delimiter to selection", mode = "v" },
+        { "S", desc = "vim-surround: add delimiter to selection", mode = "v" },
       },
     },
     {
       "tpope/vim-tbone",
       cmd = { "Tmux", "Twrite", "Tattach", "Tynak", "Tput" },
       keys = {
-        { "<leader>ty", "<cmd>Tyank<CR>", mode = "n",          desc = "tbone: Yank line into tmux buffer" },
+        { "<leader>ty", "<cmd>Tyank<CR>", mode = "n", desc = "tbone: Yank line into tmux buffer" },
         {
           "<leader>ty",
           "<cmd>'<,'>Tyank<CR>",
           mode = "v",
           desc = "tbone: Yank selection into tmux buffer",
         },
-        { "<leader>tp", "<cmd>Tput<CR>",  mode = { "n", "v" }, desc = "tbone: Paste text from tmux buffer" },
+        { "<leader>tp", "<cmd>Tput<CR>", mode = { "n", "v" }, desc = "tbone: Paste text from tmux buffer" },
       },
     },
     -- }}}
@@ -1027,7 +1043,7 @@ require("lazy").setup(
     },
     {
       -- Make sure to set this up properly if you have lazy=true
-      'MeanderingProgrammer/render-markdown.nvim',
+      "MeanderingProgrammer/render-markdown.nvim",
       opts = {
         file_types = { "markdown", "Avante" },
       },
@@ -1035,7 +1051,7 @@ require("lazy").setup(
     },
     -- }}}
   }
--- }}}
+  -- }}}
 )
 -- }}}
 
@@ -1058,13 +1074,13 @@ vim.opt.autoread = true
 
 -- Indenting
 -- Most of these should be overridden by Editorconfig
-vim.opt.tabstop = 2         -- I like my tabs to seem like two spaces
-vim.opt.shiftwidth = 2      -- I'd also like to shift lines the same amount of spaces
-vim.opt.softtabstop = 2     -- If using expandtab for some reason, use two spaces
-vim.opt.autoindent = true   -- Copy indenting from original block of text when yanked/pulled
-vim.opt.expandtab = true    -- Hard tabs are fun in theory, but don't work with other people
-vim.opt.smarttab = true     -- Make expandtab more tolerable
-vim.opt.shiftround = true   -- Round indents to multiples of shiftwidth
+vim.opt.tabstop = 2 -- I like my tabs to seem like two spaces
+vim.opt.shiftwidth = 2 -- I'd also like to shift lines the same amount of spaces
+vim.opt.softtabstop = 2 -- If using expandtab for some reason, use two spaces
+vim.opt.autoindent = true -- Copy indenting from original block of text when yanked/pulled
+vim.opt.expandtab = true -- Hard tabs are fun in theory, but don't work with other people
+vim.opt.smarttab = true -- Make expandtab more tolerable
+vim.opt.shiftround = true -- Round indents to multiples of shiftwidth
 vim.opt.copyindent = true
 vim.opt.smartindent = false -- Disabling this because it messes up pasting with indents
 
@@ -1100,8 +1116,8 @@ vim.opt.incsearch = true
 vim.opt.ignorecase = true
 vim.opt.infercase = true
 vim.opt.smartcase = true -- …but when I do, it'll pair down the search.
-vim.opt.magic = true     -- Do You Believe In (Perl) Magic?
-vim.opt.gdefault = true  -- Use global by default when replacing
+vim.opt.magic = true -- Do You Believe In (Perl) Magic?
+vim.opt.gdefault = true -- Use global by default when replacing
 
 if vim.fn.exists("shellslash") == 1 then
   vim.opt.shellslash = true -- When in Windows, you can use / instead of \
@@ -1208,7 +1224,7 @@ vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "BufNewFile" }, {
 -- Theme {{{
 -- I Think It's Beautiful That Your Are 256 Colors Too
 -- https://www.youtube.com/watch?v=bZ6b5ghZZN0
-vim.cmd("set t_Co=256")     -- 256 color support in terminal
+vim.cmd("set t_Co=256") -- 256 color support in terminal
 vim.opt.termguicolors = true
 vim.opt.background = "dark" -- I like a dark background
 
@@ -1242,8 +1258,8 @@ update_hl("@property.tsx", { link = "TSLabel" })
 
 -- Look & Feel {{{
 -- Word Wrap
-vim.opt.wrap = false             -- I like scrolling off the screen
-vim.opt.textwidth = 80           -- Standard width for terminals
+vim.opt.wrap = false -- I like scrolling off the screen
+vim.opt.textwidth = 80 -- Standard width for terminals
 vim.opt.formatoptions = "oqn1tc" -- Check out 'fo-table' to see what this does.
 
 -- Status bar
