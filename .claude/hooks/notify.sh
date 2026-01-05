@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Claude Code notification hook
+# Sends terminal-notifier alerts for permission prompts and questions
+# Prefixes with tmux session info when running in tmux
+
+# Read JSON input from stdin
+input=$(cat)
+
+# Extract notification type and message using jq
+notification_type=$(echo "$input" | jq -r '.notification_type // empty')
+message=$(echo "$input" | jq -r '.message // "Claude Code needs attention"')
+
+# Only notify for permission prompts and elicitation dialogs (questions)
+if [[ "$notification_type" != "permission_prompt" && "$notification_type" != "elicitation_dialog" ]]; then
+    exit 0
+fi
+
+# Build title based on notification type
+if [[ "$notification_type" == "permission_prompt" ]]; then
+    title="Claude Code - Permission Required"
+else
+    title="Claude Code - Question"
+fi
+
+# Check if we're in tmux and build prefix
+if [[ -n "$TMUX" ]]; then
+    session_name=$(tmux display-message -p '#S' 2>/dev/null)
+    window_index=$(tmux display-message -p '#I' 2>/dev/null)
+
+    if [[ -n "$session_name" && -n "$window_index" ]]; then
+        title="[${session_name}.${window_index}] ${title}"
+    fi
+fi
+
+# Send notification via terminal-notifier
+terminal-notifier \
+    -title "$title" \
+    -message "$message" \
+    -sound default \
+    -activate com.apple.Terminal
+
+exit 0
