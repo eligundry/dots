@@ -33,11 +33,29 @@ if [[ -n "$TMUX" ]]; then
     fi
 fi
 
+# Detect terminal bundle ID based on environment
+if [[ "$TERMINFO" == *"Ghostty"* ]]; then
+    terminal_id="com.mitchellh.ghostty"
+elif [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
+    terminal_id="com.googlecode.iterm2"
+elif [[ "$TERM_PROGRAM" == "WarpTerminal" ]]; then
+    terminal_id="dev.warp.Warp-Stable"
+elif [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
+    terminal_id="com.apple.Terminal"
+elif [[ "$KITTY_PID" ]]; then
+    terminal_id="net.kovidgoyal.kitty"
+elif [[ "$ALACRITTY_WINDOW_ID" ]]; then
+    terminal_id="org.alacritty"
+else
+    terminal_id="com.apple.Terminal"
+fi
+
 # Send notification via terminal-notifier
 terminal-notifier \
     -title "$title" \
     -message "$message" \
     -sound default \
-    -activate com.apple.Terminal
+    -activate "$terminal_id" \
+    -ignoreDnD
 
 exit 0
