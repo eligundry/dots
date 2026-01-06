@@ -23,14 +23,12 @@ else
     title="Claude Code - Question"
 fi
 
-# Check if we're in tmux and build prefix
-if [[ -n "$TMUX" ]]; then
-    session_name=$(tmux display-message -p '#S' 2>/dev/null)
-    window_index=$(tmux display-message -p '#I' 2>/dev/null)
+# Try to get tmux session info (use full path, don't rely on $TMUX being set)
+session_name=$(/opt/homebrew/bin/tmux display-message -p '#S' 2>&1)
+window_index=$(/opt/homebrew/bin/tmux display-message -p '#I' 2>&1)
 
-    if [[ -n "$session_name" && -n "$window_index" ]]; then
-        title="[${session_name}.${window_index}] ${title}"
-    fi
+if [[ -n "$session_name" && -n "$window_index" && "$session_name" != *"no server"* && "$session_name" != *"error"* ]]; then
+    message="${session_name}.${window_index}: ${message}"
 fi
 
 # Detect terminal bundle ID based on environment
