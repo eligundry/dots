@@ -23,12 +23,16 @@ else
     title="Claude Code - Question"
 fi
 
-# Try to get tmux session info (use full path, don't rely on $TMUX being set)
-session_name=$(/opt/homebrew/bin/tmux display-message -p '#S' 2>&1)
-window_index=$(/opt/homebrew/bin/tmux display-message -p '#I' 2>&1)
+# Try to get tmux session info for the pane running Claude Code (not the focused one)
+# Use -t $TMUX_PANE to target the specific pane
+tmux_pane="$TMUX_PANE"
+session_name=$(/opt/homebrew/bin/tmux display-message -t "$tmux_pane" -p '#S' 2>&1)
+window_index=$(/opt/homebrew/bin/tmux display-message -t "$tmux_pane" -p '#I' 2>&1)
 
+in_tmux=false
 if [[ -n "$session_name" && -n "$window_index" && "$session_name" != *"no server"* && "$session_name" != *"error"* ]]; then
     message="${session_name}.${window_index}: ${message}"
+    in_tmux=true
 fi
 
 # Detect terminal bundle ID based on environment
@@ -49,11 +53,22 @@ else
 fi
 
 # Send notification via terminal-notifier
-terminal-notifier \
-    -title "$title" \
-    -message "$message" \
-    -sound default \
-    -activate "$terminal_id" \
-    -ignoreDnD
+if [[ "$in_tmux" == "true" ]]; then
+    # Include execute command to switch to the correct tmux pane when clicked
+    terminal-notifier \
+        -title "$title" \
+        -message "$message" \
+        -sound default \
+        -activate "$terminal_id" \
+        -execute "/opt/homebrew/bin/tmux switch-client -t '$session_name' && /opt/homebrew/bin/tmux select-window -t '$session_name:$window_index' && /opt/homebrew/bin/tmux select-pane -t '$tmux_pane'" \
+        -ignoreDnD
+else
+    terminal-notifier \
+        -title "$title" \
+        -message "$message" \
+        -sound default \
+        -activate "$terminal_id" \
+        -ignoreDnD
+fi
 
 exit 0
