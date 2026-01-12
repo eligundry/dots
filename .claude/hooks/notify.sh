@@ -11,17 +11,23 @@ input=$(cat)
 notification_type=$(echo "$input" | jq -r '.notification_type // empty')
 message=$(echo "$input" | jq -r '.message // "Claude Code needs attention"')
 
-# Only notify for permission prompts and elicitation dialogs (questions)
-if [[ "$notification_type" != "permission_prompt" && "$notification_type" != "elicitation_dialog" ]]; then
+# Only notify for permission prompts, questions, and idle prompts
+if [[ "$notification_type" != "permission_prompt" && "$notification_type" != "elicitation_dialog" && "$notification_type" != "idle_prompt" ]]; then
     exit 0
 fi
 
 # Build title based on notification type
-if [[ "$notification_type" == "permission_prompt" ]]; then
-    title="Claude Code - Permission Required"
-else
-    title="Claude Code - Question"
-fi
+case "$notification_type" in
+    permission_prompt)
+        title="Claude Code - Permission Required"
+        ;;
+    elicitation_dialog)
+        title="Claude Code - Question"
+        ;;
+    idle_prompt)
+        title="Claude Code - Awaiting Input"
+        ;;
+esac
 
 # Try to get tmux session info for the pane running Claude Code (not the focused one)
 # Use -t $TMUX_PANE to target the specific pane
@@ -33,6 +39,12 @@ in_tmux=false
 if [[ -n "$session_name" && -n "$window_index" && "$session_name" != *"no server"* && "$session_name" != *"error"* ]]; then
     message="${session_name}.${window_index}: ${message}"
     in_tmux=true
+    # Trigger bell in the pane to show alert in tmux status bar
+    # Requires 'set -g visual-bell on' in tmux.conf for silent bell
+    pane_tty=$(/opt/homebrew/bin/tmux display-message -t "$tmux_pane" -p '#{pane_tty}' 2>/dev/null)
+    if [[ -n "$pane_tty" && -w "$pane_tty" ]]; then
+        printf '\a' > "$pane_tty"
+    fi
 fi
 
 # Detect terminal bundle ID based on environment
