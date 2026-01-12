@@ -11,11 +11,6 @@ input=$(cat)
 notification_type=$(echo "$input" | jq -r '.notification_type // empty')
 message=$(echo "$input" | jq -r '.message // "Claude Code needs attention"')
 
-# Only notify for permission prompts, questions, and idle prompts
-if [[ "$notification_type" != "permission_prompt" && "$notification_type" != "elicitation_dialog" && "$notification_type" != "idle_prompt" ]]; then
-    exit 0
-fi
-
 # Build title based on notification type
 case "$notification_type" in
     permission_prompt)
@@ -27,6 +22,10 @@ case "$notification_type" in
     idle_prompt)
         title="Claude Code - Awaiting Input"
         ;;
+    # Only notify for permission prompts, questions, and idle prompts
+    *)
+      exit 0
+      ;;
 esac
 
 # Try to get tmux session info for the pane running Claude Code (not the focused one)
