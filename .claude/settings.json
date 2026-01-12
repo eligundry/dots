@@ -9,7 +9,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~.claude/hooks/notify.sh"
+            "command": "$HOME/.claude/hooks/notify.sh"
           }
         ]
       }

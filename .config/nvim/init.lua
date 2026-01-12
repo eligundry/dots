@@ -1029,6 +1029,16 @@ require("lazy").setup(
       "MeanderingProgrammer/render-markdown.nvim",
       opts = {
         file_types = { "markdown", "Avante" },
+        heading = {
+          backgrounds = {
+            "Function",
+            "Function",
+            "Function",
+            "Function",
+            "Function",
+            "Function",
+          },
+        },
       },
       ft = { "markdown", "Avante" },
     },
@@ -1234,6 +1244,7 @@ update_hl("TSVariable", { link = "TSText" })
 update_hl("TSTypeBuiltin", { link = "TSType" })
 update_hl("TSVariableBuiltin", { italic = false })
 update_hl("TSFuncBuiltin", { italic = false })
+update_hl("TSTitle", { bg = "NONE", ctermbg = "NONE" })
 update_hl("PreProc", { italic = false })
 update_hl("@comment.gitcommit", { italic = false })
 update_hl("@property.tsx", { link = "TSLabel" })
@@ -1550,7 +1561,9 @@ end, { desc = "Insert a paragraph of hipster ipsum" })
 -- Dictionary lookup using dict.org (requires ~/.dictrc with "server dict.org")
 vim.keymap.set("n", "<Leader>d", function()
   local word = vim.fn.expand("<cword>")
-  if word == "" then return end
+  if word == "" then
+    return
+  end
 
   local output = vim.fn.system("dict '" .. word .. "' 2>&1")
   local lines = vim.split(output, "\n")
