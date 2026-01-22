@@ -1,0 +1,429 @@
+#!/usr/bin/env bash
+#
+# claude-session-merger - Merge Claude Code sessions across multiple project copies
+#
+# This script merges chat history, permissions, and MCP configs from multiple
+# copies of the same project into a single canonical location, then creates
+# symlinks so all copies share the same Claude Code state.
+#
+# Usage:
+#   claude-session-merger /path/to/canonical --merge /path/to/copy1 --merge /path/to/copy2
+#
+# Example:
+#   claude-session-merger ~/Code/edp --merge ~/Code/edp-docker-data-demo --merge ~/Code/edp-quatro
+#
+
+set -euo pipefail
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+log_info() { echo -e "${BLUE}[INFO]${NC} $1"; }
+log_success() { echo -e "${GREEN}[OK]${NC} $1"; }
+log_warn() { echo -e "${YELLOW}[WARN]${NC} $1"; }
+log_error() { echo -e "${RED}[ERROR]${NC} $1"; }
+
+usage() {
+    cat << EOF
+Usage: $(basename "$0") <canonical-path> --merge <path> [--merge <path>...]
+
+Merge Claude Code sessions from multiple project copies into one canonical location.
+
+Arguments:
+    canonical-path    The main project directory (will contain all merged data)
+    --merge <path>    Additional project directories to merge (can be specified multiple times)
+
+Options:
+    -n, --dry-run     Show what would be done without making changes
+    -h, --help        Show this help message
+
+Example:
+    $(basename "$0") ~/Code/myproject --merge ~/Code/myproject-copy1 --merge ~/Code/myproject-copy2
+
+What this does:
+    1. Backs up all Claude Code data for the specified projects
+    2. Merges chat history from all copies into the canonical project
+    3. Merges permissions from all .claude/settings.local.json files
+    4. Unifies MCP server configs in ~/.claude.json
+    5. Creates symlinks so all copies share the same data
+
+EOF
+    exit 0
+}
+
+# Parse arguments
+CANONICAL=""
+MERGE_PATHS=()
+DRY_RUN=false
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --merge)
+            if [[ -z "${2:-}" ]]; then
+                log_error "--merge requires a path argument"
+                exit 1
+            fi
+            MERGE_PATHS+=("$(realpath "$2")")
+            shift 2
+            ;;
+        -n|--dry-run)
+            DRY_RUN=true
+            shift
+            ;;
+        -h|--help)
+            usage
+            ;;
+        -*)
+            log_error "Unknown option: $1"
+            usage
+            ;;
+        *)
+            if [[ -z "$CANONICAL" ]]; then
+                CANONICAL="$(realpath "$1")"
+            else
+                log_error "Unexpected argument: $1"
+                usage
+            fi
+            shift
+            ;;
+    esac
+done
+
+# Validate arguments
+if [[ -z "$CANONICAL" ]]; then
+    log_error "Canonical path is required"
+    usage
+fi
+
+if [[ ${#MERGE_PATHS[@]} -eq 0 ]]; then
+    log_error "At least one --merge path is required"
+    usage
+fi
+
+# Validate paths exist
+if [[ ! -d "$CANONICAL" ]]; then
+    log_error "Canonical path does not exist: $CANONICAL"
+    exit 1
+fi
+
+for path in "${MERGE_PATHS[@]}"; do
+    if [[ ! -d "$path" ]]; then
+        log_error "Merge path does not exist: $path"
+        exit 1
+    fi
+done
+
+# Convert paths to Claude project directory names
+path_to_claude_dir() {
+    echo "$1" | sed 's|/|-|g'
+}
+
+CANONICAL_CLAUDE_DIR="$(path_to_claude_dir "$CANONICAL")"
+CANONICAL_PROJECTS_DIR="$HOME/.claude/projects/$CANONICAL_CLAUDE_DIR"
+
+# Generate shared settings directory name based on canonical path
+SHARED_DIR="$HOME/.claude-shared-$(basename "$CANONICAL")"
+
+log_info "Configuration:"
+echo "  Canonical: $CANONICAL"
+echo "  Claude dir: $CANONICAL_CLAUDE_DIR"
+echo "  Shared settings: $SHARED_DIR"
+echo "  Merge paths:"
+for path in "${MERGE_PATHS[@]}"; do
+    echo "    - $path"
+done
+echo ""
+
+if $DRY_RUN; then
+    log_warn "DRY RUN - no changes will be made"
+    echo ""
+fi
+
+# Step 1: Create backup
+BACKUP_DIR="$HOME/.claude-merger-backup-$(date +%Y%m%d-%H%M%S)"
+log_info "Step 1: Creating backup at $BACKUP_DIR"
+
+if ! $DRY_RUN; then
+    mkdir -p "$BACKUP_DIR/projects"
+    mkdir -p "$BACKUP_DIR/settings"
+
+    # Backup ~/.claude.json
+    if [[ -f "$HOME/.claude.json" ]]; then
+        cp "$HOME/.claude.json" "$BACKUP_DIR/claude.json.bak"
+    fi
+
+    # Backup canonical project directory
+    if [[ -d "$CANONICAL_PROJECTS_DIR" ]]; then
+        cp -R "$CANONICAL_PROJECTS_DIR" "$BACKUP_DIR/projects/"
+    fi
+
+    # Backup merge project directories
+    for path in "${MERGE_PATHS[@]}"; do
+        proj_dir="$HOME/.claude/projects/$(path_to_claude_dir "$path")"
+        if [[ -d "$proj_dir" ]]; then
+            cp -R "$proj_dir" "$BACKUP_DIR/projects/"
+        fi
+    done
+
+    # Backup settings.local.json files
+    if [[ -f "$CANONICAL/.claude/settings.local.json" ]]; then
+        cp "$CANONICAL/.claude/settings.local.json" "$BACKUP_DIR/settings/canonical-settings.local.json"
+    fi
+    for path in "${MERGE_PATHS[@]}"; do
+        if [[ -f "$path/.claude/settings.local.json" ]]; then
+            cp "$path/.claude/settings.local.json" "$BACKUP_DIR/settings/$(basename "$path")-settings.local.json"
+        fi
+    done
+
+    log_success "Backup created"
+else
+    echo "  Would create backup at $BACKUP_DIR"
+fi
+
+# Step 2: Copy session files from merge paths to canonical
+log_info "Step 2: Merging session files"
+
+if ! $DRY_RUN; then
+    # Ensure canonical projects dir exists
+    mkdir -p "$CANONICAL_PROJECTS_DIR"
+
+    for path in "${MERGE_PATHS[@]}"; do
+        proj_dir="$HOME/.claude/projects/$(path_to_claude_dir "$path")"
+        if [[ -d "$proj_dir" ]]; then
+            echo "  Copying from $(basename "$path")..."
+
+            # Copy .jsonl files
+            for f in "$proj_dir"/*.jsonl; do
+                if [[ -f "$f" ]]; then
+                    basename_f=$(basename "$f")
+                    if [[ ! -f "$CANONICAL_PROJECTS_DIR/$basename_f" ]]; then
+                        cp "$f" "$CANONICAL_PROJECTS_DIR/"
+                    fi
+                fi
+            done
+
+            # Copy subdirectories
+            for d in "$proj_dir"/*/; do
+                if [[ -d "$d" ]]; then
+                    dirname_d=$(basename "$d")
+                    if [[ ! -d "$CANONICAL_PROJECTS_DIR/$dirname_d" ]]; then
+                        cp -R "$d" "$CANONICAL_PROJECTS_DIR/"
+                    fi
+                fi
+            done
+        fi
+    done
+    log_success "Session files merged"
+else
+    echo "  Would copy session files from merge paths to canonical"
+fi
+
+# Step 3: Merge sessions-index.json
+log_info "Step 3: Merging sessions-index.json"
+
+if ! $DRY_RUN; then
+    node << NODESCRIPT
+const fs = require('fs');
+const path = require('path');
+
+const CANONICAL = '$CANONICAL_PROJECTS_DIR';
+const projects = ['$CANONICAL_PROJECTS_DIR'];
+const mergePaths = '${MERGE_PATHS[*]}'.split(' ');
+
+for (const p of mergePaths) {
+    const claudeDir = p.replace(/\\//g, '-');
+    projects.push(process.env.HOME + '/.claude/projects/' + claudeDir);
+}
+
+const allEntries = new Map();
+
+for (const proj of projects) {
+    const indexPath = path.join(proj, 'sessions-index.json');
+    if (fs.existsSync(indexPath)) {
+        try {
+            const data = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
+            const entries = data.entries || [];
+
+            for (const entry of entries) {
+                const newFullPath = path.join(CANONICAL, path.basename(entry.fullPath));
+                const updatedEntry = Object.assign({}, entry, {
+                    fullPath: newFullPath,
+                    projectPath: '$CANONICAL'
+                });
+
+                const existing = allEntries.get(entry.sessionId);
+                if (!existing || new Date(entry.modified) > new Date(existing.modified)) {
+                    allEntries.set(entry.sessionId, updatedEntry);
+                }
+            }
+        } catch (e) {
+            console.error('Error reading ' + indexPath + ': ' + e.message);
+        }
+    }
+}
+
+const sortedEntries = Array.from(allEntries.values()).sort(function(a, b) {
+    return new Date(b.modified) - new Date(a.modified);
+});
+
+console.log('  Merged ' + sortedEntries.length + ' unique sessions');
+
+const mergedIndex = { version: 1, entries: sortedEntries };
+fs.writeFileSync(path.join(CANONICAL, 'sessions-index.json'), JSON.stringify(mergedIndex, null, 2));
+NODESCRIPT
+    log_success "Sessions index merged"
+else
+    echo "  Would merge sessions-index.json files"
+fi
+
+# Step 4: Merge permissions into shared settings
+log_info "Step 4: Merging permissions"
+
+if ! $DRY_RUN; then
+    mkdir -p "$SHARED_DIR"
+
+    node << NODESCRIPT
+const fs = require('fs');
+
+const paths = ['$CANONICAL/.claude/settings.local.json'];
+const mergePaths = '${MERGE_PATHS[*]}'.split(' ');
+for (const p of mergePaths) {
+    paths.push(p + '/.claude/settings.local.json');
+}
+
+const allPermissions = new Set();
+
+const garbagePatterns = [
+    /EOF/,
+    /Generated with/,
+    /Co-Authored-By/
+];
+
+for (const p of paths) {
+    if (fs.existsSync(p)) {
+        try {
+            const content = JSON.parse(fs.readFileSync(p, 'utf8'));
+            const allow = (content.permissions && content.permissions.allow) || [];
+            for (const perm of allow) {
+                if (!perm.startsWith('Bash(') && !perm.startsWith('WebFetch') &&
+                    !perm.startsWith('WebSearch') && !perm.startsWith('mcp__')) {
+                    continue;
+                }
+                let isGarbage = false;
+                for (const pattern of garbagePatterns) {
+                    if (pattern.test(perm)) {
+                        isGarbage = true;
+                        break;
+                    }
+                }
+                if (!isGarbage) {
+                    allPermissions.add(perm);
+                }
+            }
+        } catch (e) {
+            console.error('Error reading ' + p + ': ' + e.message);
+        }
+    }
+}
+
+const merged = {
+    permissions: {
+        allow: Array.from(allPermissions).sort(),
+        deny: [],
+        ask: []
+    }
+};
+
+fs.writeFileSync('$SHARED_DIR/settings.local.json', JSON.stringify(merged, null, 2));
+console.log('  Merged ' + merged.permissions.allow.length + ' permissions');
+NODESCRIPT
+    log_success "Permissions merged to $SHARED_DIR/settings.local.json"
+else
+    echo "  Would merge permissions to $SHARED_DIR/settings.local.json"
+fi
+
+# Step 5: Unify MCP servers in ~/.claude.json
+log_info "Step 5: Unifying MCP servers"
+
+if ! $DRY_RUN; then
+    node << NODESCRIPT
+const fs = require('fs');
+
+const configPath = process.env.HOME + '/.claude.json';
+if (!fs.existsSync(configPath)) {
+    console.log('  No ~/.claude.json found, skipping');
+    process.exit(0);
+}
+
+const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+
+// Get MCP servers from canonical project
+const canonicalMcpServers = (config.projects && config.projects['$CANONICAL'] &&
+    config.projects['$CANONICAL'].mcpServers) || {};
+
+const allPaths = ['$CANONICAL'];
+const mergePaths = '${MERGE_PATHS[*]}'.split(' ');
+allPaths.push(...mergePaths);
+
+for (const projectPath of allPaths) {
+    if (config.projects && config.projects[projectPath]) {
+        config.projects[projectPath].mcpServers = canonicalMcpServers;
+        config.projects[projectPath].disabledMcpServers = [];
+    }
+}
+
+fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+console.log('  Unified MCP servers across ' + allPaths.length + ' projects');
+NODESCRIPT
+    log_success "MCP servers unified"
+else
+    echo "  Would unify MCP servers in ~/.claude.json"
+fi
+
+# Step 6: Create symlinks
+log_info "Step 6: Creating symlinks"
+
+if ! $DRY_RUN; then
+    # Project history symlinks
+    for path in "${MERGE_PATHS[@]}"; do
+        proj_dir="$HOME/.claude/projects/$(path_to_claude_dir "$path")"
+        if [[ -d "$proj_dir" && ! -L "$proj_dir" ]]; then
+            rm -rf "$proj_dir"
+        fi
+        if [[ ! -e "$proj_dir" ]]; then
+            ln -s "$CANONICAL_PROJECTS_DIR" "$proj_dir"
+            echo "  Linked: $(basename "$proj_dir") -> $(basename "$CANONICAL_PROJECTS_DIR")"
+        fi
+    done
+
+    # Settings symlinks
+    for path in "$CANONICAL" "${MERGE_PATHS[@]}"; do
+        settings_file="$path/.claude/settings.local.json"
+        if [[ -f "$settings_file" && ! -L "$settings_file" ]]; then
+            rm -f "$settings_file"
+        fi
+        if [[ ! -e "$settings_file" ]]; then
+            mkdir -p "$(dirname "$settings_file")"
+            ln -s "$SHARED_DIR/settings.local.json" "$settings_file"
+            echo "  Linked: $path/.claude/settings.local.json"
+        fi
+    done
+
+    log_success "Symlinks created"
+else
+    echo "  Would create project history symlinks"
+    echo "  Would create settings symlinks"
+fi
+
+echo ""
+log_success "Migration complete!"
+echo ""
+echo "Backup location: $BACKUP_DIR"
+echo ""
+echo "To restore from backup:"
+echo "  cp \"$BACKUP_DIR/claude.json.bak\" ~/.claude.json"
+echo "  # Remove symlinks and restore project directories from backup"
