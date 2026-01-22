@@ -34,6 +34,7 @@
 **/.phpcomplete_extended
 **/.vscode
 **/blah.*
+**/blah*
 **/blah/*
 .workbook
 **/.aider*/*

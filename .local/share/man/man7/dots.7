@@ -1,0 +1,102 @@
+.TH DOTS 7 "January 2026" "Eli Gundry" "Dotfiles Reference"
+.SH NAME
+dots \- keybindings and tips for Eli's dotfiles
+.SH DESCRIPTION
+Quick reference for keybindings and configuration across tmux, Ghostty, and other tools.
+.SH TMUX
+The prefix key is
+.BR C-a
+(Ctrl+a).
+.SS Window Management
+.TP
+.B C-a c
+New window (in current directory)
+.TP
+.B C-a x
+Kill window (with confirmation)
+.TP
+.B C-a X
+Kill window (no confirmation)
+.TP
+.B C-a K
+Kill pane
+.TP
+.B C-a C-a
+Switch to last window
+.SS Pane Splitting
+.TP
+.B C-a |
+Split horizontally
+.TP
+.B C-a -
+Split vertically
+.TP
+.B C-a _
+Split vertically (small bottom pane)
+.SS Pane Navigation
+.TP
+.B C-a h/j/k/l
+Navigate panes (vim-style)
+.SS Copy Mode
+Enter copy mode with
+.BR "C-a [" .
+Uses vi keybindings.
+.TP
+.B v
+Begin selection
+.TP
+.B y
+Copy selection
+.TP
+.B C-a P
+Paste buffer
+.SS tmux-open Plugin (in copy mode)
+.TP
+.B o
+Open selected URL/file with system open
+.TP
+.B C-o
+Open selected file in $EDITOR
+.TP
+.B S
+Search selected text in Google
+.SS Miscellaneous
+.TP
+.B C-a R
+Reload ~/.tmux.conf
+.TP
+.B C-a C-l
+Clear scrollback history
+.TP
+.B C-a F3
+Kill all sessions except current
+.TP
+.B C-a F5
+Enable screensaver (10 min timeout)
+.TP
+.B C-a F6
+Disable screensaver
+.SH GHOSTTY
+.SS Clicking Links with tmux Mouse Mode
+When tmux mouse mode is enabled, use modifier keys to bypass tmux and click links:
+.TP
+.B Cmd+Click
+Open link (macOS)
+.TP
+.B Shift+Cmd+Click
+Open link (alternative)
+.SH FILES
+.TP
+.I ~/.tmux.conf
+tmux configuration
+.TP
+.I ~/.config/ghostty/config
+Ghostty configuration
+.TP
+.I ~/.config/yadm/bootstrap
+Dotfiles bootstrap script
+.SH SEE ALSO
+.BR tmux (1),
+.BR ghostty (1)
+.SH AUTHOR
+Eli Gundry

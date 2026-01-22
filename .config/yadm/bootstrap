@@ -22,8 +22,11 @@ clone_or_update_repository() {
 clone_or_update_repository "$HOME/.local/share/dots/zplug" "https://github.com/zplug/zplug.git"
 clone_or_update_repository "$HOME/.local/share/dots/pipes" "https://github.com/pipeseroni/pipes.sh.git"
 clone_or_update_repository "$HOME/.local/share/dots/base16-alacritty" "https://github.com/aarowill/base16-alacritty.git"
-clone_or_update_repository "$HOME/.tmux/plugins/tpm" "https://github.com/tmux-plugins/tpm.git"
 clone_or_update_repository "$HOME/.local/share/pass/audit" "https://github.com/benburwell/pass-audit.git"
+
+echo "Installing tmux plugins"
+clone_or_update_repository "$HOME/.tmux/plugins/tpm" "https://github.com/tmux-plugins/tpm.git"
+~/.tmux/plugins/tpm/bin/install_plugins
 
 if [ "$system_type" = "Darwin" ]; then
 
