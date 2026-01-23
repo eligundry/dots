@@ -4,6 +4,7 @@
     branch-recent = branch --sort=-committerdate
     up = pull
     pushy = push origin HEAD
+    pully = !git pull origin $(git branch --show-current)
     force-pushy = push --force origin HEAD
     cotb = checkout --track=direct -b
     merge-cleanup = !"find . -name '*.orig' -delete"
