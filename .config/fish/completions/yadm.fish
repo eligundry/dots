@@ -88,8 +88,9 @@ complete -f -c yadm -n __yadm_needs_command -a mv -d 'Move/rename files'
 complete -f -c yadm -n __yadm_needs_command -a remote -d 'Manage remotes'
 complete -f -c yadm -n __yadm_needs_command -a show -d 'Show objects'
 
-# File completions for specific commands - use tracked files for add (allows adding any tracked file)
-complete -f -c yadm -n '__yadm_using_command add' -a '(__yadm_tracked_files)'
+# File completions for specific commands
+# No -f flag allows normal file/dir completion alongside tracked files
+complete -c yadm -n '__yadm_using_command add' -a '(__yadm_tracked_files)'
 complete -f -c yadm -n '__yadm_using_command checkout' -a '(__yadm_modified_files)'
 complete -f -c yadm -n '__yadm_using_command diff' -a '(__yadm_tracked_files)'
 complete -f -c yadm -n '__yadm_using_command restore' -a '(__yadm_modified_files)'
