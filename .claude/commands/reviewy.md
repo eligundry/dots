@@ -9,12 +9,12 @@ $ARGUMENTS
 The argument should be a GitHub PR review URL in the format:
 `https://github.com/OWNER/REPO/pull/PR_NUMBER#pullrequestreview-REVIEW_ID`
 
-Example: `https://github.com/codeclimate/edp/pull/6737#pullrequestreview-3741755454`
+Example: `https://github.com/org/repo/pull/6737#pullrequestreview-3741755454`
 
 ## Instructions
 
 1. Parse the URL to extract:
-   - Owner and repo (e.g., `codeclimate/edp`)
+   - Owner and repo (e.g., `org/repo`)
    - PR number (e.g., `6737`)
    - Review ID (e.g., `3741755454`)
 
