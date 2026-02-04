@@ -60,8 +60,7 @@ if ! command -v aider >/dev/null 2>&1; then
 fi
 
 echo "Installing Neovim modules"
-pip3 install neovim
 npm install -g neovim
 
 # Install pass audit so I can check password leaks
-PREFIX="/opt/homebrew/opt/pass" make install -f "$HOME/.local/share/pass/audit/Makefile"
+make -C "$HOME/.local/share/pass/audit" install PREFIX="/opt/homebrew/opt/pass"
