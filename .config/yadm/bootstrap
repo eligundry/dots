@@ -23,10 +23,16 @@ clone_or_update_repository "$HOME/.local/share/dots/zplug" "https://github.com/z
 clone_or_update_repository "$HOME/.local/share/dots/pipes" "https://github.com/pipeseroni/pipes.sh.git"
 clone_or_update_repository "$HOME/.local/share/dots/base16-alacritty" "https://github.com/aarowill/base16-alacritty.git"
 clone_or_update_repository "$HOME/.local/share/pass/audit" "https://github.com/benburwell/pass-audit.git"
+clone_or_update_repository "$HOME/.claude/skills/claudeception" "https://github.com/blader/Claudeception.git"
 
 echo "Installing tmux plugins"
 clone_or_update_repository "$HOME/.tmux/plugins/tpm" "https://github.com/tmux-plugins/tpm.git"
 ~/.tmux/plugins/tpm/bin/install_plugins
+
+echo "Installing Claude Code plugins"
+clone_or_update_repository "$HOME/.claude/skills/claudeception" "https://github.com/blader/Claudeception.git"
+cp "$HOME/.claude/skills/claudeception/scripts/claudeception-activator.sh" "$HOME/.claude/hooks/"
+chmod +x "$HOME/.claude/hooks/claudeception-activator.sh"
 
 if [ "$system_type" = "Darwin" ]; then
 
@@ -38,7 +44,7 @@ if [ "$system_type" = "Darwin" ]; then
 
   if [ -f "$HOME/.Brewfile" ]; then
     echo "Updating homebrew bundle"
-    brew bundle --global --debug --file "$HOME/.Brewfile"
+    brew bundle --global
   fi
 
   echo "Installing a node LTS version with fnm"
