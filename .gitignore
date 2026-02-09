@@ -40,5 +40,8 @@
 **/.aider*/*
 **/.aider*
 **/.claude
+!**/.claude/commands
+!**/.claude/skills
+!**/.claude/settings.json
 !**/.claude/agents
 **/.playwright-mcp/*
