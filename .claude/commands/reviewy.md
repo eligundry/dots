@@ -59,3 +59,15 @@ Example: `https://github.com/org/repo/pull/6737#pullrequestreview-3741755454`
    ```
 
 10. Report a summary of all changes made and comments addressed.
+
+11. **Copilot Auto-Review Loop**: If the reviewer is GitHub Copilot (check if the review author is `copilot` or `github-actions[bot]` with Copilot context):
+    - After pushing changes, poll for Copilot's next review using:
+      ```bash
+      gh api repos/OWNER/REPO/pulls/PR_NUMBER/reviews --jq '.[] | select(.user.login == "copilot" or .user.login == "github-actions[bot]") | select(.state != "APPROVED") | .id' | tail -1
+      ```
+    - Wait 30-60 seconds between polls (Copilot needs time to analyze changes)
+    - If a new review ID is found with pending comments:
+      1. Run `/compact` to reduce context
+      2. Recursively invoke `/reviewy` with the new review URL: `https://github.com/OWNER/REPO/pull/PR_NUMBER#pullrequestreview-NEW_REVIEW_ID`
+    - Continue looping until Copilot approves or has no new feedback
+    - Report the final status when the loop completes

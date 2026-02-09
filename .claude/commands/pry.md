@@ -24,7 +24,7 @@ The argument above may be:
    - Follows the repository's commit message conventions
    - Adds the Claude `Co-authored-by` trailer
 
-4. Check if the current branch has an upstream remote. If not, push with `-u origin HEAD`.
+4. Push only the current branch to the remote. Use `git push -u origin HEAD` to push the current branch (setting upstream if needed).
 
 5. Create a PR using `gh pr create` with:
    - A title matching the commit message (including ticket prefix if provided)
