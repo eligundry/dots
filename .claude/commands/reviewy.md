@@ -32,9 +32,9 @@ Example: `https://github.com/org/repo/pull/6737#pullrequestreview-3741755454`
    ```
    For each review comment, check if there are replies by matching `in_reply_to_id` fields. Read the full conversation thread to understand any clarifications, follow-up questions, or additional context provided in replies.
 
-5. Create a todo list of all the changes requested in the review comments.
+5. Create a todo list of all the changes requested in the review comments. **Skip any comments that are already resolved** (check the `isResolved` or resolution status in the thread).
 
-6. For each comment:
+6. For each unresolved comment:
    - Read the file and line(s) referenced in the comment
    - Consider the full reply thread context (replies may clarify, modify, or resolve the original feedback)
    - If a reply indicates the issue was already addressed or is no longer needed, skip it
@@ -53,10 +53,15 @@ Example: `https://github.com/org/repo/pull/6737#pullrequestreview-3741755454`
 
 8. Push the changes to the remote branch.
 
-9. Reply to each review comment using the GitHub API to indicate the feedback has been addressed:
+9. Reply to each review comment and resolve the thread:
    ```bash
+   # Reply to the comment
    gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments/COMMENT_ID/replies -f body="Done - [brief description of change made]"
+
+   # Resolve the comment thread (requires GraphQL)
+   gh api graphql -f query='mutation { resolveReviewThread(input: {threadId: "THREAD_NODE_ID"}) { thread { isResolved } } }'
    ```
+   To get the thread node ID, fetch the comment and use its `node_id` field, or query the PR review threads via GraphQL.
 
 10. Report a summary of all changes made and comments addressed.
 
