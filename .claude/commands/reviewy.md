@@ -61,7 +61,11 @@ Example: `https://github.com/org/repo/pull/6737#pullrequestreview-3741755454`
 10. Report a summary of all changes made and comments addressed.
 
 11. **Copilot Auto-Review Loop**: If the reviewer is GitHub Copilot (check if the review author is `copilot` or `github-actions[bot]` with Copilot context):
-    - After pushing changes, poll for Copilot's next review using:
+    - After pushing changes, request Copilot's review again:
+      ```bash
+      gh pr edit PR_NUMBER --add-reviewer @copilot
+      ```
+    - Then poll for Copilot's next review using:
       ```bash
       gh api repos/OWNER/REPO/pulls/PR_NUMBER/reviews --jq '.[] | select(.user.login == "copilot" or .user.login == "github-actions[bot]") | select(.state != "APPROVED") | .id' | tail -1
       ```
