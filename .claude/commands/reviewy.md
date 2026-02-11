@@ -18,27 +18,54 @@ Example: `https://github.com/org/repo/pull/6737#pullrequestreview-3741755454`
    - PR number (e.g., `6737`)
    - Review ID (e.g., `3741755454`)
 
-2. Fetch the review and its comments using the GitHub API:
+2. **Fetch all review threads, comments, and replies in a single GraphQL query**:
    ```bash
-   gh api repos/OWNER/REPO/pulls/PR_NUMBER/reviews/REVIEW_ID
-   gh api repos/OWNER/REPO/pulls/PR_NUMBER/reviews/REVIEW_ID/comments
+   gh api graphql -f query='
+   query($owner: String!, $repo: String!, $pr: Int!) {
+     repository(owner: $owner, name: $repo) {
+       pullRequest(number: $pr) {
+         reviewThreads(first: 100) {
+           nodes {
+             id
+             isResolved
+             comments(first: 50) {
+               nodes {
+                 id
+                 databaseId
+                 body
+                 path
+                 line
+                 author { login }
+                 createdAt
+                 pullRequestReview {
+                   databaseId
+                 }
+               }
+             }
+           }
+         }
+       }
+     }
+   }' -f owner=OWNER -f repo=REPO -F pr=PR_NUMBER
    ```
 
-3. Also fetch the general PR review comment body (the top-level review summary) from the review endpoint.
+   This single query returns:
+   - All review threads with their `isResolved` status
+   - All comments and replies in each thread (chronologically)
+   - The `pullRequestReview.databaseId` to filter by the target REVIEW_ID
+   - File path and line number for each comment
 
-4. **CRITICAL: Fetch all PR comments including reply threads**:
-   ```bash
-   # Get all comments on the PR (includes replies)
-   gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments --paginate
-   ```
+3. **Filter threads to the target review**: Only process threads where at least one comment has `pullRequestReview.databaseId` matching the REVIEW_ID from the URL.
 
-   **You MUST read all replies in each comment thread.** The PR author may have responded to reviewer suggestions with important context about:
+4. **CRITICAL: Read the ENTIRE reply thread for each comment.**
+
+   The PR author may have responded to reviewer suggestions with important context about:
    - Why a suggestion isn't viable or applicable
    - Technical constraints that make a change inappropriate
    - Clarifications that modify or narrow the original request
    - Agreements, disagreements, or alternative approaches
 
-   For each review comment, find all replies by matching `in_reply_to_id` fields. Build the complete conversation thread and read it chronologically before deciding how to act.
+   **The PR author's replies take precedence over the original reviewer suggestion.**
 
 5. Create a todo list of all the changes requested in the review comments. **Skip any comments that are already resolved** (check the `isResolved` or resolution status in the thread).
 
@@ -65,13 +92,13 @@ Example: `https://github.com/org/repo/pull/6737#pullrequestreview-3741755454`
 
 9. Reply to each review comment and resolve the thread:
    ```bash
-   # Reply to the comment
-   gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments/COMMENT_ID/replies -f body="Done - [brief description of change made]"
+   # Reply to the comment (use databaseId from the first comment in the thread)
+   gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments/COMMENT_DATABASE_ID/replies -f body="Done - [brief description of change made]"
 
-   # Resolve the comment thread (requires GraphQL)
-   gh api graphql -f query='mutation { resolveReviewThread(input: {threadId: "THREAD_NODE_ID"}) { thread { isResolved } } }'
+   # Resolve the thread (use the thread's id from the GraphQL query)
+   gh api graphql -f query='mutation { resolveReviewThread(input: {threadId: "THREAD_ID"}) { thread { isResolved } } }'
    ```
-   To get the thread node ID, fetch the comment and use its `node_id` field, or query the PR review threads via GraphQL.
+   The thread `id` is already available from the initial GraphQL query (e.g., `PRRT_kwDO...`).
 
 10. Report a summary of all changes made and comments addressed.
 
