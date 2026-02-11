@@ -1084,8 +1084,13 @@ vim.opt.history = 10000
 vim.opt.backup = false
 vim.opt.writebackup = false
 
--- I'm done using swaps. They are annoying.
-vim.opt.swapfile = false
+-- Swap files
+vim.opt.swapfile = true
+local swap_dir = vim.fn.expand("~/.local/state/nvim/swap")
+if vim.fn.isdirectory(swap_dir) == 0 then
+  vim.fn.mkdir(swap_dir, "p")
+end
+vim.opt.directory = swap_dir .. "//"
 
 -- Persistent undo is pretty awesome. It basically builds all sorts
 -- of version control straight into your editor. It commits when ever
