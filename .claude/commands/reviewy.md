@@ -26,21 +26,31 @@ Example: `https://github.com/org/repo/pull/6737#pullrequestreview-3741755454`
 
 3. Also fetch the general PR review comment body (the top-level review summary) from the review endpoint.
 
-4. Fetch all PR comments to get reply threads for context:
+4. **CRITICAL: Fetch all PR comments including reply threads**:
    ```bash
-   gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments
+   # Get all comments on the PR (includes replies)
+   gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments --paginate
    ```
-   For each review comment, check if there are replies by matching `in_reply_to_id` fields. Read the full conversation thread to understand any clarifications, follow-up questions, or additional context provided in replies.
+
+   **You MUST read all replies in each comment thread.** The PR author may have responded to reviewer suggestions with important context about:
+   - Why a suggestion isn't viable or applicable
+   - Technical constraints that make a change inappropriate
+   - Clarifications that modify or narrow the original request
+   - Agreements, disagreements, or alternative approaches
+
+   For each review comment, find all replies by matching `in_reply_to_id` fields. Build the complete conversation thread and read it chronologically before deciding how to act.
 
 5. Create a todo list of all the changes requested in the review comments. **Skip any comments that are already resolved** (check the `isResolved` or resolution status in the thread).
 
 6. For each unresolved comment:
+   - **First, read the ENTIRE reply thread** - the PR author's replies take precedence over the original suggestion
    - Read the file and line(s) referenced in the comment
-   - Consider the full reply thread context (replies may clarify, modify, or resolve the original feedback)
+   - If the PR author has pushed back on a suggestion with valid reasoning, **respect that decision and skip the change**
+   - If the PR author proposed an alternative approach, implement that instead
+   - If the PR author asked for clarification and the reviewer agreed/modified their request, follow the updated guidance
    - If a reply indicates the issue was already addressed or is no longer needed, skip it
-   - Understand the feedback being given
-   - Make the necessary code changes to address the feedback
-   - Mark the todo as complete
+   - Only if there's no pushback: understand the feedback and make the necessary code changes
+   - Mark the todo as complete (or skipped with reason)
 
 7. After all changes are made, commit them with a message like:
    ```
