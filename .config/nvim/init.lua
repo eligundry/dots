@@ -9,10 +9,47 @@ local function update_hl(group, tbl)
   vim.api.nvim_set_hl(0, group, new_hl)
 end
 
+local function is_light_theme(colorscheme)
+  return string.find(colorscheme:lower(), "light") ~= nil
+end
+
+local function apply_light_theme_fixes()
+  -- Use base16 palette colors for consistency with the theme
+  -- base01 = lighter bg, base08 = red, base0A = yellow, base0C = cyan, base0D = blue, base0B = green
+  local bg = vim.g.base16_gui01
+  local error_fg = vim.g.base16_gui08
+  local warn_fg = vim.g.base16_gui09
+  local info_fg = vim.g.base16_gui0D
+  local hint_fg = vim.g.base16_gui0C
+  local green = vim.g.base16_gui0B
+  local red = vim.g.base16_gui08
+  local yellow = vim.g.base16_gui0A
+
+  if not bg then
+    return
+  end
+
+  -- Fix tiny-inline-diagnostic backgrounds for light themes
+  vim.api.nvim_set_hl(0, "TinyInlineDiagnosticVirtualTextError", { bg = bg, fg = error_fg })
+  vim.api.nvim_set_hl(0, "TinyInlineDiagnosticVirtualTextWarn", { bg = bg, fg = warn_fg })
+  vim.api.nvim_set_hl(0, "TinyInlineDiagnosticVirtualTextInfo", { bg = bg, fg = info_fg })
+  vim.api.nvim_set_hl(0, "TinyInlineDiagnosticVirtualTextHint", { bg = bg, fg = hint_fg })
+
+  -- Fix diff highlights for git mergetool
+  vim.api.nvim_set_hl(0, "DiffAdd", { bg = bg, fg = green })
+  vim.api.nvim_set_hl(0, "DiffChange", { bg = bg, fg = yellow })
+  vim.api.nvim_set_hl(0, "DiffDelete", { bg = bg, fg = red })
+  vim.api.nvim_set_hl(0, "DiffText", { bg = bg, fg = info_fg, bold = true })
+end
+
 local function set_colorscheme(colorscheme)
   vim.cmd.colorscheme(colorscheme)
   vim.api.nvim_set_hl(0, "Normal", { bg = "NONE", ctermbg = "NONE" })
   vim.api.nvim_set_hl(0, "NormalNC", { bg = "NONE", ctermbg = "NONE" })
+
+  if is_light_theme(colorscheme) then
+    apply_light_theme_fixes()
+  end
 end
 
 -- Define a function to conditionally import a module by absolute path
@@ -1236,8 +1273,12 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   callback = function()
     vim.api.nvim_set_hl(0, "Normal", { bg = "NONE", ctermbg = "NONE" })
     vim.api.nvim_set_hl(0, "NormalNC", { bg = "NONE", ctermbg = "NONE" })
+
+    if vim.g.colors_name and is_light_theme(vim.g.colors_name) then
+      apply_light_theme_fixes()
+    end
   end,
-  desc = "Maintain terminal transparency",
+  desc = "Maintain terminal transparency and fix light theme highlights",
 })
 
 -- Make most comments italic
