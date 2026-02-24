@@ -85,6 +85,27 @@ Open link (macOS)
 .TP
 .B Shift+Cmd+Click
 Open link (alternative)
+.SH SSH
+.SS macOS Keychain Integration
+SSH keys are automatically unlocked via macOS Keychain. Configuration in
+.IR ~/.ssh/config :
+.PP
+.RS
+.nf
+Host *
+    AddKeysToAgent yes
+    UseKeychain yes
+    IdentityFile ~/.ssh/id_ed25519
+.fi
+.RE
+.SS Adding Keys
+Use the macOS built-in ssh-add (not Homebrew's) to store passphrases in Keychain:
+.PP
+.RS
+.B /usr/bin/ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+.RE
+.PP
+Keys are loaded automatically when first needed.
 .SH FILES
 .TP
 .I ~/.tmux.conf
@@ -95,8 +116,13 @@ Ghostty configuration
 .TP
 .I ~/.config/yadm/bootstrap
 Dotfiles bootstrap script
+.TP
+.I ~/.ssh/config
+SSH client configuration
 .SH SEE ALSO
 .BR tmux (1),
-.BR ghostty (1)
+.BR ghostty (1),
+.BR ssh-add (1),
+.BR ssh_config (5)
 .SH AUTHOR
 Eli Gundry
