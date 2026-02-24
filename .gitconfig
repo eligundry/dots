@@ -81,7 +81,7 @@
     cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 
 [push]
-    default = matching
+    default = current
 
 [user]
     name = "Eli Gundry"
