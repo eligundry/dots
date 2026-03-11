@@ -29,7 +29,10 @@
     "code-review@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": true,
+  "autoUpdatesChannel": "stable",
+  "skipDangerousModePermissionPrompt": true,
   "feedbackSurveyState": {
     "lastShownTime": 1755793168053
-  }
+  },
+  "effortLevel": "medium"
 }

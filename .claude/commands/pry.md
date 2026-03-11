@@ -34,3 +34,5 @@ The argument above may be:
      - Footer: `Generated with [Claude Code](https://claude.com/claude-code)`
 
 6. Return the PR URL when complete.
+
+7. Wait 10 minutes before checking for review feedback. Use `sleep 600` then check the PR status with `gh pr view --json reviews,reviewDecision` to see if any reviews have been submitted.

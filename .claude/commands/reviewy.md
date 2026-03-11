@@ -90,15 +90,20 @@ Example: `https://github.com/org/repo/pull/6737#pullrequestreview-3741755454`
 
 8. Push the changes to the remote branch.
 
-9. Reply to each review comment and resolve the thread:
-   ```bash
-   # Reply to the comment (use databaseId from the first comment in the thread)
-   gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments/COMMENT_DATABASE_ID/replies -f body="Done - [brief description of change made]"
+9. Reply to each review comment and resolve the thread.
 
-   # Resolve the thread (use the thread's id from the GraphQL query)
-   gh api graphql -f query='mutation { resolveReviewThread(input: {threadId: "THREAD_ID"}) { thread { isResolved } } }'
+   **IMPORTANT: Do NOT add a leading comment/description before each `gh api` call. Just call the tool directly — adding a comment before each Bash invocation causes an interactive approval prompt for every single comment, preventing autonomous execution.**
+
+   **IMPORTANT: Do NOT use command substitution (`$(...)` or backticks) when constructing these calls. Hard-code the values extracted from the earlier GraphQL query directly into each command.**
+
+   For each thread, run two commands sequentially (chained with `&&`):
+   ```bash
+   gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments/COMMENT_DATABASE_ID/replies -f body="Done - [brief description of change made]" && gh api graphql -f query='mutation { resolveReviewThread(input: {threadId: "THREAD_ID"}) { thread { isResolved } } }'
    ```
-   The thread `id` is already available from the initial GraphQL query (e.g., `PRRT_kwDO...`).
+
+   - `COMMENT_DATABASE_ID`: the `databaseId` from the first comment in the thread (from the initial GraphQL query)
+   - `THREAD_ID`: the thread's `id` from the initial GraphQL query (e.g., `PRRT_kwDO...`)
+   - Run all threads' reply+resolve calls in parallel (multiple Bash tool calls in one response) for efficiency.
 
 10. Report a summary of all changes made and comments addressed.
 
@@ -107,13 +112,11 @@ Example: `https://github.com/org/repo/pull/6737#pullrequestreview-3741755454`
       ```bash
       gh pr edit PR_NUMBER --add-reviewer @copilot
       ```
-    - Then poll for Copilot's next review using:
+    - **Wait for Copilot's review using a background task.** Copilot typically takes several minutes to analyze changes. Use Bash with `run_in_background: true` to sleep for 10 minutes, then poll:
       ```bash
-      gh api repos/OWNER/REPO/pulls/PR_NUMBER/reviews --jq '.[] | select(.user.login == "copilot" or .user.login == "github-actions[bot]") | select(.state != "APPROVED") | .id' | tail -1
+      sleep 600 && gh api repos/OWNER/REPO/pulls/PR_NUMBER/reviews --jq '.[] | select(.user.login == "copilot" or .user.login == "github-actions[bot]") | select(.state != "APPROVED") | .id' | tail -1
       ```
-    - Wait 30-60 seconds between polls (Copilot needs time to analyze changes)
-    - If a new review ID is found with pending comments:
-      1. Run `/compact` to reduce context
-      2. Recursively invoke `/reviewy` with the new review URL: `https://github.com/OWNER/REPO/pull/PR_NUMBER#pullrequestreview-NEW_REVIEW_ID`
-    - Continue looping until Copilot approves or has no new feedback
-    - Report the final status when the loop completes
+    - After the background task completes, check its output for a new review ID.
+    - If a new review ID is found with pending comments, address them in the current session following the same steps above (fetch threads, filter, fix, commit, push, reply/resolve).
+    - Continue until Copilot approves or has no new feedback.
+    - Report the final status when the loop completes.
