@@ -1030,6 +1030,14 @@ require("lazy").setup(
           end,
           desc = "<Leader>e will execute the current file with rest.nvim",
         })
+
+        vim.api.nvim_create_autocmd("FileType", {
+          pattern = "json",
+          callback = function()
+            vim.opt_local.formatprg = "jq ."
+          end,
+          desc = "Use jq for JSON formatting (used by rest.nvim response pretty printing)",
+        })
       end,
     },
     -- }}}
