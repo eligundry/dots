@@ -996,6 +996,55 @@ require("lazy").setup(
       "tyru/open-browser-github.vim",
       dependencies = { "tyru/open-browser.vim" },
       cmd = { "OpenGithubFile", "OpenGithubIssue", "OpenGithubPullReq", "OpenGithubProject" },
+      keys = {
+        {
+          "<D-S-,>",
+          function()
+            local root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+            local sha = vim.fn.systemlist("git rev-parse HEAD")[1]
+            local remote = vim.fn.systemlist("git remote get-url origin")[1]
+            if not root or not sha or not remote then
+              vim.notify("Not in a git repo", vim.log.levels.ERROR)
+              return
+            end
+
+            -- Parse remote URL to owner/repo
+            local owner_repo = remote:match("github%.com[:/](.+)$")
+            if not owner_repo then
+              vim.notify("Remote is not a GitHub URL", vim.log.levels.ERROR)
+              return
+            end
+            owner_repo = owner_repo:gsub("%.git$", "")
+
+            -- File path relative to repo root
+            local file = vim.fn.expand("%:p"):sub(#root + 2)
+
+            -- Line range
+            local mode = vim.fn.mode()
+            local line_fragment
+            if mode == "v" or mode == "V" or mode == "\22" then
+              local start_line = vim.fn.line("v")
+              local end_line = vim.fn.line(".")
+              if start_line > end_line then
+                start_line, end_line = end_line, start_line
+              end
+              if start_line == end_line then
+                line_fragment = "#L" .. start_line
+              else
+                line_fragment = "#L" .. start_line .. "-L" .. end_line
+              end
+            else
+              line_fragment = "#L" .. vim.fn.line(".")
+            end
+
+            local url = "https://github.com/" .. owner_repo .. "/blob/" .. sha .. "/" .. file .. line_fragment
+            vim.fn.setreg("+", url)
+            vim.notify("Copied: " .. url)
+          end,
+          mode = { "n", "v" },
+          desc = "Copy GitHub permalink to clipboard",
+        },
+      },
     },
     -- }}}
     -- HTTP Client {{{

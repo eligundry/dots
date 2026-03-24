@@ -6,3 +6,4 @@ background-opacity = 0.95
 background-blur-radius = 5
 config-file = ?base16
 keybind = shift+enter=text:\x1b\r
+keybind = super+shift+comma=text:\x1b[44;10u
