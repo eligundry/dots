@@ -17,7 +17,7 @@ if command -v playerctl &> /dev/null; then
   done
 fi
 
-if command -v nowplaying-cli &> /dev/null; then
+if command -v nowplaying-cli &> /dev/null && [ "$(nowplaying-cli get-raw 2>/dev/null)" != "(null)" ]; then
   np_state="$(nowplaying-cli get playbackRate 2>/dev/null)"
   if [ "$np_state" == "1" ]; then
     np_title="$(nowplaying-cli get title 2>/dev/null)"
@@ -30,13 +30,19 @@ if command -v nowplaying-cli &> /dev/null; then
       fi
       exit
     fi
-
-    # nowplaying-cli can control playback but has no metadata (e.g. Chrome)
-    # Fall through to check Chrome tabs for music sites
   fi
 fi
 
 if command -v osascript &> /dev/null; then
+  # Check Spotify
+  spotify_output="$(osascript "$HOME/.tmux/scripts/spotify.applescript" 2>/dev/null)"
+  spotify_is_running="$(echo "$spotify_output" | jq 'has("error") | not')"
+  if [ "$spotify_is_running" == "true" ]; then
+    echo "$spotify_output" | jq -r '"💿 \(.name[0:30]) - \(.artist[0:30])"'
+    exit
+  fi
+
+  # Check Chrome tabs on music sites
   chrome_title="$(osascript "$HOME/.tmux/scripts/chrome-now-playing.js" 2>/dev/null)"
   if [ -n "$chrome_title" ]; then
     echo "🎶 ${chrome_title:0:60}"
