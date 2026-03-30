@@ -253,7 +253,7 @@ require("lazy").setup(
     },
     {
       "nvim-telescope/telescope.nvim",
-      branch = "0.1.x",
+      branch = "master",
       dependencies = {
         "nvim-lua/plenary.nvim",
       },
@@ -307,9 +307,16 @@ require("lazy").setup(
       branch = "main",
       build = ":TSUpdate",
       config = function()
-        require("nvim-treesitter").setup({
-          ensure_installed = { "http", "markdown", "markdown_inline" },
-          auto_install = true,
+        require("nvim-treesitter").setup()
+        require("nvim-treesitter").install({ "http", "markdown", "markdown_inline" })
+
+        vim.api.nvim_create_autocmd("FileType", {
+          callback = function(args)
+            if args.match == "" then
+              return
+            end
+            pcall(vim.treesitter.start, args.buf)
+          end,
         })
       end,
     },
@@ -448,7 +455,7 @@ require("lazy").setup(
           -- better
           client.server_capabilities.semanticTokensProvider = nil
 
-          if client.supports_method("textDocument/formatting") then
+          if client:supports_method("textDocument/formatting") then
             vim.api.nvim_clear_autocmds({ group = lsp_formatting_augroup, buffer = bufnr })
             vim.api.nvim_create_autocmd("BufWritePre", {
               group = lsp_formatting_augroup,
@@ -782,9 +789,14 @@ require("lazy").setup(
     -- Commenting {{{
     {
       "JoosepAlviste/nvim-ts-context-commentstring",
-      config = function()
-        require("ts_context_commentstring").setup()
+      lazy = true,
+      init = function()
         vim.g.skip_ts_context_commentstring_module = true
+      end,
+      config = function()
+        require("ts_context_commentstring").setup({
+          enable_autocmd = false,
+        })
       end,
     },
     {
