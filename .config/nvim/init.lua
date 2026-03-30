@@ -568,21 +568,6 @@ require("lazy").setup(
             },
           },
         },
-        -- Pressing <CR> on a Copilot suggestion will expand it
-        {
-          "zbirenbaum/copilot-cmp",
-          config = true,
-          dependencies = {
-            {
-              "zbirenbaum/copilot.lua",
-              config = true,
-              opts = {
-                suggestion = { enabled = false },
-                panel = { enabled = false },
-              },
-            },
-          },
-        },
         {
           "roobert/tailwindcss-colorizer-cmp.nvim",
           config = true,
@@ -640,13 +625,6 @@ require("lazy").setup(
                 fallback()
               end
             end, { "i", "s" }),
-            ["<C-s>"] = cmp.mapping.complete({
-              config = {
-                sources = {
-                  { name = "copilot" },
-                },
-              },
-            }),
             ["<CR>"] = cmp.mapping.confirm({
               behavior = cmp.ConfirmBehavior.Replace,
               select = false,
@@ -658,17 +636,11 @@ require("lazy").setup(
               maxwidth = 50,
               ellipsis_char = "…",
               symbol_map = {
-                Copilot = "",
                 Dictionary = "📗",
               },
             }),
           },
           sources = cmp.config.sources({
-            {
-              name = "copilot",
-              -- group_index = 1,
-              priority = 10,
-            },
             {
               name = "nvim_lsp",
               -- group_index = 1,
@@ -748,41 +720,6 @@ require("lazy").setup(
       config = function()
         require("tiny-inline-diagnostic").setup()
         vim.diagnostic.config({ virtual_text = false }) -- Only if needed in your configuration, if you already have native LSP diagnostics
-      end,
-    },
-    -- }}}
-    -- 🤖 AI {{{
-    {
-      "robitx/gp.nvim",
-      config = true,
-      opts = function()
-        local chat_dir = vim.fn.stdpath("data"):gsub("/$", "") .. "/gp/chats"
-        local image_dir = (os.getenv("TMPDIR") or os.getenv("TEMP") or "/tmp") .. "/gp_images"
-
-        if vim.fn.isdirectory(vim.fn.expand("~/Dropbox/nvim/gp.nvim")) == 1 then
-          chat_dir = vim.fn.expand("~/Dropbox/nvim/gp.nvim/chats")
-          image_dir = vim.fn.expand("~/Dropbox/nvim/gp.nvim/images")
-        end
-
-        return {
-          openai_api_key = { "pass", "Dev/openai.com/gp.nvim-api-key" },
-          providers = {
-            openai = {
-              secret = { "pass", "Dev/openai.com/gp.nvim-api-key" },
-            },
-            anthropic = {
-              secret = { "pass", "Dev/anthropic.com/api-key" },
-            },
-          },
-          chat_dir = chat_dir,
-          image = {
-            store_dir = image_dir,
-          },
-          agents = {
-            { name = "ChatGPT3-5", disable = true },
-            { name = "ChatGPT4o-mini", disable = true },
-          },
-        }
       end,
     },
     -- }}}
