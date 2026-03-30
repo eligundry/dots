@@ -109,6 +109,35 @@ Keys are loaded automatically when first needed.
 .SH NEOVIM
 Leader key is
 .BR , " " (comma).
+.SS LSP
+Available when a language server is attached to the buffer.
+.TP
+.B gd
+Go to type definition
+.TP
+.B gD
+Go to declaration
+.TP
+.B gI
+Go to implementation
+.TP
+.B gR
+Find references
+.TP
+.B K
+Show hover documentation
+.TP
+.B ,ca
+Show code actions
+.TP
+.B ,RN
+Rename symbol
+.TP
+.B ,ui
+Remove unused imports
+.TP
+.B ,fl
+Send diagnostics to quickfix list
 .SS Code Completion (nvim-cmp)
 .TP
 .B C-n
