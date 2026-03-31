@@ -308,7 +308,7 @@ require("lazy").setup(
       build = ":TSUpdate",
       config = function()
         require("nvim-treesitter").setup()
-        require("nvim-treesitter").install({ "http", "markdown", "markdown_inline" })
+        require("nvim-treesitter").install({ "http", "markdown", "markdown_inline", "gitcommit" })
 
         vim.api.nvim_create_autocmd("FileType", {
           callback = function(args)
