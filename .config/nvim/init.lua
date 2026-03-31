@@ -9,6 +9,14 @@ local function update_hl(group, tbl)
   vim.api.nvim_set_hl(0, group, new_hl)
 end
 
+local function git_relative_path(absolute_path)
+  local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+  if git_root and vim.v.shell_error == 0 then
+    return absolute_path:gsub("^" .. vim.pesc(git_root) .. "/", "")
+  end
+  return vim.fn.fnamemodify(absolute_path, ":~:.")
+end
+
 local function is_light_theme(colorscheme)
   return string.find(colorscheme:lower(), "light") ~= nil
 end
@@ -268,6 +276,28 @@ require("lazy").setup(
           { "<leader>fh", builtin.help_tags, mode = "n", desc = "telescope: Browse help" },
           { "<leader>ft", builtin.treesitter, mode = "n", desc = "telescope: Browse Treesitter" },
           { "<leader>td", builtin.diagnostics, mode = "n", desc = "telescope: Diagnostics (quickfix list)" },
+        }
+      end,
+      opts = function()
+        local function copy_path(prompt_bufnr)
+          local action_state = require("telescope.actions.state")
+          local actions = require("telescope.actions")
+          local entry = action_state.get_selected_entry()
+          if entry and entry.path then
+            local rel_path = git_relative_path(entry.path)
+            vim.fn.setreg("+", rel_path)
+            vim.notify("Copied: " .. rel_path)
+          end
+          actions.close(prompt_bufnr)
+        end
+
+        return {
+          defaults = {
+            mappings = {
+              i = { ["<C-c>"] = copy_path },
+              n = { ["<C-c>"] = copy_path },
+            },
+          },
         }
       end,
     },
@@ -1570,10 +1600,9 @@ vim.keymap.set("n", "<Leader>fl", vim.diagnostic.setqflist, {
 })
 
 vim.keymap.set("n", "<Leader>pwd", function()
-  local absolute_path = vim.fn.expand("%:p")
-  local relative_path = vim.fn.fnamemodify(absolute_path, ":~:.")
-  vim.fn.setreg("+", relative_path)
-  print(relative_path .. " (copied to clipboard)")
+  local rel_path = git_relative_path(vim.fn.expand("%:p"))
+  vim.fn.setreg("+", rel_path)
+  print(rel_path .. " (copied to clipboard)")
 end, { desc = "Print relative path to current file and copy to clipboard" })
 
 -- My ideal state of using vim is to have it always in autochdir. This means,

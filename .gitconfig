@@ -83,6 +83,9 @@
 [push]
     default = current
 
+[remote]
+    pushDefault = origin
+
 [user]
     name = "Eli Gundry"
     email = "eligundry@gmail.com"
