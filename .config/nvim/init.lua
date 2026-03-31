@@ -308,7 +308,45 @@ require("lazy").setup(
       build = ":TSUpdate",
       config = function()
         require("nvim-treesitter").setup()
-        require("nvim-treesitter").install({ "http", "markdown", "markdown_inline", "gitcommit" })
+        require("nvim-treesitter").install({
+          "astro",
+          "bash",
+          "css",
+          "diff",
+          "fish",
+          "gitcommit",
+          "go",
+          "gomod",
+          "gosum",
+          "html",
+          "http",
+          "ini",
+          "javascript",
+          "jinja",
+          "jsdoc",
+          "json",
+          "jsx",
+          "lua",
+          "make",
+          "markdown",
+          "markdown_inline",
+          "nginx",
+          "php",
+          "python",
+          "ruby",
+          "rust",
+          "scss",
+          "sql",
+          "swift",
+          "tmux",
+          "toml",
+          "tsx",
+          "typescript",
+          "vim",
+          "vimdoc",
+          "xml",
+          "yaml",
+        })
 
         vim.api.nvim_create_autocmd("FileType", {
           callback = function(args)
