@@ -107,16 +107,16 @@ Example: `https://github.com/org/repo/pull/6737#pullrequestreview-3741755454`
 
 10. Report a summary of all changes made and comments addressed.
 
-11. **Copilot Auto-Review Loop**: If the reviewer is GitHub Copilot (check if the review author is `copilot` or `github-actions[bot]` with Copilot context):
+11. **Copilot Re-Review Notification**: If the reviewer is GitHub Copilot (check if the review author is `copilot` or `github-actions[bot]` with Copilot context):
     - After pushing changes, request Copilot's review again:
       ```bash
       gh pr edit PR_NUMBER --add-reviewer @copilot
       ```
-    - **Wait for Copilot's review using a background task.** Copilot typically takes several minutes to analyze changes. Use Bash with `run_in_background: true` to sleep for 10 minutes, then poll:
+    - **Wait for Copilot's review using a background task.** Use Bash with `run_in_background: true` to poll:
       ```bash
       sleep 600 && gh api repos/OWNER/REPO/pulls/PR_NUMBER/reviews --jq '.[] | select(.user.login == "copilot" or .user.login == "github-actions[bot]") | select(.state != "APPROVED") | .id' | tail -1
       ```
-    - After the background task completes, check its output for a new review ID.
-    - If a new review ID is found with pending comments, address them in the current session following the same steps above (fetch threads, filter, fix, commit, push, reply/resolve).
-    - Continue until Copilot approves or has no new feedback.
-    - Report the final status when the loop completes.
+    - After the background task completes, check its output.
+    - **Do NOT automatically address Copilot's new comments.** Instead, notify the user:
+      - If a new review ID is found with pending comments, tell the user that Copilot has submitted a new review and provide the review URL so they can decide whether to run `/reviewy` again.
+      - If Copilot approved or has no new feedback, report that Copilot is satisfied.

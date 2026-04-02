@@ -35,4 +35,11 @@ The argument above may be:
 
 6. Return the PR URL when complete.
 
-7. Wait 10 minutes before checking for review feedback. Use `sleep 600` then check the PR status with `gh pr view --json reviews,reviewDecision` to see if any reviews have been submitted.
+7. **Review Notification**: After creating the PR, wait for review feedback using a background task. Use Bash with `run_in_background: true`:
+   ```bash
+   sleep 600 && gh api repos/OWNER/REPO/pulls/PR_NUMBER/reviews --jq '.[] | select(.user.login == "copilot" or .user.login == "github-actions[bot]") | select(.state != "APPROVED") | .id' | tail -1
+   ```
+   - After the background task completes, check its output.
+   - **Do NOT automatically address review comments.** Instead, notify the user:
+     - If Copilot submitted a review with comments, tell the user and provide the review URL so they can decide whether to run `/reviewy` to address them.
+     - If Copilot approved, report that Copilot is satisfied.
