@@ -646,6 +646,31 @@ require("lazy").setup(
         local cmp = require("cmp")
         local luasnip = require("luasnip")
         local lspkind = require("lspkind")
+        local s = luasnip.snippet
+        local t = luasnip.text_node
+        local i = luasnip.insert_node
+
+        luasnip.add_snippets("markdown", {
+          s("cc-assignment", {
+            t({
+              "# Study",
+              "",
+              "Read the following files:",
+              "",
+              "- ",
+            }),
+            i(1),
+            t({
+              "",
+              "",
+              "# Context",
+              "",
+              "# Tasks",
+              "",
+              "# Questions",
+            }),
+          }),
+        })
 
         -- vim setting to make this all work
         vim.opt.completeopt = "menu,menuone,noselect"
