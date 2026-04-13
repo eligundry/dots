@@ -189,6 +189,27 @@ Jump to previous snippet placeholder (LuaSnip)
 .TP
 .B CR
 Confirm selected completion
+.SH HOMEBREW
+Packages are managed via a global Brewfile at
+.IR ~/.Brewfile .
+.SS Installing Packages
+.TP
+.B brew bundle add --global brew <package>
+Install a package and add it to the global Brewfile
+.TP
+.B brew bundle --global
+Install everything in the Brewfile
+.SS Upgrading
+.TP
+.B brew upgrade
+Upgrade all installed packages to latest versions
+.SS Cleanup
+.TP
+.B brew bundle --global cleanup
+Remove packages not listed in the Brewfile
+.TP
+.B brew bundle --global cleanup --force
+Actually uninstall them (without --force it's a dry run)
 .SH FILES
 .TP
 .I ~/.tmux.conf

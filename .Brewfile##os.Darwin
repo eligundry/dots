@@ -65,3 +65,4 @@ cask "numi"
 cask "spotify"
 cask "visual-studio-code"
 
+brew "jj"
