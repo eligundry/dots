@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+# Fetch PR review threads as compact, readable text for Claude Code.
+# Usage: gh-review-threads <owner> <repo> <pr_number> <review_id>
+set -euo pipefail
+
+if [[ $# -ne 4 ]]; then
+  echo "Usage: gh-review-threads <owner> <repo> <pr_number> <review_id>" >&2
+  exit 1
+fi
+
+owner="$1"
+repo="$2"
+pr="$3"
+review_id="$4"
+
+gh api graphql -f query='
+query($owner: String!, $repo: String!, $pr: Int!) {
+  repository(owner: $owner, name: $repo) {
+    pullRequest(number: $pr) {
+      reviews(first: 100) {
+        nodes {
+          databaseId
+          body
+          state
+          author { login }
+        }
+      }
+      reviewThreads(first: 100) {
+        nodes {
+          id
+          isResolved
+          comments(first: 50) {
+            nodes {
+              databaseId
+              body
+              path
+              line
+              author { login }
+              pullRequestReview {
+                databaseId
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}' -f owner="$owner" -f repo="$repo" -F pr="$pr" | jq -r --argjson rid "$review_id" '
+  .data.repository.pullRequest as $pr |
+
+  # Review submission comment
+  ($pr.reviews.nodes[] | select(.databaseId == $rid)) as $review |
+  "Review by @" + $review.author.login + " (" + $review.state + ")" +
+  (if ($review.body // "") != "" then
+    "\n" + ($review.body | split("\n") | map("  " + .) | join("\n"))
+  else "" end),
+
+  # Threaded inline comments
+  ([
+    $pr.reviewThreads.nodes[]
+    | select(.comments.nodes | any(.pullRequestReview.databaseId == $rid))
+  ] | to_entries[] |
+    .value as $t |
+    "---\nThread \(.key + 1)" +
+    (if $t.isResolved then " [RESOLVED]" else " [UNRESOLVED]" end) +
+    " | threadId: " + $t.id + "\n" +
+    ($t.comments.nodes[0] | "  " + .path +
+      (if .line then ":" + (.line | tostring) else "" end)) +
+    "\n" +
+    ([$t.comments.nodes | to_entries[] |
+      .value as $c |
+      "  @" + $c.author.login +
+      (if .key == 0 then " (review)" else " (reply)" end) +
+      " [commentId: " + ($c.databaseId | tostring) + "]:\n" +
+      ($c.body | split("\n") | map("    " + .) | join("\n"))
+    ] | join("\n"))
+  )
+'

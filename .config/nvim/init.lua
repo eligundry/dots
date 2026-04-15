@@ -651,6 +651,16 @@ require("lazy").setup(
         local i = luasnip.insert_node
 
         luasnip.add_snippets("markdown", {
+          s("cc-feedback", {
+            t({
+              "---",
+              "",
+              "# Feedback",
+              "",
+              "",
+            }),
+            i(1),
+          }),
           s("cc-assignment", {
             t({
               "# Study",

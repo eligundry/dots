@@ -18,46 +18,14 @@ Example: `https://github.com/org/repo/pull/6737#pullrequestreview-3741755454`
    - PR number (e.g., `6737`)
    - Review ID (e.g., `3741755454`)
 
-2. **Fetch all review threads, comments, and replies in a single GraphQL query**:
+2. **Fetch all review threads for this review**:
    ```bash
-   gh api graphql -f query='
-   query($owner: String!, $repo: String!, $pr: Int!) {
-     repository(owner: $owner, name: $repo) {
-       pullRequest(number: $pr) {
-         reviewThreads(first: 100) {
-           nodes {
-             id
-             isResolved
-             comments(first: 50) {
-               nodes {
-                 id
-                 databaseId
-                 body
-                 path
-                 line
-                 author { login }
-                 createdAt
-                 pullRequestReview {
-                   databaseId
-                 }
-               }
-             }
-           }
-         }
-       }
-     }
-   }' -f owner=OWNER -f repo=REPO -F pr=PR_NUMBER
+   gh-review-threads OWNER REPO PR_NUMBER REVIEW_ID
    ```
 
-   This single query returns:
-   - All review threads with their `isResolved` status
-   - All comments and replies in each thread (chronologically)
-   - The `pullRequestReview.databaseId` to filter by the target REVIEW_ID
-   - File path and line number for each comment
+   This returns a compact, threaded text format with all comments, replies, file paths, line numbers, thread IDs, and comment database IDs needed for later steps. Threads are already filtered to the target review ID.
 
-3. **Filter threads to the target review**: Only process threads where at least one comment has `pullRequestReview.databaseId` matching the REVIEW_ID from the URL.
-
-4. **CRITICAL: Read the ENTIRE reply thread for each comment.**
+3. **CRITICAL: Read the ENTIRE reply thread for each comment.**
 
    The PR author may have responded to reviewer suggestions with important context about:
    - Why a suggestion isn't viable or applicable
@@ -67,9 +35,9 @@ Example: `https://github.com/org/repo/pull/6737#pullrequestreview-3741755454`
 
    **The PR author's replies take precedence over the original reviewer suggestion.**
 
-5. Create a todo list of all the changes requested in the review comments. **Skip any comments that are already resolved** (check the `isResolved` or resolution status in the thread).
+4. Create a todo list of all the changes requested in the review comments. **Skip any comments that are already resolved** (threads marked `[RESOLVED]` in the output).
 
-6. For each unresolved comment:
+5. For each unresolved comment:
    - **First, read the ENTIRE reply thread** - the PR author's replies take precedence over the original suggestion
    - Read the file and line(s) referenced in the comment
    - If the PR author has pushed back on a suggestion with valid reasoning, **respect that decision and skip the change**
@@ -79,7 +47,7 @@ Example: `https://github.com/org/repo/pull/6737#pullrequestreview-3741755454`
    - Only if there's no pushback: understand the feedback and make the necessary code changes
    - Mark the todo as complete (or skipped with reason)
 
-7. After all changes are made, commit them with a message like:
+6. After all changes are made, commit them with a message like:
    ```
    Address PR review feedback
 
@@ -88,26 +56,24 @@ Example: `https://github.com/org/repo/pull/6737#pullrequestreview-3741755454`
    Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
    ```
 
-8. Push the changes to the remote branch.
+7. Push the changes to the remote branch.
 
-9. Reply to each review comment and resolve the thread.
+8. Reply to each review comment and resolve the thread.
 
-   **IMPORTANT: Do NOT add a leading comment/description before each `gh api` call. Just call the tool directly — adding a comment before each Bash invocation causes an interactive approval prompt for every single comment, preventing autonomous execution.**
+   **IMPORTANT: Do NOT add a leading comment/description before each call. Just call the tool directly — adding a comment before each Bash invocation causes an interactive approval prompt for every single comment, preventing autonomous execution.**
 
-   **IMPORTANT: Do NOT use command substitution (`$(...)` or backticks) when constructing these calls. Hard-code the values extracted from the earlier GraphQL query directly into each command.**
-
-   For each thread, run two commands sequentially (chained with `&&`):
+   For each thread:
    ```bash
-   gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments/COMMENT_DATABASE_ID/replies -f body="Done - [brief description of change made]" && gh api graphql -f query='mutation { resolveReviewThread(input: {threadId: "THREAD_ID"}) { thread { isResolved } } }'
+   gh-resolve-thread OWNER REPO PR_NUMBER COMMENT_ID THREAD_ID "Done - [brief description of change made]"
    ```
 
-   - `COMMENT_DATABASE_ID`: the `databaseId` from the first comment in the thread (from the initial GraphQL query)
-   - `THREAD_ID`: the thread's `id` from the initial GraphQL query (e.g., `PRRT_kwDO...`)
-   - Run all threads' reply+resolve calls in parallel (multiple Bash tool calls in one response) for efficiency.
+   - `COMMENT_ID`: the `commentId` from the first comment in the thread (from the `gh-review-threads` output)
+   - `THREAD_ID`: the `threadId` from the thread header (e.g., `PRRT_kwDO...`)
+   - Run all threads' resolve calls in parallel (multiple Bash tool calls in one response) for efficiency.
 
-10. Report a summary of all changes made and comments addressed.
+9. Report a summary of all changes made and comments addressed.
 
-11. **Copilot Re-Review Notification**: If the reviewer is GitHub Copilot (check if the review author is `copilot` or `github-actions[bot]` with Copilot context):
+10. **Copilot Re-Review Notification**: If the reviewer is GitHub Copilot (check if the review author is `copilot` or `github-actions[bot]` with Copilot context):
     - After pushing changes, request Copilot's review again:
       ```bash
       gh pr edit PR_NUMBER --add-reviewer @copilot

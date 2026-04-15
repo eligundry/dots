@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Reply to a PR review comment and resolve its thread.
+# Usage: gh-resolve-thread <owner> <repo> <pr_number> <comment_id> <thread_id> <message>
+set -euo pipefail
+
+if [[ $# -ne 6 ]]; then
+  echo "Usage: gh-resolve-thread <owner> <repo> <pr_number> <comment_id> <thread_id> <message>" >&2
+  exit 1
+fi
+
+owner="$1"
+repo="$2"
+pr="$3"
+comment_id="$4"
+thread_id="$5"
+message="$6"
+
+gh api "repos/$owner/$repo/pulls/$pr/comments/$comment_id/replies" -f body="$message" --silent \
+  && gh api graphql -f query='
+  mutation($threadId: ID!) {
+    resolveReviewThread(input: {threadId: $threadId}) {
+      thread { isResolved }
+    }
+  }' -f threadId="$thread_id" --jq '.data.resolveReviewThread.thread.isResolved' \
+  && echo "Resolved thread $thread_id"
