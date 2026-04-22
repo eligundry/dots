@@ -6,11 +6,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Dotfiles managed by [yadm](https://yadm.io/). Primary tools: fish shell, neovim, tmux, Ghostty terminal.
 
-## Commands
+## Working with yadm
+
+yadm is a git wrapper for dotfiles that uses `$HOME` as the work tree. It supports all git commands (`yadm add`, `yadm commit`, `yadm push`, etc.) but has quirks because the work tree is the entire home directory.
+
+**Never use `yadm status -u` or `yadm status -uall`** — since the work tree is `$HOME`, untracked file detection walks the entire home directory, which is extremely slow and produces thousands of irrelevant results. Use `yadm status` (without `-u`) or `yadm list` to see tracked files.
 
 ```bash
+yadm status            # Check dotfile changes (no -u flag!)
 yadm list              # List all tracked files
-yadm status            # Check dotfile changes
+yadm add <file>        # Stage a specific file
+yadm commit            # Commit staged changes
+yadm push              # Push to remote
+yadm diff              # Show unstaged changes
 yadm bootstrap         # Install/update dependencies
 brew bundle --global   # Install Homebrew packages from ~/.Brewfile
 man dots               # Keybinding reference
