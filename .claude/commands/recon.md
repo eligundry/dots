@@ -19,8 +19,26 @@ Run all five diagnostic commands in parallel, then synthesize the results into a
 
 Find the most-frequently modified files. High-churn files often signal technical debt or instability.
 
+Exclude lockfiles, JSON, and SQL files — they distort churn counts (auto-generated lockfiles, large data/snapshot JSON, migration dumps) without reflecting human-authored change.
+
 ```bash
-git log --format=format: --name-only --since="1 year ago" | sort | uniq -c | sort -nr | head -20
+git log --format=format: --name-only --since="1 year ago" -- . \
+  ':(exclude)*.json' \
+  ':(exclude)*.sql' \
+  ':(exclude)*.lock' \
+  ':(exclude)*-lock.yaml' \
+  ':(exclude)*-lock.yml' \
+  ':(exclude)package-lock.json' \
+  ':(exclude)yarn.lock' \
+  ':(exclude)pnpm-lock.yaml' \
+  ':(exclude)Cargo.lock' \
+  ':(exclude)Gemfile.lock' \
+  ':(exclude)poetry.lock' \
+  ':(exclude)composer.lock' \
+  ':(exclude)go.sum' \
+  ':(exclude)uv.lock' \
+  ':(exclude)Pipfile.lock' \
+  | sort | uniq -c | sort -nr | head -20
 ```
 
 ### 2. Contributor Analysis
@@ -41,7 +59,23 @@ git shortlog -sn --no-merges --since="6 months ago"
 Find files most frequently touched in bug-fix commits. Cross-reference with churn data to identify highest-risk code.
 
 ```bash
-git log -i -E --grep="fix|bug|broken" --name-only --format='' | sort | uniq -c | sort -nr | head -20
+git log -i -E --grep="fix|bug|broken" --name-only --format='' -- . \
+  ':(exclude)*.json' \
+  ':(exclude)*.sql' \
+  ':(exclude)*.lock' \
+  ':(exclude)*-lock.yaml' \
+  ':(exclude)*-lock.yml' \
+  ':(exclude)package-lock.json' \
+  ':(exclude)yarn.lock' \
+  ':(exclude)pnpm-lock.yaml' \
+  ':(exclude)Cargo.lock' \
+  ':(exclude)Gemfile.lock' \
+  ':(exclude)poetry.lock' \
+  ':(exclude)composer.lock' \
+  ':(exclude)go.sum' \
+  ':(exclude)uv.lock' \
+  ':(exclude)Pipfile.lock' \
+  | sort | uniq -c | sort -nr | head -20
 ```
 
 ### 4. Velocity Tracking
