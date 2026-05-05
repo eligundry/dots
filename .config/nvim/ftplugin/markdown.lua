@@ -54,3 +54,33 @@ vim.keymap.set("i", "@@", function()
     end,
   })
 end, { buffer = true, desc = "Insert @file reference via Telescope" })
+
+vim.keymap.set("n", "<C-]>", function()
+  local word = vim.fn.expand("<cWORD>")
+  local path = word:match("^@(.+)")
+  if not path then
+    return
+  end
+  path = path:gsub("[%.,;:%)%]>]+$", "")
+
+  local file_dir = vim.fn.expand("%:p:h")
+  local git_root = vim.fn.systemlist({ "git", "-C", file_dir, "rev-parse", "--show-toplevel" })[1]
+  if vim.v.shell_error ~= 0 then
+    git_root = nil
+  end
+
+  local candidates = {
+    path,
+    file_dir .. "/" .. path,
+    git_root and (git_root .. "/" .. path) or nil,
+    vim.fn.getcwd() .. "/" .. path,
+    vim.fn.expand("~/") .. path,
+  }
+  for _, p in ipairs(candidates) do
+    if p and (vim.fn.filereadable(p) == 1 or vim.fn.isdirectory(p) == 1) then
+      vim.cmd("edit " .. vim.fn.fnameescape(p))
+      return
+    end
+  end
+  vim.notify("File not found: @" .. path, vim.log.levels.WARN)
+end, { buffer = true, desc = "Open @path file reference" })
