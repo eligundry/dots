@@ -1,5 +1,8 @@
 vim.opt_local.formatoptions = "oqn1" -- Check out 'fo-table' to see what this does.
 vim.opt_local.spell = true
+vim.opt_local.wrap = true
+vim.opt_local.linebreak = true
+vim.opt_local.breakindent = true
 
 vim.keymap.set("i", "@@", function()
   local builtin = require("telescope.builtin")
@@ -56,12 +59,33 @@ vim.keymap.set("i", "@@", function()
 end, { buffer = true, desc = "Insert @file reference via Telescope" })
 
 vim.keymap.set("n", "<C-]>", function()
+  local function backtick_content_under_cursor()
+    local line = vim.api.nvim_get_current_line()
+    local col = vim.api.nvim_win_get_cursor(0)[2] + 1 -- 1-indexed
+    local search_from = 1
+    while true do
+      local s, e, content = line:find("`([^`]+)`", search_from)
+      if not s then
+        return nil
+      end
+      if col >= s and col <= e then
+        return content
+      end
+      search_from = e + 1
+    end
+  end
+
+  local path
   local word = vim.fn.expand("<cWORD>")
-  local path = word:match("^@(.+)")
-  if not path then
+  local at_match = word:match("^@(.+)")
+  if at_match then
+    path = at_match:gsub("[%.,;:%)%]>]+$", "")
+  else
+    path = backtick_content_under_cursor()
+  end
+  if not path or path == "" then
     return
   end
-  path = path:gsub("[%.,;:%)%]>]+$", "")
 
   local file_dir = vim.fn.expand("%:p:h")
   local git_root = vim.fn.systemlist({ "git", "-C", file_dir, "rev-parse", "--show-toplevel" })[1]
@@ -82,5 +106,5 @@ vim.keymap.set("n", "<C-]>", function()
       return
     end
   end
-  vim.notify("File not found: @" .. path, vim.log.levels.WARN)
-end, { buffer = true, desc = "Open @path file reference" })
+  vim.notify("File not found: " .. path, vim.log.levels.WARN)
+end, { buffer = true, desc = "Open @path or `path` file reference" })
