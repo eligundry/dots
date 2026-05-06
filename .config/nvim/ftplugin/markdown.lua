@@ -87,11 +87,9 @@ vim.keymap.set("n", "<C-]>", function()
     return
   end
 
+  local jump = require("dots.jump")
   local file_dir = vim.fn.expand("%:p:h")
-  local git_root = vim.fn.systemlist({ "git", "-C", file_dir, "rev-parse", "--show-toplevel" })[1]
-  if vim.v.shell_error ~= 0 then
-    git_root = nil
-  end
+  local git_root = jump.git_root(file_dir)
 
   local candidates = {
     path,
@@ -102,7 +100,7 @@ vim.keymap.set("n", "<C-]>", function()
   }
   for _, p in ipairs(candidates) do
     if p and (vim.fn.filereadable(p) == 1 or vim.fn.isdirectory(p) == 1) then
-      vim.cmd("edit " .. vim.fn.fnameescape(p))
+      jump.open(p, path)
       return
     end
   end
