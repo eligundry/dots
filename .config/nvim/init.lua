@@ -814,6 +814,17 @@ require("lazy").setup(
             { name = "luasnip" },
           }),
         })
+
+        require("dots.claude_skills").setup()
+        cmp.setup.filetype("markdown", {
+          sources = cmp.config.sources({
+            { name = "claude_skills", priority = 10 },
+            { name = "luasnip", priority = 4 },
+            { name = "buffer", priority = 7 },
+            { name = "path", priority = 2 },
+            { name = "dictionary", keyword_length = 2, max_item_count = 3, priority = 3 },
+          }),
+        })
       end,
     },
     {
