@@ -4,6 +4,8 @@ vim.opt_local.wrap = true
 vim.opt_local.linebreak = true
 vim.opt_local.breakindent = true
 
+require("dots.claude_skills_hl").attach()
+
 vim.keymap.set("i", "@@", function()
   local builtin = require("telescope.builtin")
   local actions = require("telescope.actions")
@@ -75,8 +77,21 @@ vim.keymap.set("n", "<C-]>", function()
     end
   end
 
-  local path
+  local jump = require("dots.jump")
+
   local word = vim.fn.expand("<cWORD>")
+  local skill_match = word:match("^/([%w%-:_]+)")
+  if skill_match then
+    local resolved = require("dots.claude_skills").resolve(skill_match)
+    if resolved then
+      jump.open(resolved, "/" .. skill_match)
+      return
+    end
+    vim.notify("Claude skill not found: /" .. skill_match, vim.log.levels.WARN)
+    return
+  end
+
+  local path
   local at_match = word:match("^@(.+)")
   if at_match then
     path = at_match:gsub("[%.,;:%)%]>]+$", "")
@@ -87,7 +102,6 @@ vim.keymap.set("n", "<C-]>", function()
     return
   end
 
-  local jump = require("dots.jump")
   local file_dir = vim.fn.expand("%:p:h")
   local git_root = jump.git_root(file_dir)
 
@@ -105,4 +119,4 @@ vim.keymap.set("n", "<C-]>", function()
     end
   end
   vim.notify("File not found: " .. path, vim.log.levels.WARN)
-end, { buffer = true, desc = "Open @path or `path` file reference" })
+end, { buffer = true, desc = "Open @path, `path`, or /skill reference" })

@@ -14,7 +14,7 @@ local M = {}
 local source = {}
 
 local CACHE_TTL_MS = 5000
-local cache = { items = nil, ts = 0 }
+local cache = { entries = nil, ts = 0 }
 
 local function read_file(path)
   local fd = vim.loop.fs_open(path, "r", 438)
@@ -91,13 +91,15 @@ local function collect_commands(dir, namespace, out)
     if e.type == "file" and e.name:match("%.md$") then
       local cmd_name = e.name:sub(1, -4)
       local label = namespace and (namespace .. ":" .. cmd_name) or cmd_name
-      local content = read_file(dir .. "/" .. e.name) or ""
+      local file_path = dir .. "/" .. e.name
+      local content = read_file(file_path) or ""
       local desc = first_nonempty_line(content)
       out[#out + 1] = {
         label = "/" .. label,
         insert = "/" .. label,
         detail = namespace and ("plugin command — " .. namespace) or "user command",
         doc = desc,
+        path = file_path,
       }
     end
   end
@@ -117,6 +119,7 @@ local function collect_skills(dir, namespace, out)
           insert = "/" .. label,
           detail = namespace and ("plugin skill — " .. namespace) or "user skill",
           doc = fm.description or "",
+          path = skill_path,
         }
       end
     end
@@ -147,7 +150,7 @@ local function installed_plugin_paths()
   return paths
 end
 
-local function build_items()
+local function build_entries()
   local home = vim.fn.expand("~")
   local out = {}
 
@@ -170,31 +173,39 @@ local function build_items()
   end)
 
   local seen = {}
-  local items = {}
+  local entries = {}
   for _, e in ipairs(out) do
     if not seen[e.label] then
       seen[e.label] = true
-      items[#items + 1] = {
-        label = e.label,
-        filterText = e.label,
-        insertText = e.insert,
-        kind = require("cmp").lsp.CompletionItemKind.Function,
-        detail = e.detail,
-        documentation = e.doc and e.doc ~= "" and { kind = "markdown", value = e.doc } or nil,
-      }
+      entries[#entries + 1] = e
     end
   end
-  return items
+  return entries
+end
+
+local function get_entries()
+  local now = vim.loop.now()
+  if cache.entries and (now - cache.ts) < CACHE_TTL_MS then
+    return cache.entries
+  end
+  cache.entries = build_entries()
+  cache.ts = now
+  return cache.entries
 end
 
 local function get_items()
-  local now = vim.loop.now()
-  if cache.items and (now - cache.ts) < CACHE_TTL_MS then
-    return cache.items
+  local items = {}
+  for _, e in ipairs(get_entries()) do
+    items[#items + 1] = {
+      label = e.label,
+      filterText = e.label,
+      insertText = e.insert,
+      kind = require("cmp").lsp.CompletionItemKind.Function,
+      detail = e.detail,
+      documentation = e.doc and e.doc ~= "" and { kind = "markdown", value = e.doc } or nil,
+    }
   end
-  cache.items = build_items()
-  cache.ts = now
-  return cache.items
+  return items
 end
 
 function source.new()
@@ -236,8 +247,24 @@ function M.setup()
 end
 
 function M.refresh()
-  cache.items = nil
+  cache.entries = nil
   cache.ts = 0
+end
+
+-- Resolve a `/skill` token (with or without the leading slash) to the
+-- absolute path of its definition file, or nil if unknown.
+function M.resolve(name)
+  if not name or name == "" then
+    return nil
+  end
+  local stripped = name:gsub("^/", "")
+  local target = "/" .. stripped
+  for _, e in ipairs(get_entries()) do
+    if e.label == target then
+      return e.path
+    end
+  end
+  return nil
 end
 
 return M
