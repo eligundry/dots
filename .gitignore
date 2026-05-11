@@ -43,6 +43,7 @@
 !**/.claude/commands/
 !**/.claude/hooks/
 !**/.claude/skills/
+!**/.claude/skills/**
 !**/.claude/agents/
 !**/.claude/settings.json
 **/.playwright-mcp/*
