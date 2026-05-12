@@ -3,9 +3,12 @@
 -- Surfaces entries from:
 --   * ~/.claude/commands/*.md                                (user commands)
 --   * ~/.claude/skills/<skill>/SKILL.md                      (user skills)
+--   * ~/.agents/skills/<skill>/SKILL.md                      (user agent skills)
 --   * installed plugins listed in ~/.claude/plugins/installed_plugins.json
---     (their commands/ and skills/ subdirs, namespaced as `plugin:name`)
---   * ./.claude/commands and ./.claude/skills under the cwd  (project scope)
+--     (their commands/, skills/, and .agents/skills/ subdirs, namespaced as
+--     `plugin:name`)
+--   * ./.claude/commands, ./.claude/skills, and ./.agents/skills under the cwd
+--     (project scope)
 --
 -- Triggers on "/" at the start of a line or after whitespace.
 
@@ -86,7 +89,14 @@ local function scan_dir(path)
   return entries
 end
 
-local function collect_commands(dir, namespace, out)
+local function detail_for(scope, kind, namespace)
+  if namespace then
+    return "plugin " .. kind .. " — " .. namespace
+  end
+  return scope .. " " .. kind
+end
+
+local function collect_commands(dir, namespace, scope, out)
   for _, e in ipairs(scan_dir(dir)) do
     if e.type == "file" and e.name:match("%.md$") then
       local cmd_name = e.name:sub(1, -4)
@@ -97,7 +107,7 @@ local function collect_commands(dir, namespace, out)
       out[#out + 1] = {
         label = "/" .. label,
         insert = "/" .. label,
-        detail = namespace and ("plugin command — " .. namespace) or "user command",
+        detail = detail_for(scope, "command", namespace),
         doc = desc,
         path = file_path,
       }
@@ -105,7 +115,7 @@ local function collect_commands(dir, namespace, out)
   end
 end
 
-local function collect_skills(dir, namespace, out)
+local function collect_skills(dir, namespace, scope, out)
   for _, e in ipairs(scan_dir(dir)) do
     if e.type == "directory" then
       local skill_path = dir .. "/" .. e.name .. "/SKILL.md"
@@ -117,7 +127,7 @@ local function collect_skills(dir, namespace, out)
         out[#out + 1] = {
           label = "/" .. label,
           insert = "/" .. label,
-          detail = namespace and ("plugin skill — " .. namespace) or "user skill",
+          detail = detail_for(scope, "skill", namespace),
           doc = fm.description or "",
           path = skill_path,
         }
@@ -154,18 +164,21 @@ local function build_entries()
   local home = vim.fn.expand("~")
   local out = {}
 
-  collect_commands(home .. "/.claude/commands", nil, out)
-  collect_skills(home .. "/.claude/skills", nil, out)
+  collect_commands(home .. "/.claude/commands", nil, "user", out)
+  collect_skills(home .. "/.claude/skills", nil, "user", out)
+  collect_skills(home .. "/.agents/skills", nil, "user", out)
 
   for _, plugin in ipairs(installed_plugin_paths()) do
-    collect_commands(plugin.path .. "/commands", plugin.name, out)
-    collect_skills(plugin.path .. "/skills", plugin.name, out)
+    collect_commands(plugin.path .. "/commands", plugin.name, "plugin", out)
+    collect_skills(plugin.path .. "/skills", plugin.name, "plugin", out)
+    collect_skills(plugin.path .. "/.agents/skills", plugin.name, "plugin", out)
   end
 
   local cwd = vim.loop.cwd()
   if cwd and cwd ~= home then
-    collect_commands(cwd .. "/.claude/commands", nil, out)
-    collect_skills(cwd .. "/.claude/skills", nil, out)
+    collect_commands(cwd .. "/.claude/commands", nil, "repo", out)
+    collect_skills(cwd .. "/.claude/skills", nil, "repo", out)
+    collect_skills(cwd .. "/.agents/skills", nil, "repo", out)
   end
 
   table.sort(out, function(a, b)
