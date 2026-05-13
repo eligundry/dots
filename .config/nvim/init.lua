@@ -92,6 +92,61 @@ vim.opt.rtp:prepend(lazypath)
 -- Set <Leader> to be comma
 vim.g.mapleader = ","
 
+-- Providers: disable unused ones, point python3 at a dedicated venv with pynvim
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.python3_host_prog = vim.fn.expand("~/.local/share/nvim/venv/bin/python")
+
+-- Expose luarocks --local installs (e.g. jsregexp for luasnip) to the Lua loader
+do
+  local luarocks_share = vim.fn.expand("~/.luarocks/share/lua/5.1")
+  local luarocks_lib = vim.fn.expand("~/.luarocks/lib/lua/5.1")
+  package.path = package.path .. ";" .. luarocks_share .. "/?.lua;" .. luarocks_share .. "/?/init.lua"
+  package.cpath = package.cpath .. ";" .. luarocks_lib .. "/?.so"
+end
+
+-- Register filetypes that LSP configs reference but nvim doesn't detect by default
+vim.filetype.add({
+  extension = {
+    gotmpl = "gotmpl",
+    tmpl = "gotmpl",
+    gohtml = "gohtml",
+    gohtmltmpl = "gohtmltmpl",
+    mdx = "mdx",
+    hbs = "hbs",
+    handlebars = "hbs",
+    ejs = "ejs",
+    erb = "erb",
+    jade = "jade",
+    pug = "jade",
+    slim = "slim",
+    leaf = "leaf",
+    njk = "njk",
+    razor = "razor",
+    cshtml = "aspnetcorerazor",
+    re = "reason",
+    pcss = "postcss",
+    postcss = "postcss",
+    sss = "sugarss",
+  },
+  filename = {
+    ["docker-compose.yml"] = "yaml.docker-compose",
+    ["docker-compose.yaml"] = "yaml.docker-compose",
+    ["compose.yml"] = "yaml.docker-compose",
+    ["compose.yaml"] = "yaml.docker-compose",
+    [".gitlab-ci.yml"] = "yaml.gitlab",
+  },
+  pattern = {
+    [".*/templates/.*%.ya?ml"] = "yaml.helm-values",
+    [".*%.html%.eex"] = "html-eex",
+    [".*%.html%.django"] = "django-html",
+    [".*%.njk"] = "nunjucks",
+    [".*%.nunjucks"] = "nunjucks",
+    [".*%.edge"] = "edge",
+    [".*%.astro%.md"] = "astro-markdown",
+  },
+})
+
 require("lazy").setup(
   -- Plugins {{{
   {
@@ -615,7 +670,12 @@ require("lazy").setup(
         -- },
         {
           "saadparwaiz1/cmp_luasnip",
-          dependencies = { "L3MON4D3/LuaSnip" },
+          dependencies = {
+            {
+              "L3MON4D3/LuaSnip",
+              build = "make install_jsregexp",
+            },
+          },
         },
         {
           "dcampos/cmp-emmet-vim",
@@ -646,6 +706,22 @@ require("lazy").setup(
         local cmp = require("cmp")
         local luasnip = require("luasnip")
         local lspkind = require("lspkind")
+
+        -- cmp-emmet-vim's get_file_type crashes when vim.treesitter.get_parser
+        -- returns (true, nil) for buffers without a parser. Wrap complete in a
+        -- pcall so the error doesn't bubble up through cmp's TextChangedI autocmd.
+        do
+          local ok, cmp_emmet = pcall(require, "cmp_emmet_vim")
+          if ok then
+            local original_complete = cmp_emmet.complete
+            cmp_emmet.complete = function(self, request, callback)
+              local complete_ok = pcall(original_complete, self, request, callback)
+              if not complete_ok then
+                callback()
+              end
+            end
+          end
+        end
         local s = luasnip.snippet
         local t = luasnip.text_node
         local i = luasnip.insert_node
@@ -768,6 +844,25 @@ require("lazy").setup(
               name = "emmet_vim",
               group_index = 5,
               priority = 2,
+              -- cmp-emmet-vim's get_file_type crashes when vim.treesitter.get_parser
+              -- returns nil, so scope it to filetypes that have parsers and where
+              -- emmet is actually useful.
+              ft = {
+                "html",
+                "css",
+                "scss",
+                "less",
+                "sass",
+                "javascript",
+                "javascriptreact",
+                "typescript",
+                "typescriptreact",
+                "vue",
+                "svelte",
+                "astro",
+                "markdown",
+                "mdx",
+              },
             },
             {
               name = "dictionary",
