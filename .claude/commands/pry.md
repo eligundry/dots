@@ -40,6 +40,10 @@ The argument above may be:
    sleep 600 && gh api repos/OWNER/REPO/pulls/PR_NUMBER/reviews --jq '.[] | select(.user.login == "copilot" or .user.login == "github-actions[bot]") | select(.state != "APPROVED") | .id' | tail -1
    ```
    - After the background task completes, check its output.
+   - If a review ID is returned, fetch the review content using the same script `/reviewy` uses:
+     ```bash
+     gh-review-threads OWNER REPO PR_NUMBER REVIEW_ID
+     ```
    - **Do NOT automatically address review comments.** Instead, notify the user:
-     - If Copilot submitted a review with comments, tell the user and provide the review URL so they can decide whether to run `/reviewy` to address them.
+     - If Copilot submitted a review with comments, summarize the review content from `gh-review-threads` and provide the review URL so they can decide whether to run `/reviewy` to address them.
      - If Copilot approved, report that Copilot is satisfied.
