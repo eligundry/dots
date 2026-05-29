@@ -1289,8 +1289,13 @@ require("lazy").setup(
       ft = { "markdown", "Avante" },
     },
     -- }}}
-  }
+  },
   -- }}}
+  {
+    -- rest.nvim needs luarocks. Homebrew no longer ships lua@5.1, so let
+    -- lazy.nvim build its own Lua 5.1 + luarocks via hererocks.
+    rocks = { hererocks = true },
+  }
 )
 -- }}}
 
