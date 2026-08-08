@@ -1,3 +1,5 @@
 # Sync shell history to the cloud with atuin
-# Filter out deprecated -k syntax for Fish 4.0 compatibility
-atuin init fish | string replace -ra -- ' -k (\w+)' ' $1' | source
+# NOTE: don't rewrite `-k`/named-key syntax here — atuin already emits the right
+# form per fish version. On fish 3, `bind -k up` -> `bind up` binds the literal
+# sequence "up", which makes pressing `u` trigger the history search.
+atuin init fish | source
