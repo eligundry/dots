@@ -218,6 +218,33 @@ Remove packages not listed in the Brewfile
 .TP
 .B brew bundle --global cleanup --force
 Actually uninstall them (without --force it's a dry run)
+.SH MACOS DESKTOP
+.SS Raycast
+.TP
+.B ⌥ Space
+Launch Raycast (Option+Space)
+.SS Ice
+Manages the macOS menu bar icons so they don't run into the notch. Hides, shows, and rearranges status bar items.
+.SS Asimov
+Runs as a Homebrew background service and excludes dependency directories
+.RI ( node_modules ,
+.IR .venv ,
+.IR target ,
+.IR DerivedData ,
+and ~30 other patterns) from Time Machine backups. A directory is only excluded when its sentinel config file sits alongside it, so
+.I node_modules
+is skipped only next to a
+.IR package.json .
+The yadm bootstrap starts the service; it then runs once a day on its own.
+.TP
+.B asimov --dry-run --stats
+Preview what would be excluded, with sizes. Changes nothing
+.TP
+.B asimov
+Apply the exclusions now
+.TP
+.B brew services list
+Check that the asimov service is running
 .SH FILES
 .TP
 .I ~/.tmux.conf
