@@ -47,6 +47,12 @@ if [ "$system_type" = "Darwin" ]; then
     brew bundle --global
   fi
 
+  # Keep Time Machine from backing up dependency directories
+  if command -v asimov >/dev/null 2>&1; then
+    echo "Enabling asimov service"
+    brew services start asimov
+  fi
+
   echo "Installing a node LTS version with fnm"
   fnm install --lts
   fnm default lts-latest
