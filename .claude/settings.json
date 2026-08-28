@@ -98,5 +98,9 @@
       "Bash(yadm push:*) — publishing dotfiles to the public github.com/eligundry/dots remote; confirm nothing secret is staged",
       "Bash(pass:*) — reads and writes against the local password store"
     ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "starship statusline claude-code"
   }
 }

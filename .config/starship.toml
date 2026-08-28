@@ -1,22 +1,85 @@
-[aws]
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Explicit prefix so `$vcs` can be placed where the git_* modules used to sit.
+# `$all` covers the remaining tail, so new modules in future starship releases
+# still appear automatically without editing this list.
+format = "$username$hostname$localip$shlvl$singularity$kubernetes$nats$directory$vcsh$vcs$all"
+
+# Statusline profile for Claude Code (`starship statusline claude-code`).
+# Uses $vcs rather than the default profile's $git_branch, which is disabled below.
+[profiles]
+claude-code = "$claude_model$directory$vcs$claude_context$claude_cost"
+
+# --- unified VCS ------------------------------------------------------------
+# The vcs module delegates to the git_*/hg_*/etc. modules listed in its
+# *_modules options. Those submodules must be disabled at the top level or they
+# render twice (verified); `disabled` does not stop vcs from delegating to them.
+[vcs]
+order = ["git", "hg"]
+
+[fossil_branch]
+disabled = true
+[fossil_metrics]
+disabled = true
+[git_branch]
+disabled = true
+[git_commit]
+disabled = true
+[git_state]
+disabled = true
+[git_metrics]
+disabled = true
+[hg_branch]
+disabled = true
+[hg_state]
+disabled = true
+[pijul_channel]
 disabled = true
 
-[gcloud]
+# --- git status: staged vs unstaged split (starship 1.25+) -------------------
+# First bracket = index/staged, second = worktree/unstaged. Each hides on its own.
+[git_status]
 disabled = true
+format = '(\[$index_added$index_modified$index_deleted$index_typechanged$renamed\]($style) )(\[$worktree_added$worktree_modified$worktree_deleted$worktree_typechanged$untracked\]($style) )([$conflicted$stashed$ahead_behind]($style) )'
+ahead = "⇡"
+behind = "⇣"
+stashed = '⚑'
+deleted = "✖"
+# worktree_*/index_* all default to "" (opt-in), so each needs a symbol.
+index_added = "+"
+index_modified = "!"
+index_deleted = "✖"
+index_typechanged = "±"
+worktree_added = "+"
+worktree_modified = "!"
+worktree_deleted = "✖"
+worktree_typechanged = "±"
 
+# --- Claude Code statusline modules -----------------------------------------
+[claude_model]
+format = "[$symbol$model]($style) "
+symbol = "✳ "
+style = "bold blue"
+
+[claude_context]
+format = "[$gauge $percentage]($style) "
+gauge_width = 8
+
+[claude_cost]
+# `$` must be escaped as \\$ in format; a bare "$ " in `symbol` parses as a variable.
+format = "[$symbol\\$$cost]($style) "
+symbol = ""
+
+# --- languages --------------------------------------------------------------
 [nodejs]
 format = "[$symbol($version )]($style)"
 version_format = "v${major}"
-
-[package]
-disabled = true
 
 [php]
 format = "[$symbol($version )]($style)"
 version_format = "v${major}.${minor}"
 
 [python]
-disabled = false
 format = "[$symbol($version )]($style)"
 version_format = "v${major}.${minor}"
 
@@ -24,18 +87,23 @@ version_format = "v${major}.${minor}"
 format = "[$symbol($version )]($style)"
 version_format = "v${major}.${minor}"
 
+# --- disabled ---------------------------------------------------------------
+[aws]
+disabled = true
+
+[gcloud]
+disabled = true
+
+[package]
+disabled = true
+
 [vagrant]
 disabled = true
 
 [time]
 disabled = true
 
-[git_status]
-ahead = "⇡"
-behind = "⇣"
-stashed = '⚑'
-deleted = "✖"
-
+# --- misc -------------------------------------------------------------------
 [directory]
 truncate_to_repo = false
 
