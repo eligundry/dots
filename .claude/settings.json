@@ -33,33 +33,37 @@
       }
     ]
   },
+  "statusLine": {
+    "type": "command",
+    "command": "starship statusline claude-code"
+  },
   "enabledPlugins": {
     "frontend-design@claude-code-plugins": true,
     "typescript-lsp@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true,
-    "ralph-loop@claude-plugins-official": true,
     "code-review@claude-plugins-official": true,
-    "frontend-design@claude-plugins-official": true,
-    "superpowers@superpowers-marketplace": true
+    "frontend-design@claude-plugins-official": true
   },
-  "extraKnownMarketplaces": {
-    "superpowers-marketplace": {
-      "source": {
-        "source": "github",
-        "repo": "obra/superpowers-marketplace"
-      }
-    }
-  },
+  "extraKnownMarketplaces": {},
   "alwaysThinkingEnabled": true,
   "effortLevel": "medium",
   "autoUpdatesChannel": "stable",
   "skipDangerousModePermissionPrompt": true,
   "editorMode": "vim",
   "skipAutoPermissionPrompt": true,
-  "feedbackSurveyState": {
-    "lastShownTime": 1755793168053
-  },
   "autoMode": {
+    "allow": [
+      "$defaults",
+      "Bash(yadm status:*) — read-only dotfile status in this yadm repo (avoid the -u/-uall forms per repo docs)",
+      "Bash(yadm list:*) — list tracked dotfiles in this yadm repo",
+      "Bash(yadm diff:*) — read-only diff of tracked dotfiles in this yadm repo",
+      "Bash(brew bundle --global:*) — install Homebrew packages from ~/.Brewfile, the documented routine for this dotfiles repo"
+    ],
+    "soft_deny": [
+      "$defaults",
+      "Bash(yadm push:*) — publishing dotfiles to the public github.com/eligundry/dots remote; confirm nothing secret is staged",
+      "Bash(pass:*) — reads and writes against the local password store"
+    ],
     "environment": [
       "### Org-wide",
       "**Organization**: None configured",
@@ -85,22 +89,9 @@
       "**Trusted repo**: this yadm dotfiles checkout at /Users/eligundry and its configured remote(s). Because README shows it is published publicly at github.com/eligundry/dots, only this repo's own dotfile work belongs there; secrets, `pass` entries, shell-history databases, and anything read from outside this repo are never cleared for commit or push by its visibility (see Definitions)",
       "**Org-specific CLIs**: `yadm` (dotfiles git wrapper, work tree = $HOME), `rtk` (Rust Token Killer output-filtering wrapper), `base16` (theme sync), `dots` man page; also frequent: brew, dbt, clickhouse, sqlfluff, pass, fnm",
       "**Routine under $HOME prefix**: yadm operations (`yadm status`, `yadm list`, `yadm add`, `yadm diff`) operate on tracked dotfiles under $HOME and are routine here; note the repo doc warns `yadm status -u`/`-uall` walks all of $HOME and should be avoided"
-    ],
-    "allow": [
-      "$defaults",
-      "Bash(yadm status:*) — read-only dotfile status in this yadm repo (avoid the -u/-uall forms per repo docs)",
-      "Bash(yadm list:*) — list tracked dotfiles in this yadm repo",
-      "Bash(yadm diff:*) — read-only diff of tracked dotfiles in this yadm repo",
-      "Bash(brew bundle --global:*) — install Homebrew packages from ~/.Brewfile, the documented routine for this dotfiles repo"
-    ],
-    "soft_deny": [
-      "$defaults",
-      "Bash(yadm push:*) — publishing dotfiles to the public github.com/eligundry/dots remote; confirm nothing secret is staged",
-      "Bash(pass:*) — reads and writes against the local password store"
     ]
   },
-  "statusLine": {
-    "type": "command",
-    "command": "starship statusline claude-code"
+  "feedbackSurveyState": {
+    "lastShownTime": 1755793168053
   }
 }
