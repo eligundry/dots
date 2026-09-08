@@ -64,3 +64,19 @@ npm install -g neovim
 
 # Install pass audit so I can check password leaks
 make -C "$HOME/.local/share/pass/audit" install PREFIX="/opt/homebrew/opt/pass"
+
+# Install agent skills recorded in ~/.agents/.skill-lock.json. The skills CLI
+# can only restore project lockfiles (experimental_install), so re-add each
+# global skill grouped by its source repository.
+skill_lock="$HOME/.agents/.skill-lock.json"
+
+if [ -f "$skill_lock" ] && command -v jq >/dev/null 2>&1; then
+  echo "Installing agent skills"
+  jq -r '.skills | to_entries | group_by(.value.source)
+         | .[] | "\(.[0].value.source)\t\(map(.key) | join(","))"' "$skill_lock" |
+    while IFS=$'\t' read -r source skills; do
+      echo "  $source: $skills"
+      npx -y skills@latest add "$source" \
+        --global --agent claude-code --skill "$skills" --yes
+    done
+fi
