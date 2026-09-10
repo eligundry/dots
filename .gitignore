@@ -48,5 +48,20 @@
 !**/.claude/settings.json
 **/.playwright-mcp/*
 
+**/.codex/**
+!**/.codex/agents/
+!**/.codex/agents/**
+!**/.codex/hooks/
+!**/.codex/hooks/**
+!**/.codex/prompts/
+!**/.codex/prompts/**
+!**/.codex/rules/
+!**/.codex/rules/**
+!**/.codex/skills/
+!**/.codex/skills/**
+**/.codex/skills/.system/
+!**/.codex/AGENTS.md
+!**/.codex/config.toml
+
 # fish rewrites this on every shell start (init counter churn)
 .config/fish/fish_variables
