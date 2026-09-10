@@ -31,6 +31,16 @@
           }
         ]
       }
+    ],
+    "StopFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/eligundry/.claude/hooks/notify.sh"
+          }
+        ]
+      }
     ]
   },
   "statusLine": {
