@@ -47,3 +47,6 @@
 !**/.claude/agents/
 !**/.claude/settings.json
 **/.playwright-mcp/*
+
+# fish rewrites this on every shell start (init counter churn)
+.config/fish/fish_variables
