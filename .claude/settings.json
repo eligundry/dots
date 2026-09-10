@@ -35,7 +35,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "starship statusline claude-code"
+    "command": "STARSHIP_CLAUDE_STATUSLINE=1 starship statusline claude-code"
   },
   "enabledPlugins": {
     "frontend-design@claude-code-plugins": true,

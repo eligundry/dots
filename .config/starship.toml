@@ -8,7 +8,7 @@ format = "$username$hostname$localip$shlvl$singularity$kubernetes$nats$directory
 # Statusline profile for Claude Code (`starship statusline claude-code`).
 # Uses $vcs rather than the default profile's $git_branch, which is disabled below.
 [profiles]
-claude-code = "$claude_model$directory$vcs$claude_context$claude_cost"
+claude-code = "$claude_model${custom.claude_dir}$vcs$claude_context$claude_cost"
 
 # --- unified VCS ------------------------------------------------------------
 # The vcs module delegates to the git_*/hg_*/etc. modules listed in its
@@ -106,6 +106,27 @@ disabled = true
 # --- misc -------------------------------------------------------------------
 [directory]
 truncate_to_repo = false
+
+# Stand-in for $directory in the claude-code profile: same rendering, but it
+# hides itself inside a git worktree, where $vcs's branch name already says
+# which checkout this is. Gated on STARSHIP_CLAUDE_STATUSLINE (exported by the
+# statusLine command in ~/.claude/settings.json) because `$all` in the top-level
+# format would otherwise render it in the shell prompt next to $directory.
+[custom.claude_dir]
+description = "Working directory, omitted inside a git worktree"
+shell = ["/bin/sh"]
+when = '''
+test -n "$STARSHIP_CLAUDE_STATUSLINE" || exit 1
+test "$(git rev-parse --git-dir 2>/dev/null)" = "$(git rev-parse --git-common-dir 2>/dev/null)"
+'''
+# Mirrors [directory]'s rendering: ~ for $HOME, last 3 components.
+command = '''
+printf '%s' "$PWD" | sed "s|^$HOME|~|" |
+  awk -F/ '{for (i = NF > 3 ? NF - 2 : 1; i <= NF; i++) out = out $i (i < NF ? "/" : "")
+            print out}'
+'''
+style = "bold cyan"
+format = "[$output]($style) "
 
 [docker_context]
 format = '$symbol'
