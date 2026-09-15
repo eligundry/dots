@@ -48,6 +48,24 @@ lossy-but-workable version of the right input; it is the wrong input.
 If `gh-review-threads` errors or is genuinely missing, **stop and tell the user**
 rather than falling back to `gh api`. Do not work around it.
 
+## When running in a loop
+
+If this command is being run on a loop (e.g. via `/loop`, a babysitting task, or
+repeated invocations against the same PR), **consider all reviewers, not just the
+review ID in the URL you were given.**
+
+- Before finishing an iteration, check the PR for review threads from *any*
+  reviewer — human teammates, GitHub Copilot, CodeRabbit, and any other bot — that
+  are still unresolved, including reviews submitted after the one you were pointed at.
+- Pick up those threads in the same pass rather than waiting for the user to hand
+  you another review URL. Fetch each additional review's threads with
+  `gh-review-threads` using that review's ID (the `gh api` prohibition above still
+  applies).
+- Apply the same rules to them: read the full thread, respect the PR author's
+  pushback, skip resolved threads.
+- Only report the PR as clean when there are no unresolved threads left from any
+  reviewer.
+
 ## Instructions
 
 1. Parse the URL to extract:
@@ -134,3 +152,5 @@ rather than falling back to `gh api`. Do not work around it.
 - [ ] I read every reply in every unresolved thread before editing code.
 - [ ] I skipped threads the author pushed back on, and said so in the summary.
 - [ ] Every thread I acted on got a `gh-resolve-thread` reply.
+- [ ] If I'm running in a loop, I checked for unresolved threads from *every*
+      reviewer on the PR, not just the review ID I was handed.

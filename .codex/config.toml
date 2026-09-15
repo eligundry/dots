@@ -106,5 +106,11 @@ timeout = 10
 [hooks.state."browser@openai-bundled:plugin.json#hooks[0]:stop:0:0"]
 trusted_hash = "sha256:317a07045dfc95aef2e80c55428a2f817e2768be867e3b1ef29a73da8636ae7f"
 
+[hooks.state."/Users/eligundry/.codex/config.toml:permission_request:0:0"]
+trusted_hash = "sha256:70e240c13d0dc65deb8cb1e0d7660dd3a39123bb921c3d87d4fe4d89a2a89703"
+
 [tui.model_availability_nux]
 gpt-6-astra = 4
+
+[tui.keymap.global]
+toggle_vim_mode = "ctrl-alt-k"
