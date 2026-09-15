@@ -80,6 +80,25 @@ Enable screensaver (10 min timeout)
 .TP
 .B C-a F6
 Disable screensaver
+.SS Now Playing Widget
+The right side of the status line shows the currently playing track, via
+.IR ~/.tmux/scripts/now-playing.sh .
+It checks playerctl (Linux), then nowplaying-cli, then Spotify and Chrome
+music tabs via AppleScript.
+.TP
+.B Click
+Focus the app that is playing (Spotify, or the Chrome tab on a music site)
+.PP
+The click is wired up with a
+.B range=user|player
+marker in the status-right format and a
+.B MouseDown1Status
+binding in
+.IR ~/.tmux.conf .
+Note that user ranges fire the plain
+.B Status
+mouse key, not
+.BR StatusRight .
 .SH GHOSTTY
 .SS Clicking Links with tmux Mouse Mode
 When tmux mouse mode is enabled, use modifier keys to bypass tmux and click links:
