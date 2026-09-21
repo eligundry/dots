@@ -6,22 +6,46 @@ Fetch comments from a specific GitHub PR review and address the requested change
 
 $ARGUMENTS
 
-The argument should be a GitHub PR review URL in the format:
-`https://github.com/OWNER/REPO/pull/PR_NUMBER#pullrequestreview-REVIEW_ID`
+The argument is optional. It may be:
 
-Example: `https://github.com/org/repo/pull/6737#pullrequestreview-3741755454`
+- A GitHub PR **review** URL —
+  `https://github.com/OWNER/REPO/pull/PR_NUMBER#pullrequestreview-REVIEW_ID`
+  (e.g. `https://github.com/org/repo/pull/6737#pullrequestreview-3741755454`)
+- A GitHub **PR** URL — `https://github.com/OWNER/REPO/pull/PR_NUMBER`
+- Nothing at all — the PR for the current branch is used.
+
+Only the first form names a single review. For the other two, address **every**
+review on the PR that still has unresolved threads.
 
 ## REQUIRED FIRST ACTION — do this before anything else
 
-Parse OWNER, REPO, PR_NUMBER, and REVIEW_ID out of the URL, then make this Bash
-call your **first tool call of the entire task**:
+Parse whatever the argument gives you (OWNER, REPO, PR_NUMBER, and REVIEW_ID), then
+make one of these Bash calls your **first tool call of the entire task**:
+
+**If you were given a review URL:**
 
 ```bash
 gh-review-threads OWNER REPO PR_NUMBER REVIEW_ID
 ```
 
-`gh-review-threads` is an installed executable at `~/.local/bin/gh-review-threads`.
-It is already on PATH. It wraps the GitHub GraphQL API and returns a compact,
+**If you were given a PR URL or no argument at all** (and always when running in
+a loop):
+
+```bash
+gh-unresolved-reviews [OWNER REPO PR_NUMBER]
+```
+
+`gh-unresolved-reviews` finds every review on the PR with at least one
+*unresolved* thread and prints, for each, a header (unresolved count, reviewer,
+review state, `reviewId`, review URL) followed by that review's threads in the
+exact `gh-review-threads` format — it shells out to `gh-review-threads
+--unresolved-only` internally. One call gives you everything; do not follow it
+with per-review `gh-review-threads` calls. With no positional args it resolves
+the PR from the current branch. `--list` prints only the headers (useful for a
+quick "is this PR clean?" check). It exits with a "No unresolved review threads"
+line when there is nothing to do.
+
+`gh-review-threads` and `gh-unresolved-reviews` are installed executables at `~/.local/bin/`, already on PATH. They wrap the GitHub GraphQL API and return a compact,
 threaded text format containing, for every thread in the target review: the file
 path, line numbers, resolved status, `threadId`, per-comment `commentId`, comment
 author, and **every reply in the thread, in order**.
@@ -45,7 +69,7 @@ makes you implement changes the author already rejected, and it omits the
 `threadId` values you need in step 8 to resolve threads. Flat output is not a
 lossy-but-workable version of the right input; it is the wrong input.
 
-If `gh-review-threads` errors or is genuinely missing, **stop and tell the user**
+If `gh-review-threads` / `gh-unresolved-reviews` errors or is genuinely missing, **stop and tell the user**
 rather than falling back to `gh api`. Do not work around it.
 
 ## When running in a loop
@@ -54,13 +78,14 @@ If this command is being run on a loop (e.g. via `/loop`, a babysitting task, or
 repeated invocations against the same PR), **consider all reviewers, not just the
 review ID in the URL you were given.**
 
-- Before finishing an iteration, check the PR for review threads from *any*
-  reviewer — human teammates, GitHub Copilot, CodeRabbit, and any other bot — that
-  are still unresolved, including reviews submitted after the one you were pointed at.
+- Before finishing an iteration, run `gh-unresolved-reviews` to check the PR for
+  review threads from *any* reviewer — human teammates, GitHub Copilot,
+  CodeRabbit, and any other bot — that are still unresolved, including reviews
+  submitted after the one you were pointed at.
 - Pick up those threads in the same pass rather than waiting for the user to hand
-  you another review URL. Fetch each additional review's threads with
-  `gh-review-threads` using that review's ID (the `gh api` prohibition above still
-  applies).
+  you another review URL. `gh-unresolved-reviews` already returns each additional
+  review's threads inline, so no extra fetch is needed (the `gh api` prohibition
+  above still applies).
 - Apply the same rules to them: read the full thread, respect the PR author's
   pushback, skip resolved threads.
 - Only report the PR as clean when there are no unresolved threads left from any
@@ -68,17 +93,13 @@ review ID in the URL you were given.**
 
 ## Instructions
 
-1. Parse the URL to extract:
-   - Owner and repo (e.g., `org/repo`)
-   - PR number (e.g., `6737`)
-   - Review ID (e.g., `3741755454`)
+1. Parse the argument (if any) to extract owner and repo (e.g. `org/repo`), PR
+   number (e.g. `6737`), and review ID (e.g. `3741755454`) when present.
 
-2. Run the required fetch described above:
-   ```bash
-   gh-review-threads OWNER REPO PR_NUMBER REVIEW_ID
-   ```
-   Threads are already filtered to the target review ID. Do not re-fetch or
-   supplement this with other comment APIs.
+2. Run the required fetch described above — `gh-review-threads` for a single
+   review URL, otherwise `gh-unresolved-reviews`. Threads come back already
+   filtered (to the target review ID, or to unresolved threads across all
+   reviews). Do not re-fetch or supplement this with other comment APIs.
 
 3. **CRITICAL: Read the ENTIRE reply thread for each comment.**
 
@@ -148,9 +169,10 @@ review ID in the URL you were given.**
 
 ## Checklist before you finish
 
-- [ ] `gh-review-threads` was my first tool call, and I did not fetch comments any other way.
+- [ ] `gh-review-threads` or `gh-unresolved-reviews` was my first tool call, and I did not fetch comments any other way.
 - [ ] I read every reply in every unresolved thread before editing code.
 - [ ] I skipped threads the author pushed back on, and said so in the summary.
 - [ ] Every thread I acted on got a `gh-resolve-thread` reply.
-- [ ] If I'm running in a loop, I checked for unresolved threads from *every*
-      reviewer on the PR, not just the review ID I was handed.
+- [ ] If I'm running in a loop — or wasn't handed a specific review URL — I used
+      `gh-unresolved-reviews` so every reviewer's unresolved threads were covered,
+      not just one review ID.

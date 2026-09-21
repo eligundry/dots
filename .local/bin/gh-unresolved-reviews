@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+# List every PR review that still has unresolved threads, with the full threaded
+# output for each (same format as gh-review-threads, which it calls internally).
+#
+# Usage: gh-unresolved-reviews [owner repo pr_number]
+#        gh-unresolved-reviews --list [owner repo pr_number]   # headers only
+#
+# With no positional args, resolves owner/repo/PR from the current branch.
+set -euo pipefail
+
+list_only=false
+args=()
+for a in "$@"; do
+  case "$a" in
+    --list) list_only=true ;;
+    -h|--help)
+      sed -n '2,8p' "$0" | sed 's/^# \{0,1\}//'
+      exit 0 ;;
+    *) args+=("$a") ;;
+  esac
+done
+
+if [[ ${#args[@]} -eq 3 ]]; then
+  owner="${args[0]}"; repo="${args[1]}"; pr="${args[2]}"
+elif [[ ${#args[@]} -eq 0 ]]; then
+  read -r owner repo pr < <(
+    gh pr view --json number,headRepositoryOwner,headRepository,baseRepository \
+      --jq '[(.baseRepository.owner.login // .headRepositoryOwner.login),
+             (.baseRepository.name  // .headRepository.name),
+             (.number|tostring)] | @tsv' 2>/dev/null
+  ) || { echo "Could not determine PR from current branch; pass <owner> <repo> <pr_number>" >&2; exit 1; }
+  [[ -n "${pr:-}" ]] || { echo "Could not determine PR from current branch; pass <owner> <repo> <pr_number>" >&2; exit 1; }
+else
+  echo "Usage: gh-unresolved-reviews [--list] [<owner> <repo> <pr_number>]" >&2
+  exit 1
+fi
+
+# One query to find which reviews own at least one unresolved thread.
+if ! raw="$(gh api graphql -f query='
+query($owner: String!, $repo: String!, $pr: Int!) {
+  repository(owner: $owner, name: $repo) {
+    pullRequest(number: $pr) {
+      reviews(first: 100) {
+        nodes { databaseId state author { login } }
+      }
+      reviewThreads(first: 100) {
+        nodes {
+          isResolved
+          isOutdated
+          comments(first: 1) {
+            nodes { pullRequestReview { databaseId } }
+          }
+        }
+      }
+    }
+  }
+}' -f owner="$owner" -f repo="$repo" -F pr="$pr")"; then
+  echo "Failed to fetch review threads for $owner/$repo#$pr." >&2
+  exit 1
+fi
+
+reviews="$(jq -r <<<"$raw" '
+  .data.repository.pullRequest as $pr |
+  ([$pr.reviewThreads.nodes[]
+    | select(.isResolved | not)
+    | .comments.nodes[0].pullRequestReview.databaseId
+    | select(. != null)]
+   | group_by(.) | map({id: .[0], count: length})) as $pending |
+  $pending[] |
+  . as $p |
+  ($pr.reviews.nodes[] | select(.databaseId == $p.id)) as $r |
+  [($p.id|tostring), ($p.count|tostring), ($r.author.login // "unknown"), $r.state] | @tsv
+')"
+
+if [[ -z "$reviews" ]]; then
+  echo "No unresolved review threads on $owner/$repo#$pr."
+  exit 0
+fi
+
+while IFS=$'\t' read -r rid count author state; do
+  echo "========================================================================"
+  echo "$count unresolved thread(s) | @$author ($state) | reviewId: $rid"
+  echo "https://github.com/$owner/$repo/pull/$pr#pullrequestreview-$rid"
+  echo "========================================================================"
+  if [[ "$list_only" == false ]]; then
+    gh-review-threads "$owner" "$repo" "$pr" "$rid" --unresolved-only
+    echo
+  fi
+done <<< "$reviews"

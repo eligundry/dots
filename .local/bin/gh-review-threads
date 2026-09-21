@@ -1,17 +1,26 @@
 #!/usr/bin/env bash
 # Fetch PR review threads as compact, readable text for Claude Code.
-# Usage: gh-review-threads <owner> <repo> <pr_number> <review_id>
+# Usage: gh-review-threads <owner> <repo> <pr_number> <review_id> [--unresolved-only]
 set -euo pipefail
 
-if [[ $# -ne 4 ]]; then
-  echo "Usage: gh-review-threads <owner> <repo> <pr_number> <review_id>" >&2
+unresolved_only=false
+args=()
+for a in "$@"; do
+  case "$a" in
+    --unresolved-only) unresolved_only=true ;;
+    *) args+=("$a") ;;
+  esac
+done
+
+if [[ ${#args[@]} -ne 4 ]]; then
+  echo "Usage: gh-review-threads <owner> <repo> <pr_number> <review_id> [--unresolved-only]" >&2
   exit 1
 fi
 
-owner="$1"
-repo="$2"
-pr="$3"
-review_id="$4"
+owner="${args[0]}"
+repo="${args[1]}"
+pr="${args[2]}"
+review_id="${args[3]}"
 
 gh api graphql -f query='
 query($owner: String!, $repo: String!, $pr: Int!) {
@@ -45,7 +54,7 @@ query($owner: String!, $repo: String!, $pr: Int!) {
       }
     }
   }
-}' -f owner="$owner" -f repo="$repo" -F pr="$pr" | jq -r --argjson rid "$review_id" '
+}' -f owner="$owner" -f repo="$repo" -F pr="$pr" | jq -r --argjson rid "$review_id" --argjson unresolvedOnly "$unresolved_only" '
   .data.repository.pullRequest as $pr |
 
   # Review submission comment
@@ -59,6 +68,7 @@ query($owner: String!, $repo: String!, $pr: Int!) {
   ([
     $pr.reviewThreads.nodes[]
     | select(.comments.nodes | any(.pullRequestReview.databaseId == $rid))
+    | select(($unresolvedOnly | not) or (.isResolved | not))
   ] | to_entries[] |
     .value as $t |
     "---\nThread \(.key + 1)" +
