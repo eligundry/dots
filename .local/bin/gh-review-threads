@@ -22,19 +22,15 @@ repo="${args[1]}"
 pr="${args[2]}"
 review_id="${args[3]}"
 
-gh api graphql -f query='
-query($owner: String!, $repo: String!, $pr: Int!) {
+# Both connections are paginated: busy PRs blow past 100 reviews/threads, and a
+# truncated review list used to silently produce zero output.
+if ! threads="$(gh api graphql --paginate \
+  -f owner="$owner" -f repo="$repo" -F pr="$pr" -f query='
+query($owner: String!, $repo: String!, $pr: Int!, $endCursor: String) {
   repository(owner: $owner, name: $repo) {
     pullRequest(number: $pr) {
-      reviews(first: 100) {
-        nodes {
-          databaseId
-          body
-          state
-          author { login }
-        }
-      }
-      reviewThreads(first: 100) {
+      reviewThreads(first: 50, after: $endCursor) {
+        pageInfo { hasNextPage endCursor }
         nodes {
           id
           isResolved
@@ -45,28 +41,51 @@ query($owner: String!, $repo: String!, $pr: Int!) {
               path
               line
               author { login }
-              pullRequestReview {
-                databaseId
-              }
+              pullRequestReview { databaseId }
             }
           }
         }
       }
     }
   }
-}' -f owner="$owner" -f repo="$repo" -F pr="$pr" | jq -r --argjson rid "$review_id" --argjson unresolvedOnly "$unresolved_only" '
-  .data.repository.pullRequest as $pr |
+}' | jq -s '[.[].data.repository.pullRequest.reviewThreads.nodes[]]' 2>/dev/null)"; then
+  echo "Failed to fetch review threads for $owner/$repo#$pr." >&2
+  exit 1
+fi
 
-  # Review submission comment
-  ($pr.reviews.nodes[] | select(.databaseId == $rid)) as $review |
-  "Review by @" + $review.author.login + " (" + $review.state + ")" +
-  (if ($review.body // "") != "" then
-    "\n" + ($review.body | split("\n") | map("  " + .) | join("\n"))
-  else "" end),
+if ! reviews="$(gh api graphql --paginate \
+  -f owner="$owner" -f repo="$repo" -F pr="$pr" -f query='
+query($owner: String!, $repo: String!, $pr: Int!, $endCursor: String) {
+  repository(owner: $owner, name: $repo) {
+    pullRequest(number: $pr) {
+      reviews(first: 100, after: $endCursor) {
+        pageInfo { hasNextPage endCursor }
+        nodes { databaseId body state author { login } }
+      }
+    }
+  }
+}' | jq -s '[.[].data.repository.pullRequest.reviews.nodes[]]' 2>/dev/null)"; then
+  echo "Failed to fetch reviews for $owner/$repo#$pr." >&2
+  exit 1
+fi
+
+jq -rn --argjson threads "$threads" --argjson reviews "$reviews" \
+       --argjson rid "$review_id" --argjson unresolvedOnly "$unresolved_only" '
+  # Review submission comment. A review missing from the list (deleted, or an
+  # API hiccup) must not suppress its threads, so fall back to a stub.
+  (($reviews[] | select(.databaseId == $rid)) // null) as $review |
+  (if $review then
+    "Review by @" + ($review.author.login // "unknown") + " (" + $review.state + ")" +
+    (if ($review.body // "") != "" then
+      "\n" + ($review.body | split("\n") | map("  " + .) | join("\n"))
+    else "" end)
+  else
+    "Review \($rid) (details unavailable)"
+  end),
 
   # Threaded inline comments
   ([
-    $pr.reviewThreads.nodes[]
+    $threads[]
     | select(.comments.nodes | any(.pullRequestReview.databaseId == $rid))
     | select(($unresolvedOnly | not) or (.isResolved | not))
   ] | to_entries[] |
@@ -79,7 +98,7 @@ query($owner: String!, $repo: String!, $pr: Int!) {
     "\n" +
     ([$t.comments.nodes | to_entries[] |
       .value as $c |
-      "  @" + $c.author.login +
+      "  @" + ($c.author.login // "unknown") +
       (if .key == 0 then " (review)" else " (reply)" end) +
       " [commentId: " + ($c.databaseId | tostring) + "]:\n" +
       ($c.body | split("\n") | map("    " + .) | join("\n"))

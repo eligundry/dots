@@ -35,41 +35,54 @@ else
   exit 1
 fi
 
-# One query to find which reviews own at least one unresolved thread.
-if ! raw="$(gh api graphql -f query='
-query($owner: String!, $repo: String!, $pr: Int!) {
+# Which reviews own at least one unresolved thread? Both connections are
+# paginated -- a busy PR can have well over 100 reviews, and a truncated list
+# used to make unresolved threads vanish from this report entirely.
+if ! threads="$(gh api graphql --paginate \
+  -f owner="$owner" -f repo="$repo" -F pr="$pr" -f query='
+query($owner: String!, $repo: String!, $pr: Int!, $endCursor: String) {
   repository(owner: $owner, name: $repo) {
     pullRequest(number: $pr) {
-      reviews(first: 100) {
-        nodes { databaseId state author { login } }
-      }
-      reviewThreads(first: 100) {
+      reviewThreads(first: 50, after: $endCursor) {
+        pageInfo { hasNextPage endCursor }
         nodes {
           isResolved
-          isOutdated
-          comments(first: 1) {
-            nodes { pullRequestReview { databaseId } }
-          }
+          comments(first: 1) { nodes { pullRequestReview { databaseId } } }
         }
       }
     }
   }
-}' -f owner="$owner" -f repo="$repo" -F pr="$pr")"; then
+}' | jq -s '[.[].data.repository.pullRequest.reviewThreads.nodes[]]' 2>/dev/null)"; then
   echo "Failed to fetch review threads for $owner/$repo#$pr." >&2
   exit 1
 fi
 
-reviews="$(jq -r <<<"$raw" '
-  .data.repository.pullRequest as $pr |
-  ([$pr.reviewThreads.nodes[]
+if ! reviews_meta="$(gh api graphql --paginate \
+  -f owner="$owner" -f repo="$repo" -F pr="$pr" -f query='
+query($owner: String!, $repo: String!, $pr: Int!, $endCursor: String) {
+  repository(owner: $owner, name: $repo) {
+    pullRequest(number: $pr) {
+      reviews(first: 100, after: $endCursor) {
+        pageInfo { hasNextPage endCursor }
+        nodes { databaseId state author { login } }
+      }
+    }
+  }
+}' | jq -s '[.[].data.repository.pullRequest.reviews.nodes[]]' 2>/dev/null)"; then
+  echo "Failed to fetch reviews for $owner/$repo#$pr." >&2
+  exit 1
+fi
+
+# Left join: a thread whose review is missing from the list still gets reported.
+reviews="$(jq -rn --argjson threads "$threads" --argjson meta "$reviews_meta" '
+  ([$threads[]
     | select(.isResolved | not)
     | .comments.nodes[0].pullRequestReview.databaseId
     | select(. != null)]
-   | group_by(.) | map({id: .[0], count: length})) as $pending |
-  $pending[] |
-  . as $p |
-  ($pr.reviews.nodes[] | select(.databaseId == $p.id)) as $r |
-  [($p.id|tostring), ($p.count|tostring), ($r.author.login // "unknown"), $r.state] | @tsv
+   | group_by(.) | map({id: .[0], count: length}))[] as $p |
+  (($meta[] | select(.databaseId == $p.id)) // null) as $r |
+  [($p.id|tostring), ($p.count|tostring),
+   ($r.author.login // "unknown"), ($r.state // "UNKNOWN")] | @tsv
 ')"
 
 if [[ -z "$reviews" ]]; then
