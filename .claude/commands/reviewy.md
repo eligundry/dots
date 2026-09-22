@@ -50,6 +50,13 @@ threaded text format containing, for every thread in the target review: the file
 path, line numbers, resolved status, `threadId`, per-comment `commentId`, comment
 author, and **every reply in the thread, in order**.
 
+Comment bodies are passed through `gh-review-tidy`, which parses out review-bot
+chrome — Copilot's `<picture>`/`<source>`/`<img>` severity artwork becomes a
+short badge (`**🟡 MEDIUM**`), `<details>`/`<summary>` wrappers and HTML
+comments are unwrapped. Fenced code blocks (including suggestion blocks), inline
+code spans, real screenshots and any other markup are preserved verbatim, so
+what you read is still the full comment.
+
 ### Do NOT substitute anything for this command
 
 Reaching for the REST API with `jq` is the single most common way this task gets

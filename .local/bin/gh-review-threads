@@ -22,6 +22,16 @@ repo="${args[1]}"
 pr="${args[2]}"
 review_id="${args[3]}"
 
+# Review bots (Copilot especially) wrap every finding in ~400 characters of
+# <picture>/<source>/<img> severity artwork that renders as nothing useful in a
+# terminal. gh-review-tidy parses it out and leaves a short badge behind; if it
+# is missing, fall through and print the bodies raw rather than failing.
+if command -v gh-review-tidy >/dev/null 2>&1; then
+  tidy() { gh-review-tidy; }
+else
+  tidy() { cat; }
+fi
+
 # Both connections are paginated: busy PRs blow past 100 reviews/threads, and a
 # truncated review list used to silently produce zero output.
 if ! threads="$(gh api graphql --paginate \
@@ -48,7 +58,7 @@ query($owner: String!, $repo: String!, $pr: Int!, $endCursor: String) {
       }
     }
   }
-}' | jq -s '[.[].data.repository.pullRequest.reviewThreads.nodes[]]' 2>/dev/null)"; then
+}' | jq -s '[.[].data.repository.pullRequest.reviewThreads.nodes[]]' 2>/dev/null | tidy)"; then
   echo "Failed to fetch review threads for $owner/$repo#$pr." >&2
   exit 1
 fi
@@ -64,7 +74,7 @@ query($owner: String!, $repo: String!, $pr: Int!, $endCursor: String) {
       }
     }
   }
-}' | jq -s '[.[].data.repository.pullRequest.reviews.nodes[]]' 2>/dev/null)"; then
+}' | jq -s '[.[].data.repository.pullRequest.reviews.nodes[]]' 2>/dev/null | tidy)"; then
   echo "Failed to fetch reviews for $owner/$repo#$pr." >&2
   exit 1
 fi

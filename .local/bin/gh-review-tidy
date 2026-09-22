@@ -1,0 +1,189 @@
+#!/usr/bin/env python3
+"""Strip review-bot chrome from GitHub review JSON.
+
+Reads JSON on stdin, rewrites every ``body`` string it finds (at any depth),
+writes JSON on stdout. Used by gh-review-threads so Copilot's decorative
+severity artwork -- a <picture> with two <source> elements and a PNG fallback,
+~400 characters per finding -- collapses to a legible badge instead of eating
+the context window.
+
+The HTML is handled by html.parser, not regexes: attribute order, quoting
+style, self-closing forms and nesting are the tokenizer's problem, and any
+tag this filter has no opinion about is re-emitted verbatim. Fenced code
+blocks and inline code spans are passed through untouched so that
+```suggestion blocks and HTML examples survive byte for byte.
+"""
+
+import json
+import re
+import sys
+from html.parser import HTMLParser
+
+SEVERITY = {
+    "critical": "🔴 CRITICAL",
+    "high": "🟠 HIGH",
+    "medium": "🟡 MEDIUM",
+    "low": "🔵 LOW",
+    "info": "⚪ INFO",
+}
+
+# Tags whose markup is noise but whose contents are not.
+UNWRAP = {"picture", "details", "summary"}
+VOID = {"img", "source", "br", "hr", "input", "meta", "link"}
+
+ICON_HOST = "githubassets.com"
+
+
+def badge(alt):
+    """'Medium severity' -> '**🟡 MEDIUM**'. Anything else -> ''."""
+    m = re.match(r"\s*(critical|high|medium|low|info)\b", alt or "", re.I)
+    return "**%s**" % SEVERITY[m.group(1).lower()] if m else ""
+
+
+class Tidy(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=False)
+        self.out = []
+        self.picture = 0      # depth inside <picture>, whose guts we swallow
+        self.alt = ""         # best alt text seen inside the current <picture>
+        self.held = []        # swallowed text, replayed if the tag never closes
+
+    def emit(self, text):
+        (self.held if self.picture else self.out).append(text)
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "picture":
+            self.picture += 1
+            self.alt = ""
+            return
+        attr = {k: (v or "") for k, v in attrs}
+        if tag == "img":
+            alt, src = attr.get("alt", ""), attr.get("src", "")
+            if self.picture:
+                self.alt = self.alt or alt
+            elif badge(alt):
+                self.emit(badge(alt))
+            elif ICON_HOST in src:
+                self.emit("[%s]" % alt if alt else "")
+            else:
+                # A real screenshot or diagram: keep it addressable.
+                self.emit("![%s](%s)" % (alt, src))
+            return
+        if tag == "source" and self.picture:
+            self.alt = self.alt or attr.get("alt", "")
+            return
+        if tag in UNWRAP:
+            return
+        self.emit(self.get_starttag_text())
+
+    def handle_startendtag(self, tag, attrs):
+        self.handle_starttag(tag, attrs)
+        if tag not in VOID:
+            self.handle_endtag(tag)
+
+    def handle_endtag(self, tag):
+        if tag == "picture":
+            if self.picture:
+                self.picture -= 1
+            if not self.picture:
+                self.held = []
+                self.emit(self.label())
+            return
+        if tag in UNWRAP or tag in VOID:
+            return
+        self.emit("</%s>" % tag)
+
+    def label(self):
+        return badge(self.alt) or ("[%s]" % self.alt if self.alt else "")
+
+    def flush(self):
+        """An unterminated <picture> must not eat the rest of the comment."""
+        if self.picture:
+            self.picture = 0
+            self.out.append(self.label())
+            self.out.extend(self.held)
+            self.held = []
+        return "".join(self.out)
+
+    def handle_data(self, data):
+        self.emit(data)
+
+    def handle_entityref(self, name):
+        self.emit("&%s;" % name)
+
+    def handle_charref(self, name):
+        self.emit("&#%s;" % name)
+
+    def handle_comment(self, data):
+        pass  # bot bookkeeping, never for human eyes
+
+    def unknown_decl(self, data):
+        pass
+
+
+def tidy_markup(text):
+    # html.parser discards a trailing "<..." it never sees closed, which would
+    # silently eat the tail of a comment ending in e.g. "if a <b". Hold it back.
+    cut = text.rfind("<")
+    tail = ""
+    if cut != -1 and ">" not in text[cut:]:
+        text, tail = text[:cut], text[cut:]
+    p = Tidy()
+    p.feed(text)
+    p.close()
+    out = p.flush()
+    out = re.sub(r"[ \t]+(?=\n)", "", out)
+    out = re.sub(r"\n{3,}", "\n\n", out)
+    return out + tail
+
+
+FENCE = re.compile(r"^\s{0,3}(`{3,}|~{3,})")
+CODE_SPAN = re.compile(r"(`+[^`\n]*`+)")
+
+
+def segments(body):
+    """Yield (is_code, chunk) over body, keeping fenced blocks intact."""
+    buf, fence = [], None
+    for line in body.splitlines(keepends=True):
+        m = FENCE.match(line)
+        if fence is None:
+            if m:
+                yield False, "".join(buf)
+                buf, fence = [line], m.group(1)[0] * 3
+            else:
+                buf.append(line)
+        else:
+            buf.append(line)
+            if m and m.group(1)[0] * 3 == fence:
+                yield True, "".join(buf)
+                buf, fence = [], None
+    yield fence is not None, "".join(buf)
+
+
+def tidy(body):
+    out = []
+    for is_code, chunk in segments(body):
+        if is_code:
+            out.append(chunk)
+            continue
+        # Inline code spans are literal too; only the gaps get parsed.
+        out.extend(
+            part if i % 2 else tidy_markup(part)
+            for i, part in enumerate(CODE_SPAN.split(chunk))
+        )
+    return "".join(out).strip()
+
+
+def walk(node):
+    if isinstance(node, dict):
+        return {
+            k: tidy(v) if k == "body" and isinstance(v, str) else walk(v)
+            for k, v in node.items()
+        }
+    if isinstance(node, list):
+        return [walk(v) for v in node]
+    return node
+
+
+if __name__ == "__main__":
+    json.dump(walk(json.load(sys.stdin)), sys.stdout)
