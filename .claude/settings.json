@@ -116,5 +116,6 @@
   },
   "feedbackSurveyState": {
     "lastShownTime": 1755793168053
-  }
+  },
+  "timeFormat": "24-hour"
 }
