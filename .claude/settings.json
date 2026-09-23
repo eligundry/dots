@@ -66,8 +66,12 @@
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "medium",
-  "autoUpdatesChannel": "stable",
+  "remote": {
+    "defaultEnvironmentId": "ccpool_01XCetDeH8UjnA3eTCeex6Eq"
+  },
+  "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
+  "theme": "light",
   "editorMode": "vim",
   "skipAutoPermissionPrompt": true,
   "autoMode": {
