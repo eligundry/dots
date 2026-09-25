@@ -264,6 +264,15 @@ Apply the exclusions now
 .TP
 .B brew services list
 Check that the asimov service is running
+.SH SCRIPTS
+Personal scripts live in
+.I ~/.local/bin
+and are on
+.BR PATH .
+.TP
+.B fix-video-audio <input> [output]
+Fix screen recordings (e.g. BetterCapture) that play silently in QuickTime. They often have several audio tracks, and QuickTime only plays the first one, which is usually silent system audio. The script drops silent tracks and keeps the audible one without re-encoding. If more than one track is audible, it mixes them into one. Output defaults to
+.IR <input>_fixed.<ext> .
 .SH FILES
 .TP
 .I ~/.tmux.conf

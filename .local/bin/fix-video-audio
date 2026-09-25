@@ -1,0 +1,64 @@
+#!/bin/bash
+#
+# Fix screen recordings (e.g. BetterCapture) that have multiple audio tracks,
+# where QuickTime only plays the first one and it's often silent system audio.
+#
+# Silent tracks are dropped. If one audible track remains, it is copied as-is
+# (no re-encode). If several remain, they are mixed down into a single track.
+
+set -euo pipefail
+
+# Tracks with a max volume at or below this (in dB) are considered silent.
+SILENCE_DB=-60
+
+if [[ $# -lt 1 || $# -gt 2 ]]; then
+  echo "Usage: fix-video-audio <input> [output]"
+  exit 1
+fi
+
+input="$1"
+output="${2:-${input%.*}_fixed.${input##*.}}"
+
+if [[ ! -f "$input" ]]; then
+  echo "No such file: $input"
+  exit 1
+fi
+
+track_count="$(ffprobe -v error -select_streams a -show_entries stream=index -of csv=p=0 "$input" | wc -l | tr -d ' ')"
+
+if [[ "$track_count" -eq 0 ]]; then
+  echo "No audio tracks in $input"
+  exit 1
+fi
+
+audible=()
+for ((i = 0; i < track_count; i++)); do
+  max_db="$(ffmpeg -hide_banner -nostats -i "$input" -map "0:a:$i" -af volumedetect -f null - 2>&1 |
+    sed -n 's/.*max_volume: \(-*[0-9.]*\) dB.*/\1/p')"
+  if awk -v v="$max_db" -v t="$SILENCE_DB" 'BEGIN { exit !(v > t) }'; then
+    echo "Track $i: max ${max_db} dB (keeping)"
+    audible+=("$i")
+  else
+    echo "Track $i: max ${max_db} dB (silent, dropping)"
+  fi
+done
+
+if [[ ${#audible[@]} -eq 0 ]]; then
+  echo "All audio tracks are silent, nothing to fix"
+  exit 1
+fi
+
+if [[ ${#audible[@]} -eq 1 ]]; then
+  ffmpeg -hide_banner -loglevel error -i "$input" \
+    -map 0:v -map "0:a:${audible[0]}" -c copy -movflags +faststart "$output"
+else
+  inputs=""
+  for i in "${audible[@]}"; do
+    inputs+="[0:a:$i]"
+  done
+  ffmpeg -hide_banner -loglevel error -i "$input" \
+    -filter_complex "${inputs}amix=inputs=${#audible[@]}:normalize=0[a]" \
+    -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 256k -movflags +faststart "$output"
+fi
+
+echo "Wrote $output"

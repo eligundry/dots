@@ -31,6 +31,7 @@ man dots               # Keybinding reference
 - `~/.tmux.conf` - tmux config (prefix=`C-a`)
 - `~/.Brewfile` - Homebrew packages
 - `~/.local/share/man/man7/dots.7` - Man page for keybindings (update when changing bindings)
+- `~/.local/bin/` - Personal userland scripts. Read `man dots` (SCRIPTS section) to see what's available, and document new scripts there when adding them
 
 ## Notes
 
