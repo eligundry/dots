@@ -264,6 +264,37 @@ Apply the exclusions now
 .TP
 .B brew services list
 Check that the asimov service is running
+.SH CLAUDE CODE AND CODEX
+.SS Shared Commands
+The command instructions in
+.I ~/.claude/commands/
+are the single source of truth for
+.BR pry ,
+.BR recon ,
+.BR reviewy ,
+and
+.BR fix-merge-conflicts .
+Claude Code runs them as
+.BR /pry ,
+.BR /recon ,
+.BR /reviewy ,
+and
+.BR /fix-merge-conflicts .
+The matching Codex skills in
+.I ~/.codex/skills/<name>/SKILL.md
+read those same command files and pass along any arguments. In Codex, invoke
+them as
+.B $pry
+(and similarly for the other names), or select one through
+.BR /skills .
+.PP
+The files in
+.I ~/.codex/prompts/
+also provide legacy
+.B /prompts:<name>
+aliases where custom prompts are supported. Custom prompts are deprecated;
+the installed Codex CLI may not list these aliases. Use the skills above for
+reliable invocation.
 .SH SCRIPTS
 Personal scripts live in
 .I ~/.local/bin
@@ -286,6 +317,15 @@ Dotfiles bootstrap script
 .TP
 .I ~/.ssh/config
 SSH client configuration
+.TP
+.I ~/.claude/commands/
+Shared command instructions
+.TP
+.I ~/.codex/skills/
+Codex skill wrappers for the shared commands
+.TP
+.I ~/.codex/prompts/
+Legacy Codex prompt aliases
 .SH SEE ALSO
 .BR tmux (1),
 .BR ghostty (1),
