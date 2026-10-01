@@ -102,3 +102,5 @@
 
 [init]
     defaultBranch = main
+[maintenance]
+	auto = false

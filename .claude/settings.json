@@ -54,7 +54,8 @@
     "code-simplifier@claude-plugins-official": true,
     "code-review@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
-    "codex@openai-codex": true
+    "codex@openai-codex": true,
+    "vercel@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "openai-codex": {
@@ -70,6 +71,7 @@
     "defaultEnvironmentId": "ccpool_01XCetDeH8UjnA3eTCeex6Eq"
   },
   "autoUpdatesChannel": "latest",
+  "timeFormat": "24-hour",
   "skipDangerousModePermissionPrompt": true,
   "theme": "light",
   "editorMode": "vim",
@@ -116,6 +118,5 @@
   },
   "feedbackSurveyState": {
     "lastShownTime": 1755793168053
-  },
-  "timeFormat": "24-hour"
+  }
 }

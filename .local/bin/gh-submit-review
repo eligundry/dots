@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+# Submit a PR review (body + line comments + verdict) from a JSON file, in one
+# atomic API call. Pins the review to the PR's current head commit and appends
+# a footer saying an AI agent wrote it.
+#
+# Usage: gh-submit-review <owner> <repo> <pr_number> <review.json> [--dry-run]
+#
+# review.json:
+#   {
+#     "event": "APPROVE" | "REQUEST_CHANGES" | "COMMENT",
+#     "body": "overall commentary (markdown)",
+#     "comments": [
+#       {"path": "src/a.ts", "line": 42, "body": "..."},                  # side defaults to RIGHT
+#       {"path": "src/a.ts", "start_line": 10, "line": 14, "body": "..."}, # multi-line
+#       {"path": "src/b.ts", "line": 7, "side": "LEFT", "body": "..."}     # removed line
+#     ]
+#   }
+#
+# On a self-review GitHub rejects APPROVE/REQUEST_CHANGES, so the event is
+# downgraded to COMMENT and the intended verdict is stated in the body.
+set -euo pipefail
+
+dry_run=false
+args=()
+for a in "$@"; do
+  case "$a" in
+    --dry-run) dry_run=true ;;
+    -h|--help) sed -n '2,19p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    *) args+=("$a") ;;
+  esac
+done
+
+if [[ ${#args[@]} -ne 4 ]]; then
+  echo "Usage: gh-submit-review <owner> <repo> <pr_number> <review.json> [--dry-run]" >&2
+  exit 1
+fi
+owner="${args[0]}"; repo="${args[1]}"; pr="${args[2]}"; file="${args[3]}"
+
+jq -e '
+  (.event | IN("APPROVE", "REQUEST_CHANGES", "COMMENT"))
+  and (.body | type == "string")
+  and ((.comments // []) | all(
+    (.path | type == "string") and (.line | type == "number") and (.body | type == "string")))
+' "$file" >/dev/null || {
+  echo "Invalid $file: need event (APPROVE|REQUEST_CHANGES|COMMENT), body, and comments[] with path/line/body." >&2
+  exit 1
+}
+
+viewer="$(gh api user --jq .login)"
+read -r head_sha pr_author < <(gh api "repos/$owner/$repo/pulls/$pr" --jq '[.head.sha, .user.login] | @tsv')
+
+payload="$(jq --arg sha "$head_sha" --arg viewer "$viewer" --arg author "$pr_author" '
+  (.event) as $intended |
+  (if $author == $viewer then "COMMENT" else $intended end) as $event |
+  {
+    commit_id: $sha,
+    event: $event,
+    body: (
+      (if $event != $intended
+        then "**Verdict: \($intended | ascii_downcase | gsub("_"; " "))** (posted as a comment; GitHub does not allow approving or rejecting your own PR)\n\n"
+        else "" end)
+      + .body
+      + "\n\n---\n<sub>🤖 This review was written by an AI agent that @\($viewer) ran via `/eli-review`.</sub>"
+    ),
+    comments: [(.comments // [])[] |
+      {path, line, body, side: (.side // "RIGHT")}
+      + (if .start_line then {start_line, start_side: (.start_side // .side // "RIGHT")} else {} end)
+    ]
+  }
+' "$file")"
+
+if [[ "$dry_run" == true ]]; then
+  echo "$payload"
+  exit 0
+fi
+
+gh api "repos/$owner/$repo/pulls/$pr/reviews" --method POST --input - <<< "$payload" \
+  --jq '"Submitted \(.state) review: \(.html_url)"'

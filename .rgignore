@@ -7,3 +7,5 @@
 .husky
 .devenv
 public/build
+OrbStack/
+.orbstack/

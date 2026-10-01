@@ -272,12 +272,14 @@ are the single source of truth for
 .BR pry ,
 .BR recon ,
 .BR reviewy ,
+.BR eli-review ,
 and
 .BR fix-merge-conflicts .
 Claude Code runs them as
 .BR /pry ,
 .BR /recon ,
 .BR /reviewy ,
+.BR /eli-review ,
 and
 .BR /fix-merge-conflicts .
 The matching Codex skills in
@@ -300,6 +302,22 @@ Personal scripts live in
 .I ~/.local/bin
 and are on
 .BR PATH .
+.TP
+.B gh-pr-review-context [<pr> | <owner> <repo> <pr>]
+Print what a PR review needs in one call: metadata, description, unresolved
+review threads, and the diff annotated with the line numbers the GitHub review
+API accepts. Used by
+.BR /eli-review .
+.TP
+.B gh-pr-file <owner> <repo> <ref> <path>
+Print a file at a ref, with line numbers, without a local checkout.
+.TP
+.B gh-submit-review <owner> <repo> <pr> <review.json> [--dry-run]
+Post a whole review (verdict, body, line comments) in one atomic call, pinned
+to the PR head, with a footer saying an AI agent wrote it. A self-review is
+downgraded to COMMENT. Run with
+.B --help
+for the JSON format.
 .TP
 .B fix-video-audio <input> [output]
 Fix screen recordings (e.g. BetterCapture) that play silently in QuickTime. They often have several audio tracks, and QuickTime only plays the first one, which is usually silent system audio. The script drops silent tracks and keeps the audible one without re-encoding. If more than one track is audible, it mixes them into one. Output defaults to

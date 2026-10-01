@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+# Everything needed to review a PR, in one call: metadata, the description,
+# existing unresolved review threads, and the diff annotated with the exact
+# line numbers GitHub's review API accepts.
+#
+# Usage: gh-pr-review-context [<owner> <repo> <pr_number>]
+#        gh-pr-review-context <pr_number>        # PR in the current repo
+#
+# With no args, resolves the PR from the current branch.
+set -euo pipefail
+
+case "${1:-}" in
+  -h|--help) sed -n '2,9p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+esac
+
+if [[ $# -eq 3 ]]; then
+  owner="$1"; repo="$2"; pr="$3"
+elif [[ $# -le 1 ]]; then
+  read -r owner repo pr < <(
+    gh pr view ${1:+"$1"} --json number,url \
+      --jq '(.url | split("/")) as $u | [$u[3], $u[4], (.number|tostring)] | @tsv' 2>/dev/null
+  ) || true
+  [[ -n "${pr:-}" ]] || { echo "Could not determine PR; pass <owner> <repo> <pr_number>" >&2; exit 1; }
+else
+  echo "Usage: gh-pr-review-context [<pr_number> | <owner> <repo> <pr_number>]" >&2
+  exit 1
+fi
+
+viewer="$(gh api user --jq .login)"
+
+gh pr view "$pr" --repo "$owner/$repo" \
+  --json title,url,author,state,isDraft,baseRefName,headRefName,headRefOid,additions,deletions,changedFiles,body |
+  jq -r --arg viewer "$viewer" --arg slug "$owner $repo $pr" '
+    "owner repo pr: \($slug)",
+    "title: \(.title)",
+    "url: \(.url)",
+    "author: @\(.author.login)  reviewer (you): @\($viewer)" +
+      (if .author.login == $viewer then "  [SELF-REVIEW: GitHub only allows COMMENT]" else "" end),
+    "state: \(.state)\(if .isDraft then " (draft)" else "" end)",
+    "branch: \(.headRefName) -> \(.baseRefName)  head: \(.headRefOid)",
+    "size: +\(.additions) -\(.deletions) across \(.changedFiles) file(s)",
+    "",
+    "## Description",
+    (if (.body // "") == "" then "(none)" else .body end)'
+
+echo
+echo "## Existing unresolved review threads"
+gh-unresolved-reviews "$owner" "$repo" "$pr"
+
+echo
+echo "## Diff"
+echo "Columns: OLD NEW marker | text.  Comment on '+' or ' ' lines with"
+echo "side RIGHT and line=NEW; on '-' lines with side LEFT and line=OLD."
+gh pr diff "$pr" --repo "$owner/$repo" --color never | awk '
+  /^diff --git / { hunk = 0; next }
+  !hunk && /^--- / { old = substr($0, 5); sub(/^a\//, "", old); next }
+  !hunk && /^\+\+\+ / {
+    path = substr($0, 5); sub(/^b\//, "", path)
+    if (path == "/dev/null") path = old " (deleted)"
+    else if (old == "/dev/null") path = path " (new)"
+    printf "\n=== %s\n", path; next
+  }
+  /^@@ / {
+    hunk = 1
+    split(substr($2, 2), o, ","); split(substr($3, 2), n, ",")
+    ol = o[1]; nl = n[1]; print; next
+  }
+  !hunk { next }
+  /^\+/ { printf "%5s %5d + | %s\n", "", nl++, substr($0, 2); next }
+  /^-/  { printf "%5d %5s - | %s\n", ol++, "", substr($0, 2); next }
+  /^ /  { printf "%5d %5d   | %s\n", ol++, nl++, substr($0, 2); next }
+'
