@@ -15,3 +15,9 @@ Notes for running it under Codex:
 
 - Where the file refers to Claude Code sub-agents or the scratchpad, do the
   work inline and use `${TMPDIR:-/tmp}` for the review JSON.
+- Run `gh-pr-review-context` (which calls `gh-pr-worktree`) and
+  `gh-pr-worktree --cleanup` with `sandbox_permissions: "require_escalated"`.
+  Scoped Codex rules allow these helpers to write Git metadata without changing
+  the workspace sandbox. Wait for the command's final
+  exit status and `path:`/`cleanup:` output; a recoverable local fetch error may
+  appear before the helper finishes its temporary-clone fallback.

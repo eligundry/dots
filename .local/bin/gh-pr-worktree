@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+# Check out a PR's head commit locally for review, and tear it down after.
+#
+# Usage: gh-pr-worktree <owner> <repo> <pr_number>
+#        gh-pr-worktree --cleanup <path>
+#
+# If the current checkout is already at the PR's head commit, or an existing
+# worktree of this repo is, that directory is used as is and never removed.
+# Otherwise, a detached worktree is preferred; if the local Git directory
+# cannot be written (or this is not the repo), a temporary clone is made.
+# Both live under ${TMPDIR:-/tmp}/eli-review and are removed by --cleanup.
+#
+# The PR's base branch tip is fetched too, so the checkout can reproduce the
+# PR diff with:  git diff <merge-base> HEAD
+#
+# Prints:  path: <dir>   created: yes|no   cleanup: <command>|none
+#          merge-base: <sha>
+set -euo pipefail
+
+root="${TMPDIR:-/tmp}"; root="${root%/}/eli-review"
+
+case "${1:-}" in
+  -h|--help) sed -n '2,16p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+  --cleanup)
+    [[ $# -eq 2 ]] || { echo "Usage: gh-pr-worktree --cleanup <path>" >&2; exit 1; }
+    path="$(cd "$2" 2>/dev/null && pwd -P)" || { echo "Already gone: $2"; exit 0; }
+    mkdir -p "$root"; real_root="$(cd "$root" && pwd -P)"
+    [[ "$path" == "$real_root"/* ]] || { echo "Refusing to remove $path: not under $real_root" >&2; exit 1; }
+    if [[ -f "$path/.git" ]]; then
+      common="$(git -C "$path" rev-parse --path-format=absolute --git-common-dir)"
+      git -C "$common" worktree remove --force "$path"
+    else
+      rm -rf "$path"
+    fi
+    echo "Removed $path"
+    exit 0 ;;
+esac
+
+if [[ $# -ne 3 ]]; then
+  echo "Usage: gh-pr-worktree <owner> <repo> <pr_number> | --cleanup <path>" >&2
+  exit 1
+fi
+owner="$1"; repo="$2"; pr="$3"
+read -r sha base_ref base_sha < <(
+  gh pr view "$pr" --repo "$owner/$repo" --json headRefOid,baseRefName,baseRefOid \
+    --jq '[.headRefOid, .baseRefName, .baseRefOid] | @tsv'
+)
+
+report() {
+  echo "path: $1"
+  echo "created: $2"
+  if [[ "$2" == yes ]]; then echo "cleanup: gh-pr-worktree --cleanup $1"; else echo "cleanup: none"; fi
+  echo "merge-base: $(git -C "$1" merge-base "$base_sha" "$sha")"
+  exit 0
+}
+
+# The remote of the current repo that points at owner/repo, if any.
+remote=""
+if git rev-parse --git-dir >/dev/null 2>&1; then
+  shopt -s nocasematch
+  while read -r name url _; do
+    if [[ "$url" =~ [:/]$owner/$repo(\.git)?/?$ ]]; then remote="$name"; break; fi
+  done < <(git remote -v)
+  shopt -u nocasematch
+fi
+
+target="$root/$repo-$pr"
+mkdir -p "$root"
+[[ -e "$target" ]] && "$0" --cleanup "$target" >/dev/null
+
+if [[ -n "$remote" ]] &&
+  git fetch --quiet --no-tags "$remote" "refs/pull/$pr/head" "refs/heads/$base_ref"; then
+  # Reuse any worktree (including this one) already sitting at the head commit.
+  wt=""
+  while read -r key val; do
+    case "$key" in
+      worktree) wt="$val" ;;
+      HEAD) [[ "$val" == "$sha" ]] && report "$wt" no ;;
+    esac
+  done < <(git worktree list --porcelain)
+
+  if git worktree add --quiet --detach "$target" "$sha"; then
+    report "$target" yes
+  fi
+  [[ -e "$target" ]] && "$0" --cleanup "$target" >/dev/null
+fi
+
+gh repo clone "$owner/$repo" "$target" -- --quiet --filter=blob:none --no-checkout
+git -C "$target" fetch --quiet --no-tags origin "refs/pull/$pr/head" "refs/heads/$base_ref"
+git -C "$target" checkout --quiet --detach "$sha"
+report "$target" yes

@@ -29,8 +29,11 @@ gh-pr-review-context                        # no argument
 
 It prints, in one call: owner/repo/PR, title, author, your login (and a
 `[SELF-REVIEW]` flag if you're the author), base/head branches, head SHA, the
-PR description, every **existing unresolved review thread**, and the full diff
-annotated with the exact line numbers the review API accepts:
+PR description, every **existing unresolved review thread**, a `## Checkout`
+section (the local checkout of the PR's head commit, from `gh-pr-worktree`),
+and the full diff — produced by `git diff <merge-base> HEAD` in that checkout,
+not the GitHub API — annotated with the exact line numbers the review API
+accepts:
 
 ```
   OLD   NEW m | text
@@ -47,11 +50,16 @@ numbers. Never compute line numbers yourself from a raw file.
 These are installed at `~/.local/bin/` and are on PATH:
 
 - `gh-pr-review-context` — above. Run it once; do not supplement it with
-  `gh pr view`, `gh pr diff`, or `gh api` calls.
-- `gh-pr-file OWNER REPO REF PATH` — a file at a ref, with line numbers. Use it
-  with the head SHA to read surrounding code. If the current directory is a
-  checkout of this repo and `git rev-parse HEAD` equals the head SHA, just read
-  the local files instead.
+  `gh pr view`, `gh pr diff`, `git diff`, or `gh api` calls.
+- `gh-pr-worktree` — called for you by `gh-pr-review-context`; don't run it
+  yourself except for `gh-pr-worktree --cleanup PATH`. It checks out the PR's
+  head commit locally and prints `path:`, `created:`, `cleanup:`, and
+  `merge-base:`. If the current
+  checkout (or another worktree of the repo) is already at the head commit it
+  reuses that and prints `created: no` / `cleanup: none`. Otherwise it adds a
+  detached worktree, or makes a temp clone when local Git writes fail or you
+  aren't inside the repo, and prints the cleanup command. Read every file from
+  that `path`, never through the GitHub API.
 - `gh-submit-review OWNER REPO PR_NUMBER REVIEW_JSON [--dry-run]` — posts the
   whole review (verdict, body, every line comment) in one atomic call, pinned to
   the head SHA, with the bot footer appended.
@@ -65,12 +73,19 @@ user** instead of working around it.
 1. **Gather context.** Run `gh-pr-review-context`. Read the description to learn
    what the PR is *supposed* to do. Note the existing unresolved threads so you
    don't repeat a point someone has already raised. If the PR is merged/closed,
-   tell the user and stop unless they asked anyway.
+   tell the user and stop (after step 11's cleanup) unless they asked anyway.
 
-2. **Correctness review.** Go through the diff file by file. Read the
-   surrounding code (`gh-pr-file` or local files) whenever a hunk's behavior
-   depends on code you can't see: callers, types, the rest of the function.
-   Look for:
+2. **Use the checkout.** Note the `path` and `cleanup` lines from the
+   `## Checkout` section. All file reads and code searches for the rest of the
+   review happen in that `path`. Don't run
+   `git checkout`, `git switch`, or `git worktree` yourself, and don't change
+   files in the checkout.
+
+3. **Correctness review.** Go through the diff file by file. Read the
+   surrounding code in the checkout whenever a hunk's behavior depends on code
+   you can't see: callers, types, the rest of the function. Grep the checkout for
+   other usages of anything the PR renames, removes, or changes the signature
+   of. Look for:
    - bugs: wrong logic, off-by-one, null/undefined paths, broken error
      handling, race conditions, wrong async/await usage
    - security: injection, authz gaps, secrets, unsafe input handling
@@ -82,14 +97,15 @@ user** instead of working around it.
    Verify each suspicion against the actual code before you write it up. If you
    still can't confirm it, phrase it as a question instead of a claim.
 
-3. **Over-engineering review (ponytail).** Read
+4. **Over-engineering review (ponytail).** Read
    `~/.agents/skills/ponytail-review/SKILL.md` and apply it to the same diff:
    reinvented stdlib, unneeded dependencies, speculative abstractions, dead
    flexibility. Skip its one-line output format and `net:` score. Each finding
    becomes a line comment in this review, written as a nit (see below). Under
-   Claude Code you may run this pass in a parallel sub-agent while you do step 2.
+   Claude Code you may run this pass in a parallel sub-agent while you do step 3;
+   give it the checkout `path`.
 
-4. **Classify every finding** and prefix its comment with the label:
+5. **Classify every finding** and prefix its comment with the label:
    - `**blocking:**` — a real bug, security hole, data-loss risk, broken
      contract, or a PR that doesn't do what it claims. Serious enough that it
      must not merge as is.
@@ -100,7 +116,7 @@ user** instead of working around it.
 
    Be strict about `blocking`. If it's a matter of taste, it's a nit.
 
-5. **Write the line comments.** One finding per comment, on the most specific
+6. **Write the line comments.** One finding per comment, on the most specific
    line or line range (`start_line`/`line`) in the annotated diff. Say what's
    wrong and why in a sentence or two, then the fix. When the fix is small and
    replaces exactly the commented lines, use a GitHub suggestion block:
@@ -114,19 +130,19 @@ user** instead of working around it.
    Findings about code *outside* the diff can't be line comments. Put those in
    the body.
 
-6. **Write the review body. Overall commentary only.** A few sentences: what
+7. **Write the review body. Overall commentary only.** A few sentences: what
    the PR does well, the overall assessment, and any cross-cutting concern or
    out-of-diff finding. Do **not** restate the line comments or list them.
    Don't add a bot disclaimer; `gh-submit-review` appends one.
 
-7. **Pick the verdict:**
+8. **Pick the verdict:**
    - any `blocking` finding → `REQUEST_CHANGES`
    - otherwise → `APPROVE`, even when there are nits and questions. The body
      should say the nits are optional.
    - The PR author is you (`[SELF-REVIEW]`) → pick the verdict as above anyway;
      the script downgrades it to `COMMENT` and states the verdict in the body.
 
-8. **Write the review JSON** with your file-writing tool (not a shell heredoc)
+9. **Write the review JSON** with your file-writing tool (not a shell heredoc)
    to a temp location: the scratchpad directory under Claude Code, or
    `${TMPDIR:-/tmp}/eli-review-PR_NUMBER.json` under Codex. Do not write it
    inside the repo.
@@ -145,25 +161,32 @@ user** instead of working around it.
 
    `side` defaults to `RIGHT`; set `"LEFT"` only for `-` lines.
 
-9. **Submit:**
+10. **Submit:**
 
-   ```bash
-   gh-submit-review OWNER REPO PR_NUMBER /path/to/review.json
-   ```
+    ```bash
+    gh-submit-review OWNER REPO PR_NUMBER /path/to/review.json
+    ```
 
-   (Add `--dry-run` in draft mode.) The review is atomic: if GitHub rejects it
-   (usually a 422 for a line that isn't in the diff), nothing was posted. Fix
-   the offending comment's `path`/`line`/`side` against the annotated diff, or
-   move that finding into the body, and submit again.
+    (Add `--dry-run` in draft mode.) The review is atomic: if GitHub rejects it
+    (usually a 422 for a line that isn't in the diff), nothing was posted. Fix
+    the offending comment's `path`/`line`/`side` against the annotated diff, or
+    move that finding into the body, and submit again.
 
-10. **Report** to the user: the verdict, the review URL from the script's
+11. **Tear down.** If the `## Checkout` section printed a `cleanup:` command (not `none`), run it.
+    Do this however the review ends: after submitting, after a dry run, or when
+    you stop early because of an error or a closed PR. Never remove a checkout
+    that printed `created: no`.
+
+12. **Report** to the user: the verdict, the review URL from the script's
     output, and a short list of the findings, blocking ones first.
 
 ## Checklist before you finish
 
 - [ ] `gh-pr-review-context` was my first tool call, and I didn't fetch the PR any other way.
+- [ ] I read code from the checkout `path`, not from the GitHub API.
 - [ ] I ran the ponytail-review pass and its findings went in as nits.
 - [ ] Every line comment is on a line from the annotated diff, labeled blocking / nit / question.
 - [ ] The body is overall commentary only and doesn't repeat line comments.
 - [ ] `REQUEST_CHANGES` only if there's at least one `blocking`; otherwise `APPROVE`.
 - [ ] The whole review went out in one `gh-submit-review` call.
+- [ ] I ran the `cleanup:` command if there was one.

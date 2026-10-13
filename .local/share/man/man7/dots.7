@@ -305,12 +305,23 @@ and are on
 .TP
 .B gh-pr-review-context [<pr> | <owner> <repo> <pr>]
 Print what a PR review needs in one call: metadata, description, unresolved
-review threads, and the diff annotated with the line numbers the GitHub review
-API accepts. Used by
+review threads, a local checkout (via
+.BR gh-pr-worktree ),
+and the
+.B git diff
+from that checkout annotated with the line numbers the GitHub review API
+accepts. Used by
 .BR /eli-review .
 .TP
-.B gh-pr-file <owner> <repo> <ref> <path>
-Print a file at a ref, with line numbers, without a local checkout.
+.B gh-pr-worktree <owner> <repo> <pr> | --cleanup <path>
+Check out a PR's head commit for review. Reuses the current checkout or any
+worktree already at that commit; otherwise adds a detached worktree (or, outside
+the repo, a temporary clone) under
+.IR $TMPDIR/eli-review .
+Prints the path and the
+.B --cleanup
+command that removes it, plus the merge-base with the PR's base branch. Used by
+.BR gh-pr-review-context .
 .TP
 .B gh-submit-review <owner> <repo> <pr> <review.json> [--dry-run]
 Post a whole review (verdict, body, line comments) in one atomic call, pinned
