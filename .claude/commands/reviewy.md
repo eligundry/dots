@@ -98,6 +98,35 @@ review ID in the URL you were given.**
 - Only report the PR as clean when there are no unresolved threads left from any
   reviewer.
 
+### Looping until the PR is done
+
+When the loop's prompt asks you to keep going until Copilot is satisfied and CI
+passes (e.g. `/loop 10m /reviewy <url> until Copilot is satisfied ...`), each
+iteration also does the following, in place of step 10's background wait (the
+next iteration is the wait):
+
+1. **Rebase before pushing.** Whenever you are about to push, first
+   `git fetch origin main` and `git rebase origin/main`, then push with
+   `git push --force-with-lease`. Also rebase if `gh pr view PR_NUMBER --json
+   mergeable` says `CONFLICTING`. If a conflict isn't obviously mechanical,
+   `git rebase --abort` and ask me rather than guessing.
+2. **CI.** Check `gh pr checks PR_NUMBER`. Pending checks: do nothing, the next
+   iteration looks again. Failing checks: read the logs (`gh run view RUN_ID
+   --log-failed`) and fix failures this PR caused, then commit, rebase and push as
+   above. If the same check fails on `main` too, or looks flaky (rerun it once with
+   `gh run rerun RUN_ID --failed`), don't fix it here — ask me.
+3. **Copilot.** After every push, request a re-review
+   (`gh pr edit PR_NUMBER --add-reviewer @copilot`). Address Copilot's new threads
+   in the next iteration like any other reviewer's (this overrides step 10's
+   "do not automatically address"). Copilot is **satisfied** when its latest
+   review (`gh pr view PR_NUMBER --json headRefOid,reviews`, author
+   `copilot-pull-request-reviewer`) is on the current `headRefOid` and none of its
+   threads are unresolved.
+4. **Stop** the loop (cancel its scheduled job) and report once there are no
+   unresolved threads from any reviewer, Copilot is satisfied, and every check
+   passes. Also stop and ask me if the same check is still failing after two fix
+   attempts, or Copilot is still raising new threads after five rounds.
+
 ## Instructions
 
 1. Parse the argument (if any) to extract owner and repo (e.g. `org/repo`), PR

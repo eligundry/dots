@@ -341,20 +341,25 @@ account.
 .B claude-reviewy-queue
 Addresses review feedback on my own open PRs. When a PR has unanswered
 threads (unresolved, and the last comment isn't mine), it starts an interactive
-.B claude \(dq/reviewy <url>\(dq
+.B claude \(dq/loop 10m /reviewy <url> until ...\(dq
 in window
 .B reviewy-<pr>
 on a worktree of the PR branch. A clean worktree that already has the branch
 checked out is reused; if that worktree has uncommitted changes, the PR is
 skipped (local
 .B .env*
-edits don't count). Each set of unanswered comments is attempted once; a new
+edits don't count). Each loop iteration addresses new threads from any
+reviewer, rebases on main before every push, re-requests Copilot and fixes CI
+failures the PR caused. The loop stops itself once Copilot's latest review is
+on the head commit with nothing unresolved and every check passes, or asks me
+if CI keeps failing or Copilot keeps finding things (rules in
+.IR ~/.claude/commands/reviewy.md ).
+Each set of unanswered comments is attempted once; a new
 comment queues the PR again. Interactive Claude never exits on its own, so each run also closes
 reviewy windows that are finished: Claude is idle at the prompt and the
 window has had no activity for 30 minutes. Windows waiting on a permission
-or a question are left open. Any other window running for over 2 hours is
-assumed stuck: it is closed, and the next check restarts it if threads are
-still unanswered. Worktrees the job created are removed with the
+or a question are left open. Any other window running for over 6 hours is
+closed as not converging; a new comment starts it again. Worktrees the job created are removed with the
 window if they are clean.
 .PP
 .I ~/.claude/hooks/needs-you.sh

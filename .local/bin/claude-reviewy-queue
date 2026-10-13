@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
-# Start an interactive `claude "/reviewy <url>"` in a tmux window for each
-# of my open PRs with unanswered review threads: unresolved, and the last
-# comment isn't mine. /reviewy resolves what it fixes and replies to what it
-# pushes back on, so a handled PR drops out on its own.
+# Start an interactive Claude looping /reviewy (`/loop 10m /reviewy <url>
+# until ...`) in a tmux window for each of my open PRs with unanswered review
+# threads: unresolved, and the last comment isn't mine. The loop rebases on
+# main before pushing, re-requests Copilot, fixes CI, and stops itself once
+# Copilot is satisfied and CI passes (see "Looping until the PR is done" in
+# ~/.claude/commands/reviewy.md).
 #
 # Usage: claude-reviewy-queue [--dry-run | --seed] [owner/repo] [checkout_dir]
 #   --seed  leave the threads unanswered right now alone; start nothing
@@ -19,10 +21,11 @@
 #
 # Interactive Claude never exits on its own, so each run also closes reviewy
 # windows that finished: idle at the prompt (needs-you.sh saw idle_prompt)
-# with no window activity for 30 min. Windows waiting on a permission or
-# question are left alone. Anything else running over 2 hours is assumed
-# stuck: it's closed and its PR forgotten, so the next check restarts it if
-# threads are still unanswered. gh/git calls time out after 60s.
+# with no window activity for 30 min (a live loop fires every 10 min, so
+# this only happens once it has stopped). Windows waiting on a permission or
+# question are left alone. Anything else running over 6 hours is closed as
+# not converging; a new review comment starts it again. gh/git calls time
+# out after 60s.
 # Run by launchd every 5 min: ~/Library/LaunchAgents/com.eligundry.claude-reviewy-queue.plist
 set -euo pipefail
 
@@ -48,9 +51,8 @@ flags="${XDG_STATE_HOME:-$HOME/.local/state}/needs-you"
   if [[ "$flag" == idle_prompt ]] && (( idle >= 1800 )); then
     log "closing finished $job"
   elif [[ "$flag" != permission_prompt && "$flag" != elicitation_dialog && "$flag" != question ]] &&
-       (( age >= 7200 )); then
-    log "closing $job: running for over 2h, assuming it's stuck"
-    [[ -z "$dry_run" ]] && rm -f "$state_dir/${job#reviewy-}"
+       (( age >= 21600 )); then
+    log "closing $job: still looping after 6h"
   else
     continue
   fi
@@ -109,5 +111,6 @@ while read -r pr url branch <&3; do
 
   # Mark before starting so the same review state never spawns twice.
   echo "$sig" > "$state_dir/$pr"
-  agents-window "$job" "$wt" claude -n "reviewy #$pr" "/reviewy $url"
+  agents-window "$job" "$wt" claude -n "reviewy #$pr" \
+    "/loop 10m /reviewy $url until Copilot is satisfied and all CI checks pass, rebasing on main before every push"
 done 3<<<"$prs"
