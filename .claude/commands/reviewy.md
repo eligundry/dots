@@ -130,7 +130,9 @@ review ID in the URL you were given.**
    - Only if there's no pushback: understand the feedback and make the necessary code changes
    - Mark the todo as complete (or skipped with reason)
 
-6. After all changes are made, commit them with a message like:
+6. After all changes are made, stage only the files you changed for the review
+   (`git add <path>...`, never `git add -A` or `git add .` — the checkout may have
+   unrelated local edits such as `.env.local`), then commit them with a message like:
    ```
    Address PR review feedback
 

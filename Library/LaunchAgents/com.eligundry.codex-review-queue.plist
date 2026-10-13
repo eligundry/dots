@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+  <key>Label</key><string>com.eligundry.codex-review-queue</string>
+  <key>ProgramArguments</key><array><string>/Users/eligundry/.local/bin/codex-review-queue</string></array>
+  <key>StartInterval</key><integer>300</integer>
+  <key>EnvironmentVariables</key><dict>
+    <key>PATH</key><string>/Users/eligundry/.local/bin:/opt/homebrew/bin:/usr/bin:/bin</string>
+  </dict>
+  <key>StandardOutPath</key><string>/Users/eligundry/Library/Logs/codex-review-queue.log</string>
+  <key>StandardErrorPath</key><string>/Users/eligundry/Library/Logs/codex-review-queue.log</string>
+</dict></plist>
+

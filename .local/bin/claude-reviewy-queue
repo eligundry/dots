@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+# Start an interactive `claude "/reviewy <url>"` in a tmux window for each
+# of my open PRs with unanswered review threads: unresolved, and the last
+# comment isn't mine. /reviewy resolves what it fixes and replies to what it
+# pushes back on, so a handled PR drops out on its own.
+#
+# Usage: claude-reviewy-queue [--dry-run | --seed] [owner/repo] [checkout_dir]
+#   --seed  leave the threads unanswered right now alone; start nothing
+#
+# Each set of unanswered comments is attempted once, so a run that leaves
+# threads unanswered doesn't respawn every tick; a new comment re-queues it.
+#
+# Defaults to codeclimate/edp in ~/Code/edp. Detection is plain gh (no
+# tokens). Each PR gets window `reviewy-<pr>` in the tmux session "agents"
+# (see agents-window), in a worktree on its branch (an existing clean
+# worktree for that branch is reused; one with uncommitted changes other than
+# .env files means the PR is skipped).
+# The usual notify.sh click-to-focus alerts land in the window.
+#
+# Interactive Claude never exits on its own, so each run also closes reviewy
+# windows that finished: idle at the prompt (needs-you.sh saw idle_prompt)
+# with no window activity for 30 min. Windows waiting on a permission or
+# question are left alone. Anything else running over 2 hours is assumed
+# stuck: it's closed and its PR forgotten, so the next check restarts it if
+# threads are still unanswered. gh/git calls time out after 60s.
+# Run by launchd every 5 min: ~/Library/LaunchAgents/com.eligundry.claude-reviewy-queue.plist
+set -euo pipefail
+
+dry_run= seed=
+case "${1:-}" in
+  --dry-run) dry_run=1; shift ;;
+  --seed) seed=1; shift ;;
+esac
+repo="${1:-codeclimate/edp}"
+dir="${2:-$HOME/Code/edp}"
+owner="${repo%/*}" name="${repo#*/}"
+
+state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/claude-reviewy-queue/${repo//\//_}"
+mkdir -p "$state_dir"
+
+log() { echo "$(date '+%F %T') $*"; }
+me="$(timeout 60 gh api user --jq .login)" || { log "gh api user failed or timed out"; exit 1; }
+
+flags="${XDG_STATE_HOME:-$HOME/.local/state}/needs-you"
+[[ -z "$seed" ]] && agents-window --list | while read -r id job idle age; do
+  [[ "$job" == reviewy-* ]] || continue
+  flag="$(cut -f1 "$flags/$job" 2>/dev/null || true)"
+  if [[ "$flag" == idle_prompt ]] && (( idle >= 1800 )); then
+    log "closing finished $job"
+  elif [[ "$flag" != permission_prompt && "$flag" != elicitation_dialog && "$flag" != question ]] &&
+       (( age >= 7200 )); then
+    log "closing $job: running for over 2h, assuming it's stuck"
+    [[ -z "$dry_run" ]] && rm -f "$state_dir/${job#reviewy-}"
+  else
+    continue
+  fi
+  [[ -n "$dry_run" ]] && continue
+  tmux kill-window -t "$id"
+  rm -f "$flags/$job"
+  # Only remove a worktree this script created, and only if it's clean.
+  [[ -d "$dir/.claude/worktrees/$job" ]] &&
+    git -C "$dir" worktree remove "$dir/.claude/worktrees/$job" 2>/dev/null || true
+done
+
+prs="$(timeout 60 gh pr list --repo "$repo" --author @me --search draft:false \
+  --json number,url,headRefName --jq '.[] | "\(.number) \(.url) \(.headRefName)"')" ||
+  { log "gh pr list failed or timed out"; exit 1; }
+
+while read -r pr url branch <&3; do
+  [[ -n "$pr" ]] || continue
+  job="reviewy-$pr"
+  agents-window --has "$job" && continue
+
+  # commentIds of the last comment in each unresolved thread not ending with me.
+  threads="$(timeout 60 gh-unresolved-reviews "$owner" "$name" "$pr" </dev/null)" ||
+    { log "skip #$pr: gh-unresolved-reviews failed or timed out"; continue; }
+  unanswered="$(awk -v me="$me" '
+    /^Thread [0-9]+ / { if (who && who != me) print id; who = "" }
+    /^  @[^ ]+ \((review|reply)\) \[commentId: [0-9]+\]:$/ {
+      who = substr($1, 2); id = $NF; gsub(/[^0-9]/, "", id) }
+    END { if (who && who != me) print id }' <<<"$threads")"
+  [[ -n "$unanswered" ]] || { rm -f "$state_dir/$pr"; continue; }
+  sig="$(tr '\n' ' ' <<<"$unanswered")"
+  [[ "$(cat "$state_dir/$pr" 2>/dev/null)" == "$sig" ]] && continue
+  [[ -n "$seed" ]] && { echo "$sig" > "$state_dir/$pr"; log "seeded #$pr"; continue; }
+
+  wt="$(git -C "$dir" worktree list --porcelain |
+    awk -v b="refs/heads/$branch" '/^worktree /{p=substr($0,10)} $0=="branch "b{print p}')"
+  # Local .env tweaks don't count as work in progress.
+  if [[ -n "$wt" && -n "$(git -C "$wt" status --porcelain -- . ':(exclude,glob)**/.env*')" ]]; then
+    log "skip #$pr: $wt has uncommitted changes"; continue
+  fi
+
+  log "starting $job for $url"
+  [[ -n "$dry_run" ]] && continue
+
+  if [[ -z "$wt" ]]; then
+    wt="$dir/.claude/worktrees/$job"
+    timeout 60 git -C "$dir" fetch -q origin "$branch" ||
+      { log "skip #$pr: git fetch failed or timed out"; continue; }
+    if git -C "$dir" show-ref -q --verify "refs/heads/$branch"; then
+      git -C "$dir" worktree add -q "$wt" "$branch" </dev/null
+    else
+      git -C "$dir" worktree add -q --track -b "$branch" "$wt" "origin/$branch" </dev/null
+    fi
+  fi
+  timeout 60 git -C "$wt" pull -q --ff-only origin "$branch" </dev/null ||
+    { log "skip #$pr: can't fast-forward $wt"; continue; }
+
+  # Mark before starting so the same review state never spawns twice.
+  echo "$sig" > "$state_dir/$pr"
+  agents-window "$job" "$wt" claude -n "reviewy #$pr" "/reviewy $url"
+done 3<<<"$prs"

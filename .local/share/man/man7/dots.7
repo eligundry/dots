@@ -297,11 +297,151 @@ also provide legacy
 aliases where custom prompts are supported. Custom prompts are deprecated;
 the installed Codex CLI may not list these aliases. Use the skills above for
 reliable invocation.
+.SS Background Review Queues
+Two launchd jobs poll GitHub every 5 minutes and start an agent only when
+there is new work. The polling itself is plain
+.B gh
+and costs no tokens. Both jobs default to
+.B codeclimate/edp
+checked out at
+.IR ~/Code/edp ,
+and accept
+.B [owner/repo] [checkout_dir]
+to point them elsewhere.
+.PP
+Each job runs as a window in the dedicated tmux session
+.BR agents ,
+created through
+.BR agents-window .
+Windows are tagged with the
+.B @job
+option and get
+.B $AGENT_JOB
+in their environment. The usual click-to-focus notifications from
+.I ~/.claude/hooks/notify.sh
+and
+.I ~/.codex/hooks/notify.sh
+land in them like any other pane, so
+.B tmux switch-client -t agents
+(or a click on the notification) is how to pop in.
+.TP
+.B codex-review-queue
+Reviews PRs that request my review directly (not through a team), skipping
+drafts. All new PRs go into one
+.B codex exec --approve-for-me \(dq$eli-review <urls>\(dq
+run in window
+.BR eli-review ,
+with approvals handled by the auto reviewer. The window closes when the run
+exits, and no new run starts while one is open. A run is killed after 45
+minutes. A PR head commit is marked reviewed only when a run exits cleanly,
+and gets at most 2 attempts, so a failing review doesn't retry every tick.
+New commits queue the PR again. Failures are logged. Reviews post under my
+account.
+.TP
+.B claude-reviewy-queue
+Addresses review feedback on my own open PRs. When a PR has unanswered
+threads (unresolved, and the last comment isn't mine), it starts an interactive
+.B claude \(dq/reviewy <url>\(dq
+in window
+.B reviewy-<pr>
+on a worktree of the PR branch. A clean worktree that already has the branch
+checked out is reused; if that worktree has uncommitted changes, the PR is
+skipped (local
+.B .env*
+edits don't count). Each set of unanswered comments is attempted once; a new
+comment queues the PR again. Interactive Claude never exits on its own, so each run also closes
+reviewy windows that are finished: Claude is idle at the prompt and the
+window has had no activity for 30 minutes. Windows waiting on a permission
+or a question are left open. Any other window running for over 2 hours is
+assumed stuck: it is closed, and the next check restarts it if threads are
+still unanswered. Worktrees the job created are removed with the
+window if they are clean.
+.PP
+.I ~/.claude/hooks/needs-you.sh
+records what each Claude job is waiting on (a permission, an
+.B AskUserQuestion
+prompt, or idle at the prompt) in
+.IR ~/.local/state/needs-you/<job> .
+Every
+.B gh
+and network
+.B git
+call in the queues times out after 60 seconds, so a hung request can't stall
+a queue.
+The SwiftBar menu bar item
+.RI ( ~/.config/swiftbar/needs-you.10s.sh )
+lists the
+.B agents
+windows as working, \[u2691] waiting on me, or \[u2713] finished, and shows
+\[u2691] N in the bar when any are waiting. Click one to attach in Ghostty.
+.PP
+Setup, with
+.B agent-queues
+(each command takes optional job names; the default is both):
+.PP
+.EX
+# One-time: install SwiftBar and point it at ~/.config/swiftbar.
+agent-queues setup
+
+# See what each job would start right now. Nothing is written or started.
+agent-queues preview
+
+# Optional: mark everything currently pending as handled, so only new
+# review requests / new feedback start an agent.
+agent-queues seed
+
+# Load the launchd jobs (poll every 5 min) and run them once now.
+agent-queues on
+
+# Loaded or not, last log lines, and running windows in "agents".
+agent-queues status
+
+# Unload. Windows already running in "agents" are left alone.
+agent-queues off
+
+# Any of these take job names, e.g. just the reviewy queue:
+agent-queues on claude-reviewy-queue
+.EE
+.PP
+Logs go to
+.IR ~/Library/Logs/<job>.log .
+List running jobs with
+.B agents-window --list
+and close one with
+.BR "tmux kill-window -t agents:<job>" .
 .SH SCRIPTS
 Personal scripts live in
 .I ~/.local/bin
 and are on
 .BR PATH .
+.TP
+.B agent-queues setup|preview|seed|on|off|status [job...]
+Set up and manage
+.B codex-review-queue
+and
+.BR claude-reviewy-queue .
+See
+.BR "Background Review Queues" .
+.TP
+.B agents-window <job> <dir> <command...> | --has <job> | --list
+Run a command as window
+.B <job>
+in the tmux session
+.BR agents ,
+unless that job is already running. See
+.BR "Background Review Queues" .
+.TP
+.B claude-reviewy-queue [--dry-run | --seed] [owner/repo] [checkout_dir]
+Run
+.B /reviewy
+in a tmux window for each of my PRs with changed review threads. See
+.BR "Background Review Queues" .
+.TP
+.B codex-review-queue [--dry-run | --seed] [owner/repo] [checkout_dir]
+Run Codex
+.B $eli-review
+on PRs requesting my review. See
+.BR "Background Review Queues" .
 .TP
 .B gh-pr-review-context [<pr> | <owner> <repo> <pr>]
 Print what a PR review needs in one call: metadata, description, unresolved

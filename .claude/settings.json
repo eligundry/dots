@@ -21,6 +21,15 @@
             "command": "/Users/eligundry/.claude/hooks/rtk-rewrite.sh"
           }
         ]
+      },
+      {
+        "matcher": "AskUserQuestion",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/eligundry/.claude/hooks/needs-you.sh"
+          }
+        ]
       }
     ],
     "Notification": [
@@ -29,6 +38,10 @@
           {
             "type": "command",
             "command": "/Users/eligundry/.claude/hooks/notify.sh"
+          },
+          {
+            "type": "command",
+            "command": "/Users/eligundry/.claude/hooks/needs-you.sh"
           }
         ]
       }
@@ -39,6 +52,37 @@
           {
             "type": "command",
             "command": "/Users/eligundry/.claude/hooks/notify.sh"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/eligundry/.claude/hooks/needs-you.sh"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/eligundry/.claude/hooks/needs-you.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "AskUserQuestion",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/eligundry/.claude/hooks/needs-you.sh"
           }
         ]
       }

@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# Set up and manage the background agent queues (see "Background Review
+# Queues" in `man dots`).
+#
+# Usage: agent-queues <command> [job...]
+#
+#   setup    one-time: install SwiftBar and point it at ~/.config/swiftbar
+#   preview  show what each job would start right now (--dry-run)
+#   seed     mark everything currently pending as handled, so only new work
+#            starts an agent
+#   on       load the launchd job (polls every 5 min) and run it now
+#   off      unload the launchd job; running windows are left alone
+#   status   loaded jobs, running windows, recent log lines
+#
+# Jobs: codex-review-queue, claude-reviewy-queue (default: both).
+set -euo pipefail
+
+all=(codex-review-queue claude-reviewy-queue)
+cmd="${1:-}"; shift || true
+jobs=("${@:-${all[@]}}")
+domain="gui/$(id -u)"
+
+for job in "${jobs[@]}"; do
+  [[ " ${all[*]} " == *" $job "* ]] || { echo "unknown job: $job" >&2; exit 1; }
+done
+
+case "$cmd" in
+  setup)
+    brew bundle --global
+    defaults write com.ameba.SwiftBar PluginDirectory "$HOME/.config/swiftbar"
+    open /Applications/SwiftBar.app ;;
+  preview|seed)
+    flag=--dry-run; [[ "$cmd" == seed ]] && flag=--seed
+    for job in "${jobs[@]}"; do echo "== $job"; "$job" "$flag"; done ;;
+  on)
+    for job in "${jobs[@]}"; do
+      launchctl bootstrap "$domain" "$HOME/Library/LaunchAgents/com.eligundry.$job.plist" 2>/dev/null ||
+        echo "$job already loaded"
+      launchctl kickstart "$domain/com.eligundry.$job"
+    done ;;
+  off)
+    for job in "${jobs[@]}"; do
+      launchctl bootout "$domain/com.eligundry.$job" 2>/dev/null || echo "$job not loaded"
+    done ;;
+  status)
+    for job in "${jobs[@]}"; do
+      if launchctl print "$domain/com.eligundry.$job" >/dev/null 2>&1; then
+        echo "== $job (on)"
+      else
+        echo "== $job (off)"
+      fi
+      tail -n 3 "$HOME/Library/Logs/$job.log" 2>/dev/null || true
+    done
+    echo "== agents windows (id job idle_seconds)"
+    agents-window --list ;;
+  *) sed -n '2,16p' "$0" | sed 's/^# \{0,1\}//'; [[ -z "$cmd" || "$cmd" == -h || "$cmd" == --help ]] ;;
+esac

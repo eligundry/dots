@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# Run Codex's $eli-review on open PRs that directly request my review.
+#
+# Usage: codex-review-queue [--dry-run | --seed] [owner/repo] [checkout_dir]
+#   --seed  mark PRs currently awaiting me as reviewed; start nothing
+#
+# Defaults to codeclimate/edp in ~/Code/edp. Detection is plain gh (no
+# tokens); Codex only starts when there is something new. New PRs go into one
+# `codex exec` run in window `eli-review` of the tmux session "agents" (see
+# agents-window), which closes when the run exits. Approvals go through the
+# auto reviewer. A run is killed after 45 min. Each PR head commit is marked
+# reviewed only when a run succeeds, and gets at most 2 attempts, so a
+# failing review doesn't retry every tick; pushing new commits re-queues it.
+# Run by launchd every 5 min: ~/Library/LaunchAgents/com.eligundry.codex-review-queue.plist
+set -euo pipefail
+
+dry_run= seed=
+case "${1:-}" in
+  --dry-run) dry_run=1; shift ;;
+  --seed) seed=1; shift ;;
+esac
+repo="${1:-codeclimate/edp}"
+dir="${2:-$HOME/Code/edp}"
+
+state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/codex-review-queue"
+seen="$state_dir/${repo//\//_}.seen"
+attempts="$state_dir/${repo//\//_}.attempts"
+mkdir -p "$state_dir"; touch "$seen" "$attempts"
+log="$HOME/Library/Logs/codex-review-queue.log"
+
+# Wait for the previous run to finish before picking up more.
+[[ -z "$seed" ]] && agents-window --has eli-review && exit 0
+
+prs="$(timeout 60 gh pr list --repo "$repo" --search "user-review-requested:@me draft:false" \
+  --json url,headRefOid --jq '.[] | "\(.url) \(.headRefOid)"')" ||
+  { echo "$(date '+%F %T') gh pr list failed or timed out"; exit 1; }
+
+new=() urls=()
+while read -r url sha; do
+  [[ -n "$url" ]] || continue
+  grep -qxF "$url $sha" "$seen" && continue
+  (( $(grep -cxF "$url $sha" "$attempts" || true) >= 2 )) && continue
+  new+=("$url $sha"); urls+=("$url")
+done <<<"$prs"
+
+[[ ${#urls[@]} -eq 0 ]] && exit 0
+[[ -n "$seed" ]] && { printf '%s\n' "${new[@]}" >> "$seen"; echo "seeded: ${urls[*]}"; exit 0; }
+echo "$(date '+%F %T') reviewing: ${urls[*]}"
+[[ -n "$dry_run" ]] && exit 0
+
+printf '%s\n' "${new[@]}" >> "$attempts"
+# Runs in the window: mark the PRs reviewed only if Codex exits cleanly.
+agents-window eli-review "$dir" bash -c '
+  seen=$1 log=$2 prompt=$3; shift 3
+  timeout 45m codex exec --approve-for-me "$prompt"; rc=$?
+  if (( rc == 0 )); then
+    printf "%s\n" "$@" >> "$seen"
+  else
+    echo "$(date "+%F %T") eli-review failed or timed out (exit $rc): $prompt" >> "$log"
+  fi' _ "$seen" "$log" "\$eli-review ${urls[*]}" "${new[@]}"

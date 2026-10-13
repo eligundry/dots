@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# Run a background agent job as a window in the dedicated tmux session "agents".
+#
+# Usage: agents-window <job> <dir> <command...>   # start (no-op if running)
+#        agents-window --has <job>                # exit 0 if running
+#        agents-window --list                     # "<window_id> <job> <idle_secs> <age_secs>"
+#
+# Windows are tagged with the @job window option (names get renamed by
+# terminal titles) and get $AGENT_JOB in their environment. They close when
+# their command exits. Click-to-focus notifications from
+# ~/.claude/hooks/notify.sh and ~/.codex/hooks/notify.sh land in them like
+# any other pane.
+set -euo pipefail
+
+s=agents
+
+list() {
+  { tmux list-windows -t "=$s" -F '#{window_id} #{@job} #{window_activity} #{@started}' 2>/dev/null || true; } |
+    awk -v now="$(date +%s)" '$2 != "" { print $1, $2, now - $3, ($4 == "" ? 0 : now - $4) }'
+}
+
+case "${1:-}" in
+  -h|--help|"") sed -n '2,11p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+  --list) list; exit 0 ;;
+  --has) list | awk -v j="$2" '$2 == j { f = 1 } END { exit !f }'; exit ;;
+esac
+
+job="$1" dir="$2"; shift 2
+"$0" --has "$job" && exit 0
+
+if tmux has-session -t "=$s" 2>/dev/null; then
+  id=$(tmux new-window -d -P -F '#{window_id}' -t "=$s:" -n "$job" -e "AGENT_JOB=$job" -c "$dir" "$@")
+else
+  id=$(tmux new-session -d -P -F '#{window_id}' -s "$s" -n "$job" -e "AGENT_JOB=$job" -c "$dir" "$@")
+fi
+tmux set-option -w -t "$id" @job "$job" \; \
+  set-option -w -t "$id" @started "$(date +%s)" \; \
+  set-option -w -t "$id" allow-rename off \; \
+  rename-window -t "$id" "$job" 2>/dev/null || true

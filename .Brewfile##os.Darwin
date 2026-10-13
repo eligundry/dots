@@ -71,6 +71,7 @@ cask "jordanbaird-ice"
 cask "numi"
 cask "raycast"
 cask "spotify"
+cask "swiftbar"
 cask "visual-studio-code"
 
 tap "adur1990/tap"
