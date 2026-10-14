@@ -13,6 +13,8 @@ The argument is optional. It may be:
   (e.g. `https://github.com/org/repo/pull/6737#pullrequestreview-3741755454`)
 - A GitHub **PR** URL — `https://github.com/OWNER/REPO/pull/PR_NUMBER`
 - Nothing at all — the PR for the current branch is used.
+- Several PR URLs — a **stack** (each PR based on the previous one's branch),
+  bottom first. Handle every PR in it; see "Stacked PRs" below.
 
 Only the first form names a single review. For the other two, address **every**
 review on the PR that still has unresolved threads.
@@ -97,6 +99,25 @@ review ID in the URL you were given.**
   pushback, skip resolved threads.
 - Only report the PR as clean when there are no unresolved threads left from any
   reviewer.
+
+## Stacked PRs
+
+When given a stack, the steps below apply to each PR in it, in one session:
+
+- Run `gh-unresolved-reviews OWNER REPO PR_NUMBER` for every PR as your first
+  tool calls (in parallel). Resolve each thread against its own PR number.
+- A stack branch may already be checked out in another worktree
+  (`git worktree list`); git won't check it out twice, so make that branch's
+  edits and commits in its worktree. Otherwise `git switch` to it here.
+- Commit each fix on the lowest branch that introduced the code, then restack
+  the branches above it before pushing: rebase each onto its updated parent
+  (`git rebase --onto <parent> <old parent tip>`), or from the top branch
+  `git rebase --update-refs <bottom's base>` when no stack branch is checked out
+  in another worktree. Push every branch that moved with
+  `git push --force-with-lease`.
+- "Rebase on main" means rebasing the bottom branch onto `origin/main` and
+  restacking the rest. The looping rules below (CI, Copilot, stopping) cover
+  every PR in the stack: stop only when all of them are done.
 
 ### Looping until the PR is done
 
