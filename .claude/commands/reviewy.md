@@ -12,7 +12,8 @@ The argument is optional. It may be:
   `https://github.com/OWNER/REPO/pull/PR_NUMBER#pullrequestreview-REVIEW_ID`
   (e.g. `https://github.com/org/repo/pull/6737#pullrequestreview-3741755454`)
 - A GitHub **PR** URL — `https://github.com/OWNER/REPO/pull/PR_NUMBER`
-- Nothing at all — the PR for the current branch is used.
+- A bare PR number — a PR in the current repo.
+- Nothing at all — figure out which PR I mean; see "No argument" below.
 - Several PR URLs — a **stack** (each PR based on the previous one's branch),
   bottom first. Handle every PR in it; see "Stacked PRs" below.
 
@@ -42,10 +43,26 @@ gh-unresolved-reviews [OWNER REPO PR_NUMBER]
 review state, `reviewId`, review URL) followed by that review's threads in the
 exact `gh-review-threads` format — it shells out to `gh-review-threads
 --unresolved-only` internally. One call gives you everything; do not follow it
-with per-review `gh-review-threads` calls. With no positional args it resolves
-the PR from the current branch. `--list` prints only the headers (useful for a
+with per-review `gh-review-threads` calls. It also accepts a single PR number or
+PR URL in place of `OWNER REPO PR_NUMBER`. `--list` prints only the headers (useful for a
 quick "is this PR clean?" check). It exits with a "No unresolved review threads"
 line when there is nothing to do.
+
+### No argument
+
+Don't error out. Work out the PR, in this order:
+
+1. **The conversation.** If this session has already been about a specific PR (a
+   PR or review URL I pasted, a PR you opened with `/pry`, a branch you pushed),
+   use that PR and pass it explicitly: `gh-unresolved-reviews OWNER REPO PR_NUMBER`.
+2. **Otherwise** run bare `gh-unresolved-reviews`. It tries the current
+   branch's PR; failing that, it uses my only open PR with unresolved threads
+   (scoped to the current repo when you're in one). If several qualify it exits 2
+   and prints them, newest first, on stderr. Then pick the one the conversation
+   or the current directory clearly points to; if nothing does, ask me which one
+   with AskUserQuestion (list the candidates as options) rather than guessing.
+
+Say which PR you settled on before making changes.
 
 `gh-review-threads` and `gh-unresolved-reviews` are installed executables at `~/.local/bin/`, already on PATH. They wrap the GitHub GraphQL API and return a compact,
 threaded text format containing, for every thread in the target review: the file

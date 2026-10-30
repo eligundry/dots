@@ -2,10 +2,11 @@
 # List every PR review that still has unresolved threads, with the full threaded
 # output for each (same format as gh-review-threads, which it calls internally).
 #
-# Usage: gh-unresolved-reviews [owner repo pr_number]
-#        gh-unresolved-reviews --list [owner repo pr_number]   # headers only
+# Usage: gh-unresolved-reviews [owner repo pr_number | pr_number | pr_url]
+#        gh-unresolved-reviews --list [...]   # headers only
 #
-# With no positional args, resolves owner/repo/PR from the current branch.
+# With no positional args, resolves the PR from the current branch; failing
+# that, uses your only open PR with unresolved threads, or lists them (exit 2).
 set -euo pipefail
 
 list_only=false
@@ -14,7 +15,7 @@ for a in "$@"; do
   case "$a" in
     --list) list_only=true ;;
     -h|--help)
-      sed -n '2,8p' "$0" | sed 's/^# \{0,1\}//'
+      sed -n '2,9p' "$0" | sed 's/^# \{0,1\}//'
       exit 0 ;;
     *) args+=("$a") ;;
   esac
@@ -24,14 +25,49 @@ if [[ ${#args[@]} -eq 3 ]]; then
   owner="${args[0]}"; repo="${args[1]}"; pr="${args[2]}"
 elif [[ ${#args[@]} -eq 0 ]]; then
   read -r owner repo pr < <(
-    gh pr view --json number,headRepositoryOwner,headRepository,baseRepository \
-      --jq '[(.baseRepository.owner.login // .headRepositoryOwner.login),
-             (.baseRepository.name  // .headRepository.name),
-             (.number|tostring)] | @tsv' 2>/dev/null
-  ) || { echo "Could not determine PR from current branch; pass <owner> <repo> <pr_number>" >&2; exit 1; }
-  [[ -n "${pr:-}" ]] || { echo "Could not determine PR from current branch; pass <owner> <repo> <pr_number>" >&2; exit 1; }
+    gh pr view --json number,url \
+      --jq '(.url | split("/")) as $u | [$u[3], $u[4], (.number|tostring)] | @tsv' 2>/dev/null
+  ) || true
+  if [[ -z "${pr:-}" ]]; then
+    # No PR for this branch (or not in a repo at all): fall back to my open PRs
+    # with unresolved threads, scoped to the current repo when there is one.
+    query="is:pr is:open author:@me archived:false"
+    if slug="$(gh repo view --json nameWithOwner --jq .nameWithOwner 2>/dev/null)"; then
+      query+=" repo:$slug"
+    fi
+    candidates="$(gh api graphql -f q="$query" -f query='
+query($q: String!) {
+  search(query: $q, type: ISSUE, first: 50) {
+    nodes { ... on PullRequest {
+      url title updatedAt
+      reviewThreads(first: 100) { nodes { isResolved } }
+    } }
+  }
+}' --jq '.data.search.nodes
+        | map(. + {open: ([.reviewThreads.nodes[] | select(.isResolved | not)] | length)})
+        | map(select(.open > 0)) | sort_by(.updatedAt) | reverse[]
+        | [.url, (.open|tostring), .title] | @tsv' 2>/dev/null)" || candidates=""
+    if [[ -z "$candidates" ]]; then
+      echo "No PR for the current branch, and none of your open PRs${slug:+ in $slug} have unresolved review threads." >&2
+      exit 1
+    elif [[ "$(wc -l <<<"$candidates")" -gt 1 ]]; then
+      echo "No PR for the current branch. Your open PRs with unresolved threads (newest first):" >&2
+      awk -F'\t' '{printf "  %s  (%s unresolved)  %s\n", $1, $2, $3}' <<<"$candidates" >&2
+      echo "Pick one and pass <owner> <repo> <pr_number>." >&2
+      exit 2
+    fi
+    IFS=/ read -r _ _ _ owner repo _ pr <<<"${candidates%%$'\t'*}"
+    echo "(No PR for the current branch; using your only open PR with unresolved threads.)"
+  fi
+elif [[ ${#args[@]} -eq 1 ]]; then
+  # A bare PR number (current repo) or a PR URL.
+  read -r owner repo pr < <(
+    gh pr view "${args[0]}" --json number,url \
+      --jq '(.url | split("/")) as $u | [$u[3], $u[4], (.number|tostring)] | @tsv' 2>/dev/null
+  ) || true
+  [[ -n "${pr:-}" ]] || { echo "Could not resolve PR '${args[0]}'; pass <owner> <repo> <pr_number>" >&2; exit 1; }
 else
-  echo "Usage: gh-unresolved-reviews [--list] [<owner> <repo> <pr_number>]" >&2
+  echo "Usage: gh-unresolved-reviews [--list] [<owner> <repo> <pr_number> | <pr_number> | <pr_url>]" >&2
   exit 1
 fi
 
